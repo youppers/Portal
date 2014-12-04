@@ -3,6 +3,51 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
+    # Mopa Bootstrap
+    #- { resource: mopa/mopa_bootstrap.yml }
+
+    # Knp Paginator
+    #- { resource: knp/knp_paginator.yml }
+
+    # FriendOfSymfony Bundles
+    #- { resource: fos/fos_comment.yml }
+    #- { resource: fos/fos_rest.yml }
+    #- { resource: fos/fos_user.yml }
+    #- { resource: fos/fos_elastica.yml }
+
+    #- { resource: bazinga/bazinga_hateos.yml }
+
+    # Sonata Core Bundles
+    - { resource: sonata/sonata_block.yml }
+    #- { resource: sonata/sonata_formatter.yml }
+    #- { resource: sonata/sonata_cache.yml }
+    #- { resource: sonata/sonata_seo.yml }
+    #- { resource: sonata/sonata_timeline.yml }
+    #- { resource: sonata/sonata_intl.yml }
+    #- { resource: sonata/sonata_core.yml }
+
+    # Sonata Feature Bundles
+    #- { resource: sonata/sonata_admin.yml }
+    #- { resource: sonata/sonata_comment.yml }
+    #- { resource: sonata/sonata_page.yml }
+    #- { resource: sonata/sonata_media.yml }
+    #- { resource: sonata/sonata_news.yml }
+    #- { resource: sonata/sonata_user.yml }
+    #- { resource: sonata/sonata_notification.yml }
+
+    # Sonata e-commerce bundles
+    #- { resource: sonata/sonata_price.yml }
+    #- { resource: sonata/sonata_order.yml }
+    #- { resource: sonata/sonata_payment.yml }
+    #- { resource: sonata/sonata_product.yml }
+    #- { resource: sonata/sonata_invoice.yml }
+    #- { resource: sonata/sonata_delivery.yml }
+    #- { resource: sonata/sonata_customer.yml }
+    #- { resource: sonata/sonata_basket.yml }
+    
+    # Youppers
+    - { resource: @YouppersCompanyBundle/Resources/config/admin.xml }
+
 framework:
     #esi:             ~
     #translator:      { fallback: "%locale%" }
