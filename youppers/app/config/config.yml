@@ -46,11 +46,11 @@ imports:
     #- { resource: sonata/sonata_basket.yml }
     
     # Youppers
-    - { resource: @YouppersCompanyBundle/Resources/config/admin.xml }
+    - { resource: "@YouppersCompanyBundle/Resources/config/admin.xml" }
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
