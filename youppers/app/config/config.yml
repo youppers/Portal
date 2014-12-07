@@ -27,7 +27,7 @@ imports:
     #- { resource: sonata/sonata_core.yml }
 
     # Sonata Feature Bundles
-    #- { resource: sonata/sonata_admin.yml }
+    - { resource: sonata/sonata_admin.yml }
     #- { resource: sonata/sonata_comment.yml }
     #- { resource: sonata/sonata_page.yml }
     #- { resource: sonata/sonata_media.yml }

@@ -43,7 +43,7 @@ class Product
 	
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->getBrand() . ' - ' . $this->getName();
 	}
 	
 	// php app/console doctrine:generate:entities YouppersCompanyBundle:Brand

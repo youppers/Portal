@@ -35,9 +35,8 @@ class BrandAdmin extends Admin
 		->addIdentifier('name')
 		->add('code')
 		->add('company')
-		#->add('rescueEngine')
-		#->add('createdAt')
-		#->add('color')
+		#->add('products')  // TODO link per elencare prodotti con filtro di Brand
+		// SEE https://groups.google.com/forum/#!topic/sonata-users/-nVqpVBINHc
 		;
 	}
 

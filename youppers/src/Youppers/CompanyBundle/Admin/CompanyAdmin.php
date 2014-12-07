@@ -19,9 +19,8 @@ class CompanyAdmin extends Admin
 	{
 		$showMapper
 		->add('name')
-		#->add('engine')
-		#->add('rescueEngine')
 		->add('createdAt')
+		->add('description')
 		->add('brands')
 		;
 	}
@@ -34,10 +33,7 @@ class CompanyAdmin extends Admin
 		$listMapper
 		->add('isActive')
 		->addIdentifier('name')
-		#->add('engine')
-		#->add('rescueEngine')
-		->add('createdAt')
-		#->add('color')
+		->add('brands')
 		;
 	}
 
@@ -49,12 +45,17 @@ class CompanyAdmin extends Admin
 		$datagridMapper
 		->add('name')
 		->add('isActive')
-		#->add('engine')
-		#->add('rescueEngine')
-		#->add('createdAt')
-		#->add('color')
 		;
 	}
+	
+	/**
+	 * Default Datagrid values
+	 *
+	 * @var array
+	 */
+	protected $datagridValues = array(
+			//'isActive' => array('value' => 1)
+	);
 
 	/**
 	 * {@inheritdoc}
@@ -62,12 +63,14 @@ class CompanyAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-		->with('General', array('class' => 'col-md-12'))
+		->with('Company', array('class' => 'col-md-8'))
 		->add('name')
+		->add('description')
+		->end()
+		->with('Details', array('class' => 'col-md-4'))
 		->add('isActive', 'checkbox', array('required'  => false))
-		#->add('rescueEngine')
-		#->add('createdAt')
-		#->end()
+		->add('createdAt')
+		->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))
 		->add('engine', 'sonata_type_model_list')

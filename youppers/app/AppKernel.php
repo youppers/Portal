@@ -116,7 +116,8 @@ class AppKernel extends Kernel
         		
         	// YOUPPERS 
         	new Youppers\ScraperBundle\YouppersScraperBundle(),
-        	new Youppers\CompanyBundle\YouppersCompanyBundle(),        	
+        	new Youppers\CompanyBundle\YouppersCompanyBundle(),
+            new Youppers\TemplateBundle\YouppersTemplateBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
