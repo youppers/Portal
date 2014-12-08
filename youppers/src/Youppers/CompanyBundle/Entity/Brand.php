@@ -42,6 +42,11 @@ class Brand
 	protected $isActive;
 	
 	/**
+	 * @ORM\Column(type="datetime")
+	 */
+	protected $createdAt;
+	
+	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 */
 	protected $description;
@@ -217,5 +222,28 @@ class Brand
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Brand
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }

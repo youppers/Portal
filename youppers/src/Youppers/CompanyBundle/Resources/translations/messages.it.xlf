@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="name">
+                <source>Name</source>
+                <target>Nome</target>
+            </trans-unit>
+            <trans-unit id="is_active">
+                <source>Is Active</source>
+                <target>In Attività</target>
+            </trans-unit>
+            <trans-unit id="created_at">
+                <source>Created At</source>
+                <target>Creazione Il</target>
+            </trans-unit>
+            <trans-unit id="description">
+                <source>Description</source>
+                <target>Descrizione</target>
+            </trans-unit>
+            <trans-unit id="code">
+                <source>Code</source>
+                <target>Codice</target>
+            </trans-unit>
+            <trans-unit id="details">
+                <source>Details</source>
+                <target>Dettagli</target>
+            </trans-unit>                        
+            <trans-unit id="company">
+                <source>Company</source>
+                <target>Società</target>
+            </trans-unit>
+            <trans-unit id="brand">
+                <source>Brand</source>
+                <target>Marchio</target>
+            </trans-unit>
+            <trans-unit id="brands">
+                <source>Brands</source>
+                <target>Marchi</target>
+            </trans-unit>
+            <trans-unit id="product">
+                <source>Product</source>
+                <target>Prodotto</target>
+            </trans-unit>
+            <trans-unit id="brand_code">
+                <source>Brand Code</source>
+                <target>Codice Marchio</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

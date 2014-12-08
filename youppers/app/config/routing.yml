@@ -2,13 +2,13 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
-#_admin_intl:
-#    resource: routing_admin.yml
-#    prefix:   /{_locale}/admin
-
-_admin:
+_admin_intl:
     resource: routing_admin.yml
-    prefix:   /admin
+    prefix:   /{_locale}/admin
+
+#_admin:
+#    resource: routing_admin.yml
+#    prefix:   /admin
 
 #_api:
 #    resource: routing_api.yml

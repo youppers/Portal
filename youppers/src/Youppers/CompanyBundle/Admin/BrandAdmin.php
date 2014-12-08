@@ -20,7 +20,6 @@ class BrandAdmin extends Admin
 		$showMapper
 		->add('name')
 		->add('company')
-		#->add('rescueEngine')
 		->add('createdAt')
 		;
 	}
@@ -50,9 +49,6 @@ class BrandAdmin extends Admin
 		->add('isActive')
 		->add('company')
 		->add('code')
-		#->add('rescueEngine')
-		#->add('createdAt')
-		#->add('color')
 		;
 	}
 
@@ -62,13 +58,16 @@ class BrandAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-		->with('General', array('class' => 'col-md-12'))
+		->with('Brand', array('class' => 'col-md-8'))
 		->add('name')
-		->add('isActive', 'checkbox', array('required'  => false))
-		->add('company')
 		->add('code')
+		->add('company')
 		->add('description')
-		#->add('createdAt')
+		->end()
+		->with('Details', array('class' => 'col-md-4'))
+		->add('isActive', 'checkbox', array('required'  => false))
+		->add('createdAt')
+		->end()
 		#->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))
