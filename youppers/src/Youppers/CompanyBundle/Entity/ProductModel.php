@@ -5,9 +5,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="brand")
+ * @ORM\Table(name="product_model")
+ * 
+ * TODO Il codice modello deve essere univoco
  */
-class Brand
+class ProductModel
 {
 	/**
 	 * @ORM\Column(type="guid")
@@ -15,31 +17,44 @@ class Brand
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 */
 	protected $id;
-
+	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Company", inversedBy="brands")
+	 * @ORM\ManyToOne(targetEntity="Product", inversedBy="productModels")
+	 * @ORM\JoinColumn(nullable=false)
 	 */
-	protected $company;
-
+	protected $product;
+	
+	
 	/**
-	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @ORM\Column(type="string", length=60)
 	 */
 	protected $name;
-
+	
 	/**
-	 * @ORM\Column(name="code", type="string", length=20, unique=true)
+	 * @ORM\Column(type="string", length=20)
 	 */
 	protected $code;
-
+	
 	/**
 	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
 	 */
 	protected $isActive;
+
+	/**
+	 * @ORM\Column(name="valid_from", type="date")
+	 */
+	protected $validFrom;
+
+	/**
+	 * @ORM\Column(name="valid_to", type="date")
+	 */
+	protected $validTo;
 	
 	/**
-	 * @ORM\Column(type="datetime")
+	 * @ORM\Column(type="decimal", precision=15, scale=5)
 	 */
-	protected $createdAt;
+	protected $price;
+	
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
@@ -48,10 +63,10 @@ class Brand
 	
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->getProduct() . ' - ' . $this->getName();
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle 
 
     /**
      * Get id
@@ -67,7 +82,7 @@ class Brand
      * Set name
      *
      * @param string $name
-     * @return Brand
+     * @return ProductModel
      */
     public function setName($name)
     {
@@ -90,7 +105,7 @@ class Brand
      * Set code
      *
      * @param string $code
-     * @return Brand
+     * @return ProductModel
      */
     public function setCode($code)
     {
@@ -113,7 +128,7 @@ class Brand
      * Set isActive
      *
      * @param boolean $isActive
-     * @return Brand
+     * @return ProductModel
      */
     public function setIsActive($isActive)
     {
@@ -133,33 +148,79 @@ class Brand
     }
 
     /**
-     * Set createdAt
+     * Set validFrom
      *
-     * @param \DateTime $createdAt
-     * @return Brand
+     * @param \DateTime $validFrom
+     * @return ProductModel
      */
-    public function setCreatedAt($createdAt)
+    public function setValidFrom($validFrom)
     {
-        $this->createdAt = $createdAt;
+        $this->validFrom = $validFrom;
 
         return $this;
     }
 
     /**
-     * Get createdAt
+     * Get validFrom
      *
      * @return \DateTime 
      */
-    public function getCreatedAt()
+    public function getValidFrom()
     {
-        return $this->createdAt;
+        return $this->validFrom;
+    }
+
+    /**
+     * Set validTo
+     *
+     * @param \DateTime $validTo
+     * @return ProductModel
+     */
+    public function setValidTo($validTo)
+    {
+        $this->validTo = $validTo;
+
+        return $this;
+    }
+
+    /**
+     * Get validTo
+     *
+     * @return \DateTime 
+     */
+    public function getValidTo()
+    {
+        return $this->validTo;
+    }
+
+    /**
+     * Set price
+     *
+     * @param string $price
+     * @return ProductModel
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return string 
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 
     /**
      * Set description
      *
      * @param string $description
-     * @return Brand
+     * @return ProductModel
      */
     public function setDescription($description)
     {
@@ -179,25 +240,25 @@ class Brand
     }
 
     /**
-     * Set company
+     * Set product
      *
-     * @param \Youppers\CompanyBundle\Entity\Company $company
-     * @return Brand
+     * @param \Youppers\CompanyBundle\Entity\Product $product
+     * @return ProductModel
      */
-    public function setCompany(\Youppers\CompanyBundle\Entity\Company $company = null)
+    public function setProduct(\Youppers\CompanyBundle\Entity\Product $product)
     {
-        $this->company = $company;
+        $this->product = $product;
 
         return $this;
     }
 
     /**
-     * Get company
+     * Get product
      *
-     * @return \Youppers\CompanyBundle\Entity\Company 
+     * @return \Youppers\CompanyBundle\Entity\Product 
      */
-    public function getCompany()
+    public function getProduct()
     {
-        return $this->company;
+        return $this->product;
     }
 }

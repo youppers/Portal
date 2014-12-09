@@ -25,7 +25,7 @@ class Company
 	 * @ORM\Column(type="string", length=60, unique=true)
 	 */
 	protected $name;
-	
+		
 	/**
 	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
 	 */
@@ -46,8 +46,7 @@ class Company
 		return $this->getName() ?: 'n/a';
 	}
 	
-	// php app/console doctrine:generate:entities YouppersCompanyBundle:Company
-	
+	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
     /**
      * Constructor
      */
@@ -113,6 +112,29 @@ class Company
     }
 
     /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Company
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
      * Set description
      *
      * @param string $description
@@ -166,28 +188,5 @@ class Company
     public function getBrands()
     {
         return $this->brands;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Company
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
     }
 }

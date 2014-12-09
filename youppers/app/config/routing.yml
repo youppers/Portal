@@ -6,6 +6,10 @@ _admin_intl:
     resource: routing_admin.yml
     prefix:   /{_locale}/admin
 
+scraper:
+    resource: "@YouppersScraperBundle/Controller/"
+    type:     annotation
+    
 #_admin:
 #    resource: routing_admin.yml
 #    prefix:   /admin

@@ -2,6 +2,7 @@
 namespace Youppers\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -17,9 +18,15 @@ class Product
 	protected $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
+	 * @ORM\ManyToOne(targetEntity="Brand")
 	 */
 	protected $brand;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="ProductModel", cascade={"persist", "remove"}, mappedBy="product")
+     * @Assert\Valid
+	 **/
+	private $productModels;	
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
@@ -27,7 +34,7 @@ class Product
 	protected $name;
 	
 	/**
-	 * @ORM\Column(type="string", length=12)
+	 * @ORM\Column(type="string", length=20)
 	 */
 	protected $code;
 	
@@ -41,13 +48,59 @@ class Product
 	 */
 	protected $description;
 	
+	/**
+	 * @param ProductModel[] $models
+	 */
+	public function setProductModels($models)
+	{
+		$this->productModels->clear();
+	
+		foreach ($models as $model) {
+			$this->addProductModel($model);
+		}
+	}
+	
+	/**
+	 * @return ProductModel[]
+	 */
+	public function getProductModels()
+	{
+		return $this->productModels;
+	}
+	
+	/**
+	 * @param ProductModel $model
+	 * @return void
+	 */
+	public function addProductModel(ProductModel $model)
+	{
+		$model->setProduct($this);
+		$this->productModels->add($model);
+	}
+	
+	/**
+	 * @param ProductModel $model
+	 * @return void
+	 */
+	public function removeProductModel(ProductModel $model)
+	{
+		$this->productModels->removeElement($model);
+	}
+	
+	
 	public function __toString()
 	{
 		return $this->getBrand() . ' - ' . $this->getName();
 	}
 	
 	// php app/console doctrine:generate:entities YouppersCompanyBundle:Brand
-	
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->productModels = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -173,4 +226,5 @@ class Product
     {
         return $this->brand;
     }
+
 }

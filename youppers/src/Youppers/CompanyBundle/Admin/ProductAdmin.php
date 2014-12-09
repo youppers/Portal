@@ -23,6 +23,7 @@ class ProductAdmin extends Admin
 		->add('code')
 		->add('isActive')
 		->add('description')
+		->add('models')
 		;
 	}
 
@@ -35,13 +36,14 @@ class ProductAdmin extends Admin
 		->add('isActive')
 		//->add('id')
 		->add('brand.code')		
-		->addIdentifier('code')
-		->add('name')
 		->add('brand', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
              ))
+		->addIdentifier('code')
+		->addIdentifier('name')
+		->add('productModels')
 		;
 	}
 
@@ -74,6 +76,8 @@ class ProductAdmin extends Admin
 	{
 		$formMapper
 		->with('Product', array('class' => 'col-md-8'))
+		->add('brand')
+		->add('code')
 		->add('name')
 		->add('description')
 		->end()
@@ -85,16 +89,16 @@ class ProductAdmin extends Admin
 		->add('engine', 'sonata_type_model_list')
 		->add('color', 'sonata_type_model_list')
 		->end()
-		->with('inspections', array('class' => 'col-md-12'))
-		->add('inspections', 'sonata_type_collection', array(
+		*/
+		->with('Models', array('class' => 'col-md-12'))
+			->add('productModels', 'sonata_type_collection', array(
 				'by_reference'       => false,
 				'cascade_validation' => true,	
-		) , array(
+			) , array(
 				'edit' => 'inline',
 				'inline' => 'table'
-		))
+			))
 		->end()
-		*/
 		;
 	}
 
@@ -105,7 +109,7 @@ class ProductAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		$object->setCreatedAt(new \DateTime());
+		//$object->setCreatedAt(new \DateTime());
 		$object->setIsActive(true);
 
 		/*
