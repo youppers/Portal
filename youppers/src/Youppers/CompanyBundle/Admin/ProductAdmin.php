@@ -53,8 +53,9 @@ class ProductAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('name')
 		->add('code')
+		->add('name')
+		->add('brand.name')
 		->add('isActive')
 		->add('brand')
 		;

@@ -6,6 +6,14 @@
                 <source>Company</source>
                 <target>Société</target>
             </trans-unit>
+            <trans-unit id="brand">
+                <source>Brand</source>
+                <target>Marque</target>
+            </trans-unit>
+            <trans-unit id="product">
+                <source>Product</source>
+                <target>Produit</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -28,9 +28,11 @@ class ProductModelAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
-            ->add('name')
-            //->add('product')
-        ;
+            ->add('code')
+        	->add('name')
+			->add('product.name')
+            ->add('isActive')
+           ;
     }
 
     /**
@@ -39,9 +41,10 @@ class ProductModelAdmin extends Admin
     protected function configureListFields(ListMapper $list)
     {
         $list
+            ->add('product.name')
+            ->addIdentifier('name')
             ->addIdentifier('code')
-            ->add('name')
-            ->add('price')
+            ->add('price','currency',array('currency' => '€'))
         ;
     }
 
@@ -63,7 +66,7 @@ class ProductModelAdmin extends Admin
         	->add('code')
         	// TODO usare vendor/sonata-project/ecommerce/src/Component/Currency/CurrencyFormType.php
         	// TODO mettere simbolo valuta correttamente
-            ->add('price','money')
+            ->add('price','money')        
         	->add('description')
         	->end()
         	->with('Validity', array('class' => 'col-md-4'))

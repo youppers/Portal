@@ -6,6 +6,7 @@
 	<buildpathentry kind="src" path="vendor/sonata-project/admin-bundle"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs"/>
 	<buildpathentry kind="src" path="vendor/sensio/distribution-bundle"/>
+	<buildpathentry kind="src" path="vendor/guzzlehttp/guzzle/src"/>
 	<buildpathentry kind="src" path="vendor/incenteev/composer-parameter-handler"/>
 	<buildpathentry kind="src" path="vendor/knplabs/knp-menu-bundle"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs"/>
@@ -17,6 +18,7 @@
 	<buildpathentry kind="src" path="vendor/doctrine/orm/lib"/>
 	<buildpathentry kind="src" path="vendor/doctrine/common/lib"/>
 	<buildpathentry kind="src" path="vendor/monolog/monolog/src/Monolog"/>
+	<buildpathentry kind="src" path="vendor/guzzlehttp/streams/src"/>
 	<buildpathentry kind="src" path="vendor/knplabs/knp-menu/src"/>
 	<buildpathentry kind="src" path="vendor/doctrine/dbal/lib"/>
 	<buildpathentry kind="src" path="vendor/swiftmailer/swiftmailer/lib"/>
@@ -27,8 +29,8 @@
 	<buildpathentry kind="src" path="vendor/sensio/generator-bundle"/>
 	<buildpathentry kind="src" path="vendor/doctrine/inflector/lib"/>
 	<buildpathentry kind="src" path="vendor/doctrine/annotations/lib"/>
-	<buildpathentry kind="src" path="vendor/doctrine/doctrine-cache-bundle"/>
 	<buildpathentry kind="src" path="vendor/sensio/framework-extra-bundle"/>
+	<buildpathentry kind="src" path="vendor/doctrine/doctrine-cache-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/core-bundle"/>
 	<buildpathentry kind="src" path="vendor/composer"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
@@ -38,6 +40,7 @@
 	<buildpathentry kind="src" path="vendor/symfony/assetic-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache/lib"/>
 	<buildpathentry kind="src" path="src"/>
+	<buildpathentry kind="src" path="vendor/fabpot/goutte"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/exporter/lib"/>
 	<buildpathentry kind="src" path="vendor/doctrine/doctrine-bundle"/>
 	<buildpathentry kind="src" path="vendor/jdorn/sql-formatter/lib"/>

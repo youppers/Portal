@@ -51,7 +51,8 @@ class ProductModel
 	protected $validTo;
 	
 	/**
-	 * @ORM\Column(type="decimal", precision=15, scale=5)
+	 * // @ORM\Column(type="decimal", precision=15, scale=5)
+	 * @ORM\Column(type="money")
 	 */
 	protected $price;
 	

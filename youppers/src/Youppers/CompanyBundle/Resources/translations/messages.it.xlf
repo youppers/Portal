@@ -46,6 +46,30 @@
                 <source>Brand Code</source>
                 <target>Codice Marchio</target>
             </trans-unit>
+            <trans-unit id="brand_name">
+                <source>Brand Name</source>
+                <target>Nome Marchio</target>
+            </trans-unit>
+            <trans-unit id="price">
+                <source>Price</source>
+                <target>Prezzo</target>
+            </trans-unit>
+            <trans-unit id="validity">
+                <source>Validity</source>
+                <target>Validità</target>
+            </trans-unit>
+            <trans-unit id="valid_from">
+                <source>Valid From</source>
+                <target>Valido Dal</target>
+            </trans-unit>
+            <trans-unit id="valid_to">
+                <source>Valid To</source>
+                <target>Valido Al</target>
+            </trans-unit>
+            <trans-unit id="product_model">
+                <source>Product Model</source>
+                <target>Modello Prodotto</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
