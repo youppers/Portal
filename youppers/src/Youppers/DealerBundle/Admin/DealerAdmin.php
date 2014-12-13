@@ -1,17 +1,16 @@
 <?php
 
-namespace Youppers\CompanyBundle\Admin;
+namespace Youppers\DealerBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #use Sonata\Bundle\DemoBundle\Entity\Inspection;
 
-class BrandAdmin extends Admin
+class DealerAdmin extends Admin
 {
 	/**
 	 * {@inheritdoc}
@@ -20,8 +19,9 @@ class BrandAdmin extends Admin
 	{
 		$showMapper
 		->add('name')
-		->add('company')
 		->add('createdAt')
+		->add('description')
+		->add('stores')
 		;
 	}
 
@@ -33,10 +33,7 @@ class BrandAdmin extends Admin
 		$listMapper
 		->add('isActive')
 		->addIdentifier('name')
-		->add('code')
-		->add('company')
-		#->add('products')  // TODO link per elencare prodotti con filtro di Brand
-		// SEE https://groups.google.com/forum/#!topic/sonata-users/-nVqpVBINHc
+		->add('stores')
 		;
 	}
 
@@ -48,37 +45,33 @@ class BrandAdmin extends Admin
 		$datagridMapper
 		->add('name')
 		->add('isActive')
-		->add('company')
-		->add('code')
 		;
 	}
+	
+	/**
+	 * Default Datagrid values
+	 *
+	 * @var array
+	 */
+	protected $datagridValues = array(
+			//'isActive' => array('value' => 1)
+	);
 
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		if (!$this->hasParentFieldDescription()) {
-			$formMapper->with('Company', array('class' => 'col-md-12'))
-			//$formMapper->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
-			->add('company', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
-			->end();				
-		}
-		
-		
-		
 		$formMapper
-		->with('Brand', array('class' => 'col-md-8'))
+		->with('Dealer', array('class' => 'col-md-8'))
 		->add('name')
 		->add('code')
-		->add('company')
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('isActive', 'checkbox', array('required'  => false))
 		->add('createdAt')
 		->end()
-		#->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))
 		->add('engine', 'sonata_type_model_list')
@@ -104,7 +97,7 @@ class BrandAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		//$object->setCreatedAt(new \DateTime());
+		$object->setCreatedAt(new \DateTime());
 		$object->setIsActive(true);
 
 		/*

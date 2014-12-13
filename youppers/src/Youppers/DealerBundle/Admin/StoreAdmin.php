@@ -1,17 +1,16 @@
 <?php
 
-namespace Youppers\CompanyBundle\Admin;
+namespace Youppers\DealerBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #use Sonata\Bundle\DemoBundle\Entity\Inspection;
 
-class BrandAdmin extends Admin
+class StoreAdmin extends Admin
 {
 	/**
 	 * {@inheritdoc}
@@ -20,7 +19,7 @@ class BrandAdmin extends Admin
 	{
 		$showMapper
 		->add('name')
-		->add('company')
+		->add('Dealer')
 		->add('createdAt')
 		;
 	}
@@ -34,8 +33,12 @@ class BrandAdmin extends Admin
 		->add('isActive')
 		->addIdentifier('name')
 		->add('code')
-		->add('company')
-		#->add('products')  // TODO link per elencare prodotti con filtro di Brand
+		->add('dealer', null, array(
+                 'route' => array(
+                     'name' => 'show'
+                 )
+             ))
+				#->add('products')  // TODO link per elencare prodotti con filtro di Store
 		// SEE https://groups.google.com/forum/#!topic/sonata-users/-nVqpVBINHc
 		;
 	}
@@ -46,10 +49,10 @@ class BrandAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
+		->add('dealer')
 		->add('name')
-		->add('isActive')
-		->add('company')
 		->add('code')
+		->add('isActive')
 		;
 	}
 
@@ -58,20 +61,11 @@ class BrandAdmin extends Admin
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		if (!$this->hasParentFieldDescription()) {
-			$formMapper->with('Company', array('class' => 'col-md-12'))
-			//$formMapper->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
-			->add('company', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
-			->end();				
-		}
-		
-		
-		
 		$formMapper
-		->with('Brand', array('class' => 'col-md-8'))
+		->with('Store', array('class' => 'col-md-8'))
+		->add('dealer')
 		->add('name')
 		->add('code')
-		->add('company')
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))

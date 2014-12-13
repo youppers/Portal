@@ -1,13 +1,13 @@
 <?php
-namespace Youppers\CompanyBundle\Entity;
+namespace Youppers\DealerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="company")
+ * @ORM\Table(name="box")
  */
-class Company
+class Box
 {
 	/**
 	 * @ORM\Column(type="guid")
@@ -15,17 +15,22 @@ class Company
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 */
 	protected $id;
-	
+
 	/**
-	 * @ORM\OneToMany(targetEntity="Brand", mappedBy="company")
-	 **/
-	private $brands;
-		
+	 * @ORM\ManyToOne(targetEntity="Store", inversedBy="boxes")
+	 */
+	protected $store;
+	
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
 	 */
 	protected $name;
-		
+
+	/**
+	 * @ORM\Column(name="code", type="string", length=20, unique=true)
+	 */
+	protected $code;
+
 	/**
 	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
 	 */
@@ -41,58 +46,13 @@ class Company
 	 */
 	protected $description;
 	
-	/**
-	 * @param Brand[] $brands
-	 */
-	public function setBrands($brands)
-	{
-		$this->brands->clear();
-	
-		foreach ($brands as $brand) {
-			$this->addBrand($brand);
-		}
-	}
-	
-	/**
-	 * @return Brand[]
-	 */
-	public function getBrands()
-	{
-		return $this->brands;
-	}
-	
-	/**
-	 * @param Brand $brand
-	 * @return void
-	 */
-	public function addBrand(Brand $brand)
-	{
-		$brand->setProduct($this);
-		$this->brands->add($brand);
-	}
-	
-	/**
-	 * @param Brand $brand
-	 * @return void
-	 */
-	public function removeBrand(Brand $brand)
-	{
-		$this->brands->removeElement($brand);
-	}	
-		
 	public function __toString()
 	{
-		return $this->getName() ?: 'n/a';
+		return $this->getName();
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->brands = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
+
 
     /**
      * Get id
@@ -108,7 +68,7 @@ class Company
      * Set name
      *
      * @param string $name
-     * @return Company
+     * @return Box
      */
     public function setName($name)
     {
@@ -128,10 +88,33 @@ class Company
     }
 
     /**
+     * Set code
+     *
+     * @param string $code
+     * @return Box
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
      * Set isActive
      *
      * @param boolean $isActive
-     * @return Company
+     * @return Box
      */
     public function setIsActive($isActive)
     {
@@ -154,7 +137,7 @@ class Company
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Company
+     * @return Box
      */
     public function setCreatedAt($createdAt)
     {
@@ -177,7 +160,7 @@ class Company
      * Set description
      *
      * @param string $description
-     * @return Company
+     * @return Box
      */
     public function setDescription($description)
     {
@@ -194,5 +177,28 @@ class Company
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set store
+     *
+     * @param \Youppers\DealerBundle\Entity\Store $store
+     * @return Box
+     */
+    public function setStore(\Youppers\DealerBundle\Entity\Store $store = null)
+    {
+        $this->store = $store;
+
+        return $this;
+    }
+
+    /**
+     * Get store
+     *
+     * @return \Youppers\DealerBundle\Entity\Store 
+     */
+    public function getStore()
+    {
+        return $this->store;
     }
 }

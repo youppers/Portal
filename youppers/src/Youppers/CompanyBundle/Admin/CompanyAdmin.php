@@ -71,6 +71,16 @@ class CompanyAdmin extends Admin
 		->add('isActive', 'checkbox', array('required'  => false))
 		->add('createdAt')
 		->end()
+		->with('Brands', array('class' => 'col-md-12'))
+		->add('brands', 'sonata_type_collection', array(
+				'by_reference'       => false,
+				'cascade_validation' => true,
+		) , array(
+				'edit' => 'inline',
+				'inline' => 'table'
+		))
+		->end()
+		
 		/*
 		->with('Options', array('class' => 'col-md-6'))
 		->add('engine', 'sonata_type_model_list')

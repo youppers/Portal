@@ -1,6 +1,6 @@
 <?php
 
-namespace Youppers\CompanyBundle\Admin;
+namespace Youppers\DealerBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Show\ShowMapper;
@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #use Sonata\Bundle\DemoBundle\Entity\Inspection;
 
-class BrandAdmin extends Admin
+class BoxAdmin extends Admin
 {
 	/**
 	 * {@inheritdoc}
@@ -19,9 +19,12 @@ class BrandAdmin extends Admin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('store')
 		->add('name')
-		->add('company')
-		->add('createdAt')
+		->add('code')
+		->add('isActive')
+		->add('description')
+		//->add('products')
 		;
 	}
 
@@ -32,11 +35,16 @@ class BrandAdmin extends Admin
 	{
 		$listMapper
 		->add('isActive')
+		//->add('id')
+		->add('store.code')		
+		->add('store', null, array(
+                 'route' => array(
+                     'name' => 'show'
+                 )
+             ))
+		->addIdentifier('code')
 		->addIdentifier('name')
-		->add('code')
-		->add('company')
-		#->add('products')  // TODO link per elencare prodotti con filtro di Brand
-		// SEE https://groups.google.com/forum/#!topic/sonata-users/-nVqpVBINHc
+		//->add('BoxProducts')
 		;
 	}
 
@@ -46,12 +54,22 @@ class BrandAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('name')
-		->add('isActive')
-		->add('company')
 		->add('code')
+		->add('name')
+		->add('store.name')
+		->add('isActive')
+		//->add('store')
 		;
 	}
+	
+	/**
+	 * Default Datagrid values
+	 *
+	 * @var array
+	 */
+	protected $datagridValues = array(
+			//'isActive' => array('value' => 1)
+	);
 
 	/**
 	 * {@inheritdoc}
@@ -59,39 +77,37 @@ class BrandAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		if (!$this->hasParentFieldDescription()) {
-			$formMapper->with('Company', array('class' => 'col-md-12'))
+			$formMapper->with('Store', array('class' => 'col-md-12'))
 			//$formMapper->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
-			->add('company', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
-			->end();				
+			->add('store', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
+			->end();
 		}
 		
-		
-		
 		$formMapper
-		->with('Brand', array('class' => 'col-md-8'))
-		->add('name')
+		->with('Box', array('class' => 'col-md-8'))
+		//->add('store')
 		->add('code')
-		->add('company')
+		->add('name')
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('isActive', 'checkbox', array('required'  => false))
-		->add('createdAt')
 		->end()
-		#->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))
 		->add('engine', 'sonata_type_model_list')
 		->add('color', 'sonata_type_model_list')
 		->end()
-		->with('inspections', array('class' => 'col-md-12'))
-		->add('inspections', 'sonata_type_collection', array(
+		*/
+		/*
+		->with('Products', array('class' => 'col-md-12'))
+			->add('BoxProducts', 'sonata_type_collection', array(
 				'by_reference'       => false,
 				'cascade_validation' => true,	
-		) , array(
+			) , array(
 				'edit' => 'inline',
 				'inline' => 'table'
-		))
+			))
 		->end()
 		*/
 		;
@@ -104,7 +120,7 @@ class BrandAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		//$object->setCreatedAt(new \DateTime());
+		$object->setCreatedAt(new \DateTime());
 		$object->setIsActive(true);
 
 		/*

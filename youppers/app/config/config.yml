@@ -47,6 +47,7 @@ imports:
     
     # Youppers
     - { resource: "@YouppersCompanyBundle/Resources/config/admin.xml" }
+    - { resource: "@YouppersDealerBundle/Resources/config/admin.xml" }
 
 framework:
     #esi:             ~

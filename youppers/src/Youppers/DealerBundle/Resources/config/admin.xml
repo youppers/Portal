@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="youppers.dealer.admin.company" class="Youppers\DealerBundle\Admin\DealerAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Dealer" />
+
+            <argument />
+            <argument>Youppers\DealerBundle\Entity\Dealer</argument>
+            <argument />
+
+			<!-- 
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="renault">Sonata\Bundle\DemoBundle\Entity\Renault</argument>
+                    <argument key="citroen">Sonata\Bundle\DemoBundle\Entity\Citroen</argument>
+                    <argument key="peugeot">Sonata\Bundle\DemoBundle\Entity\Peugeot</argument>
+                </argument>
+            </call>
+            -->
+        </service>
+
+        <service id="youppers.dealer.admin.brand" class="Youppers\DealerBundle\Admin\StoreAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Store" />
+
+            <argument />
+            <argument>Youppers\DealerBundle\Entity\Store</argument>
+            <argument />
+        </service>
+
+        <service id="youppers.dealer.admin.product" class="Youppers\DealerBundle\Admin\BoxAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Box" />
+
+            <argument />
+            <argument>Youppers\DealerBundle\Entity\Box</argument>
+            <argument />
+        </service>
+
+<!-- 
+        <service id="youppers.dealer.admin.model" class="Youppers\DealerBundle\Admin\ProductModelAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Product Model"/>
+
+            <argument />
+            <argument>Youppers\DealerBundle\Entity\ProductModel</argument>
+            <argument />
+        </service>
+-->
+<!-- 
+
+        <service id="sonata.demo.admin.color" class="Sonata\Bundle\DemoBundle\Admin\ColorAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Demo" label="Color" />
+
+            <argument />
+            <argument>Sonata\Bundle\DemoBundle\Entity\Color</argument>
+            <argument />
+        </service>
+
+        <service id="sonata.demo.admin.material" class="Sonata\Bundle\DemoBundle\Admin\MaterialAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Demo" label="Material" />
+
+            <argument />
+            <argument>Sonata\Bundle\DemoBundle\Entity\Material</argument>
+            <argument />
+        </service>
+-->        
+    </services>
+</container>
