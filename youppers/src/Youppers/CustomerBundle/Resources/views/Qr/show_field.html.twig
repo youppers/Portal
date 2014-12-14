@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% set url = url('youppers_customer_qr_scan', { qr: value}) %}
+{% set size = field_description.options.size|default(500) %}
+{% set padding = field_description.options.padding|default(100) %} 
+
+{% block field %}<a href="{{ url }}"><img alt="{{ url }}" src="{{ qrcode_url(url, size=size, padding=padding ) }}" /></a>{% endblock %}

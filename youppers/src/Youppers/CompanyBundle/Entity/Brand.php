@@ -48,9 +48,9 @@ class Brand
 	
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->getName() ?: 'New';
 	}
-	
+			
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
 
     /**

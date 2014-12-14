@@ -1,0 +1,3 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field %}<img src="{{ qrcode_url(url('youppers_dealer_default_index', { qr: value}), size=field_description.options.size|default(500) ) }}" />{% endblock %}

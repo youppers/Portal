@@ -58,24 +58,22 @@ class BrandAdmin extends Admin
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
+		$formMapper
+		->with('Brand', array('class' => 'col-md-8'));
+		
 		if (!$this->hasParentFieldDescription()) {
-			$formMapper->with('Company', array('class' => 'col-md-12'))
-			//$formMapper->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
-			->add('company', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
-			->end();				
+			$formMapper->add('company', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
+			//$formMapper->add('company', 'sonata_type_model_list');
 		}
 		
-		
-		
 		$formMapper
-		->with('Brand', array('class' => 'col-md-8'))
 		->add('name')
 		->add('code')
-		->add('company')
 		->add('description')
 		->end()
-		->with('Details', array('class' => 'col-md-4'))
+		->with('Options', array('class' => 'col-md-4'))
 		->add('isActive', 'checkbox', array('required'  => false))
+		// TODO use sonata_type_datetime_picker
 		->add('createdAt')
 		->end()
 		#->end()
@@ -104,7 +102,7 @@ class BrandAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		//$object->setCreatedAt(new \DateTime());
+		$object->setCreatedAt(new \DateTime());
 		$object->setIsActive(true);
 
 		/*

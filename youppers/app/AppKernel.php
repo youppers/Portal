@@ -114,11 +114,14 @@ class AppKernel extends Kernel
         	// DEMO
         	new AppBundle\AppBundle(),
         		
+        	new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
+        		
         	// YOUPPERS 
         	new Youppers\ScraperBundle\YouppersScraperBundle(),
         	new Youppers\CompanyBundle\YouppersCompanyBundle(),
             new Youppers\TemplateBundle\YouppersTemplateBundle(),
             new Youppers\DealerBundle\YouppersDealerBundle(),
+            new Youppers\CustomerBundle\YouppersCustomerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

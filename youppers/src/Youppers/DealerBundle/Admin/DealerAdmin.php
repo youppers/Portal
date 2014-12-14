@@ -19,8 +19,10 @@ class DealerAdmin extends Admin
 	{
 		$showMapper
 		->add('name')
-		->add('createdAt')
+		->add('code')
 		->add('description')
+		->add('createdAt')
+		->add('isActive')
 		->add('stores')
 		;
 	}
@@ -33,6 +35,7 @@ class DealerAdmin extends Admin
 		$listMapper
 		->add('isActive')
 		->addIdentifier('name')
+		->add('code')
 		->add('stores')
 		;
 	}

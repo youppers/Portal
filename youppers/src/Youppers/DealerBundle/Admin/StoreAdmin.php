@@ -18,9 +18,13 @@ class StoreAdmin extends Admin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('dealer')
 		->add('name')
-		->add('Dealer')
+		->add('code')
+		->add('description')
+		->add('isActive')
 		->add('createdAt')
+		->add('boxes')
 		;
 	}
 

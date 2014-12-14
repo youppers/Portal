@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
+	<buildpathentry kind="src" path="vendor/endroid/qrcode/src"/>
 	<buildpathentry kind="src" path="app"/>
 	<buildpathentry kind="src" path="vendor/psr/log"/>
+	<buildpathentry kind="src" path="vendor/endroid/qrcode-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache/test"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/admin-bundle"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs"/>
@@ -16,12 +18,13 @@
 	<buildpathentry kind="src" path="vendor/sonata-project/block-bundle"/>
 	<buildpathentry kind="src" path="vendor/symfony/monolog-bundle"/>
 	<buildpathentry kind="src" path="vendor/doctrine/orm/lib"/>
-	<buildpathentry kind="src" path="vendor/doctrine/common/lib"/>
 	<buildpathentry kind="src" path="vendor/monolog/monolog/src/Monolog"/>
+	<buildpathentry kind="src" path="vendor/doctrine/common/lib"/>
 	<buildpathentry kind="src" path="vendor/guzzlehttp/streams/src"/>
 	<buildpathentry kind="src" path="vendor/knplabs/knp-menu/src"/>
 	<buildpathentry kind="src" path="vendor/doctrine/dbal/lib"/>
 	<buildpathentry kind="src" path="vendor/swiftmailer/swiftmailer/lib"/>
+	<buildpathentry kind="src" path="vendor/robloach/component-installer/src"/>
 	<buildpathentry kind="src" path="vendor/twig/twig/lib"/>
 	<buildpathentry kind="src" path="vendor/twig/extensions/lib"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/doctrine-orm-admin-bundle"/>

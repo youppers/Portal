@@ -67,7 +67,7 @@ class Company
 	 */
 	public function addBrand(Brand $brand)
 	{
-		$brand->setProduct($this);
+		$brand->setCompany($this);
 		$this->brands->add($brand);
 	}
 	
@@ -82,7 +82,7 @@ class Company
 		
 	public function __toString()
 	{
-		return $this->getName() ?: 'n/a';
+		return $this->getName() ?: 'New';
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle

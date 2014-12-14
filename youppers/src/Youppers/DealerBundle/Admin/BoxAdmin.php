@@ -24,6 +24,7 @@ class BoxAdmin extends Admin
 		->add('code')
 		->add('isActive')
 		->add('description')
+		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:show_field.html.twig'))		
 		//->add('products')
 		;
 	}
@@ -45,6 +46,7 @@ class BoxAdmin extends Admin
 		->addIdentifier('code')
 		->addIdentifier('name')
 		//->add('BoxProducts')
+		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:list_field.html.twig'))		
 		;
 	}
 
@@ -76,16 +78,14 @@ class BoxAdmin extends Admin
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		if (!$this->hasParentFieldDescription()) {
-			$formMapper->with('Store', array('class' => 'col-md-12'))
-			//$formMapper->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
-			->add('store', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
-			->end();
-		}
-		
 		$formMapper
-		->with('Box', array('class' => 'col-md-8'))
-		//->add('store')
+		->with('Box', array('class' => 'col-md-8'));
+		if (!$this->hasParentFieldDescription()) {
+			//$formMapper->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
+			$formMapper
+			->add('store', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
+		}		
+		$formMapper
 		->add('code')
 		->add('name')
 		->add('description')
@@ -99,17 +99,13 @@ class BoxAdmin extends Admin
 		->add('color', 'sonata_type_model_list')
 		->end()
 		*/
-		/*
 		->with('Products', array('class' => 'col-md-12'))
-			->add('BoxProducts', 'sonata_type_collection', array(
-				'by_reference'       => false,
-				'cascade_validation' => true,	
-			) , array(
-				'edit' => 'inline',
-				'inline' => 'table'
-			))
+			->add('boxProducts', 'sonata_type_collection', array(), array(
+                'edit' => 'inline',
+                'inline' => 'table',
+                'sortable'  => 'position'
+            ))
 		->end()
-		*/
 		;
 	}
 

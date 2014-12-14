@@ -3,3 +3,4 @@ sonata_admin:
     title_logo: 'bundles/youpperstemplate/logo_35x40.png'
     templates:
         layout: YouppersTemplateBundle:Admin:standard_layout.html.twig
+        

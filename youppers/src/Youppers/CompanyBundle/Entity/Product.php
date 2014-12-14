@@ -90,11 +90,12 @@ class Product
 	
 	public function __toString()
 	{
-		return $this->getBrand() . ' - ' . $this->getName();
+		return $this->getName() ? $this->getBrand() . ' - ' . $this->getName() : 'New';
 	}
-	
+		
 	// php app/console doctrine:generate:entities YouppersCompanyBundle:Brand
-    /**
+
+	/**
      * Constructor
      */
     public function __construct()

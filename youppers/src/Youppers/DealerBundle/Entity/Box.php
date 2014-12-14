@@ -46,13 +46,63 @@ class Box
 	 */
 	protected $description;
 	
+	/**
+	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"persist", "remove"})
+	 **/
+	private $boxProducts;
+		
+	/**
+	 * @param BoxProduct[] $products
+	 */
+	public function setBoxProducts($boxProducts)
+	{
+		$this->boxProducts->clear();
+	
+		foreach ($boxProducts as $boxProduct) {
+			$this->addBoxProduct($boxProduct);
+		}
+	}
+	
+	/**
+	 * @return BoxProduct[]
+	 */
+	public function getBoxProducts()
+	{
+		return $this->boxProducts;
+	}
+	
+	/**
+	 * @param Product $product
+	 * @return void
+	 */
+	public function addBoxProduct(BoxProduct $boxProduct)
+	{
+		$boxProduct->setBox($this);
+		$this->boxProducts->add($boxProduct);
+	}
+	
+	/**
+	 * @param Product $product
+	 * @return void
+	 */
+	public function removeBoxProduct(BoxProduct $boxProduct)
+	{
+		$this->boxProducts->removeElement($boxProduct);
+	}
+
 	public function __toString()
 	{
 		return $this->getName();
 	}
-	
+		
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->boxProducts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id

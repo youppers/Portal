@@ -64,7 +64,7 @@ class ProductModel
 	
 	public function __toString()
 	{
-		return $this->getProduct() . ' - ' . $this->getName();
+		return $this->getName() ? $this->getProduct() . ' - ' . $this->getName() : 'New';
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle 

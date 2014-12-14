@@ -67,7 +67,7 @@ class CompanyAdmin extends Admin
 		->add('name')
 		->add('description')
 		->end()
-		->with('Details', array('class' => 'col-md-4'))
+		->with('Options', array('class' => 'col-md-4'))
 		->add('isActive', 'checkbox', array('required'  => false))
 		->add('createdAt')
 		->end()

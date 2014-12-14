@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% set url = url('youppers_customer_qr_scan', { qr: value}) %}
+{% set size = field_description.options.size|default(500) %}
+{% set padding = field_description.options.padding|default(100) %} 
+
+{% set icon_size = field_description.options.icon_size|default(41) %}
+{% set icon_padding = field_description.options.icon_padding|default(2) %} 
+
+{% block field %}<a href="{{ qrcode_url(url, size=size, padding=padding ) }}"><img alt="{{ url }}" src="{{ qrcode_url(url, size=icon_size, padding=icon_padding ) }}" /></a>{% endblock %}

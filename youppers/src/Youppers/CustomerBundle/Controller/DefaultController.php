@@ -1,6 +1,6 @@
 <?php
 
-namespace Youppers\DealerBundle\Controller;
+namespace Youppers\CustomerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -9,11 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/dealer/{qr}")
+     * @Route("/hello/{name}")
      * @Template()
      */
-    public function indexAction($qr)
+    public function indexAction($name)
     {
-        return array('name' => $qr);
+        return array('name' => $name);
     }
 }
