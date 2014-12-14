@@ -14,6 +14,7 @@ class BoxProductAdmin extends Admin
 	/**
 	 * {@inheritdoc}
 	 */
+	/*
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
@@ -26,6 +27,7 @@ class BoxProductAdmin extends Admin
 		//->add('products')
 		;
 	}
+	*/
 
 	/**
 	 * {@inheritdoc}
@@ -33,55 +35,72 @@ class BoxProductAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('isActive')
+		//->add('isActive')
 		//->add('id')
-		->add('store.code')		
-		->add('store', null, array(
+		->add('position')		
+		->addIdentifier('name')		
+		->add('box.code')		
+		->add('box', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
              ))
-		->addIdentifier('code')
-		->addIdentifier('name')
+		->add('product.code')		
+		->add('product', null, array(
+                 'route' => array(
+                     'name' => 'show'
+                 )
+             ))
+             //->addIdentifier('code')
+		//->addIdentifier('name')
 		//->add('BoxProducts')
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:list_field.html.twig'))		
+		//->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:list_field.html.twig'))		
 		;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
+	/*
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('code')
-		->add('name')
-		->add('store.name')
-		->add('isActive')
+		//->add('product')
+		//->add('name')
+		//->add('store.name')
+		//->add('isActive')
 		//->add('store')
 		;
 	}
+	*/
 	
 	/**
 	 * Default Datagrid values
 	 *
 	 * @var array
 	 */
+	/*
 	protected $datagridValues = array(
 			//'isActive' => array('value' => 1)
 	);
-
+	*/
+	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		if (!$this->hasParentFieldDescription()) {
-			$formMapper->add('box', 'sonata_type_model_list');
+			$formMapper
+			->add('position')				
+			->add('box', 'sonata_type_model_list');
+		} else {
+			$formMapper
+			->add('position','hidden',array('attr'=>array("hidden" => true)));				
 		}
 		$formMapper
+		->add('name')
 		->add('product', 'sonata_type_model_list')
-		->add('position','hidden',array('attr'=>array("hidden" => true)))
 		;
 	}
 

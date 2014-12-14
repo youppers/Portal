@@ -5,21 +5,34 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="box_product")
+ * @ORM\Table(name="box_product",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="box_product_idx", columns={"box_id", "product_id"})
+ *   })
  */
 class BoxProduct
 {
 	/**
-	 * @ORM\ManyToOne(targetEntity="Box", inversedBy="boxProducts")
+	 * @ORM\Column(type="guid")
 	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="UUID")
+	 */
+	protected $id;
+	
+	/**
+	 * @ORM\Column(type="string", length=60)
+	 */
+	protected $name;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Box", inversedBy="boxProducts")
 	 */
 	protected $box;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="\Youppers\CompanyBundle\Entity\Product")
-	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="\Youppers\CompanyBundle\Entity\Product")
 	 **/
-	private $product;
+	protected $product;
 
 	/**
 	 * @ORM\Column(type="integer")
@@ -28,11 +41,43 @@ class BoxProduct
 		
 	public function __toString()
 	{
-		return $this->getProduct() ? $this->getProduct()->getName() : "New";
+		return ($this->getBox() ? $this->getBox() : "New") - ($this->getProduct() ? $this->getProduct() : "New");
 	}
 		
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
 
+    /**
+     * Get id
+     *
+     * @return guid 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return BoxProduct
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
     /**
      * Set position
@@ -63,7 +108,7 @@ class BoxProduct
      * @param \Youppers\DealerBundle\Entity\Box $box
      * @return BoxProduct
      */
-    public function setBox(\Youppers\DealerBundle\Entity\Box $box)
+    public function setBox(\Youppers\DealerBundle\Entity\Box $box = null)
     {
         $this->box = $box;
 
@@ -86,7 +131,7 @@ class BoxProduct
      * @param \Youppers\CompanyBundle\Entity\Product $product
      * @return BoxProduct
      */
-    public function setProduct(\Youppers\CompanyBundle\Entity\Product $product)
+    public function setProduct(\Youppers\CompanyBundle\Entity\Product $product = null)
     {
         $this->product = $product;
 

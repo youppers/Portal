@@ -5,7 +5,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="box")
+ * @ORM\Table(name="box",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="store_box_name_idx", columns={"store_id", "name"}),
+ *     @ORM\UniqueConstraint(name="store_box_code_idx", columns={"store_id", "code"}),
+ *   })
  */
 class Box
 {
@@ -22,12 +26,12 @@ class Box
 	protected $store;
 	
 	/**
-	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @ORM\Column(type="string", length=60)
 	 */
 	protected $name;
 
 	/**
-	 * @ORM\Column(name="code", type="string", length=20, unique=true)
+	 * @ORM\Column(name="code", type="string", length=20)
 	 */
 	protected $code;
 
@@ -47,7 +51,7 @@ class Box
 	protected $description;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"persist", "remove"})
+	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"all"})
 	 **/
 	private $boxProducts;
 		
@@ -72,7 +76,7 @@ class Box
 	}
 	
 	/**
-	 * @param Product $product
+	 * @param BoxProduct $boxProduct
 	 * @return void
 	 */
 	public function addBoxProduct(BoxProduct $boxProduct)
@@ -82,7 +86,7 @@ class Box
 	}
 	
 	/**
-	 * @param Product $product
+	 * @param BoxProduct $boxProduct
 	 * @return void
 	 */
 	public function removeBoxProduct(BoxProduct $boxProduct)

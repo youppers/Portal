@@ -6,7 +6,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="product")
+ * @ORM\Table(name="product",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="brand_product_code_idx", columns={"brand_id", "code"}),
+ *     @ORM\UniqueConstraint(name="brand_product_code_name_idx", columns={"brand_id", "code", "name"}),
+ *   })
  */
 class Product
 {
@@ -93,9 +97,8 @@ class Product
 		return $this->getName() ? $this->getBrand() . ' - ' . $this->getName() : 'New';
 	}
 		
-	// php app/console doctrine:generate:entities YouppersCompanyBundle:Brand
-
-	/**
+	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+    /**
      * Constructor
      */
     public function __construct()
@@ -227,5 +230,4 @@ class Product
     {
         return $this->brand;
     }
-
 }

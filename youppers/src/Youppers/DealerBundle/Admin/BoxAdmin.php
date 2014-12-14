@@ -45,7 +45,7 @@ class BoxAdmin extends Admin
              ))
 		->addIdentifier('code')
 		->addIdentifier('name')
-		//->add('BoxProducts')
+		// FIXME ->add('boxProducts')
 		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:list_field.html.twig'))		
 		;
 	}
@@ -100,10 +100,13 @@ class BoxAdmin extends Admin
 		->end()
 		*/
 		->with('Products', array('class' => 'col-md-12'))
-			->add('boxProducts', 'sonata_type_collection', array(), array(
+			->add('boxProducts', 'sonata_type_collection', array(
+            		'by_reference'       => false,
+            		'cascade_validation' => true,
+			), array(
                 'edit' => 'inline',
                 'inline' => 'table',
-                'sortable'  => 'position'
+                'sortable' => 'position',  // FIXME non mostra la posizione aggiornata secondo posizione
             ))
 		->end()
 		;

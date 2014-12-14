@@ -23,8 +23,7 @@ class ProductModel
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	protected $product;
-	
-	
+		
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 */

@@ -5,7 +5,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="store")
+ * @ORM\Table(name="store",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="dealer_store_name_idx", columns={"dealer_id", "name"}),
+ *     @ORM\UniqueConstraint(name="dealer_store_code_idx", columns={"dealer_id", "code"}),
+ *   })
  */
 class Store
 {
@@ -22,12 +26,12 @@ class Store
 	protected $dealer;
 	
 	/**
-	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @ORM\Column(type="string", length=60)
 	 */
 	protected $name;
 
 	/**
-	 * @ORM\Column(name="code", type="string", length=20, unique=true)
+	 * @ORM\Column(name="code", type="string", length=20)
 	 */
 	protected $code;
 
