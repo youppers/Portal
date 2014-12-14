@@ -61,18 +61,17 @@ class BoxProductAdmin extends Admin
 	/**
 	 * {@inheritdoc}
 	 */
-	/*
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		//->add('product')
-		//->add('name')
-		//->add('store.name')
+		->add('product.code')
+		->add('name')
+		->add('box.name')
+		->add('box.store')
 		//->add('isActive')
 		//->add('store')
 		;
 	}
-	*/
 	
 	/**
 	 * Default Datagrid values
