@@ -1,10 +1,12 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% set url = url('youppers_customer_qr_scan', { qr: value}) %}
-{% set size = field_description.options.size|default(500) %}
-{% set padding = field_description.options.padding|default(100) %} 
+{% set qr_size = field_description.options.size|default(41) %}
+{% set qr_padding = field_description.options.padding|default(2) %}
+{% set div_size = qr_padding + qr_size + qr_padding %}
 
-{% set icon_size = field_description.options.icon_size|default(41) %}
-{% set icon_padding = field_description.options.icon_padding|default(2) %} 
-
-{% block field %}<a href="{{ qrcode_url(url, size=size, padding=padding ) }}"><img alt="{{ url }}" src="{{ qrcode_url(url, size=icon_size, padding=icon_padding ) }}" /></a>{% endblock %}
+{% block field %}
+<div style="height: {{ div_size }}px; width: {{ div_size }}px;">
+<div style="position: absolute; padding: {{ qr_padding }}px;"><img src="/youppers/web/bundles/youpperstemplate/logo_35x40.png" width="{{ qr_size }}" height="{{ qr_size }}"></div>
+<div style="position: absolute;"><img alt="{{ url }}" src="{{ qrcode_data_uri(url, size=qr_size, padding=qr_padding, error_correction_level='high')  }}" /></div>
+</div>{% endblock %}

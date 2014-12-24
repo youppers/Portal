@@ -8,6 +8,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
+
 #use Sonata\Bundle\DemoBundle\Entity\Inspection;
 
 class ProductAdmin extends Admin
@@ -23,11 +26,31 @@ class ProductAdmin extends Admin
 		->add('code')
 		->add('isActive')
 		->add('description')
-		->add('models')
+		->add('productModels', 'sonata_type_collection', array(
+				'by_reference'       => false,
+				'cascade_validation' => true,
+		) , array(
+				'edit' => 'inline',
+				'inline' => 'table'
+		))
 		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:show_field.html.twig'))		
+		
 		;
 	}
 
+	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+	{
+		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+	
+		$admin = $this->isChild() ? $this->getParent() : $this;
+		$id = $admin->getRequest()->get('id');
+	
+		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
+		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+		//$menu->addChild('List', array('uri' => $admin->generateUrl('list', array('id' => $id))));
+		//$menu->addChild('Product Models', array('uri' => $path('admin_youppers_company_productmodel_list', array('id' => $id))));
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */

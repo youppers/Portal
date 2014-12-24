@@ -1,3 +1,14 @@
 OPEN ISSUES
 
 https://github.com/craue/CraueFormFlowBundle/issues/19
+
+
+
+Background for QRcodes
+
+Endroid\Bundle\QrCodeBundle\Twig\Extension\QrCodeExtension:
+Endroid\Bundle\QrCodeBundle\Controller\QrCodeController:
+
+->setBackgroundColor(array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 127))
+
+a (alpha) = 127 -> trasparente 

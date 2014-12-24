@@ -15,8 +15,8 @@ DirectoryIndex app.php
     # work in environments without path prefix as well, providing a safe, one-size
     # fits all solution. But as you do not need it in this case, you can comment
     # the following 2 lines to eliminate the overhead.
-    RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
-    RewriteRule ^(.*) - [E=BASE:%1]
+    #RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+    #RewriteRule ^(.*) - [E=BASE:%1]
 
     # Sets the HTTP_AUTHORIZATION header removed by apache
     RewriteCond %{HTTP:Authorization} .
@@ -43,6 +43,7 @@ DirectoryIndex app.php
 
     # Rewrite all other queries to the front controller.
     RewriteRule .? %{ENV:BASE}/app.php [L]
+    #RewriteRule .? /youppers/web/app.php [L]
 </IfModule>
 
 <IfModule !mod_rewrite.c>

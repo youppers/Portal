@@ -24,6 +24,13 @@ class BoxAdmin extends Admin
 		->add('code')
 		->add('isActive')
 		->add('description')
+		->add('boxProducts', 'sonata_type_collection', array(
+				'by_reference'       => false,
+				'cascade_validation' => true,
+		) , array(
+				'edit' => 'inline',
+				'inline' => 'table'
+		))		
 		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:show_field.html.twig'))		
 		//->add('products')
 		;
