@@ -42,6 +42,11 @@ class Company
 	protected $description;
 	
 	/**
+	 * @ORM\OneToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 */	
+	protected $logo;
+	
+	/**
 	 * @param Brand[] $brands
 	 */
 	public function setBrands($brands)
@@ -194,5 +199,28 @@ class Company
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $logo
+     * @return Company
+     */
+    public function setLogo(\Application\Sonata\MediaBundle\Entity\Media $logo = null)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 }

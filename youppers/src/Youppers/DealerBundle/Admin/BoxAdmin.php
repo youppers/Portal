@@ -52,7 +52,7 @@ class BoxAdmin extends Admin
              ))
 		->addIdentifier('code')
 		->addIdentifier('name')
-		// FIXME ->add('boxProducts')
+		->add('boxProducts')
 		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:list_field.html.twig'))		
 		;
 	}
@@ -65,7 +65,7 @@ class BoxAdmin extends Admin
 		$datagridMapper
 		->add('code')
 		->add('name')
-		->add('store.name')
+		->add('store')
 		->add('isActive')
 		//->add('store')
 		;

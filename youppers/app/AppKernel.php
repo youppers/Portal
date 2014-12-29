@@ -29,9 +29,9 @@ class AppKernel extends Kernel
         	//new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
         	// USER
-        	//new FOS\UserBundle\FOSUserBundle(),
-        	//new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
-        	//new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
+        	new FOS\UserBundle\FOSUserBundle(),
+        	new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
+        	new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
         		
         	// PAGE
         	//new Sonata\PageBundle\SonataPageBundle(),
@@ -42,8 +42,8 @@ class AppKernel extends Kernel
         	//new Application\Sonata\NewsBundle\ApplicationSonataNewsBundle(),
         		
         	// MEDIA
-        	//new Sonata\MediaBundle\SonataMediaBundle(),
-        	//new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
+        	new Sonata\MediaBundle\SonataMediaBundle(),
+        	new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
         	// new Liip\ImagineBundle\LiipImagineBundle(),
         		
         	//new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
@@ -74,15 +74,15 @@ class AppKernel extends Kernel
         	//new Sonata\ProductBundle\SonataProductBundle(),
         	//new Application\Sonata\ProductBundle\ApplicationSonataProductBundle(),
         	//new Sonata\PriceBundle\SonataPriceBundle(),
-        	//new JMS\SerializerBundle\JMSSerializerBundle($this),
+        	new JMS\SerializerBundle\JMSSerializerBundle($this),
         	//new FOS\CommentBundle\FOSCommentBundle(),
         	//new Sonata\CommentBundle\SonataCommentBundle(),
         	//new Application\Sonata\CommentBundle\ApplicationSonataCommentBundle(),
         		
         	// SONATA CORE & HELPER BUNDLES
-        	//new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+        	new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
         	new Sonata\CoreBundle\SonataCoreBundle(),
-        	//new Sonata\IntlBundle\SonataIntlBundle(),
+        	new Sonata\IntlBundle\SonataIntlBundle(),
         	//new Sonata\FormatterBundle\SonataFormatterBundle(),
         	//new Sonata\CacheBundle\SonataCacheBundle(),
         	new Sonata\BlockBundle\SonataBlockBundle(),
@@ -110,9 +110,6 @@ class AppKernel extends Kernel
         	//new Application\Sonata\TimelineBundle\ApplicationSonataTimelineBundle(), // easy extends integration
         		
         	//new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
-        		
-        	// DEMO
-        	new AppBundle\AppBundle(),
         		
         	new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
         		

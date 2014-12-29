@@ -12,7 +12,7 @@ imports:
     # FriendOfSymfony Bundles
     #- { resource: fos/fos_comment.yml }
     #- { resource: fos/fos_rest.yml }
-    #- { resource: fos/fos_user.yml }
+    - { resource: fos/fos_user.yml }
     #- { resource: fos/fos_elastica.yml }
 
     #- { resource: bazinga/bazinga_hateos.yml }
@@ -23,14 +23,14 @@ imports:
     #- { resource: sonata/sonata_cache.yml }
     #- { resource: sonata/sonata_seo.yml }
     #- { resource: sonata/sonata_timeline.yml }
-    #- { resource: sonata/sonata_intl.yml }
+    - { resource: sonata/sonata_intl.yml }
     #- { resource: sonata/sonata_core.yml }
 
     # Sonata Feature Bundles
     - { resource: sonata/sonata_admin.yml }
     #- { resource: sonata/sonata_comment.yml }
     #- { resource: sonata/sonata_page.yml }
-    #- { resource: sonata/sonata_media.yml }
+    - { resource: sonata/sonata_media.yml }
     #- { resource: sonata/sonata_news.yml }
     #- { resource: sonata/sonata_user.yml }
     #- { resource: sonata/sonata_notification.yml }
@@ -105,11 +105,14 @@ doctrine:
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #     path:     "%database_path%"
+        types:
+            json:     Sonata\Doctrine\Types\JsonType
+            #currency: Sonata\Component\Currency\CurrencyDoctrineType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
-
+        
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

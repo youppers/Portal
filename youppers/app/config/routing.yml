@@ -1,33 +1,45 @@
+_front:
+    resource: routing_front.yml
+
 youppers_customer:
     resource: "@YouppersCustomerBundle/Controller/"
     type:     annotation
     prefix:   /
 
-youppers_dealer:
-    resource: "@YouppersDealerBundle/Controller/"
-    type:     annotation
-    prefix:   /
+#youppers_dealer:
+#    resource: "@YouppersDealerBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
 
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+_front:
+    resource: routing_front.yml
 
-_admin_intl:
+_admin:
     resource: routing_admin.yml
     prefix:   /{_locale}/admin
-
+#    prefix:   /admin
+    
+# redirect routes for the non-locale routes
+admin_without_locale:
+    pattern: /admin
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: sonata_admin_dashboard
+        permanent: true # this for 301
+        
 scraper:
     resource: "@YouppersScraperBundle/Controller/"
     type:     annotation
+    prefix:   /scraper
 
 EndroidQrCodeBundle:
     resource:   "@EndroidQrCodeBundle/Controller/"
     type:       annotation
     prefix:     /qrcodegenerator
         
-#_admin:
-#    resource: routing_admin.yml
-#    prefix:   /admin
+_admin:
+    resource: routing_admin.yml
+    prefix:   /admin
 
 #_api:
 #    resource: routing_api.yml

@@ -21,6 +21,7 @@ class CompanyAdmin extends Admin
 		->add('name')
 		->add('createdAt')
 		->add('description')
+		->add('logo')
 		->add('brands')
 		;
 	}
@@ -66,6 +67,17 @@ class CompanyAdmin extends Admin
 		->with('Company', array('class' => 'col-md-8'))
 		->add('name')
 		->add('description')
+		->add('logo', 'sonata_type_model')
+		->add('logo', 'sonata_type_model_list', array(
+					'required' => false
+				), array(
+					'link_parameters' => array(
+						'context'  => 'youppers_company_logo',
+						'filter'   => array('context' => array('value' => 'youppers_company_logo')),
+						'provider' => ''
+					)
+				)
+			)
 		->end()
 		->with('Options', array('class' => 'col-md-4'))
 		->add('isActive', 'checkbox', array('required'  => false))

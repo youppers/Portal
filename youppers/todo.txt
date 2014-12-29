@@ -2,7 +2,15 @@ OPEN ISSUES
 
 https://github.com/craue/CraueFormFlowBundle/issues/19
 
+Visualizzare immagini in admin (show company, ecc.)
 
+Cambiare locale dopo login in admin
+
+Filtro con selezione da lista invece che da "select" (es. brand in product_list)
+
+Traduzione in italiano di 
+- sonata_user
+- sonata_media
 
 Background for QRcodes
 
