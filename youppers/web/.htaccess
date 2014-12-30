@@ -3,7 +3,7 @@
 # mod_rewrite). Additionally, this reduces the matching process for the
 # start page (path "/") because otherwise Apache will apply the rewriting rules
 # to each configured DirectoryIndex file (e.g. index.php, index.html, index.pl).
-DirectoryIndex app.php
+DirectoryIndex /youppers/web/app.php
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -42,8 +42,8 @@ DirectoryIndex app.php
     RewriteRule .? - [L]
 
     # Rewrite all other queries to the front controller.
-    RewriteRule .? %{ENV:BASE}/app.php [L]
-    #RewriteRule .? /youppers/web/app.php [L]
+    #RewriteRule .? %{ENV:BASE}/app.php [L]
+    RewriteRule .? /youppers/web/app.php [L]
 </IfModule>
 
 <IfModule !mod_rewrite.c>

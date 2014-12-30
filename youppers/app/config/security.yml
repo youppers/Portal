@@ -37,7 +37,7 @@ security:
         # This firewall is used to handle the admin login area
         # This part is handled by the Sonata User Bundle
         admin:
-            pattern:            ^/ # /admin(.*)
+            pattern:            /[^/]+/admin # ^/ # /admin(.*)
             context:            user
             form_login:
                 provider:       fos_userbundle
@@ -53,7 +53,7 @@ security:
         api:
             pattern:   /api/(.*)
             http_basic:
-                realm:         "Secured Demo Area"
+                realm:         "Secured API Area"
                 provider:       in_memory
 
             stateless: true
@@ -65,12 +65,12 @@ security:
             context:        user
             form_login:
                 provider:       fos_userbundle
-                login_path:     /login
+                login_path:     fos_user_security_login # /login
                 use_forward:    false
-                check_path:     /login_check
+                check_path:     fos_user_security_check # /login_check
                 failure_path:   null
             logout:
-                path: /logout
+                path: fos_user_security_logout # /logout
                 # We set invalidate_session to false because we want basket
                 # to be fully persisted even when user logout and login again
                 invalidate_session: false
@@ -85,8 +85,8 @@ security:
 
         # Admin login page needs to be access without credential
         - { path: ^/[^/]+/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/[^/]+/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/[^/]+/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/[^/]+/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/[^/]+/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
    
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.

@@ -17,7 +17,7 @@ class Company
 	protected $id;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="Brand", mappedBy="company")
+	 * @ORM\OneToMany(targetEntity="Brand", mappedBy="company",cascade={"persist"})
 	 **/
 	private $brands;
 		

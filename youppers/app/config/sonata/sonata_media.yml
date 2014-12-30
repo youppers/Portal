@@ -26,6 +26,14 @@ sonata_media:
             formats:
                 abstract: { width: 100, quality: 100}
                 wide:     { width: 820, quality: 100}
+
+        youppers_brand_logo:
+            providers:
+                - sonata.media.provider.image
+
+            formats:
+                abstract: { width: 100, quality: 100}
+                wide:     { width: 820, quality: 100}
             
         #news:
         #    providers:
@@ -63,12 +71,12 @@ sonata_media:
     cdn:
         # define the public base url for the uploaded media
         server:
-#            path:      %sonata_media.cdn.host%
+            path:      "%sonata_media.cdn.host%"
 
     filesystem:
         # define where the uploaded file will be stored
         local:
-            directory:  %kernel.root_dir%/../web/uploads/media
+            directory:  "%kernel.root_dir%/../web/uploads/media"
             create:     true
 
     providers:

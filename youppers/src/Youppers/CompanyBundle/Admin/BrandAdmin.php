@@ -20,6 +20,7 @@ class BrandAdmin extends Admin
 	{
 		$showMapper
 		->add('name')
+		->add('logo')
 		->add('company')
 		->add('createdAt')
 		;
@@ -32,9 +33,10 @@ class BrandAdmin extends Admin
 	{
 		$listMapper
 		->add('isActive')
-		->addIdentifier('name')
-		->add('code')
 		->add('company')
+		->addIdentifier('name')
+		->add('logo', null, array('label' => 'Brand Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))		
+		->add('code')
 		#->add('products')  // TODO link per elencare prodotti con filtro di Brand
 		// SEE https://groups.google.com/forum/#!topic/sonata-users/-nVqpVBINHc
 		;
@@ -46,10 +48,10 @@ class BrandAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('name')
-		->add('isActive')
 		->add('company')
+		->add('name')
 		->add('code')
+		->add('isActive')
 		;
 	}
 
@@ -70,12 +72,27 @@ class BrandAdmin extends Admin
 		->add('name')
 		->add('code')
 		->add('description')
-		->end()
-		->with('Options', array('class' => 'col-md-4'))
-		->add('isActive', 'checkbox', array('required'  => false))
+		->add('logo', 'sonata_type_model_list', array(
+				'required' => false
+		), array(
+				'link_parameters' => array(
+						'context'  => 'youppers_brand_logo',
+						//'filter'   => array('context' => array('value' => 'youppers_brand_logo')),
+						'provider' => ''
+				)
+		)
+		)		
+		->end();
+		
+		if (!$this->hasParentFieldDescription()) {
+			
 		// TODO use sonata_type_datetime_picker
-		->add('createdAt')
-		->end()
+			$formMapper
+			->with('Options', array('class' => 'col-md-4'))
+			->add('isActive', 'checkbox', array('required'  => false))
+			->add('createdAt', 'sonata_type_datetime_picker', array('dp_side_by_side' => true))
+			->end();
+		}
 		#->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))

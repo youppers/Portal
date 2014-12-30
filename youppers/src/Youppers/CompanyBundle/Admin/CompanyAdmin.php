@@ -34,6 +34,7 @@ class CompanyAdmin extends Admin
 		$listMapper
 		->add('isActive')
 		->addIdentifier('name')
+		->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
 		->add('brands')
 		;
 	}
@@ -67,7 +68,6 @@ class CompanyAdmin extends Admin
 		->with('Company', array('class' => 'col-md-8'))
 		->add('name')
 		->add('description')
-		->add('logo', 'sonata_type_model')
 		->add('logo', 'sonata_type_model_list', array(
 					'required' => false
 				), array(
@@ -81,7 +81,7 @@ class CompanyAdmin extends Admin
 		->end()
 		->with('Options', array('class' => 'col-md-4'))
 		->add('isActive', 'checkbox', array('required'  => false))
-		->add('createdAt')
+		->add('createdAt', 'sonata_type_datetime_picker', array('dp_side_by_side' => true))
 		->end()
 		->with('Brands', array('class' => 'col-md-12'))
 		->add('brands', 'sonata_type_collection', array(

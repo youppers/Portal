@@ -2,7 +2,14 @@ OPEN ISSUES
 
 https://github.com/craue/CraueFormFlowBundle/issues/19
 
-Visualizzare immagini in admin (show company, ecc.)
+Aggiungere "createdAt" e "updatedAt" per tutte le entity (vedi anche: vendor/sonata-project/news-bundle/Model/Post.php prePersist()
+
+Entity Brand : setCreatedAt e setIsActive (altrimenti non salva quando si aggiunge da Company)
+
+Dimensioni ottimali thumbnail immagini in admin (show company, ecc.)
+
+Configurare datepicker
+http://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-date-picker-and-sonata-type-datetime-picker
 
 Cambiare locale dopo login in admin
 
@@ -11,12 +18,4 @@ Filtro con selezione da lista invece che da "select" (es. brand in product_list)
 Traduzione in italiano di 
 - sonata_user
 - sonata_media
-
-Background for QRcodes
-
-Endroid\Bundle\QrCodeBundle\Twig\Extension\QrCodeExtension:
-Endroid\Bundle\QrCodeBundle\Controller\QrCodeController:
-
-->setBackgroundColor(array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 127))
-
-a (alpha) = 127 -> trasparente 
+ 
