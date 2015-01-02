@@ -21,10 +21,10 @@ class ProductAdmin extends Admin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('enabled')
 		->add('brand')
 		->add('name')
 		->add('code')
-		->add('isActive')
 		->add('description')
 		->add('productModels', 'sonata_type_collection', array(
 				'by_reference'       => false,
@@ -57,15 +57,15 @@ class ProductAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('isActive')
+		->add('enabled', null, array('editable' => true))
 		//->add('id')
-		->add('brand.code')		
+		//->add('brand.code')		
 		->add('brand', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
              ))
-		->addIdentifier('code', null, array('route' => array('name' => 'show')))
+		->add('code')
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('productModels')
 		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:list_field.html.twig'))		
@@ -80,8 +80,9 @@ class ProductAdmin extends Admin
 		$datagridMapper
 		->add('code')
 		->add('name')
-		->add('brand.code')
-		->add('isActive')
+		->add('brand.company')
+		->add('brand')
+		->add('enabled')
 		;
 	}
 	
@@ -91,7 +92,7 @@ class ProductAdmin extends Admin
 	 * @var array
 	 */
 	protected $datagridValues = array(
-			//'isActive' => array('value' => 1)
+			//'enabled' => array('value' => 1)
 	);
 
 	/**
@@ -107,7 +108,7 @@ class ProductAdmin extends Admin
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
-		->add('isActive', 'checkbox', array('required'  => false))
+		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))
@@ -135,7 +136,7 @@ class ProductAdmin extends Admin
 		$object = parent::getNewInstance();
 		
 		//$object->setCreatedAt(new \DateTime());
-		$object->setIsActive(true);
+		$object->setEnabled(true);
 
 		/*
 		$inspection = new Inspection();

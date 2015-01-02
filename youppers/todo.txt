@@ -6,6 +6,8 @@ Aggiungere "createdAt" e "updatedAt" per tutte le entity (vedi anche: vendor/son
 
 Entity Brand : setCreatedAt e setIsActive (altrimenti non salva quando si aggiunge da Company)
 
+Rinominare "isActive" in "enabled"
+
 Dimensioni ottimali thumbnail immagini in admin (show company, ecc.)
 
 Configurare datepicker
@@ -18,4 +20,6 @@ Filtro con selezione da lista invece che da "select" (es. brand in product_list)
 Traduzione in italiano di 
 - sonata_user
 - sonata_media
- 
+
+Implementare la sicurezza:
+	http://sonata-project.org/bundles/admin/master/doc/reference/security.html

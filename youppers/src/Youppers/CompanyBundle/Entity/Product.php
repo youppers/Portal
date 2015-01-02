@@ -43,9 +43,9 @@ class Product
 	protected $code;
 	
 	/**
-	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
+	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
-	protected $isActive;
+	protected $enabled;
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
@@ -163,26 +163,26 @@ class Product
     }
 
     /**
-     * Set isActive
+     * Set enabled
      *
-     * @param boolean $isActive
+     * @param boolean $enabled
      * @return Product
      */
-    public function setIsActive($isActive)
+    public function setEnabled($enabled)
     {
-        $this->isActive = $isActive;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get enabled
      *
      * @return boolean 
      */
-    public function getIsActive()
+    public function getEnabled()
     {
-        return $this->isActive;
+        return $this->enabled;
     }
 
     /**

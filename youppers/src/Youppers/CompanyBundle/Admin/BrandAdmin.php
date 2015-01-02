@@ -8,21 +8,36 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Symfony\Component\Validator\Constraints as Assert;
+use Sonata\AdminBundle\Route\RouteCollection;
+
 
 #use Sonata\Bundle\DemoBundle\Entity\Inspection;
 
 class BrandAdmin extends Admin
 {
+	
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->add('products', $this->getRouterIdParameter().'/products');
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('enabled')
+		->add('company', null, array(
+                 'route' => array(
+                     'name' => 'show'
+                 )
+             ))
 		->add('name')
-		->add('logo')
-		->add('company')
-		->add('createdAt')
+		->add('code')
+		->add('description')
+		->add('logo')	
+		
 		;
 	}
 
@@ -32,13 +47,24 @@ class BrandAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('isActive')
-		->add('company')
+		->add('enabled', null, array('editable' => true))
+		->add('company', null, array(
+                 'route' => array(
+                     'name' => 'show'
+                 )
+             ))
 		->addIdentifier('name')
-		->add('logo', null, array('label' => 'Brand Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))		
 		->add('code')
+		->add('logo', null, array('label' => 'Brand Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))		
 		#->add('products')  // TODO link per elencare prodotti con filtro di Brand
 		// SEE https://groups.google.com/forum/#!topic/sonata-users/-nVqpVBINHc
+		->add('_action','actions',array(
+				'label' => 'Products',			
+				'actions' => array(
+					'products' => array('template' => 'YouppersCompanyBundle:CRUD:list__action_products.html.twig')
+				)
+			)
+		)
 		;
 	}
 
@@ -51,7 +77,7 @@ class BrandAdmin extends Admin
 		->add('company')
 		->add('name')
 		->add('code')
-		->add('isActive')
+		->add('enabled')
 		;
 	}
 
@@ -86,11 +112,10 @@ class BrandAdmin extends Admin
 		
 		if (!$this->hasParentFieldDescription()) {
 			
-		// TODO use sonata_type_datetime_picker
 			$formMapper
-			->with('Options', array('class' => 'col-md-4'))
-			->add('isActive', 'checkbox', array('required'  => false))
-			->add('createdAt', 'sonata_type_datetime_picker', array('dp_side_by_side' => true))
+			->with('Details', array('class' => 'col-md-4'))
+			->add('enabled', 'checkbox', array('required'  => false))
+			//->add('createdAt', 'sonata_type_datetime_picker', array('dp_side_by_side' => true))
 			->end();
 		}
 		#->end()
@@ -119,8 +144,8 @@ class BrandAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		$object->setCreatedAt(new \DateTime());
-		$object->setIsActive(true);
+		//$object->setCreatedAt(new \DateTime());
+		$object->setEnabled(true);
 
 		/*
 		$inspection = new Inspection();

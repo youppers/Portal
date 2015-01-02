@@ -18,11 +18,15 @@ class CompanyAdmin extends Admin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('enabled')
 		->add('name')
-		->add('createdAt')
 		->add('description')
 		->add('logo')
-		->add('brands')
+		->add('brands', null, array(
+                 'route' => array(
+                     'name' => 'show'
+                 )
+             ))
 		;
 	}
 
@@ -32,7 +36,7 @@ class CompanyAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('isActive')
+		->add('enabled', null, array('editable' => true))
 		->addIdentifier('name')
 		->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
 		->add('brands')
@@ -46,7 +50,7 @@ class CompanyAdmin extends Admin
 	{
 		$datagridMapper
 		->add('name')
-		->add('isActive')
+		->add('enabled')
 		;
 	}
 	
@@ -79,9 +83,9 @@ class CompanyAdmin extends Admin
 				)
 			)
 		->end()
-		->with('Options', array('class' => 'col-md-4'))
-		->add('isActive', 'checkbox', array('required'  => false))
-		->add('createdAt', 'sonata_type_datetime_picker', array('dp_side_by_side' => true))
+		->with('Details', array('class' => 'col-md-4'))
+		->add('enabled', 'checkbox', array('required'  => false))
+		//->add('createdAt', 'sonata_type_datetime_picker', array('dp_side_by_side' => true))
 		->end()
 		->with('Brands', array('class' => 'col-md-12'))
 		->add('brands', 'sonata_type_collection', array(
@@ -118,8 +122,8 @@ class CompanyAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		$object->setCreatedAt(new \DateTime());
-		$object->setIsActive(true);
+		//$object->setCreatedAt(new \DateTime());
+		$object->setEnabled(true);
 
 		/*
 		$inspection = new Inspection();

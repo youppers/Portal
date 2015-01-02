@@ -27,15 +27,10 @@ class Company
 	protected $name;
 		
 	/**
-	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
+	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
-	protected $isActive;
-	
-	/**
-	 * @ORM\Column(type="datetime")
-	 */
-	protected $createdAt;
-	
+	protected $enabled;
+		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 */
@@ -133,49 +128,26 @@ class Company
     }
 
     /**
-     * Set isActive
+     * Set enabled
      *
-     * @param boolean $isActive
+     * @param boolean $enabled
      * @return Company
      */
-    public function setIsActive($isActive)
+    public function setEnabled($enabled)
     {
-        $this->isActive = $isActive;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get enabled
      *
      * @return boolean 
      */
-    public function getIsActive()
+    public function getEnabled()
     {
-        return $this->isActive;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Company
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
+        return $this->enabled;
     }
 
     /**

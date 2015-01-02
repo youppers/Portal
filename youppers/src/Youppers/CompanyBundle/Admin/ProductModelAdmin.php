@@ -29,11 +29,14 @@ class ProductModelAdmin extends Admin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('enabled')
 		->add('product')
 		->add('name')
 		->add('code')
-		->add('isActive')
 		->add('description')
+		->add('validFrom')
+		->add('validTo')
+		->add('price')
 		->add('id', null, array('abc'> 'def', 'template' => 'YouppersCustomerBundle:Qr:show_field.html.twig'))
 		;
 	}
@@ -47,7 +50,7 @@ class ProductModelAdmin extends Admin
             ->add('code')
         	->add('name')
 			->add('product.name')
-            ->add('isActive')
+            ->add('enabled')
            ;
     }
 
@@ -58,6 +61,7 @@ class ProductModelAdmin extends Admin
     {
         $list
             //->add('_action', 'actions', array('actions' => array('edit' => array())))
+        	->add('enabled', null, array('editable' => true))
         	->add('product.name')
             ->addIdentifier('code', null, array('route' => array('name' => 'show')))
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
@@ -95,12 +99,12 @@ class ProductModelAdmin extends Admin
             ->add('price','money')        
         	->add('description')
         	->end()
-        	->with('Validity', array('class' => 'col-md-4'))
+        	->with('Details', array('class' => 'col-md-4'))
+        	->add('enabled', 'checkbox', array('required'  => false))        
         	->add('validFrom', null, array('widget' => 'single_text'))
         	//->add('validFrom', null, array('widget' => 'single_text'))
             ->add('validTo', null, array('widget' => 'single_text'))
             //->add('validTo', null, array('widget' => 'single_text'))
-        	->add('isActive', 'checkbox', array('required'  => false))        
         	;
     }
     
@@ -112,7 +116,7 @@ class ProductModelAdmin extends Admin
     	$object = parent::getNewInstance();
     
     	//$object->setCreatedAt(new \DateTime());
-    	$object->setIsActive(true);
+    	$object->setEnabled(true);
     
     	/*
     		$inspection = new Inspection();

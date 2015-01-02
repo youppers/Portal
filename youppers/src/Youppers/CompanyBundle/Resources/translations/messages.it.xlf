@@ -6,9 +6,9 @@
                 <source>Name</source>
                 <target>Nome</target>
             </trans-unit>
-            <trans-unit id="is_active">
-                <source>Is Active</source>
-                <target>In Attività</target>
+            <trans-unit id="enabled">
+                <source>Enabled</source>
+                <target>Abilitato</target>
             </trans-unit>
             <trans-unit id="created_at">
                 <source>Created At</source>
@@ -30,9 +30,17 @@
                 <source>Company</source>
                 <target>Società</target>
             </trans-unit>
+            <trans-unit id="company_list">
+                <source>Company List</source>
+                <target>Elenco Società</target>
+            </trans-unit>
             <trans-unit id="brand">
                 <source>Brand</source>
                 <target>Marchio</target>
+            </trans-unit>
+            <trans-unit id="brand_list">
+                <source>Brand List</source>
+                <target>Elenco Marchi</target>
             </trans-unit>
             <trans-unit id="brands">
                 <source>Brands</source>
@@ -42,6 +50,14 @@
                 <source>Product</source>
                 <target>Prodotto</target>
             </trans-unit>
+            <trans-unit id="product_list">
+                <source>Product List</source>
+                <target>Lista Prodotti</target>
+            </trans-unit>
+            <trans-unit id="products">
+                <source>Products</source>
+                <target>Prodotti</target>
+            </trans-unit>
             <trans-unit id="brand_code">
                 <source>Brand Code</source>
                 <target>Codice Marchio</target>
@@ -49,6 +65,10 @@
             <trans-unit id="brand_name">
                 <source>Brand Name</source>
                 <target>Nome Marchio</target>
+            </trans-unit>
+            <trans-unit id="brand_logo">
+                <source>Brand Logo</source>
+                <target>Logo del Marchio</target>
             </trans-unit>
             <trans-unit id="price">
                 <source>Price</source>

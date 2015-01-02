@@ -36,14 +36,9 @@ class Brand
 	protected $code;
 
 	/**
-	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
+	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
-	protected $isActive;
-	
-	/**
-	 * @ORM\Column(type="datetime")
-	 */
-	protected $createdAt;
+	protected $enabled;
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
@@ -57,10 +52,11 @@ class Brand
 	
 	public function __toString()
 	{
-		return $this->getName() ?: 'New';
+		return $this->getName() ? $this->getCompany() . ' - ' . $this->getName(): 'New';
 	}
 			
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+
 
     /**
      * Get id
@@ -119,49 +115,26 @@ class Brand
     }
 
     /**
-     * Set isActive
+     * Set enabled
      *
-     * @param boolean $isActive
+     * @param boolean $enabled
      * @return Brand
      */
-    public function setIsActive($isActive)
+    public function setEnabled($enabled)
     {
-        $this->isActive = $isActive;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get enabled
      *
      * @return boolean 
      */
-    public function getIsActive()
+    public function getEnabled()
     {
-        return $this->isActive;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Brand
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
+        return $this->enabled;
     }
 
     /**

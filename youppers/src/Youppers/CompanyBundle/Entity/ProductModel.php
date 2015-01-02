@@ -35,9 +35,9 @@ class ProductModel
 	protected $code;
 	
 	/**
-	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
+	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
-	protected $isActive;
+	protected $enabled;
 
 	/**
 	 * @ORM\Column(name="valid_from", type="date")
@@ -67,6 +67,7 @@ class ProductModel
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle 
+
 
     /**
      * Get id
@@ -125,26 +126,26 @@ class ProductModel
     }
 
     /**
-     * Set isActive
+     * Set enabled
      *
-     * @param boolean $isActive
+     * @param boolean $enabled
      * @return ProductModel
      */
-    public function setIsActive($isActive)
+    public function setEnabled($enabled)
     {
-        $this->isActive = $isActive;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get enabled
      *
      * @return boolean 
      */
-    public function getIsActive()
+    public function getEnabled()
     {
-        return $this->isActive;
+        return $this->enabled;
     }
 
     /**
