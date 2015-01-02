@@ -19,4 +19,4 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    sonata_media.cdn.host:	http://www.youppers.com/upload/media
+    sonata_media.cdn.host:	http://www.youppers.com/uploads/media
