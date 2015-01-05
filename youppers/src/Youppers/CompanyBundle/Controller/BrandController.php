@@ -6,9 +6,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class CRUDController extends Controller
+class BrandController extends Controller
 {
-public function productsAction()
+	public function productsAction()
     {
         $id = $this->get('request')->get($this->admin->getIdParameter());
         

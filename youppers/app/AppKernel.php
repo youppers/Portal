@@ -87,8 +87,8 @@ class AppKernel extends Kernel
         	//new Sonata\CacheBundle\SonataCacheBundle(),
         	new Sonata\BlockBundle\SonataBlockBundle(),
         	//new Sonata\SeoBundle\SonataSeoBundle(),
-        	//new Sonata\ClassificationBundle\SonataClassificationBundle(),
-        	//new Application\Sonata\ClassificationBundle\ApplicationSonataClassificationBundle(),
+        	new Sonata\ClassificationBundle\SonataClassificationBundle(),
+        	new Application\Sonata\ClassificationBundle\ApplicationSonataClassificationBundle(),
         	//new Sonata\NotificationBundle\SonataNotificationBundle(),
         	//new Application\Sonata\NotificationBundle\ApplicationSonataNotificationBundle(),
         	//new Application\Sonata\SeoBundle\ApplicationSonataSeoBundle(),
@@ -116,7 +116,7 @@ class AppKernel extends Kernel
         	// YOUPPERS 
         	new Youppers\ScraperBundle\YouppersScraperBundle(),
         	new Youppers\CompanyBundle\YouppersCompanyBundle(),
-            new Youppers\TemplateBundle\YouppersTemplateBundle(),
+            new Youppers\CommonBundle\YouppersCommonBundle(),
             new Youppers\DealerBundle\YouppersDealerBundle(),
             new Youppers\CustomerBundle\YouppersCustomerBundle(),
         );

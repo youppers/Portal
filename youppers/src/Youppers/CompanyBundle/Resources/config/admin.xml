@@ -27,7 +27,7 @@
 
             <argument />
             <argument>Youppers\CompanyBundle\Entity\Brand</argument>
-            <argument>YouppersCompanyBundle:CRUD</argument>
+            <argument>YouppersCompanyBundle:Brand</argument>
         </service>
 
         <service id="youppers.company.admin.product" class="Youppers\CompanyBundle\Admin\ProductAdmin">

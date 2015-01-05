@@ -6,8 +6,8 @@
                    
     <entity name="Application\Sonata\UserBundle\Entity\User" table="fos_user_user">
 
-        <id name="id" column="id" type="integer">
-            <generator strategy="AUTO" />
+        <id name="id" type="guid" column="id">
+            <generator strategy="UUID"/>
         </id>
 
     </entity>

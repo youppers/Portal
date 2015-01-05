@@ -17,12 +17,25 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Symfony\Component\Validator\Constraints as Assert;
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ProductModelAdmin extends Admin
 {
+	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+	{
+		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+	
+		$admin = $this->isChild() ? $this->getParent() : $this;
+		$id = $admin->getRequest()->get('id');
+	
+		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
+		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -30,14 +43,18 @@ class ProductModelAdmin extends Admin
 	{
 		$showMapper
 		->add('enabled')
-		->add('product')
+		->add('product.brand.company', null, array('route' => array('name' => 'show')))
+		->add('product.brand', null, array('route' => array('name' => 'show')))
+		->add('product', null, array('route' => array('name' => 'show')))
 		->add('name')
 		->add('code')
 		->add('description')
 		->add('validFrom')
 		->add('validTo')
 		->add('price')
-		->add('id', null, array('abc'> 'def', 'template' => 'YouppersCustomerBundle:Qr:show_field.html.twig'))
+		->add('createdAt')
+		->add('updatedAt')		
+		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))
 		;
 	}
 	
@@ -63,7 +80,7 @@ class ProductModelAdmin extends Admin
             //->add('_action', 'actions', array('actions' => array('edit' => array())))
         	->add('enabled', null, array('editable' => true))
         	->add('product.name')
-            ->addIdentifier('code', null, array('route' => array('name' => 'show')))
+            ->add('code')
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('price','currency',array('currency' => '€'))
 			->add('id', null, array('template' => 'YouppersCustomerBundle:Qr:list_field.html.twig', 'size' => 100))

@@ -50,13 +50,47 @@ class Brand
 	 */
 	protected $logo;
 	
+	/**
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 */
+	protected $updatedAt;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="created_at")
+	 */
+	protected $createdAt;	
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Product", mappedBy="brand")
+	 **/
+	private $products;
+	
+	
 	public function __toString()
 	{
 		return $this->getName() ? $this->getCompany() . ' - ' . $this->getName(): 'New';
 	}
 			
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+	}
+	
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
-
+	
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -161,6 +195,52 @@ class Brand
     }
 
     /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Brand
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Brand
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
      * Set company
      *
      * @param \Youppers\CompanyBundle\Entity\Company $company
@@ -204,5 +284,38 @@ class Brand
     public function getLogo()
     {
         return $this->logo;
+    }
+
+    /**
+     * Add products
+     *
+     * @param \Youppers\CompanyBundle\Entity\Product $products
+     * @return Brand
+     */
+    public function addProduct(\Youppers\CompanyBundle\Entity\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \Youppers\CompanyBundle\Entity\Product $products
+     */
+    public function removeProduct(\Youppers\CompanyBundle\Entity\Product $products)
+    {
+        $this->products->removeElement($products);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->products;
     }
 }

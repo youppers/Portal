@@ -42,6 +42,16 @@ class Company
 	protected $logo;
 	
 	/**
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 */
+	protected $updatedAt;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="created_at")
+	 */
+	protected $createdAt;
+	
+	/**
 	 * @param Brand[] $brands
 	 */
 	public function setBrands($brands)
@@ -85,7 +95,19 @@ class Company
 		return $this->getName() ?: 'New';
 	}
 	
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+	}
+	
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}	
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+
     /**
      * Constructor
      */
@@ -171,6 +193,52 @@ class Company
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Company
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Company
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**

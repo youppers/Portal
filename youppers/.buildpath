@@ -43,6 +43,7 @@
 	<buildpathentry kind="src" path="vendor/endroid/qrcode-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/admin-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/media-bundle"/>
+	<buildpathentry kind="src" path="vendor/sonata-project/classification-bundle"/>
 	<buildpathentry kind="src" path="vendor/guzzlehttp/guzzle/src"/>
 	<buildpathentry kind="src" path="vendor/knplabs/knp-menu-bundle"/>
 	<buildpathentry kind="src" path="vendor/phpoption/phpoption/src"/>

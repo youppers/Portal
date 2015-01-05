@@ -22,7 +22,7 @@ class Product
 	protected $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Brand")
+	 * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
 	 */
 	protected $brand;
 	
@@ -51,6 +51,16 @@ class Product
 	 * @ORM\Column(type="text", nullable=true )
 	 */
 	protected $description;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 */
+	protected $updatedAt;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="created_at")
+	 */
+	protected $createdAt;	
 	
 	/**
 	 * @param ProductModel[] $models
@@ -89,15 +99,26 @@ class Product
 	public function removeProductModel(ProductModel $model)
 	{
 		$this->productModels->removeElement($model);
-	}
-	
+	}	
 	
 	public function __toString()
 	{
 		return $this->getName() ? $this->getBrand() . ' - ' . $this->getName() : 'New';
 	}
+	
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+	}
+	
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
 		
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+
     /**
      * Constructor
      */
@@ -206,6 +227,52 @@ class Product
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Product
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Product
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**

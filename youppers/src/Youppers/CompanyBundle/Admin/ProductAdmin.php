@@ -7,7 +7,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
@@ -15,29 +14,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class ProductAdmin extends Admin
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function configureShowFields(ShowMapper $showMapper)
-	{
-		$showMapper
-		->add('enabled')
-		->add('brand')
-		->add('name')
-		->add('code')
-		->add('description')
-		->add('productModels', 'sonata_type_collection', array(
-				'by_reference'       => false,
-				'cascade_validation' => true,
-		) , array(
-				'edit' => 'inline',
-				'inline' => 'table'
-		))
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:show_field.html.twig'))		
-		
-		;
-	}
-
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
 		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
@@ -47,10 +23,37 @@ class ProductAdmin extends Admin
 	
 		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
 		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-		//$menu->addChild('List', array('uri' => $admin->generateUrl('list', array('id' => $id))));
-		//$menu->addChild('Product Models', array('uri' => $path('admin_youppers_company_productmodel_list', array('id' => $id))));
 	}
 	
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function configureShowFields(ShowMapper $showMapper)
+	{
+		$showMapper
+		->add('enabled')	
+		->add('brand.company', null, array('route' => array('name' => 'show')))
+		->add('brand', null, array('route' => array('name' => 'show')))
+		->add('name')
+		->add('code')
+		->add('description')
+		->add('createdAt')
+		->add('updatedAt')
+		->add('productModels', null, array('route' => array('name' => 'show')))
+		/*
+		->add('productModels', 'sonata_type_collection', array(
+				'by_reference'       => false,
+				'cascade_validation' => true,
+		) , array(
+				'edit' => 'inline',
+				'inline' => 'table'
+		))
+		*/
+		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
+		
+		;
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -68,7 +71,7 @@ class ProductAdmin extends Admin
 		->add('code')
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('productModels')
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:list_field.html.twig'))		
+		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
 

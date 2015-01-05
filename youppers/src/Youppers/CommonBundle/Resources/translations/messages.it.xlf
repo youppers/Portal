@@ -2,6 +2,18 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="action_route">
+                <source>action_route</source>
+                <target>Vai A</target>
+            </trans-unit>
+            <trans-unit id="edit">
+                <source>Edit</source>
+                <target>Modifica</target>
+            </trans-unit>
+            <trans-unit id="show">
+                <source>Show</source>
+                <target>Mostra</target>
+            </trans-unit>
             <trans-unit id="name">
                 <source>Name</source>
                 <target>Nome</target>
@@ -14,6 +26,10 @@
                 <source>Created At</source>
                 <target>Creazione Il</target>
             </trans-unit>
+            <trans-unit id="updated_at">
+                <source>Updated At</source>
+                <target>Aggiornato Il</target>
+            </trans-unit>                        
             <trans-unit id="description">
                 <source>Description</source>
                 <target>Descrizione</target>
@@ -89,6 +105,18 @@
             <trans-unit id="product_model">
                 <source>Product Model</source>
                 <target>Modello Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_name">
+                <source>Product Name</source>
+                <target>Nome Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_models">
+                <source>Product Models</source>
+                <target>Modelli Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_model_list">
+                <source>Product Model List</source>
+                <target>Lista Modelli Prodotto</target>
             </trans-unit>
         </body>
     </file>
