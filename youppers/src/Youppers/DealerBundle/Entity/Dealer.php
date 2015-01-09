@@ -27,15 +27,20 @@ class Dealer
 	protected $code;
 
 	/**
-	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
+	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
-	protected $isActive;
+	protected $enabled;
 	
 	/**
-	 * @ORM\Column(type="datetime")
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 */
+	protected $updatedAt;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="created_at")
 	 */
 	protected $createdAt;
-	
+		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 */
@@ -52,7 +57,26 @@ class Dealer
 		return $this->getName();
 	}
 	
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+	}
+	
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->stores = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -111,26 +135,49 @@ class Dealer
     }
 
     /**
-     * Set isActive
+     * Set enabled
      *
-     * @param boolean $isActive
+     * @param boolean $enabled
      * @return Dealer
      */
-    public function setIsActive($isActive)
+    public function setEnabled($enabled)
     {
-        $this->isActive = $isActive;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get enabled
      *
      * @return boolean 
      */
-    public function getIsActive()
+    public function getEnabled()
     {
-        return $this->isActive;
+        return $this->enabled;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Dealer
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**
@@ -177,13 +224,6 @@ class Dealer
     public function getDescription()
     {
         return $this->description;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->stores = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

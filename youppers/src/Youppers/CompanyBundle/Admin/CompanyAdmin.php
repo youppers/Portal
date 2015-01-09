@@ -21,9 +21,15 @@ class CompanyAdmin extends Admin
 		$admin = $this->isChild() ? $this->getParent() : $this;
 		$id = $admin->getRequest()->get('id');
 	
-		if ($action != 'edit') {
-			$menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id)))); 
-		}
+		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));		
+		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+		 
+		/*		
+		$menu->addChild(
+				'Brands', 
+				array('uri' => $admin->generateUrl('youppers.company.admin.company.brand.list', array('id' => $id)))
+			);
+		*/ 
 	}
 	
 	/**
@@ -35,7 +41,7 @@ class CompanyAdmin extends Admin
 		->add('enabled')
 		->add('name')
 		->add('description')
-		->add('logo')
+		->add('logo', null,array('label' => 'Company Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('createdAt')
 		->add('updatedAt')
 		->add('brands', null, array(
@@ -54,7 +60,8 @@ class CompanyAdmin extends Admin
 		$listMapper
 		->add('enabled', null, array('editable' => true))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
-		->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
+		//->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
+		->addIdentifier('logo', null, array('label' => 'Company Logo', 'route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))
 		->add('brands')
 		;
 	}

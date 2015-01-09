@@ -41,7 +41,7 @@ class BoxProduct
 		
 	public function __toString()
 	{
-		return ($this->getBox() ? $this->getBox() : "New"). " - " . ($this->getProduct() ? $this->getProduct() : "New");
+		return ($this->getBox() ? $this->getBox() : "New") . ($this->getName() ? " - " . $this->getName() : "New") . ($this->getProduct() ? " - " . $this->getProduct() : "");
 	}
 		
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle

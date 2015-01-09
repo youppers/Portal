@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="company_brand_name_idx", columns={"company_id", "name"}),
  *     @ORM\UniqueConstraint(name="company_brand_code_idx", columns={"company_id", "code"}),
  *   })
+ * @ORM\HasLifecycleCallbacks
  */
 class Brand
 {
@@ -71,17 +72,23 @@ class Brand
 		return $this->getName() ? $this->getCompany() . ' - ' . $this->getName(): 'New';
 	}
 			
+	/**
+	 * @ORM\PrePersist()
+	 */
 	public function prePersist()
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
-	
+
+	/**
+	 * @ORM\PreUpdate()
+	 */
 	public function preUpdate()
 	{
 		$this->updatedAt = new \DateTime();
-	}
-	
+	}	
+		
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
 	
     /**

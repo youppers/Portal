@@ -30,10 +30,10 @@ class BrandAdmin extends Admin
 		$admin = $this->isChild() ? $this->getParent() : $this;
 		$id = $admin->getRequest()->get('id');
 		
-		if ($action != 'edit') {
-			$menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-			$menu->addChild('Products', array('uri' => $admin->generateUrl('products', array('id' => $id))));		
-		}
+		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));		
+		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+
+		$menu->addChild('Products', array('uri' => $admin->generateUrl('products', array('id' => $id))));		
 	}
 	
 	/**
@@ -49,8 +49,7 @@ class BrandAdmin extends Admin
 		->add('name')
 		->add('code')
 		->add('description')
-		->add('logo')	
-		//->add('logo', null, array('label' => 'Brand Logo', 'template' => 'SonataMediaBundle:MediaAdmin:show_image.html.twig'))		
+		->add('logo', null, array('label' => 'Brand Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))		
 		->add('createdAt')
 		->add('updatedAt')
 		//->add('products')
@@ -86,8 +85,8 @@ class BrandAdmin extends Admin
 		->add('enabled', null, array('editable' => true))
 		->add('company', null, array('route' => array('name' => 'show')))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
-        ->add('code')
-		->add('logo', null, array('label' => 'Brand Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
+        ->addIdentifier('code', null, array('route' => array('name' => 'show')))
+		->addIdentifier('logo', null, array('label' => 'Brand Logo', 'route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))	
 		->add('_action','actions',array(
 				'label' => 'Products',
 				'actions' => array(

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="company")
+ * @ORM\HasLifecycleCallbacks
  */
 class Company
 {
@@ -15,17 +16,13 @@ class Company
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 */
 	protected $id;
-	
-	/**
-	 * @ORM\OneToMany(targetEntity="Brand", mappedBy="company",cascade={"persist"})
-	 **/
-	private $brands;
-		
+			
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
 	 */
 	protected $name;
-		
+
+	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
@@ -50,6 +47,11 @@ class Company
 	 * @ORM\Column(type="datetime", name="created_at")
 	 */
 	protected $createdAt;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Brand", mappedBy="company",cascade={"persist"})
+	 **/
+	private $brands;
 	
 	/**
 	 * @param Brand[] $brands
@@ -95,12 +97,18 @@ class Company
 		return $this->getName() ?: 'New';
 	}
 	
+	/**
+	 * @ORM\PrePersist()
+	 */
 	public function prePersist()
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
-	
+
+	/**
+	 * @ORM\PreUpdate()
+	 */
 	public function preUpdate()
 	{
 		$this->updatedAt = new \DateTime();

@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="brand_product_code_idx", columns={"brand_id", "code"}),
  *     @ORM\UniqueConstraint(name="brand_product_code_name_idx", columns={"brand_id", "code", "name"}),
  *   })
+ * @ORM\HasLifecycleCallbacks
  */
 class Product
 {
@@ -48,11 +49,6 @@ class Product
 	protected $enabled;
 	
 	/**
-	 * @ORM\Column(type="text", nullable=true )
-	 */
-	protected $description;
-	
-	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -60,7 +56,13 @@ class Product
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
 	 */
-	protected $createdAt;	
+	protected $createdAt;
+	
+	
+	/**
+	 * @ORM\Column(type="text", nullable=true )
+	 */
+	protected $description;
 	
 	/**
 	 * @param ProductModel[] $models
@@ -106,17 +108,24 @@ class Product
 		return $this->getName() ? $this->getBrand() . ' - ' . $this->getName() : 'New';
 	}
 	
+	/**
+	 * @ORM\PrePersist()
+	 */
 	public function prePersist()
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
-	
+
+	/**
+	 * @ORM\PreUpdate()
+	 */
 	public function preUpdate()
 	{
 		$this->updatedAt = new \DateTime();
-	}
+	}	
 		
+			
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
 
     /**

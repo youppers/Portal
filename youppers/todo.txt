@@ -1,5 +1,7 @@
 OPEN ISSUES
 
+Non funziona l'eliminazione di un elemento dal box
+
 https://github.com/craue/CraueFormFlowBundle/issues/19
 
 Aggiungere "createdAt" e "updatedAt" per tutte le entity (vedi anche: vendor/sonata-project/news-bundle/Model/Post.php prePersist()
@@ -23,3 +25,18 @@ Traduzione in italiano di
 
 Implementare la sicurezza:
 	http://sonata-project.org/bundles/admin/master/doc/reference/security.html
+	
+Aggiungere "slug" a Company e Brand
+
+Fare "sotto azioni" in modo da visualizzare prodotti di un marchio come:
+
+/admin/youppers/company/company/f91345d9-7d31-11e4-abcc-0800273000da/brand/85f5c8c1-9758-11e4-b277-0800273000da/product/list
+
+o meglio con gli slug, ricercando fra gli slug dei brand filtrati prima con lo slug delle company
+
+/admin/youppers/company/company/test2/brand/test2/product/list
+
+
+Sia "company" che "dealer" devono essere "Organization"
+
+http://schema.org/

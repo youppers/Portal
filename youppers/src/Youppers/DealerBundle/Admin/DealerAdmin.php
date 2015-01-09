@@ -7,23 +7,38 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 #use Sonata\Bundle\DemoBundle\Entity\Inspection;
 
 class DealerAdmin extends Admin
 {
+	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+	{
+		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+	
+		$admin = $this->isChild() ? $this->getParent() : $this;
+		$id = $admin->getRequest()->get('id');
+	
+		if ($action != 'edit') {
+			$menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+		}
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('enabled')
 		->add('name')
 		->add('code')
 		->add('description')
 		->add('createdAt')
-		->add('isActive')
-		->add('stores')
+		->add('updatedAt')
+		->add('stores', null, array('route' => array('name' => 'show')))
 		;
 	}
 
@@ -33,8 +48,8 @@ class DealerAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('isActive')
-		->addIdentifier('name')
+		->add('enabled', null, array('editable' => true))
+		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('code')
 		->add('stores')
 		;
@@ -47,7 +62,7 @@ class DealerAdmin extends Admin
 	{
 		$datagridMapper
 		->add('name')
-		->add('isActive')
+		->add('enabled')
 		;
 	}
 	
@@ -72,8 +87,7 @@ class DealerAdmin extends Admin
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
-		->add('isActive', 'checkbox', array('required'  => false))
-		->add('createdAt')
+		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))
@@ -100,8 +114,7 @@ class DealerAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		$object->setCreatedAt(new \DateTime());
-		$object->setIsActive(true);
+		$object->setEnabled(true);
 
 		/*
 		$inspection = new Inspection();

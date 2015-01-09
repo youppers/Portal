@@ -24,12 +24,12 @@
             </trans-unit>
             <trans-unit id="created_at">
                 <source>Created At</source>
-                <target>Creazione Il</target>
+                <target>Creato Il</target>
             </trans-unit>
             <trans-unit id="updated_at">
                 <source>Updated At</source>
                 <target>Aggiornato Il</target>
-            </trans-unit>                        
+            </trans-unit>
             <trans-unit id="description">
                 <source>Description</source>
                 <target>Descrizione</target>
