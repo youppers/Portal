@@ -1,3 +1,11 @@
+# redirecting the root
+#root:
+#    path: /
+#    defaults:
+#        _controller: FrameworkBundle:Redirect:redirect
+#        route: fos_user_security_login
+#        permanent: true
+        
 sonata_user_security:
     resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"
 
@@ -21,13 +29,13 @@ sonata_user_change_password:
 #    resource: '@SonataCacheBundle/Resources/config/routing/cache.xml'
 #    prefix: /
 
-#sonata_page_cache:
-#    resource: '@SonataPageBundle/Resources/config/routing/cache.xml'
-#    prefix: /
+sonata_page_cache:
+    resource: '@SonataPageBundle/Resources/config/routing/cache.xml'
+    prefix: /
 
-#sonata_page_exceptions:
-#    resource: '@SonataPageBundle/Resources/config/routing/exceptions.xml'
-#    prefix: /page
+sonata_page_exceptions:
+    resource: '@SonataPageBundle/Resources/config/routing/exceptions.xml'
+    prefix: /page
 
 sonata_media_gallery:
     resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
@@ -74,3 +82,26 @@ sonata_media_media:
 #    resource: "@FOSCommentBundle/Resources/config/routing.yml"
 #    prefix: /comments
 #    defaults: { _format: html }
+
+# Youppers
+
+#youppers_dealer:
+#    resource: "@YouppersDealerBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+
+youppers_customer:
+    resource: "@YouppersCustomerBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+scraper:
+    resource: "@YouppersScraperBundle/Controller/"
+    type:     annotation
+    prefix:   /scraper
+
+EndroidQrCodeBundle:
+    resource:   "@EndroidQrCodeBundle/Controller/"
+    type:       annotation
+    prefix:     /qrcodegenerator
+        

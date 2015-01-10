@@ -20,8 +20,8 @@ imports:
     # Sonata Core Bundles
     - { resource: sonata/sonata_block.yml }
     #- { resource: sonata/sonata_formatter.yml }
-    #- { resource: sonata/sonata_cache.yml }
-    #- { resource: sonata/sonata_seo.yml }
+    - { resource: sonata/sonata_cache.yml }
+    - { resource: sonata/sonata_seo.yml }
     - { resource: sonata/sonata_classification.yml }
     #- { resource: sonata/sonata_timeline.yml }
     - { resource: sonata/sonata_intl.yml }
@@ -30,7 +30,7 @@ imports:
     # Sonata Feature Bundles
     - { resource: sonata/sonata_admin.yml }
     #- { resource: sonata/sonata_comment.yml }
-    #- { resource: sonata/sonata_page.yml }
+    - { resource: sonata/sonata_page.yml }
     - { resource: sonata/sonata_media.yml }
     #- { resource: sonata/sonata_news.yml }
     #- { resource: sonata/sonata_user.yml }
