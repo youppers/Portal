@@ -5,11 +5,11 @@ sonata_seo:
     encoding:             UTF-8
     page:
         default:          sonata.seo.page.default
-        title:            Sonata Project
+        title:            Youppers
         metas:
             name:
-                keywords:             foo bar
-                description:          The description
+                keywords:             youppers
+                description:          You Are Shoppers
                 robots:               index, follow
 
             property:
@@ -19,8 +19,9 @@ sonata_seo:
 
                 # Open Graph information
                 # see http://developers.facebook.com/docs/opengraphprotocol/#types or http://ogp.me/
-                'og:site_name':       Sonata Project Sandbox
-                'og:description':     A demo of the some rich bundles for your Symfony2 projects
+                'og:site_name':       Youppers
+                'og:description':     You Are Shoppers
+                'og:url':             'http://www.youppers.com'
 
             http-equiv:
                 'Content-Type':         text/html; charset=utf-8
