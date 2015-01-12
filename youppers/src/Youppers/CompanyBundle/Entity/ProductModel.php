@@ -35,17 +35,17 @@ class ProductModel
 	protected $code;
 	
 	/**
-	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
+	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
-	protected $isActive;
+	protected $enabled;
 
 	/**
-	 * @ORM\Column(name="valid_from", type="date")
+	 * @ORM\Column(type="date", name="valid_from")
 	 */
 	protected $validFrom;
 
 	/**
-	 * @ORM\Column(name="valid_to", type="date")
+	 * @ORM\Column(type="date", name="valid_to")
 	 */
 	protected $validTo;
 	
@@ -55,6 +55,15 @@ class ProductModel
 	 */
 	protected $price;
 	
+	/**
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 */
+	protected $updatedAt;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="created_at")
+	 */
+	protected $createdAt;	
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
@@ -66,7 +75,19 @@ class ProductModel
 		return $this->getName() ? $this->getProduct() . ' - ' . $this->getName() : 'New';
 	}
 	
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+	}
+	
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle 
+
 
     /**
      * Get id
@@ -125,26 +146,26 @@ class ProductModel
     }
 
     /**
-     * Set isActive
+     * Set enabled
      *
-     * @param boolean $isActive
+     * @param boolean $enabled
      * @return ProductModel
      */
-    public function setIsActive($isActive)
+    public function setEnabled($enabled)
     {
-        $this->isActive = $isActive;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get enabled
      *
      * @return boolean 
      */
-    public function getIsActive()
+    public function getEnabled()
     {
-        return $this->isActive;
+        return $this->enabled;
     }
 
     /**
@@ -214,6 +235,52 @@ class ProductModel
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return ProductModel
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return ProductModel
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**

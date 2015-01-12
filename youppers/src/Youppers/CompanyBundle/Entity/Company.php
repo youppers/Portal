@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="company")
+ * @ORM\HasLifecycleCallbacks
  */
 class Company
 {
@@ -15,27 +16,18 @@ class Company
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 */
 	protected $id;
-	
-	/**
-	 * @ORM\OneToMany(targetEntity="Brand", mappedBy="company",cascade={"persist"})
-	 **/
-	private $brands;
-		
+			
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
 	 */
 	protected $name;
+
+	
+	/**
+	 * @ORM\Column(type="boolean", options={"default":true})
+	 */
+	protected $enabled;
 		
-	/**
-	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
-	 */
-	protected $isActive;
-	
-	/**
-	 * @ORM\Column(type="datetime")
-	 */
-	protected $createdAt;
-	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 */
@@ -45,6 +37,21 @@ class Company
 	 * @ORM\OneToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 */	
 	protected $logo;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 */
+	protected $updatedAt;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="created_at")
+	 */
+	protected $createdAt;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Brand", mappedBy="company",cascade={"persist"})
+	 **/
+	private $brands;
 	
 	/**
 	 * @param Brand[] $brands
@@ -90,7 +97,25 @@ class Company
 		return $this->getName() ?: 'New';
 	}
 	
+	/**
+	 * @ORM\PrePersist()
+	 */
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+	}
+
+	/**
+	 * @ORM\PreUpdate()
+	 */
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}	
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+
     /**
      * Constructor
      */
@@ -133,49 +158,26 @@ class Company
     }
 
     /**
-     * Set isActive
+     * Set enabled
      *
-     * @param boolean $isActive
+     * @param boolean $enabled
      * @return Company
      */
-    public function setIsActive($isActive)
+    public function setEnabled($enabled)
     {
-        $this->isActive = $isActive;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get enabled
      *
      * @return boolean 
      */
-    public function getIsActive()
+    public function getEnabled()
     {
-        return $this->isActive;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Company
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
+        return $this->enabled;
     }
 
     /**
@@ -199,6 +201,52 @@ class Company
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Company
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Company
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**

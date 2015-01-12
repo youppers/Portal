@@ -1,9 +1,0 @@
-youppers_company:
-    resource: "@YouppersCompanyBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-youppers_scraper:
-    resource: "@YouppersScraperBundle/Controller/"
-    type:     annotation
-    prefix:   /

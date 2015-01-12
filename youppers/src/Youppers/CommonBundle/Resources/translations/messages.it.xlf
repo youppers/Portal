@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="action_route">
+                <source>action_route</source>
+                <target>Vai A</target>
+            </trans-unit>
+            <trans-unit id="edit">
+                <source>Edit</source>
+                <target>Modifica</target>
+            </trans-unit>
+            <trans-unit id="show">
+                <source>Show</source>
+                <target>Mostra</target>
+            </trans-unit>
+            <trans-unit id="name">
+                <source>Name</source>
+                <target>Nome</target>
+            </trans-unit>
+            <trans-unit id="enabled">
+                <source>Enabled</source>
+                <target>Abilitato</target>
+            </trans-unit>
+            <trans-unit id="created_at">
+                <source>Created At</source>
+                <target>Creato Il</target>
+            </trans-unit>
+            <trans-unit id="updated_at">
+                <source>Updated At</source>
+                <target>Aggiornato Il</target>
+            </trans-unit>
+            <trans-unit id="description">
+                <source>Description</source>
+                <target>Descrizione</target>
+            </trans-unit>
+            <trans-unit id="code">
+                <source>Code</source>
+                <target>Codice</target>
+            </trans-unit>
+            <trans-unit id="details">
+                <source>Details</source>
+                <target>Dettagli</target>
+            </trans-unit>                        
+            <trans-unit id="company">
+                <source>Company</source>
+                <target>Società</target>
+            </trans-unit>
+            <trans-unit id="company_list">
+                <source>Company List</source>
+                <target>Elenco Società</target>
+            </trans-unit>
+            <trans-unit id="brand">
+                <source>Brand</source>
+                <target>Marchio</target>
+            </trans-unit>
+            <trans-unit id="brand_list">
+                <source>Brand List</source>
+                <target>Elenco Marchi</target>
+            </trans-unit>
+            <trans-unit id="brands">
+                <source>Brands</source>
+                <target>Marchi</target>
+            </trans-unit>
+            <trans-unit id="product">
+                <source>Product</source>
+                <target>Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_list">
+                <source>Product List</source>
+                <target>Lista Prodotti</target>
+            </trans-unit>
+            <trans-unit id="products">
+                <source>Products</source>
+                <target>Prodotti</target>
+            </trans-unit>
+            <trans-unit id="brand_code">
+                <source>Brand Code</source>
+                <target>Codice Marchio</target>
+            </trans-unit>
+            <trans-unit id="brand_name">
+                <source>Brand Name</source>
+                <target>Nome Marchio</target>
+            </trans-unit>
+            <trans-unit id="brand_logo">
+                <source>Brand Logo</source>
+                <target>Logo del Marchio</target>
+            </trans-unit>
+            <trans-unit id="price">
+                <source>Price</source>
+                <target>Prezzo</target>
+            </trans-unit>
+            <trans-unit id="validity">
+                <source>Validity</source>
+                <target>Validità</target>
+            </trans-unit>
+            <trans-unit id="valid_from">
+                <source>Valid From</source>
+                <target>Valido Dal</target>
+            </trans-unit>
+            <trans-unit id="valid_to">
+                <source>Valid To</source>
+                <target>Valido Al</target>
+            </trans-unit>
+            <trans-unit id="product_model">
+                <source>Product Model</source>
+                <target>Modello Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_name">
+                <source>Product Name</source>
+                <target>Nome Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_models">
+                <source>Product Models</source>
+                <target>Modelli Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_model_list">
+                <source>Product Model List</source>
+                <target>Lista Modelli Prodotto</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

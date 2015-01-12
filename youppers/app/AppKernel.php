@@ -34,8 +34,8 @@ class AppKernel extends Kernel
         	new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
         		
         	// PAGE
-        	//new Sonata\PageBundle\SonataPageBundle(),
-        	//new Application\Sonata\PageBundle\ApplicationSonataPageBundle(),
+        	new Sonata\PageBundle\SonataPageBundle(),
+        	new Application\Sonata\PageBundle\ApplicationSonataPageBundle(),
         		
         	// NEWS
         	//new Sonata\NewsBundle\SonataNewsBundle(),
@@ -84,21 +84,21 @@ class AppKernel extends Kernel
         	new Sonata\CoreBundle\SonataCoreBundle(),
         	new Sonata\IntlBundle\SonataIntlBundle(),
         	//new Sonata\FormatterBundle\SonataFormatterBundle(),
-        	//new Sonata\CacheBundle\SonataCacheBundle(),
+        	new Sonata\CacheBundle\SonataCacheBundle(),
         	new Sonata\BlockBundle\SonataBlockBundle(),
-        	//new Sonata\SeoBundle\SonataSeoBundle(),
-        	//new Sonata\ClassificationBundle\SonataClassificationBundle(),
-        	//new Application\Sonata\ClassificationBundle\ApplicationSonataClassificationBundle(),
-        	//new Sonata\NotificationBundle\SonataNotificationBundle(),
-        	//new Application\Sonata\NotificationBundle\ApplicationSonataNotificationBundle(),
+        	new Sonata\SeoBundle\SonataSeoBundle(),
+        	new Sonata\ClassificationBundle\SonataClassificationBundle(),
+        	new Application\Sonata\ClassificationBundle\ApplicationSonataClassificationBundle(),
+        	new Sonata\NotificationBundle\SonataNotificationBundle(),
+        	new Application\Sonata\NotificationBundle\ApplicationSonataNotificationBundle(),
         	//new Application\Sonata\SeoBundle\ApplicationSonataSeoBundle(),
-        	//new Sonata\DatagridBundle\SonataDatagridBundle(),
+        	new Sonata\DatagridBundle\SonataDatagridBundle(),
         		
         	// Search Integration
         	//new FOS\ElasticaBundle\FOSElasticaBundle(),
         		
         	// CMF Integration
-        	//new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+        	new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
         		
         	// DEMO and QA - Can be deleted
         	//new Sonata\Bundle\DemoBundle\SonataDemoBundle(),
@@ -116,7 +116,7 @@ class AppKernel extends Kernel
         	// YOUPPERS 
         	new Youppers\ScraperBundle\YouppersScraperBundle(),
         	new Youppers\CompanyBundle\YouppersCompanyBundle(),
-            new Youppers\TemplateBundle\YouppersTemplateBundle(),
+            new Youppers\CommonBundle\YouppersCommonBundle(),
             new Youppers\DealerBundle\YouppersDealerBundle(),
             new Youppers\CustomerBundle\YouppersCustomerBundle(),
         );

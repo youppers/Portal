@@ -7,22 +7,48 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 #use Sonata\Bundle\DemoBundle\Entity\Inspection;
 
 class CompanyAdmin extends Admin
 {
+	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+	{
+		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+	
+		$admin = $this->isChild() ? $this->getParent() : $this;
+		$id = $admin->getRequest()->get('id');
+	
+		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));		
+		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+		 
+		/*		
+		$menu->addChild(
+				'Brands', 
+				array('uri' => $admin->generateUrl('youppers.company.admin.company.brand.list', array('id' => $id)))
+			);
+		*/ 
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('enabled')
 		->add('name')
-		->add('createdAt')
 		->add('description')
-		->add('logo')
-		->add('brands')
+		->add('logo', null,array('label' => 'Company Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
+		->add('createdAt')
+		->add('updatedAt')
+		->add('brands', null, array(
+                 'route' => array(
+                     'name' => 'show'
+                 )
+             ))
 		;
 	}
 
@@ -32,9 +58,10 @@ class CompanyAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('isActive')
-		->addIdentifier('name')
-		->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
+		->add('enabled', null, array('editable' => true))
+		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		//->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
+		->addIdentifier('logo', null, array('label' => 'Company Logo', 'route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))
 		->add('brands')
 		;
 	}
@@ -46,7 +73,7 @@ class CompanyAdmin extends Admin
 	{
 		$datagridMapper
 		->add('name')
-		->add('isActive')
+		->add('enabled')
 		;
 	}
 	
@@ -79,9 +106,8 @@ class CompanyAdmin extends Admin
 				)
 			)
 		->end()
-		->with('Options', array('class' => 'col-md-4'))
-		->add('isActive', 'checkbox', array('required'  => false))
-		->add('createdAt', 'sonata_type_datetime_picker', array('dp_side_by_side' => true))
+		->with('Details', array('class' => 'col-md-4'))
+		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
 		->with('Brands', array('class' => 'col-md-12'))
 		->add('brands', 'sonata_type_collection', array(
@@ -118,8 +144,8 @@ class CompanyAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		$object->setCreatedAt(new \DateTime());
-		$object->setIsActive(true);
+		//$object->setCreatedAt(new \DateTime());
+		$object->setEnabled(true);
 
 		/*
 		$inspection = new Inspection();

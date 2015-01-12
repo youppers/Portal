@@ -1,6 +1,7 @@
 sonata_admin:
     title:      "Youppers Admin"
-    title_logo: 'bundles/youpperstemplate/logo_35x40.png'
+    title_logo: 'bundles/youpperscommon/logo_35x40.png'
     templates:
-        layout: YouppersTemplateBundle:Admin:standard_layout.html.twig
+        layout: YouppersCommonBundle:Admin:standard_layout.html.twig
+        short_object_description: YouppersCommonBundle:Admin:short-object-description.html.twig
         

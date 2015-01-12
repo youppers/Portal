@@ -1,0 +1,13 @@
+
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field %}
+	{% if admin.isGranted('VIEW', object) and admin.hasRoute(field_description.options.route.name) %}
+    	<a href="{{ admin.generateObjectUrl(field_description.options.route.name, object) }}" class="btn btn-sm btn-default view_link" title="{{ 'action_route'|trans }}">
+        	<i class="glyphicon glyphicon-expand"></i>
+        	{{ 'action_route'|trans }}
+    	</a>
+	{% else %}
+		{{ 'Invalid route'|trans }}
+	{% endif %}
+{% endblock %}

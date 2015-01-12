@@ -22,7 +22,7 @@ class BoxAdmin extends Admin
 		->add('store')
 		->add('name')
 		->add('code')
-		->add('isActive')
+		->add('enabled')
 		->add('description')
 		->add('boxProducts', 'sonata_type_collection', array(
 				'by_reference'       => false,
@@ -42,7 +42,7 @@ class BoxAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('isActive')
+		->add('enabled')
 		//->add('id')
 		->add('store.code')		
 		->add('store', null, array(
@@ -66,7 +66,7 @@ class BoxAdmin extends Admin
 		->add('code')
 		->add('name')
 		->add('store')
-		->add('isActive')
+		->add('enabled')
 		//->add('store')
 		;
 	}
@@ -77,7 +77,7 @@ class BoxAdmin extends Admin
 	 * @var array
 	 */
 	protected $datagridValues = array(
-			//'isActive' => array('value' => 1)
+			//'enabled' => array('value' => 1)
 	);
 
 	/**
@@ -98,7 +98,7 @@ class BoxAdmin extends Admin
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
-		->add('isActive', 'checkbox', array('required'  => false))
+		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))
@@ -110,6 +110,7 @@ class BoxAdmin extends Admin
 			->add('boxProducts', 'sonata_type_collection', array(
             		'by_reference'       => false,
             		'cascade_validation' => true,
+					'required' => false
 			), array(
                 'edit' => 'inline',
                 'inline' => 'table',
@@ -126,8 +127,7 @@ class BoxAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		$object->setCreatedAt(new \DateTime());
-		$object->setIsActive(true);
+		$object->setEnabled(true);
 
 		/*
 		$inspection = new Inspection();

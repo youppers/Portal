@@ -16,6 +16,8 @@ sonata_media:
                 #- sonata.media.provider.vimeo
 
             formats:
+                abstract: { width: 100, quality: 100}
+                wide:     { width: 820, quality: 100}
                 small: { width: 100, quality: 100}
                 big:   { width: 970 , quality: 100}
                                 
@@ -26,6 +28,8 @@ sonata_media:
             formats:
                 abstract: { width: 100, quality: 100}
                 wide:     { width: 820, quality: 100}
+                small: { width: 100, quality: 100}
+                big:   { width: 970 , quality: 100}
 
         youppers_brand_logo:
             providers:
@@ -34,6 +38,8 @@ sonata_media:
             formats:
                 abstract: { width: 100, quality: 100}
                 wide:     { width: 820, quality: 100}
+                small: { width: 100, quality: 100}
+                big:   { width: 970 , quality: 100}
             
         #news:
         #    providers:

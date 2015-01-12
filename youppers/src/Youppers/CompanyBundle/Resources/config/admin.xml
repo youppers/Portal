@@ -12,6 +12,12 @@
             <argument />
 
 			<!-- 
+            <call method="addChild">
+                <argument type="service" id="youppers.company.admin.company.brand" />
+            </call>
+            -->
+
+			<!-- 
             <call method="setSubClasses">
                 <argument type="collection">
                     <argument key="renault">Sonata\Bundle\DemoBundle\Entity\Renault</argument>
@@ -21,13 +27,13 @@
             </call>
             -->
         </service>
-
+ 
         <service id="youppers.company.admin.brand" class="Youppers\CompanyBundle\Admin\BrandAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Company" label="Brand" />
 
             <argument />
             <argument>Youppers\CompanyBundle\Entity\Brand</argument>
-            <argument />
+            <argument>YouppersCompanyBundle:Brand</argument>
         </service>
 
         <service id="youppers.company.admin.product" class="Youppers\CompanyBundle\Admin\ProductAdmin">
@@ -40,7 +46,7 @@
 
 
         <service id="youppers.company.admin.model" class="Youppers\CompanyBundle\Admin\ProductModelAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Company" label="Product Model"/>
+            <tag name="sonata.admin" manager_type="orm" group="Company" show_in_dashboard="false" label="Product Model"/>
 
             <argument />
             <argument>Youppers\CompanyBundle\Entity\ProductModel</argument>

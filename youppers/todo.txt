@@ -1,10 +1,29 @@
+TODO
+
+Usare "scarper" per inserire nel DB la classificazione di ICS
+  http://www.iso.org/iso/home/store/catalogue_ics.htm
+
+Aggiungere sonata-classification
+
+Associare ai modelli di prodotto:
+- dimensioni 
+- colori
+- finiture
+- applicazioni (tag: bagno, ecc.) 
+
 OPEN ISSUES
+
+Ripristinare l'italiano (o multilingua) per la Dashboard e capire come fare con "page/sites"
+
+Non funziona l'eliminazione di un elemento dal box
 
 https://github.com/craue/CraueFormFlowBundle/issues/19
 
 Aggiungere "createdAt" e "updatedAt" per tutte le entity (vedi anche: vendor/sonata-project/news-bundle/Model/Post.php prePersist()
 
 Entity Brand : setCreatedAt e setIsActive (altrimenti non salva quando si aggiunge da Company)
+
+Rinominare "isActive" in "enabled"
 
 Dimensioni ottimali thumbnail immagini in admin (show company, ecc.)
 
@@ -18,4 +37,21 @@ Filtro con selezione da lista invece che da "select" (es. brand in product_list)
 Traduzione in italiano di 
 - sonata_user
 - sonata_media
- 
+
+Implementare la sicurezza:
+	http://sonata-project.org/bundles/admin/master/doc/reference/security.html
+	
+Aggiungere "slug" a Company e Brand
+
+Fare "sotto azioni" in modo da visualizzare prodotti di un marchio come:
+
+/admin/youppers/company/company/f91345d9-7d31-11e4-abcc-0800273000da/brand/85f5c8c1-9758-11e4-b277-0800273000da/product/list
+
+o meglio con gli slug, ricercando fra gli slug dei brand filtrati prima con lo slug delle company
+
+/admin/youppers/company/company/test2/brand/test2/product/list
+
+
+Sia "company" che "dealer" devono essere "Organization"
+
+http://schema.org/

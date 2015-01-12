@@ -1,0 +1,8 @@
+{% if admin.isGranted('VIEW', object) and admin.hasRoute(actions.route.name) %}
+    <a href="{{ admin.generateObjectUrl(actions.route.name, object) }}" class="btn btn-sm btn-default view_link" title="{{ 'action_route'|trans }}">
+        <i class="glyphicon glyphicon-expand"></i>
+        {{ 'action_route'|trans }}
+    </a>
+{% else %}
+	{{ 'Invalid route'|trans }}
+{% endif %}

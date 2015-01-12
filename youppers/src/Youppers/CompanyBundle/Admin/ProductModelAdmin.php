@@ -17,24 +17,44 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Symfony\Component\Validator\Constraints as Assert;
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ProductModelAdmin extends Admin
 {
+	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+	{
+		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+	
+		$admin = $this->isChild() ? $this->getParent() : $this;
+		$id = $admin->getRequest()->get('id');
+	
+		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
+		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-		->add('product')
+		->add('enabled')
+		->add('product.brand.company', null, array('route' => array('name' => 'show')))
+		->add('product.brand', null, array('route' => array('name' => 'show')))
+		->add('product', null, array('route' => array('name' => 'show')))
 		->add('name')
 		->add('code')
-		->add('isActive')
 		->add('description')
-		->add('id', null, array('abc'> 'def', 'template' => 'YouppersCustomerBundle:Qr:show_field.html.twig'))
+		->add('validFrom')
+		->add('validTo')
+		->add('price')
+		->add('createdAt')
+		->add('updatedAt')		
+		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))
 		;
 	}
 	
@@ -47,7 +67,7 @@ class ProductModelAdmin extends Admin
             ->add('code')
         	->add('name')
 			->add('product.name')
-            ->add('isActive')
+            ->add('enabled')
            ;
     }
 
@@ -58,8 +78,9 @@ class ProductModelAdmin extends Admin
     {
         $list
             //->add('_action', 'actions', array('actions' => array('edit' => array())))
+        	->add('enabled', null, array('editable' => true))
         	->add('product.name')
-            ->addIdentifier('code', null, array('route' => array('name' => 'show')))
+            ->add('code')
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('price','currency',array('currency' => '€'))
 			->add('id', null, array('template' => 'YouppersCustomerBundle:Qr:list_field.html.twig', 'size' => 100))
@@ -95,12 +116,12 @@ class ProductModelAdmin extends Admin
             ->add('price','money')        
         	->add('description')
         	->end()
-        	->with('Validity', array('class' => 'col-md-4'))
+        	->with('Details', array('class' => 'col-md-4'))
+        	->add('enabled', 'checkbox', array('required'  => false))        
         	->add('validFrom', null, array('widget' => 'single_text'))
         	//->add('validFrom', null, array('widget' => 'single_text'))
             ->add('validTo', null, array('widget' => 'single_text'))
             //->add('validTo', null, array('widget' => 'single_text'))
-        	->add('isActive', 'checkbox', array('required'  => false))        
         	;
     }
     
@@ -112,7 +133,7 @@ class ProductModelAdmin extends Admin
     	$object = parent::getNewInstance();
     
     	//$object->setCreatedAt(new \DateTime());
-    	$object->setIsActive(true);
+    	$object->setEnabled(true);
     
     	/*
     		$inspection = new Inspection();
