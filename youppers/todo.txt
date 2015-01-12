@@ -11,6 +11,8 @@ Associare ai modelli di prodotto:
 - finiture
 - applicazioni (tag: bagno, ecc.) 
 
+Attivare https (consigliabile per l'accesso alle api)
+
 OPEN ISSUES
 
 Ripristinare l'italiano (o multilingua) per la Dashboard e capire come fare con "page/sites"
