@@ -13,8 +13,8 @@
         table="notification__message"
         repository-class="Doctrine\ORM\EntityRepository">
 
-        <id name="id" type="integer" column="id">
-            <generator strategy="AUTO"/>
+        <id name="id" type="guid" column="id">
+            <generator strategy="UUID"/>
         </id>
 
     </entity>
