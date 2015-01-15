@@ -2,6 +2,7 @@
 <buildpath>
 	<buildpathentry kind="src" path="vendor/endroid/qrcode/src"/>
 	<buildpathentry kind="src" path="vendor/psr/log"/>
+	<buildpathentry kind="src" path="vendor/sonata-project/cache-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache/test"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs"/>
 	<buildpathentry kind="src" path="vendor/phpcollection/phpcollection/src"/>
@@ -38,10 +39,12 @@
 	<buildpathentry kind="src" path="vendor/sonata-project/cache/lib"/>
 	<buildpathentry kind="src" path="vendor/doctrine/doctrine-bundle"/>
 	<buildpathentry kind="src" path="vendor/imagine/imagine/lib"/>
+	<buildpathentry kind="src" path="vendor/symfony-cmf/routing"/>
 	<buildpathentry kind="src" path="app"/>
 	<buildpathentry kind="src" path="vendor/knplabs/gaufrette/src"/>
 	<buildpathentry kind="src" path="vendor/endroid/qrcode-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/admin-bundle"/>
+	<buildpathentry kind="src" path="vendor/sonata-project/page-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/media-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/classification-bundle"/>
 	<buildpathentry kind="src" path="vendor/guzzlehttp/guzzle/src"/>
@@ -54,6 +57,7 @@
 	<buildpathentry kind="src" path="vendor/doctrine/common/lib"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/doctrine-extensions/src"/>
 	<buildpathentry kind="src" path="vendor/michelf/php-markdown"/>
+	<buildpathentry kind="src" path="vendor/sonata-project/seo-bundle"/>
 	<buildpathentry kind="src" path="vendor/jms/metadata/src"/>
 	<buildpathentry kind="src" path="vendor/knplabs/knp-menu/src"/>
 	<buildpathentry kind="src" path="vendor/willdurand/jsonp-callback-validator/src"/>
@@ -67,9 +71,11 @@
 	<buildpathentry kind="src" path="vendor/kriswallsmith/assetic/src"/>
 	<buildpathentry kind="src" path="vendor/symfony/assetic-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/easy-extends-bundle"/>
+	<buildpathentry kind="src" path="vendor/symfony-cmf/routing-bundle"/>
 	<buildpathentry kind="src" path="vendor/fabpot/goutte"/>
 	<buildpathentry kind="src" path="src"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/exporter/lib"/>
+	<buildpathentry kind="src" path="vendor/sonata-project/datagrid-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/user-bundle"/>
 	<buildpathentry kind="src" path="vendor/jdorn/sql-formatter/lib"/>
 </buildpath>
