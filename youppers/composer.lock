@@ -1875,7 +1875,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -1931,7 +1931,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3509,12 +3509,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataMediaBundle.git",
-                "reference": "ae39fd589038c3cbb6f7356b3e13cd691b8a53c2"
+                "reference": "3c0586ef030e440b6b8359966080138d2f883493"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataMediaBundle/zipball/ae39fd589038c3cbb6f7356b3e13cd691b8a53c2",
-                "reference": "ae39fd589038c3cbb6f7356b3e13cd691b8a53c2",
+                "url": "https://api.github.com/repos/sonata-project/SonataMediaBundle/zipball/3c0586ef030e440b6b8359966080138d2f883493",
+                "reference": "3c0586ef030e440b6b8359966080138d2f883493",
                 "shasum": ""
             },
             "require": {
@@ -3588,7 +3588,7 @@
                 "vimeo",
                 "youtube"
             ],
-            "time": "2015-01-06 13:12:37"
+            "time": "2015-01-16 15:58:30"
         },
         {
             "name": "sonata-project/notification-bundle",
@@ -3667,12 +3667,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataPageBundle.git",
-                "reference": "6d9f194a305c5ce7af7fbab1d887f03f4f84e83c"
+                "reference": "168f467c7af54e364032e089c9fae102e2269b0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataPageBundle/zipball/6d9f194a305c5ce7af7fbab1d887f03f4f84e83c",
-                "reference": "6d9f194a305c5ce7af7fbab1d887f03f4f84e83c",
+                "url": "https://api.github.com/repos/sonata-project/SonataPageBundle/zipball/168f467c7af54e364032e089c9fae102e2269b0f",
+                "reference": "168f467c7af54e364032e089c9fae102e2269b0f",
                 "shasum": ""
             },
             "require": {
@@ -3730,7 +3730,7 @@
                 "page",
                 "sonata"
             ],
-            "time": "2015-01-12 13:28:58"
+            "time": "2015-01-16 15:07:03"
         },
         {
             "name": "sonata-project/seo-bundle",
