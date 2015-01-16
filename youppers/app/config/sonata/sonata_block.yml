@@ -5,8 +5,8 @@ sonata_block:
     http_cache:
         listener: true
 
-    menus:
-        "SonataDemoBundle:Builder:mainMenu": "Main Menu"
+    #menus:
+    #    "SonataDemoBundle:Builder:mainMenu": "Main Menu"
 
     blocks:
         sonata.admin.block.admin_list:
@@ -71,18 +71,20 @@ sonata_block:
         sonata.user.block.menu:
             contexts: [user]
 
-        # SeoBundle's Blocks
+        # SeoBundle's Blocks        
+        sonata.seo.block.social.container:
         sonata.seo.block.email.share_button:
         sonata.seo.block.facebook.like_box:
         sonata.seo.block.facebook.like_button:
         sonata.seo.block.facebook.send_button:
         sonata.seo.block.facebook.share_button:
-        sonata.seo.block.pinterest.pin_button:
         sonata.seo.block.twitter.share_button:
         sonata.seo.block.twitter.follow_button:
         sonata.seo.block.twitter.hashtag_button:
         sonata.seo.block.twitter.mention_button:
         sonata.seo.block.twitter.embed:
+        sonata.seo.block.pinterest.pin_button:
+            
 
         sonata.demo.block.newsletter:
 

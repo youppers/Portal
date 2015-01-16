@@ -25,10 +25,6 @@ sonata_user_change_password:
     resource: "@SonataUserBundle/Resources/config/routing/sonata_change_password_1.xml"
     prefix: /profile
 
-#sonata_cache_cache:
-#    resource: '@SonataCacheBundle/Resources/config/routing/cache.xml'
-#    prefix: /
-
 sonata_page_cache:
     resource: '@SonataPageBundle/Resources/config/routing/cache.xml'
     prefix: /
@@ -105,3 +101,6 @@ EndroidQrCodeBundle:
     type:       annotation
     prefix:     /qrcodegenerator
         
+#sonata_cache_cache:
+#    resource: '@SonataCacheBundle/Resources/config/routing/cache.xml'
+#    prefix: /        

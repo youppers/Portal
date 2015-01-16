@@ -25,7 +25,7 @@ imports:
     - { resource: sonata/sonata_classification.yml }
     #- { resource: sonata/sonata_timeline.yml }
     - { resource: sonata/sonata_intl.yml }
-    #- { resource: sonata/sonata_core.yml }
+    - { resource: sonata/sonata_core.yml }
 
     # Sonata Feature Bundles
     - { resource: sonata/sonata_admin.yml }

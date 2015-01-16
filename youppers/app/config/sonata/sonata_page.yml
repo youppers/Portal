@@ -11,6 +11,7 @@ cmf_routing:
             router.default: 100
 
 sonata_page:
+    slugify_service:   sonata.core.slugify.cocur
     multisite:      host_by_locale
     use_streamed_response: false # set the value to false in debug mode or if the reverse proxy does not handle streamed response
 
@@ -55,11 +56,35 @@ sonata_page:
 
 #        javascripts:
 #            - assetic/sonata_front_js.js
+    # Assets loaded by default in template
+    assets:
+        stylesheets:
+            # Defaults:
+            - bundles/sonataadmin/vendor/bootstrap/dist/css/bootstrap.min.css
+            - bundles/sonatapage/sonata-page.front.min.css
+            - bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css
+            
+        javascripts:
+            # Defaults:
+            - bundles/sonataadmin/vendor/jquery/dist/jquery.min.js
+            - bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js
+            - bundles/sonatapage/sonata-page.front.min.js
+            - /bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js
+                  
+#    assets:
+#       stylesheets:
+#            - bundles/sonatapage/sonata-page.back.min.css
+#            - bundles/sonatapage/sonata-page.front.min.css
+
+#        javascripts:
+#            - bundles/sonatapage/sonata-page.back.min.js
+#            - bundles/sonatapage/sonata-page.front.min.js
 
     default_template: default
     templates:
         default:
-            path: 'YouppersCommonBundle:Page:demo_layout.html.twig'
+            #path: 'YouppersCommonBundle:Page:demo_layout.html.twig'
+            path: 'SonataPageBundle::layout.html.twig'
             name: 'default'
             containers:
                  header:
@@ -88,7 +113,8 @@ sonata_page:
                      F: footer
 
         2columns:
-            path: 'YouppersCommonBundle:Page:demo_2columns_layout.html.twig'
+            #path: 'YouppersCommonBundle:Page:demo_2columns_layout.html.twig'
+            path: 'SonataPageBundle::2columns_layout.html.twig'
             name: '2 columns layout'
             containers:
                  header:
@@ -132,9 +158,9 @@ sonata_page:
 #        ssi:
 #            token:    add an unique token here # default is a random value
 
-#    catch_exceptions:
-#        not_found: [404]    # render 404 page with "not_found" key (name generated: _page_internal_error_{key})
-#        fatal:     [500]    # so you can use the same page for different http errors or specify specific page for each error
+    catch_exceptions:
+        not_found: [404]    # render 404 page with "not_found" key (name generated: _page_internal_error_{key})
+        fatal:     [500]    # so you can use the same page for different http errors or specify specific page for each error
 
 
 # Enable Doctrine to map the provided entities

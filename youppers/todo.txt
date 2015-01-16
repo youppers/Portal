@@ -3,7 +3,7 @@ TODO
 Usare "scarper" per inserire nel DB la classificazione di ICS
   http://www.iso.org/iso/home/store/catalogue_ics.htm
 
-Aggiungere sonata-classification
+Sistemare sonata-classification e sonata-media
 
 Associare ai modelli di prodotto:
 - dimensioni 
@@ -16,6 +16,7 @@ Attivare https (consigliabile per l'accesso alle api)
 OPEN ISSUES
 
 Ripristinare l'italiano (o multilingua) per la Dashboard e capire come fare con "page/sites"
+https://gist.github.com/Dattaya/1670163
 
 Non funziona l'eliminazione di un elemento dal box
 
