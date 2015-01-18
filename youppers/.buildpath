@@ -4,7 +4,6 @@
 	<buildpathentry kind="src" path="vendor/psr/log"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache/test"/>
-	<buildpathentry kind="src" path="vendor/cocur/slugify/src"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs"/>
 	<buildpathentry kind="src" path="vendor/phpcollection/phpcollection/src"/>
 	<buildpathentry kind="src" path="vendor/sensio/distribution-bundle"/>
