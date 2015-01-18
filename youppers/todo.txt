@@ -3,6 +3,8 @@ TODO
 Usare "scarper" per inserire nel DB la classificazione di ICS
   http://www.iso.org/iso/home/store/catalogue_ics.htm
 
+Usare scraper per caricare "media" di prodotto
+
 Sistemare sonata-classification e sonata-media
 
 Associare ai modelli di prodotto:
@@ -15,7 +17,7 @@ Attivare https (consigliabile per l'accesso alle api)
 
 OPEN ISSUES
 
-Sonata admin come dev-master NON funziona, fare rollback
+Gli elementi nel box non vengono visualizzati tenendo conto dell'ordine
 
 Ripristinare l'italiano (o multilingua) per la Dashboard e capire come fare con "page/sites"
 https://gist.github.com/Dattaya/1670163

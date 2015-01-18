@@ -39,10 +39,10 @@ class DefaultController extends Controller
     	$client = new Client();
     	
     	if ($brand == "IS") {
-    		
+
     		$parameters = array(
     			'tx_indexedsearch' => array(
-    				'sword' => substr($product,0,-2)
+    				'sword' => $product
     			)
     		);
     		

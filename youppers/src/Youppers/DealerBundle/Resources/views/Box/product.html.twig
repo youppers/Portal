@@ -1,0 +1,15 @@
+<div class="store">Store: {{ boxProduct.box.store }}</div>
+
+<div class="boxName">Name: {{ boxProduct.box.name }}</div>
+
+<div class="boxDescription">Description: {{ boxProduct.box.description }}</div>
+
+<div class="boxProduct">
+	<div class="boxProductName">Nome: {{ boxProduct.name }}</div>
+	{% set product = boxProduct.product %}
+	{% if product != null %}
+		<div class="boxProductProduct">
+			{{ product.name }} - {{ product.description }}
+		</div>
+	{% endif %}
+</div>	

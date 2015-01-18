@@ -8,30 +8,38 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Symfony\Component\Validator\Constraints as Assert;
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 #use Sonata\Bundle\DemoBundle\Entity\Inspection;
 
 class BoxAdmin extends Admin
 {
+	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+	{
+		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+	
+		$admin = $this->isChild() ? $this->getParent() : $this;
+		$id = $admin->getRequest()->get('id');
+	
+		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
+		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+			
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-		->add('store')
+		->add('store', null, array('route' => array('name' => 'show')))
 		->add('name')
 		->add('code')
 		->add('enabled')
 		->add('description')
-		->add('boxProducts', 'sonata_type_collection', array(
-				'by_reference'       => false,
-				'cascade_validation' => true,
-		) , array(
-				'edit' => 'inline',
-				'inline' => 'table'
-		))		
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:show_field.html.twig'))		
+		->add('boxProducts', null, array('route' => array('name' => 'edit'), 'associated_property' => 'name'))
+		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
 		//->add('products')
 		;
 	}
@@ -50,10 +58,10 @@ class BoxAdmin extends Admin
                      'name' => 'show'
                  )
              ))
-		->addIdentifier('code')
-		->addIdentifier('name')
+		->addIdentifier('code', null, array('route' => array('name' => 'show')))
+		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('boxProducts')
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCustomerBundle:Qr:list_field.html.twig'))		
+		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
 

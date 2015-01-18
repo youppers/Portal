@@ -1,0 +1,29 @@
+{#
+{% extends 'YouppersDealerBundle:Default:index.html.twig' %}
+
+{% block page_content %}
+
+#}
+
+<div class="store">Store: {{ box.store }}</div>
+
+<div class="boxName">Name: {{ box.name }}</div>
+
+<div class="boxDescription">Description: {{ box.description }}</div>
+
+{% for boxProduct in box.boxProducts %}
+<div class="product">
+	<div class="boxProductName">Nome: {{ boxProduct.name }}</div>
+	{# <div class="boxProductDescription">Description: {{ boxProduct.description }}</div> #}
+	{% set product = boxProduct.product %}
+	{% if product != null %}
+		<div class="boxProductProdoct">
+			<a href="{{ path('youppers_dealer_box_product', {'id': box.id, 'childId': boxProduct.id}) }}">{{ product.name }}</a> - {{ product.description }}
+		</div>
+	{% endif %}
+</div>	
+{%  endfor %}
+
+{#
+{% endblock %}
+#}

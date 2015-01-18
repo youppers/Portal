@@ -14,6 +14,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class DealerAdmin extends Admin
 {
+
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
 		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
@@ -21,9 +22,9 @@ class DealerAdmin extends Admin
 		$admin = $this->isChild() ? $this->getParent() : $this;
 		$id = $admin->getRequest()->get('id');
 	
-		if ($action != 'edit') {
-			$menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-		}
+		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
+		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+			
 	}
 	
 	/**
@@ -38,7 +39,7 @@ class DealerAdmin extends Admin
 		->add('description')
 		->add('createdAt')
 		->add('updatedAt')
-		->add('stores', null, array('route' => array('name' => 'show')))
+		->add('stores', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		;
 	}
 

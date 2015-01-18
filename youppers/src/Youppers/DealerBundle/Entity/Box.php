@@ -101,7 +101,7 @@ class Box
 
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->getName() ? $this->getStore() . ' - ' . $this->getName(): 'New';
 	}
 	
 	public function prePersist()
