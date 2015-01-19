@@ -57,6 +57,7 @@ class Box
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"all"})
+	 * @ORM\OrderBy({"position" = "ASC"})
 	 **/
 	private $boxProducts;
 		
