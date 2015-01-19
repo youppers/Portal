@@ -131,4 +131,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-    
+
+happyr_google_analytics:
+    tracking_id: "%google_analytics_tracking_id%"    

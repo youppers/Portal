@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4f1d774c30c5e730b2b98daa27b5aa2a",
+    "hash": "4616b38d874fbd064e39e98299617ec3",
     "packages": [
         {
             "name": "components/bootstrap",
@@ -1298,6 +1298,55 @@
                 "stream"
             ],
             "time": "2014-08-17 21:15:53"
+        },
+        {
+            "name": "happyr/google-analytics-bundle",
+            "version": "3.1.0",
+            "target-dir": "Happyr/Google/AnalyticsBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Happyr/GoogleAnalyticsBundle.git",
+                "reference": "35800af2e850d4d1c660a107ff8e8548677b6134"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Happyr/GoogleAnalyticsBundle/zipball/35800af2e850d4d1c660a107ff8e8548677b6134",
+                "reference": "35800af2e850d4d1c660a107ff8e8548677b6134",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~4.0",
+                "php": ">=5.4",
+                "symfony/framework-bundle": "~2.3",
+                "symfony/yaml": "2.*"
+            },
+            "suggest": {
+                "happyr/google-site-authenticator-bundle": "To be able to fetch data from google analytics."
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Happyr\\Google\\AnalyticsBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias@happyr.com"
+                }
+            ],
+            "description": "The Google Analytics Bundle lets you send data (like event tracking) to Google.",
+            "homepage": "http://developer.happyr.com/symfony2-bundles/google-analytics-bundle",
+            "keywords": [
+                "analytics",
+                "google",
+                "google analytics"
+            ],
+            "time": "2014-11-23 10:38:57"
         },
         {
             "name": "imagine/imagine",

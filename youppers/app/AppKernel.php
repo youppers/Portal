@@ -112,6 +112,7 @@ class AppKernel extends Kernel
         	//new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
         		
         	new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
+        	new Happyr\Google\AnalyticsBundle\HappyrGoogleAnalyticsBundle(),
         		
         	// YOUPPERS 
         	new Youppers\ScraperBundle\YouppersScraperBundle(),

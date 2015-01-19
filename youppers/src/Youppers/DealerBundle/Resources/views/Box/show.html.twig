@@ -18,7 +18,7 @@
 	{% set product = boxProduct.product %}
 	{% if product != null %}
 		<div class="boxProductProdoct">
-			<a href="{{ path('youppers_dealer_box_product', {'id': box.id, 'childId': boxProduct.id}) }}">{{ product.name }}</a> - {{ product.description }}
+			<a href="{{ path('youppers_dealer_box_product', {'id': boxProduct.id}) }}">{{ product.name }}</a> - {{ product.description }}
 		</div>
 	{% endif %}
 </div>	

@@ -20,3 +20,5 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     sonata_media.cdn.host:	http://www.youppers.com/uploads/media
+    
+    google_analytics_tracking_id: ~

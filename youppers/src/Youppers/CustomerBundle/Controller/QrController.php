@@ -25,7 +25,6 @@ class QrController extends Controller
     		->find($qr);
     	
     	if ($box) {
-    		// registra l'hit del box
     		// visualizza la pagina del box
     		return $this->redirectToRoute("youppers_dealer_box_show",array("id" => $box->getId()));
     	}
@@ -36,7 +35,6 @@ class QrController extends Controller
     	->find($qr);
     	 
     	if ($product) {
-    		// registra l'hit del prodotto
     		// visualizza la pagina del prodotto
     		return $this->redirectToRoute("youppers_customer_product_show",array("id" => $product->getId()));
     	}
