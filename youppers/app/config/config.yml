@@ -47,6 +47,7 @@ imports:
     #- { resource: sonata/sonata_basket.yml }
     
     # Youppers
+    - { resource: "@YouppersCommonBundle/Resources/config/services.yml" }
     - { resource: "@YouppersCompanyBundle/Resources/config/admin.xml" }
     - { resource: "@YouppersDealerBundle/Resources/config/admin.xml" }
 

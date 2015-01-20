@@ -1,0 +1,14 @@
+services:
+  happyr.google.analytics.clientIdProvider:
+    class: 'Youppers\CommonBundle\Analytics\ClientIdProvider'
+    calls:
+          - [setRequest, ['@?request=']]
+          
+  happyr.google.analytics.http.client:
+    class: 'Youppers\CommonBundle\Analytics\HttpClient'
+    arguments:
+      - '%happyr.google.analytics.param.endpoint%'
+      - '%happyr.google.analytics.param.fireAndForget%'
+      - '%happyr.google.analytics.param.requestTimeout%'
+    calls:
+          - [setRequest, ['@?request=']]
