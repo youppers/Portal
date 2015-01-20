@@ -23,185 +23,69 @@ class ICSCatalogueCommand extends ContainerAwareCommand
 	
 	private $client;
 	
+	private $em;
+
+	private $rootCategory;
+	
 	protected function configure()
 	{
 		$this
 		->setName('youppers:catalogue:ics')
 		->setDescription('Update catalogue with ICS classification')
-		//->addArgument('name', InputArgument::OPTIONAL, 'Who do you want to greet?')
+		->addArgument('base', InputArgument::OPTIONAL, 'ISO Standards catalogue uri',$this->icsBaseUri)
 		->addOption('update', null, InputOption::VALUE_NONE, 'Update the database')
+		->addOption('root', null, InputOption::VALUE_REQUIRED, 'Root category','ICS')
 		;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln("Get ICS from: " . $this->icsBaseUri);
+		$root = $input->getOption("root");
+		$icsBaseUri = $input->getArgument('base');
+		$output->writeln("Root=".$root." Get ICS from: " . $icsBaseUri);
+
+		
+		$this->em = $this->getContainer()->get('doctrine')->getManager('default');
+		$this->rootCategory == $this->em->getRepository('Application\Sonata\ClassificationBundle\Entity\Category')->findOneBy(array('name' => $root));
+		
+		if ($this->rootCategory == null) {
+			throw new \Exception("Unable to find root category: " . $root);
+		}
 		
 		$this->client = new Client();
 		
-		$this->crawl0($this->icsBaseUri, $output);
+		$this->crawl($icsBaseUri, $output);
 		
-		/*
-		$name = $input->getArgument('name');
-		if ($name) {
-			$text = 'Hello '.$name;
-		} else {
-			$text = 'Hello';
-		}
-
-		if ($input->getOption('update')) {
-			$text = strtoupper($text);
-		}
-
-		*/
-		
-		$output->writeln("Ok");
+		$output->writeln("Done.");
 	}
-	
-	private function crawl0($uri, OutputInterface $output) {
-		$crawler = $this->client->request('GET', $uri);
 
-		//$output->writeln(" [0] crawler:" . $crawler->filterXPath($this->icsRowsXpath)->html());
-				
-		foreach ($crawler->filterXPath($this->icsRowsXpath) as $trNode) {
-			/*
-			foreach ($trNode->childNodes as $node) {
-				$output->writeln(" [0]  Child:" . trim($node->ownerDocument->saveXML($node)));
-			}
-			
-			$output->writeln(" [0]  Child 0:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(0))));
-			var_dump($trNode->ownerDocument->saveXML($trNode->childNodes->item(1)));
-			$output->writeln(" [0]  Child 1:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(1))));
-			$output->writeln(" [0]  Child 2:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(2))));
-				
-			*/
-			
-			if ($trNode->childNodes->length > 3) {
+	private function crawl($uri, OutputInterface $output, $parent = "") {
+		$crawler = $this->client->request('GET', $uri);
+		$numRows = $crawler->filterXPath('//*[@id="ics_list"]/tr')->count();
+		for ($i =1; $i <= $numRows; $i++) {
+			$numTd = $crawler->filterXPath('//*[@id="ics_list"]/tr[' . $i . ']/td')->count();
+			if ($numTd != 2) {
 				break;
 			}				
-			//$output->writeln("row:" . $trNode);
-			$TD1 = $trNode->childNodes->item(0);
-			if ($TD1->hasChildNodes()) {
-				$ANode = $TD1->childNodes->item(1);
-				$id1 = trim($ANode->textContent);
+			$a = $crawler->filterXPath('//*[@id="ics_list"]/tr[' . $i . ']/td[1]/a');
+			if ($a->count() == 1) {
+				$ics = explode('.',trim($a->text()));
+				$link = $a->link();
 			} else {
-				$ANode = null;
-				$id1 = trim($TD1->textContent);
+				$ics = explode('.',trim($crawler->filterXPath('//*[@id="ics_list"]/tr[' . $i . ']/td[1]')->text()));
+				$link = null;
 			}
-			$fieldNode = $trNode->childNodes->item(2);
-			$name = trim($fieldNode->textContent);				
-			$html = trim($fieldNode->ownerDocument->saveXML($fieldNode));
+			$description = trim($crawler->filterXPath('//*[@id="ics_list"]/tr[' . $i . ']/td[2]')->html());
+			$output->writeln($parent . ' Row ' . $i . ' ICS=' . implode('.',$ics) . ' Field=' . $description);
 			
-			$output->writeln("ID1:" . $id1 . " Name:" . $name . " HTML:".$html);
-
-			if ($ANode != null) {
-				$suburi = $ANode->baseURI . $ANode->getAttribute('href');
-				$this->crawl1($suburi,$id1,$output);
-			}
-
-			//break;
-		}				
-	}
-
-	private function crawl1($uri, $id1, OutputInterface $output) {
-		$crawler = $this->client->request('GET', $uri);
-	
-		//$output->writeln(" [1] crawler:" . $crawler->filterXPath($this->icsRowsXpath)->html());
-	
-		foreach ($crawler->filterXPath($this->icsRowsXpath) as $trNode) {
+			$this->save($ics,$description);
 			
-			/*
-			foreach ($trNode->childNodes as $node) {
-				$output->writeln(" [1]  Child:" . trim($node->ownerDocument->saveXML($node)));
-			}
-			
-			$output->writeln(" [1]  Child 0:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(0))));
-			var_dump($trNode->ownerDocument->saveXML($trNode->childNodes->item(1)));
-			$output->writeln(" [1]  Child 1:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(1))));
-			$output->writeln(" [1]  Child 2:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(2))));
-			*/
-			
-			/*
-			if ($trNode->childNodes->length > 3) {
-				break;
-			}
-			*/
-			
-			//$output->writeln("row:" . $trNode);
-			$ANode = $trNode->childNodes->item(0)->childNodes->item(1);
-			//var_dump($ANode);
-			$fieldNode = $trNode->childNodes->item(2);
-			//$suburi = $ANode->baseURI . $ANode->getAttribute('href');
-			//$this->crawl1($suburi,$output);
-
-			$TD1 = $trNode->childNodes->item(0);
-			if ($TD1->childNodes->length == 1) {
-				$ANode = null;
-				$id2 = trim($TD1->textContent);
-			} else {
-				$ANode = $TD1->childNodes->item(1);
-				$id2 = trim($ANode->textContent);
-			}
-			$fieldNode = $trNode->childNodes->item(2);
-			$name = trim($fieldNode->textContent);
-			$html = trim($fieldNode->ownerDocument->saveXML($trNode));				
-
-			$output->writeln("ID1:" . $id1 . " ID2:" . $id2 . " Name:" . $name . " HTML:".$html);
-			//$output->writeln("ID1:" . $id1 . " ID2:" . $id2);
-
-			if ($ANode != null) {
-				$suburi = $ANode->baseURI . $ANode->getAttribute('href');
-				$this->crawl2($suburi,$id1,$id2,$output);
-			}
-			
-			//break;
-				
+			if ($link && count($ics) < 3) {
+				$this->crawl($link->getUri(), $output,implode('.',$ics));
+			}			
 		}
 	}
-
-	private function crawl2($uri, $id1, $id2, OutputInterface $output) {
-		$crawler = $this->client->request('GET', $uri);
 	
-		//$output->writeln("crawler:" . $crawler->filterXPath('//*[@id="ics_list"]/tr')->html());
-	
-		foreach ($crawler->filterXPath($this->icsRowsXpath) as $trNode) {
-			
-			/*
-			foreach ($trNode->childNodes as $node) {
-				$output->writeln(" [2]  Child:" . trim($node->ownerDocument->saveXML($node)));
-			}
-			
-			$output->writeln(" [2]  Child 0:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(0))));
-			//var_dump($trNode->childNodes->item(1));
-			$output->writeln(" [2]  Child 1:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(1))));
-			$output->writeln(" [2]  Child 2:" . trim($trNode->ownerDocument->saveXML($trNode->childNodes->item(2))));
-			*/
-			
-			//var_dump($trNode->childNodes);
-			
-			if (get_class($trNode->childNodes->item(1)) ==  "DOMElement") {
-				//$output->writeln("BREAK");
-				break;
-			}
-		
-			$TD1 = $trNode->childNodes->item(0);
-			if ($TD1->childNodes->length == 1) {
-				$ANode = null;
-				$id3 = trim($TD1->textContent);
-			} else {
-				$ANode = $TD1->childNodes->item(1);
-				$id3 = trim($ANode->textContent);
-			}
-			$fieldNode = $trNode->childNodes->item(2);
-			$name = trim($fieldNode->textContent);
-			$html = trim($fieldNode->ownerDocument->saveXML($fieldNode));
-			//$html = trim($fieldNode->ownerDocument->saveXML($trNode));
-							
-			$output->writeln("ID1:" . $id1 . " ID2:" . $id2 . " ID3:" . $id3 . " Name:" . $name . " HTML:".$html);
-			//$output->writeln("ID1:" . $id1 . " ID2:" . $id2 . " ID3:" . $id3);
-				
-		}
-	
-	}
-	
+	private function save($ics,$description) {
+	}	
 }
