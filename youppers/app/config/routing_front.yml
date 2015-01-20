@@ -96,6 +96,11 @@ youppers_dealer:
     type:     annotation
     prefix:   /
 
+youppers_company:
+    resource: "@YouppersCompanyBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 scraper:
     resource: "@YouppersScraperBundle/Controller/"
     type:     annotation

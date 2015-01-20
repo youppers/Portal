@@ -36,7 +36,7 @@ class QrController extends Controller
     	 
     	if ($product) {
     		// visualizza la pagina del prodotto
-    		return $this->redirectToRoute("youppers_customer_product_show",array("id" => $product->getId()));
+    		return $this->redirectToRoute("youppers_company_product_show",array("id" => $product->getId()));
     	}
 
     	// visualizza la pagina di "QR non trovato"

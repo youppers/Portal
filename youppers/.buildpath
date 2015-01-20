@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
 	<buildpathentry kind="src" path="vendor/endroid/qrcode/src"/>
+	<buildpathentry kind="src" path="vendor/happyr/google-analytics-bundle"/>
 	<buildpathentry kind="src" path="vendor/psr/log"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache/test"/>
@@ -40,7 +41,7 @@
 	<buildpathentry kind="src" path="vendor/doctrine/doctrine-bundle"/>
 	<buildpathentry kind="src" path="vendor/imagine/imagine/lib"/>
 	<buildpathentry kind="src" path="vendor/symfony-cmf/routing"/>
-	<buildpathentry kind="src" path="app"/>
+	<buildpathentry excluding="cache/" kind="src" path="app"/>
 	<buildpathentry kind="src" path="vendor/knplabs/gaufrette/src"/>
 	<buildpathentry kind="src" path="vendor/endroid/qrcode-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/admin-bundle"/>

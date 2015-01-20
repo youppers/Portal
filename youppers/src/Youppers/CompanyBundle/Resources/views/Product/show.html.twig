@@ -1,0 +1,11 @@
+{% if store is defined %}
+<div class="store">Store: {{ store }}</div>
+{% endif %}
+
+<div class="product">
+	{% if product != null %}
+		<div class="product">
+			{{ product.name }} - {{ product.description }}
+		</div>
+	{% endif %}
+</div>	
