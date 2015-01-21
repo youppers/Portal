@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="store_box_name_idx", columns={"store_id", "name"}),
  *     @ORM\UniqueConstraint(name="store_box_code_idx", columns={"store_id", "code"}),
  *   })
+ * @ORM\HasLifecycleCallbacks
  */
 class Box
 {
@@ -105,12 +106,18 @@ class Box
 		return $this->getName() ? $this->getStore() . ' - ' . $this->getName(): 'New';
 	}
 	
+	/**
+	 * @ORM\PrePersist()
+	 */	
 	public function prePersist()
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
-	
+		
+	/**
+	 * @ORM\PreUpdate()
+	 */
 	public function preUpdate()
 	{
 		$this->updatedAt = new \DateTime();

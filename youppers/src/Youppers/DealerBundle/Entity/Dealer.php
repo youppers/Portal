@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="dealer")
+ * @ORM\HasLifecycleCallbacks
  */
 class Dealer
 {
@@ -57,12 +58,18 @@ class Dealer
 		return $this->getName();
 	}
 	
+	/**
+	 * @ORM\PrePersist()
+	 */	
 	public function prePersist()
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
 	
+	/**
+	 * @ORM\PreUpdate()
+	 */
 	public function preUpdate()
 	{
 		$this->updatedAt = new \DateTime();

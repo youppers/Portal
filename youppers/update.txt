@@ -1,0 +1,6 @@
+composer install
+php app/console doctrine:schema:update --force
+php app/console cache:clear --env=test
+php app/console sonata:page:update-core-routes --site=all
+php app/console sonata:page:create-snapshots --site=all
+php app/console cache:clear --env=prod

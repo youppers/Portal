@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="dealer_store_name_idx", columns={"dealer_id", "name"}),
  *     @ORM\UniqueConstraint(name="dealer_store_code_idx", columns={"dealer_id", "code"}),
  *   })
+ * @ORM\HasLifecycleCallbacks
  */
 class Store
 {
@@ -36,9 +37,9 @@ class Store
 	protected $code;
 
 	/**
-	 * @ORM\Column(type="boolean", name="is_active", options={"default":true})
+	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
-	protected $isActive;
+	protected $enabled;
 	
 	/**
 	 * @ORM\Column(type="datetime")
@@ -60,7 +61,32 @@ class Store
 		return $this->getName() ? $this->getDealer() . ' - ' . $this->getName(): 'New';
 	}
 	
+	/**
+	 * @ORM\PrePersist()
+	 */
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+	}
+	
+	/**
+	 * @ORM\PreUpdate()
+	 */
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->boxes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -119,26 +145,26 @@ class Store
     }
 
     /**
-     * Set isActive
+     * Set enabled
      *
-     * @param boolean $isActive
+     * @param boolean $enabled
      * @return Store
      */
-    public function setIsActive($isActive)
+    public function setEnabled($enabled)
     {
-        $this->isActive = $isActive;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get enabled
      *
      * @return boolean 
      */
-    public function getIsActive()
+    public function getEnabled()
     {
-        return $this->isActive;
+        return $this->enabled;
     }
 
     /**
@@ -208,13 +234,6 @@ class Store
     public function getDealer()
     {
         return $this->dealer;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->boxes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

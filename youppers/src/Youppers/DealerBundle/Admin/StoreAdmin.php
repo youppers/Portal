@@ -9,8 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-
-#use Sonata\Bundle\DemoBundle\Entity\Inspection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class StoreAdmin extends Admin
 {
@@ -32,12 +31,13 @@ class StoreAdmin extends Admin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('enabled')
 		->add('dealer', null, array('route' => array('name' => 'show')))
 		->add('name')
 		->add('code')
 		->add('description')
-		->add('isActive')
 		->add('createdAt')
+		->add('updatedAt')
 		->add('boxes', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		;
 	}
@@ -47,17 +47,12 @@ class StoreAdmin extends Admin
 	 */
 	protected function configureListFields(ListMapper $listMapper)
 	{
-		$listMapper
-		->add('isActive')
-		->addIdentifier('name')
+		$listMapper		
+		->add('enabled', null, array('editable' => true))
+		->add('dealer', null, array('route' => array('name' => 'show')))		
+		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('code')
-		->add('dealer', null, array(
-                 'route' => array(
-                     'name' => 'show'
-                 )
-             ))
-				#->add('products')  // TODO link per elencare prodotti con filtro di Store
-		// SEE https://groups.google.com/forum/#!topic/sonata-users/-nVqpVBINHc
+		->add('boxes')
 		;
 	}
 
@@ -70,7 +65,7 @@ class StoreAdmin extends Admin
 		->add('dealer')
 		->add('name')
 		->add('code')
-		->add('isActive')
+		->add('enabled')
 		;
 	}
 
@@ -80,32 +75,21 @@ class StoreAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-		->with('Store', array('class' => 'col-md-8'))
+		->with('Store', array('class' => 'col-md-8'));
+		
+		if (!$this->hasParentFieldDescription()) {
+			$formMapper->add('dealer', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
+		}
+		
+		$formMapper
 		->add('dealer')
 		->add('name')
 		->add('code')
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
-		->add('isActive', 'checkbox', array('required'  => false))
-		->add('createdAt')
+		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
-		#->end()
-		/*
-		->with('Options', array('class' => 'col-md-6'))
-		->add('engine', 'sonata_type_model_list')
-		->add('color', 'sonata_type_model_list')
-		->end()
-		->with('inspections', array('class' => 'col-md-12'))
-		->add('inspections', 'sonata_type_collection', array(
-				'by_reference'       => false,
-				'cascade_validation' => true,	
-		) , array(
-				'edit' => 'inline',
-				'inline' => 'table'
-		))
-		->end()
-		*/
 		;
 	}
 
@@ -116,16 +100,8 @@ class StoreAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
-		//$object->setCreatedAt(new \DateTime());
-		$object->setIsActive(true);
+		$object->setEnabled(true);
 
-		/*
-		$inspection = new Inspection();
-		$inspection->setDate(new \DateTime());
-		$inspection->setComment("Initial inpection");
-
-		$object->addInspection($inspection);
-		*/
 		return $object;
 	}
 }
