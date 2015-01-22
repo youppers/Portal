@@ -1,0 +1,3 @@
+# products definition
+# generate with:
+# php app/console sonata:product:generate

@@ -37,7 +37,10 @@
 		"sonata-project/page-bundle" : "~2.3",
 		"sonata-project/datagrid-bundle" : "2.2.*@dev",
 		"sonata-project/core-bundle" : "~2.3",
-		"happyr/google-analytics-bundle" : "~3"
+		"happyr/google-analytics-bundle" : "~3",
+		"sonata-project/ecommerce" : "dev-master",
+        "sonata-project/comment-bundle": "~2.2@dev",
+        "friendsofsymfony/comment-bundle": "~2.0@dev"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~2.5"

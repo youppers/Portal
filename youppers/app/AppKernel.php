@@ -5,6 +5,12 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+	public function init()
+	{
+		// http://sonata-project.org/bundles/ecommerce/develop/doc/reference/bundles/price.html
+		bcscale(3); // or any other value greater than 0
+	}
+	
     public function registerBundles()
     {
         $bundles = array(
@@ -59,25 +65,25 @@ class AppKernel extends Kernel
         	//new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         		
         	// E-COMMERCE
-        	//new Sonata\BasketBundle\SonataBasketBundle(),
+        	new Sonata\BasketBundle\SonataBasketBundle(),
         	//new Application\Sonata\BasketBundle\ApplicationSonataBasketBundle(),
-        	//new Sonata\CustomerBundle\SonataCustomerBundle(),
+        	new Sonata\CustomerBundle\SonataCustomerBundle(),
         	//new Application\Sonata\CustomerBundle\ApplicationSonataCustomerBundle(),
-        	//new Sonata\DeliveryBundle\SonataDeliveryBundle(),
+        	new Sonata\DeliveryBundle\SonataDeliveryBundle(),
         	//new Application\Sonata\DeliveryBundle\ApplicationSonataDeliveryBundle(),
-        	//new Sonata\InvoiceBundle\SonataInvoiceBundle(),
+        	new Sonata\InvoiceBundle\SonataInvoiceBundle(),
         	//new Application\Sonata\InvoiceBundle\ApplicationSonataInvoiceBundle(),
-        	//new Sonata\OrderBundle\SonataOrderBundle(),
+        	new Sonata\OrderBundle\SonataOrderBundle(),
         	//new Application\Sonata\OrderBundle\ApplicationSonataOrderBundle(),
-        	//new Sonata\PaymentBundle\SonataPaymentBundle(),
+        	new Sonata\PaymentBundle\SonataPaymentBundle(),
         	//new Application\Sonata\PaymentBundle\ApplicationSonataPaymentBundle(),
-        	//new Sonata\ProductBundle\SonataProductBundle(),
-        	//new Application\Sonata\ProductBundle\ApplicationSonataProductBundle(),
-        	//new Sonata\PriceBundle\SonataPriceBundle(),
+        	new Sonata\ProductBundle\SonataProductBundle(),
+        	new Application\Sonata\ProductBundle\ApplicationSonataProductBundle(),
+        	new Sonata\PriceBundle\SonataPriceBundle(),
         	new JMS\SerializerBundle\JMSSerializerBundle($this),
-        	//new FOS\CommentBundle\FOSCommentBundle(),
-        	//new Sonata\CommentBundle\SonataCommentBundle(),
-        	//new Application\Sonata\CommentBundle\ApplicationSonataCommentBundle(),
+        	new FOS\CommentBundle\FOSCommentBundle(),
+        	new Sonata\CommentBundle\SonataCommentBundle(),
+        	new Application\Sonata\CommentBundle\ApplicationSonataCommentBundle(),
         		
         	// SONATA CORE & HELPER BUNDLES
         	new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),

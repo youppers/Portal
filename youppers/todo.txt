@@ -1,3 +1,10 @@
+WIP
+
+http://sonata-project.org/bundles/ecommerce/develop/doc/reference/bundles/product.html
+	app/console sonata:product:generate Generic youppers.company.product.generic	
+	php app/console doctrine:schema:update
+	
+
 TODO
 
 Usare "scarper" per inserire nel DB la classificazione di ICS
