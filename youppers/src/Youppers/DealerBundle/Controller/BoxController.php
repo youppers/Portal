@@ -61,7 +61,7 @@ class BoxController extends Controller
     	 
     	//dump($data);
     	
-    	$tracker->send($data, 'pageview');
+    	$tracker->send($data, 'event');
     	     	 
     	return array('box' => $box);    	 
     }
@@ -135,7 +135,7 @@ class BoxController extends Controller
     	//dump($data);
     	
     	$tracker->send($data, 'event');
-    	$tracker->send($data, 'pageview');
+    	//$tracker->send($data, 'pageview');
     	 
     	return array('boxProduct' => $boxProduct);
     }
