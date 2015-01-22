@@ -33,7 +33,7 @@ class ProductAdmin extends Admin
 		$showMapper
 		->add('enabled')	
 		->add('brand.company', null, array('route' => array('name' => 'show')))
-		->add('brand', null, array('route' => array('name' => 'show')))
+		->add('brand', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		->add('name')
 		->add('code')
 		->add('description')
