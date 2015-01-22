@@ -1,10 +1,10 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% set url = url('youppers_customer_qr_scan', { qr: value}) %}
-{% set qr_size = field_description.options.size|default(41) %}
+{% set qr_size = field_description.options.size|default(60) %}
 {% set qr_padding = field_description.options.padding|default(2) %}
 {% set div_size = qr_padding + qr_size + qr_padding %}
-{% set qr_background = {'r': 255, 'g' : 255, 'b' : 255, 'a' : 127} %}
+{% set qr_background = {'r': 255, 'g' : 255, 'b' : 255, 'a' : 60} %}
 
 {% block field %}
 <div style="height: {{ div_size }}px; width: {{ div_size }}px;">

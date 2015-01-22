@@ -4,7 +4,7 @@
 {% set qr_size = field_description.options.size|default(370) %}
 {% set qr_padding = field_description.options.padding|default(20) %}
 {% set div_size = qr_padding + qr_size + qr_padding %}
-{% set qr_background = {'r': 255, 'g' : 255, 'b' : 255, 'a' : 127} %}
+{% set qr_background = {'r': 255, 'g' : 255, 'b' : 255, 'a' : 60} %}
 
 {% block field %}
 <div style="height: {{ div_size }}px; width: {{ div_size }}px;">
