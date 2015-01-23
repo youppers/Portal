@@ -13,8 +13,8 @@
         table="product__product_category"
         >
 
-        <id name="id" type="integer" column="id">
-            <generator strategy="AUTO"/>
+        <id name="id" type="guid" column="id">
+            <generator strategy="UUID"/>
         </id>
 
     </entity>

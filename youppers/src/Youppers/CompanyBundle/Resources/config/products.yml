@@ -1,3 +1,20 @@
 # products definition
 # generate with:
 # php app/console sonata:product:generate
+services:
+    youppers.company.product.generic.manager:
+        class: Sonata\ProductBundle\Entity\ProductManager
+        arguments:
+            - Application\Sonata\ProductBundle\Entity\Generic
+            - '@doctrine'
+
+    youppers.company.product.generic.type:
+        class: Application\Sonata\ProductBundle\Provider\GenericProductProvider
+        arguments:
+            - '@serializer'
+
+sonata_product:
+    products:
+        youppers.company.product.generic:
+            provider: youppers.company.product.generic.type
+            manager: youppers.company.product.generic.manager            

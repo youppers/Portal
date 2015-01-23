@@ -9,13 +9,16 @@
             association mapping  : http://www.doctrine-project.org/projects/orm/2.0/docs/reference/association-mapping/en
     -->
     <entity
-        name="Application\Sonata\ProductBundle\Entity\Delivery"
-        table="product__delivery"
+        name="Application\Sonata\ProductBundle\Entity\Generic"
+        table="product__product"
+        repository-class="Application\Sonata\ProductBundle\Repository\GenericRepository"
         >
 
-        <id name="id" type="guid" column="id">
-            <generator strategy="UUID"/>
-        </id>
+        <!--
+            Define your product here
+
+            ie : <field name="customField" column="prefix_custom_field" type="string" length="255" />
+        -->
 
     </entity>
 </doctrine-mapping>
