@@ -4,21 +4,22 @@
 	<buildpathentry kind="src" path="vendor/happyr/google-analytics-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/cache/test"/>
-	<buildpathentry kind="src" path="vendor/phpcollection/phpcollection/src"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs"/>
+	<buildpathentry kind="src" path="vendor/phpcollection/phpcollection/src"/>
 	<buildpathentry kind="src" path="vendor/sensio/distribution-bundle"/>
 	<buildpathentry kind="src" path="vendor/incenteev/composer-parameter-handler"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/google-authenticator/tests"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs"/>
 	<buildpathentry kind="src" path="vendor/friendsofsymfony/comment-bundle"/>
-	<buildpathentry kind="src" path="vendor/doctrine/cache/lib"/>
 	<buildpathentry kind="src" path="vendor/symfony/swiftmailer-bundle"/>
+	<buildpathentry kind="src" path="vendor/doctrine/cache/lib"/>
 	<buildpathentry kind="src" path="vendor/nelmio/api-doc-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/BasketBundle"/>
-	<buildpathentry kind="src" path="vendor/doctrine/orm/lib"/>
 	<buildpathentry kind="src" path="vendor/symfony/monolog-bundle"/>
+	<buildpathentry kind="src" path="vendor/doctrine/orm/lib"/>
 	<buildpathentry kind="src" path="vendor/jms/serializer/src"/>
 	<buildpathentry kind="src" path="vendor/twig/extensions/lib"/>
+	<buildpathentry kind="src" path="vendor/egeloen/ckeditor-bundle"/>
 	<buildpathentry kind="src" path="vendor/doctrine/inflector/lib"/>
 	<buildpathentry kind="src" path="vendor/sensio/framework-extra-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/doctrine-extensions/tests"/>
@@ -30,6 +31,7 @@
 	<buildpathentry kind="src" path="vendor/sonata-project/page-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/InvoiceBundle"/>
 	<buildpathentry kind="src" path="vendor/guzzlehttp/guzzle/src"/>
+	<buildpathentry kind="src" path="vendor/sonata-project/formatter-bundle"/>
 	<buildpathentry kind="src" path="vendor/friendsofsymfony/rest-bundle"/>
 	<buildpathentry kind="src" path="vendor/jms/serializer-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/block-bundle"/>
@@ -40,8 +42,8 @@
 	<buildpathentry kind="src" path="vendor/willdurand/jsonp-callback-validator/src"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/intl-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/doctrine-orm-admin-bundle"/>
-	<buildpathentry kind="src" path="vendor/sensiolabs/security-checker"/>
 	<buildpathentry kind="src" path="vendor/sensio/generator-bundle"/>
+	<buildpathentry kind="src" path="vendor/sensiolabs/security-checker"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/tests/PaymentBundle"/>
 	<buildpathentry kind="src" path="vendor/jms/parser-lib/src"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/DeliveryBundle"/>
@@ -54,6 +56,7 @@
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/CustomerBundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/tests/DeliveryBundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/ProductBundle"/>
+	<buildpathentry kind="src" path="vendor/dflydev/markdown/src"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/tests/PriceBundle"/>
 	<buildpathentry kind="src" path="vendor/friendsofsymfony/user-bundle"/>
 	<buildpathentry kind="src" path="vendor/monolog/monolog/src/Monolog"/>
@@ -61,6 +64,7 @@
 	<buildpathentry kind="src" path="vendor/kriswallsmith/buzz/lib"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/PriceBundle"/>
 	<buildpathentry kind="src" path="vendor/doctrine/dbal/lib"/>
+	<buildpathentry kind="src" path="vendor/egeloen/json-builder/src"/>
 	<buildpathentry kind="src" path="vendor/willdurand/negotiation/src"/>
 	<buildpathentry kind="src" path="vendor/robloach/component-installer/src"/>
 	<buildpathentry kind="src" path="vendor/swiftmailer/swiftmailer/lib"/>
@@ -78,6 +82,7 @@
 	<buildpathentry kind="src" path="vendor/knplabs/gaufrette/src"/>
 	<buildpathentry kind="src" path="vendor/endroid/qrcode-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/admin-bundle"/>
+	<buildpathentry kind="src" path="vendor/knplabs/knp-markdown-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/media-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/Component"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/classification-bundle"/>

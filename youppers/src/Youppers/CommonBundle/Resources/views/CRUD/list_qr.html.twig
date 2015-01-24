@@ -8,6 +8,6 @@
 
 {% block field %}
 <div style="height: {{ div_size }}px; width: {{ div_size }}px;">
-<div style="position: absolute; padding: {{ qr_padding }}px;"><img src="/youppers/web/bundles/youpperscommon/logo_35x40.png" width="{{ qr_size }}" height="{{ qr_size }}"></div>
+<div style="position: absolute; padding: {{ qr_padding }}px;"><img src="{{ asset('bundles/youpperscommon/logo_35x40.png') }}'" width="{{ qr_size }}" height="{{ qr_size }}"></div>
 <div style="position: absolute;"><img alt="{{ url }}" src="{{ qrcode_data_uri(url, size=qr_size, padding=qr_padding, background_color=qr_background)  }}" /></div>
 </div>{% endblock %}
