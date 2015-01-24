@@ -1,7 +1,11 @@
 sonata_admin:
     title:      "Youppers Admin"
     title_logo: 'bundles/youpperscommon/logo_35x40.png'
+    options:
+        html5_validate: false # does not use html5 validation
+        pager_links: 5 # pager max links to display
+    
     templates:
-        layout: YouppersCommonBundle:Admin:standard_layout.html.twig
+        layout: YouppersCommonBundle:Admin:layout.html.twig
         short_object_description: YouppersCommonBundle:Admin:short-object-description.html.twig
         
