@@ -997,16 +997,16 @@
         },
         {
             "name": "endroid/qrcode",
-            "version": "1.4.8",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/QrCode.git",
-                "reference": "30979b12fbf9be60d843850cb7b5548ca9262745"
+                "reference": "d178018a109f46a7caf86ce76c8de6902cb57a82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/QrCode/zipball/30979b12fbf9be60d843850cb7b5548ca9262745",
-                "reference": "30979b12fbf9be60d843850cb7b5548ca9262745",
+                "url": "https://api.github.com/repos/endroid/QrCode/zipball/d178018a109f46a7caf86ce76c8de6902cb57a82",
+                "reference": "d178018a109f46a7caf86ce76c8de6902cb57a82",
                 "shasum": ""
             },
             "require": {
@@ -1043,21 +1043,21 @@
                 "qr",
                 "qrcode"
             ],
-            "time": "2014-12-28 09:41:05"
+            "time": "2015-01-25 22:41:34"
         },
         {
             "name": "endroid/qrcode-bundle",
-            "version": "1.4.14",
+            "version": "1.5.0",
             "target-dir": "Endroid/Bundle/QrCodeBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/EndroidQrCodeBundle.git",
-                "reference": "19a921acec993a152f0260bbb18d79b289162a56"
+                "reference": "450777d82b6d50d9de8a1d97da4f01d862c500bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/EndroidQrCodeBundle/zipball/19a921acec993a152f0260bbb18d79b289162a56",
-                "reference": "19a921acec993a152f0260bbb18d79b289162a56",
+                "url": "https://api.github.com/repos/endroid/EndroidQrCodeBundle/zipball/450777d82b6d50d9de8a1d97da4f01d862c500bc",
+                "reference": "450777d82b6d50d9de8a1d97da4f01d862c500bc",
                 "shasum": ""
             },
             "require": {
@@ -1108,7 +1108,7 @@
                 "qrcode",
                 "symfony"
             ],
-            "time": "2014-12-28 09:38:53"
+            "time": "2015-01-25 22:42:57"
         },
         {
             "name": "eonasdan/bootstrap-datetimepicker",
@@ -4660,16 +4660,16 @@
         },
         {
             "name": "symfony/assetic-bundle",
-            "version": "v2.5.0",
+            "version": "v2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/AsseticBundle.git",
-                "reference": "90ea7fb66d6d5245fd4afc16e4c8070214254fec"
+                "reference": "39d0e15b63936464a9929c00f8e28a30f2331419"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/90ea7fb66d6d5245fd4afc16e4c8070214254fec",
-                "reference": "90ea7fb66d6d5245fd4afc16e4c8070214254fec",
+                "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/39d0e15b63936464a9929c00f8e28a30f2331419",
+                "reference": "39d0e15b63936464a9929c00f8e28a30f2331419",
                 "shasum": ""
             },
             "require": {
@@ -4720,7 +4720,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2014-10-15 12:03:38"
+            "time": "2015-01-26 13:00:20"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -5008,16 +5008,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.17.0",
+            "version": "v1.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "2493970fa4d587eca73f77e6d8bd48a8bdd4c608"
+                "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/2493970fa4d587eca73f77e6d8bd48a8bdd4c608",
-                "reference": "2493970fa4d587eca73f77e6d8bd48a8bdd4c608",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/4cf7464348e7f9893a93f7096a90b73722be99cf",
+                "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf",
                 "shasum": ""
             },
             "require": {
@@ -5026,7 +5026,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.17-dev"
+                    "dev-master": "1.18-dev"
                 }
             },
             "autoload": {
@@ -5061,7 +5061,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-01-14 10:15:49"
+            "time": "2015-01-25 17:32:08"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
