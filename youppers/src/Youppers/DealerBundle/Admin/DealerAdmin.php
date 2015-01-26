@@ -52,7 +52,7 @@ class DealerAdmin extends Admin
 		->add('enabled', null, array('editable' => true))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('code')
-		->add('stores')
+		->add('stores', null, array('associated_property' => 'name'))
 		;
 	}
 

@@ -52,9 +52,50 @@ class Store
 	protected $description;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="Box", mappedBy="store")
+	 * @ORM\OneToMany(targetEntity="Box", mappedBy="store", cascade={"all"}, orphanRemoval=true)
 	 **/
 	private $boxes;
+	
+	/**
+	 * @param Box[] $boxes
+	 */
+	public function setBoxs($boxes)
+	{
+		$this->boxes->clear();
+	
+		foreach ($boxes as $box) {
+			$this->addBox($box);
+		}
+	}
+	
+	/**
+	 * @return Box[]
+	 */
+	public function getBoxs()
+	{
+		return $this->boxes;
+	}
+	
+	/**
+	 * @param Box $box
+	 * @return void
+	 */
+	public function addBox(Box $box)
+	{
+		$box->setStore($this);
+		$this->boxes->add($box);
+	}
+	
+	/**
+	 * @param Box $box
+	 * @return void
+	 */
+	public function removeBox(Box $box)
+	{
+		$box->setStore(null);
+		$this->boxes->removeElement($box);
+	}
+	
 	
 	public function __toString()
 	{
@@ -234,29 +275,6 @@ class Store
     public function getDealer()
     {
         return $this->dealer;
-    }
-
-    /**
-     * Add boxes
-     *
-     * @param \Youppers\DealerBundle\Entity\Box $boxes
-     * @return Store
-     */
-    public function addBox(\Youppers\DealerBundle\Entity\Box $boxes)
-    {
-        $this->boxes[] = $boxes;
-
-        return $this;
-    }
-
-    /**
-     * Remove boxes
-     *
-     * @param \Youppers\DealerBundle\Entity\Box $boxes
-     */
-    public function removeBox(\Youppers\DealerBundle\Entity\Box $boxes)
-    {
-        $this->boxes->removeElement($boxes);
     }
 
     /**

@@ -43,6 +43,10 @@ class BoxProduct
 	{
 		return ($this->getBox() ? $this->getBox() : "New") . ($this->getName() ? " - " . $this->getName() : "New") . ($this->getProduct() ? " - " . $this->getProduct() : "");
 	}
+	
+	public function getNameProduct() {
+		return ($this->getName() ? $this->getName() : "New") . ($this->getProduct() ? " - " . $this->getProduct() : "");		
+	}
 		
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
 

@@ -52,7 +52,7 @@ class StoreAdmin extends Admin
 		->add('dealer', null, array('route' => array('name' => 'show')))		
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('code')
-		->add('boxes')
+		->add('boxes', null, array('associated_property' => 'name'))
 		;
 	}
 
@@ -89,8 +89,21 @@ class StoreAdmin extends Admin
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
-		->end()
-		;
+		->end();
+		
+		if (!$this->hasParentFieldDescription()) {
+			$formMapper
+				->with('Boxes', array('class' => 'col-md-12'))
+				->add('boxes', 'sonata_type_collection', array(
+					'by_reference'       => false,
+					'cascade_validation' => true,
+					'required' => false
+				), array(
+					'edit' => 'inline',
+					'inline' => 'table'
+				))
+				->end();
+		}		
 	}
 
 	/**

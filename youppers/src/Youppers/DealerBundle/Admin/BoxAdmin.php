@@ -38,7 +38,7 @@ class BoxAdmin extends Admin
 		->add('code')
 		->add('enabled')
 		->add('description')
-		->add('boxProducts', null, array('route' => array('name' => 'edit'), 'associated_property' => 'name'))
+		->add('boxProducts', null, array('route' => array('name' => 'edit'), 'associated_property' => 'nameProduct'))
 		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
 		//->add('products')
 		;
@@ -60,7 +60,7 @@ class BoxAdmin extends Admin
              ))
 		->addIdentifier('code', null, array('route' => array('name' => 'show')))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
-		->add('boxProducts')
+		->add('boxProducts', null, array('associated_property' => 'nameProduct'))
 		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
@@ -107,25 +107,27 @@ class BoxAdmin extends Admin
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
-		->end()
+		->end();
 		/*
 		->with('Options', array('class' => 'col-md-6'))
 		->add('engine', 'sonata_type_model_list')
 		->add('color', 'sonata_type_model_list')
 		->end()
 		*/
-		->with('Products', array('class' => 'col-md-12'))
-			->add('boxProducts', 'sonata_type_collection', array(
-            		'by_reference'       => false,
-            		'cascade_validation' => true,
-					'required' => false
-			), array(
-                'edit' => 'inline',
-                'inline' => 'table',
-                'sortable' => 'position',  // FIXME non mostra la posizione aggiornata secondo posizione
-            ))
-		->end()
-		;
+		if (!$this->hasParentFieldDescription()) {
+			$formMapper
+				->with('Products', array('class' => 'col-md-12'))
+				->add('boxProducts', 'sonata_type_collection', array(
+	            		'by_reference'       => false,
+	            		'cascade_validation' => true,
+						'required' => false
+				), array(
+	                'edit' => 'inline',
+	                'inline' => 'table',
+	                'sortable' => 'position',  // FIXME non mostra la posizione aggiornata secondo posizione
+	            ))
+			->end();
+		}
 	}
 
 	/**
