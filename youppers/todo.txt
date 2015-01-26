@@ -26,7 +26,10 @@ Fare un nuovo ClientIdprovider che usa l'utente dell'app invece che un random se
 
 OPEN ISSUES
 
-Gli elementi nel box non vengono visualizzati tenendo conto dell'ordine
+Sonata\ProductBundle\Entity
+	BaseProduct e ProductInterface
+		public function validateOneMainCategory(ExecutionContextInterface $context)
+
 
 Ripristinare l'italiano (o multilingua) per la Dashboard e capire come fare con "page/sites"
 https://gist.github.com/Dattaya/1670163

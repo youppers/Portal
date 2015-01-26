@@ -13,10 +13,10 @@
         -->
 		<discriminator-class value="sonata.product.product">Application\Sonata\ProductBundle\Entity\Product</discriminator-class>
 		<discriminator-class value="youppers.company.product.generic">Application\Sonata\ProductBundle\Entity\Generic</discriminator-class>
+		<discriminator-class value="youppers.company.product.tile">Application\Sonata\ProductBundle\Entity\Tile</discriminator-class>
 
         <property xml-attribute-map="true" name="id" type="integer" expose="true" since-version="1.0" groups="sonata_api_read,sonata_api_write,sonata_search" />
 		
 		
     </class>
 </serializer>
-l

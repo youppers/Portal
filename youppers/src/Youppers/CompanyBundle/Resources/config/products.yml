@@ -13,8 +13,14 @@ services:
         arguments:
             - '@serializer'
 
-sonata_product:
-    products:
-        youppers.company.product.generic:
-            provider: youppers.company.product.generic.type
-            manager: youppers.company.product.generic.manager            
+    youppers.company.product.tile.manager:
+        class: Sonata\ProductBundle\Entity\ProductManager
+        arguments:
+            - Application\Sonata\ProductBundle\Entity\Tile
+            - '@doctrine'
+
+    youppers.company.product.tile.type:
+        class: Application\Sonata\ProductBundle\Provider\TileProductProvider
+        arguments:
+            - '@serializer'
+            
