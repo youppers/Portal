@@ -57,7 +57,7 @@ class Box
 	protected $description;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"all"})
+	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 **/
 	private $boxProducts;
@@ -98,6 +98,7 @@ class Box
 	 */
 	public function removeBoxProduct(BoxProduct $boxProduct)
 	{
+		$boxProduct->setBox(null);
 		$this->boxProducts->removeElement($boxProduct);
 	}
 
