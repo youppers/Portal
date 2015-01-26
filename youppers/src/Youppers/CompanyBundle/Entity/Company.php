@@ -89,6 +89,7 @@ class Company
 	 */
 	public function removeBrand(Brand $brand)
 	{
+		$brand->setCompany(null);
 		$this->brands->removeElement($brand);
 	}	
 		
