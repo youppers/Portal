@@ -61,8 +61,8 @@ class AppKernel extends Kernel
         	//new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
         		
         	// API
-        	//new FOS\RestBundle\FOSRestBundle(),
-        	//new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+        	new FOS\RestBundle\FOSRestBundle(),
+        	new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         		
         	// E-COMMERCE
         	new Sonata\BasketBundle\SonataBasketBundle(),
