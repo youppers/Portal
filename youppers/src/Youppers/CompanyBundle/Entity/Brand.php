@@ -79,6 +79,9 @@ class Brand
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
+		if ($this->enabled == null) {
+			$this->enabled = false;
+		}		
 	}
 
 	/**
