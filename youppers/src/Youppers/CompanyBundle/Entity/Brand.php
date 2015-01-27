@@ -47,7 +47,7 @@ class Brand
 	protected $description;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 */
 	protected $logo;
 	
