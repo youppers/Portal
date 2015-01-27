@@ -106,7 +106,7 @@ class CompanyAdmin extends Admin
 					)
 				)
 			)
-		->add('url')
+		->add('url', null, array('required' => false))
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))

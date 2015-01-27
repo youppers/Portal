@@ -140,7 +140,7 @@ class BrandAdmin extends Admin
 				)
 		)
 		)		
-		->add('url')
+		->add('url', null, array('required' => false))
 		->end();
 		
 		if (!$this->hasParentFieldDescription()) {
