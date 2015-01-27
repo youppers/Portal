@@ -97,9 +97,8 @@ youppers_dealer:
     prefix:   /
 
 youppers_company:
-    resource: "@YouppersCompanyBundle/Controller/"
-    type:     annotation
-    prefix:   /
+    resource: "@YouppersCompanyBundle/Resources/config/routing.yml"
+    prefix:   /    
 
 scraper:
     resource: "@YouppersScraperBundle/Controller/"

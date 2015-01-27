@@ -3,10 +3,10 @@
 namespace Youppers\CompanyBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class BrandController extends Controller
+class BrandCRUDController extends CRUDController
 {
 	public function productsAction()
     {

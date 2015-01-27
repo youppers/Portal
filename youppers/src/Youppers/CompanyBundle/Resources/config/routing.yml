@@ -1,0 +1,4 @@
+youppers_company:
+    resource: "@YouppersCompanyBundle/Controller/"
+    type:     annotation
+    prefix:   /
