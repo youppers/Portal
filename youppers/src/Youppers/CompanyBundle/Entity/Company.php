@@ -22,6 +22,10 @@ class Company
 	 */
 	protected $name;
 
+	/**
+	 * @ORM\Column(name="code", type="string", length=20, unique=true)
+	 */
+	protected $code;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
@@ -161,6 +165,29 @@ class Company
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Company
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**

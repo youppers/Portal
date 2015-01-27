@@ -86,9 +86,12 @@ sonata_media_media:
 #    type:     annotation
 #    prefix:   /
 
+youppers_common:
+    resource: "@YouppersCommonBundle/Resources/config/routing.yml"
+    prefix:   /    
+
 youppers_customer:
-    resource: "@YouppersCustomerBundle/Controller/"
-    type:     annotation
+    resource: "@YouppersCustomerBundle/Resources/config/routing.yml"
     prefix:   /
 
 youppers_dealer:

@@ -62,6 +62,7 @@ class DealerAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
+		->add('code')		
 		->add('name')
 		->add('enabled')
 		;

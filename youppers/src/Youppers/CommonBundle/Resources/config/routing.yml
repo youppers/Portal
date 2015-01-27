@@ -1,0 +1,4 @@
+youppers_common:
+    resource: "@YouppersCommonBundle/Controller/"
+    type:     annotation
+    prefix:   /

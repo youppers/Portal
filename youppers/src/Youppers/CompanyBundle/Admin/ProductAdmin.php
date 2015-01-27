@@ -50,7 +50,7 @@ class ProductAdmin extends Admin
 				'inline' => 'table'
 		))
 		*/
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
+		->add('id', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
 		
 		;
 	}
@@ -72,7 +72,7 @@ class ProductAdmin extends Admin
 		->add('code')
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('productModels')
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
+		->add('id', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
 

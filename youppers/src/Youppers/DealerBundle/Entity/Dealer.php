@@ -55,7 +55,7 @@ class Dealer
 	
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->getName() ?: 'New';
 	}
 	
 	/**

@@ -40,6 +40,7 @@ class CompanyAdmin extends Admin
 		$showMapper
 		->add('enabled')
 		->add('name')
+		->add('code')
 		->add('description')
 		->add('logo', null,array('label' => 'Company Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('url')
@@ -61,6 +62,7 @@ class CompanyAdmin extends Admin
 		$listMapper
 		->add('enabled', null, array('editable' => true))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->add('code')		
 		//->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
 		->addIdentifier('logo', null, array('label' => 'Company Logo', 'route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))
 		->add('brands')
@@ -73,6 +75,7 @@ class CompanyAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
+		->add('code')		
 		->add('name')
 		->add('enabled')
 		;
@@ -95,6 +98,7 @@ class CompanyAdmin extends Admin
 		$formMapper
 		->with('Company', array('class' => 'col-md-8'))
 		->add('name')
+		->add('code')		
 		->add('description')
 		->add('logo', 'sonata_type_model_list', array(
 					'required' => false

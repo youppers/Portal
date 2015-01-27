@@ -130,7 +130,17 @@ class Product
 		$this->updatedAt = new \DateTime();
 	}	
 		
-			
+	public function getQr() {
+		$brand = $this->getBrand();
+		if ($brand) {
+			$company = $brand->getCompany();
+			if ($company) {
+				return implode('-',array($company()->getCode(), $brand()->getCode(), $this->getCode()));
+			}
+		}
+		return "--";
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
 
     /**

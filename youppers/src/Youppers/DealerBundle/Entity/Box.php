@@ -124,6 +124,17 @@ class Box
 		$this->updatedAt = new \DateTime();
 	}	
 		
+	public function getQr() {
+		$store = $this->getStore();
+		if ($store) {
+			$dealer = $store->getDealer();
+			if ($dealer) {
+				return implode('-',array($dealer->getCode(), $store->getCode(), $this->getCode()));
+			}
+		}
+		return "--";
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
 
     /**

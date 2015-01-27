@@ -39,7 +39,7 @@ class BoxAdmin extends Admin
 		->add('enabled')
 		->add('description')
 		->add('boxProducts', null, array('route' => array('name' => 'edit'), 'associated_property' => 'nameProduct'))
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
+		->add('id', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
 		//->add('products')
 		;
 	}
@@ -61,7 +61,7 @@ class BoxAdmin extends Admin
 		->addIdentifier('code', null, array('route' => array('name' => 'show')))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('boxProducts', null, array('associated_property' => 'nameProduct'))
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
+		->add('id', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
 
@@ -117,7 +117,9 @@ class BoxAdmin extends Admin
 		if (!$this->hasParentFieldDescription()) {
 			$formMapper
 				->with('Products', array('class' => 'col-md-12'))
-				->add('boxProducts', 'sonata_type_collection', array(
+				->add('boxProducts', 'sonata_type_collection', 
+					array(
+						'type_options' => array('delete' => false),
 	            		'by_reference'       => false,
 	            		'cascade_validation' => true,
 						'required' => false
@@ -136,6 +138,13 @@ class BoxAdmin extends Admin
 	public function getNewInstance()
 	{
 		$object = parent::getNewInstance();
+
+		$filterParameters = $this->getFilterParameters();
+		
+		if (isset($filterParameters['store'])) {
+			$store = $this->getModelManager()->find('Youppers\DealerBundle\Entity\Store',$filterParameters['store']['value']);
+			$object->setStore($store);
+		}
 		
 		$object->setEnabled(true);
 

@@ -113,6 +113,13 @@ class StoreAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
+		$filterParameters = $this->getFilterParameters();
+		
+		if (isset($filterParameters['dealer'])) {
+			$dealer = $this->getModelManager()->find('Youppers\DealerBundle\Entity\Dealer',$filterParameters['dealer']['value']);
+			$object->setDealer($dealer);
+		}
+		
 		$object->setEnabled(true);
 
 		return $object;

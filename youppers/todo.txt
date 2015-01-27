@@ -24,6 +24,8 @@ Attivare https (consigliabile per l'accesso alle api)
 
 Fare un nuovo ClientIdprovider che usa l'utente dell'app invece che un random se non tova il cookie _ga
 
+Nella navigazione gerarchica (company > brand > product) e (dealer > store < box) visualizzare sulla breadcrumb i vari passaggi
+
 OPEN ISSUES
 
 Sonata\ProductBundle\Entity

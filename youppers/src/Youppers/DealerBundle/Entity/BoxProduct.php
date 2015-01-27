@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(name="box_product_idx", columns={"box_id", "product_id"})
  *   })
+ * @ORM\HasLifecycleCallbacks
  */
 class BoxProduct
 {
@@ -38,6 +39,21 @@ class BoxProduct
 	 * @ORM\Column(type="integer")
 	 */
 	protected $position;
+	
+	/**
+	 * @ORM\Column(type="boolean", options={"default":true})
+	 */
+	protected $enabled;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="updated_at")
+	 */
+	protected $updatedAt;
+	
+	/**
+	 * @ORM\Column(type="datetime", name="created_at")
+	 */
+	protected $createdAt;
 		
 	public function __toString()
 	{
@@ -47,8 +63,26 @@ class BoxProduct
 	public function getNameProduct() {
 		return ($this->getName() ? $this->getName() : "New") . ($this->getProduct() ? " - " . $this->getProduct() : "");		
 	}
-		
+	
+	/**
+	 * @ORM\PrePersist()
+	 */
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+	}
+	
+	/**
+	 * @ORM\PreUpdate()
+	 */
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
+
 
     /**
      * Get id
@@ -104,6 +138,75 @@ class BoxProduct
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return BoxProduct
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean 
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return BoxProduct
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return BoxProduct
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**

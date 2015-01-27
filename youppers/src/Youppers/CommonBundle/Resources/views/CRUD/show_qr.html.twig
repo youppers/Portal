@@ -1,6 +1,6 @@
 {% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
 
-{% set url = url('youppers_customer_qr_scan', { qr: value}) %}
+{% set url = url(field_description.options.route.name, { qr: object.qr}) %}
 {% set qr_size = field_description.options.size|default(370) %}
 {% set qr_padding = field_description.options.padding|default(20) %}
 {% set div_size = qr_padding + qr_size + qr_padding %}

@@ -98,6 +98,7 @@ class BoxProductAdmin extends Admin
 			->add('position','hidden',array('attr'=>array("hidden" => true)));				
 		}
 		$formMapper
+		->add('enabled')
 		->add('name')
 		->add('product', 'sonata_type_model_list')
 		;

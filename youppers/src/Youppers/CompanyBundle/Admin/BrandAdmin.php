@@ -109,9 +109,9 @@ class BrandAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('company')
-		->add('name')
 		->add('code')
+		->add('name')
+		->add('company')
 		->add('enabled')
 		;
 	}
