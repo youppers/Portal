@@ -140,6 +140,13 @@ class ProductAdmin extends Admin
 	{
 		$object = parent::getNewInstance();
 		
+		$filterParameters = $this->getFilterParameters();
+		
+		if (isset($filterParameters['brand'])) {
+			$brand = $this->getModelManager()->find('Youppers\CompanyBundle\Entity\Brand',$filterParameters['brand']['value']);
+			$object->setBrand($brand);		
+		}
+		
 		//$object->setCreatedAt(new \DateTime());
 		$object->setEnabled(true);
 
