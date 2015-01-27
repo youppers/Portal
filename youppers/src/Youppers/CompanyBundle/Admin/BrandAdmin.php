@@ -50,6 +50,7 @@ class BrandAdmin extends Admin
 		->add('code')
 		->add('description')
 		->add('logo', null, array('label' => 'Brand Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))		
+		->add('url')
 		->add('createdAt')
 		->add('updatedAt')
 		//->add('products')
@@ -139,6 +140,7 @@ class BrandAdmin extends Admin
 				)
 		)
 		)		
+		->add('url')
 		->end();
 		
 		if (!$this->hasParentFieldDescription()) {

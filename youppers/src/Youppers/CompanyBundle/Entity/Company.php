@@ -39,6 +39,11 @@ class Company
 	protected $logo;
 	
 	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected $url;
+	
+	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -202,6 +207,29 @@ class Company
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Company
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**

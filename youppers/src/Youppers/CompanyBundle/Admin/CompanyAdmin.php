@@ -42,6 +42,7 @@ class CompanyAdmin extends Admin
 		->add('name')
 		->add('description')
 		->add('logo', null,array('label' => 'Company Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
+		->add('url')
 		->add('createdAt')
 		->add('updatedAt')
 		->add('brands', null, array(
@@ -105,6 +106,7 @@ class CompanyAdmin extends Admin
 					)
 				)
 			)
+		->add('url')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))

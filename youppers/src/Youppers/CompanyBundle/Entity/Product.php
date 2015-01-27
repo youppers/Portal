@@ -49,6 +49,11 @@ class Product
 	protected $enabled;
 	
 	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected $url;
+	
+	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -305,5 +310,28 @@ class Product
     public function getBrand()
     {
         return $this->brand;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Product
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }
