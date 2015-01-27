@@ -21,6 +21,7 @@ class BrandAdmin extends Admin
 	protected function configureRoutes(RouteCollection $collection)
 	{
 		$collection->add('products', $this->getRouterIdParameter().'/products');
+		$collection->add('clone', $this->getRouterIdParameter().'/clone');
 	}
 	
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
@@ -32,6 +33,7 @@ class BrandAdmin extends Admin
 		
 		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));		
 		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+		if ($action != 'edit') $menu->addChild('Clone', array('uri' => $admin->generateUrl('clone', array('id' => $id))));
 
 		$menu->addChild('Products', array('uri' => $admin->generateUrl('products', array('id' => $id))));		
 	}
@@ -93,6 +95,7 @@ class BrandAdmin extends Admin
 				'actions' => array(
 					'child' => array(
 						'route' => array('name' => 'products'),
+						'label' => 'List',
 						'template' => 'YouppersCommonBundle:CRUD:list__action_route.html.twig')
 				)
 			)
@@ -176,6 +179,13 @@ class BrandAdmin extends Admin
 	public function getNewInstance()
 	{
 		$object = parent::getNewInstance();
+
+		$filterParameters = $this->getFilterParameters();
+		
+		if (isset($filterParameters['company'])) {
+			$brand = $this->getModelManager()->find('Youppers\CompanyBundle\Entity\Company',$filterParameters['company']['value']);
+			$object->setCompany($brand);
+		}
 		
 		//$object->setCreatedAt(new \DateTime());
 		$object->setEnabled(true);
