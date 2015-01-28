@@ -70,6 +70,11 @@ class Product
 	protected $description;
 	
 	/**
+	 * @ORM\ManyToOne(targetEntity="Youppers\CommonBundle\Entity\Qr")
+	 */
+	protected $qr;
+	
+	/**
 	 * @param ProductModel[] $models
 	 */
 	public function setProductModels($models)
@@ -129,20 +134,8 @@ class Product
 	{
 		$this->updatedAt = new \DateTime();
 	}	
-		
-	public function getQr() {
-		$brand = $this->getBrand();
-		if ($brand) {
-			$company = $brand->getCompany();
-			if ($company) {
-				return implode('-',array($company()->getCode(), $brand()->getCode(), $this->getCode()));
-			}
-		}
-		return "--";
-	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
-
     /**
      * Constructor
      */
@@ -231,26 +224,26 @@ class Product
     }
 
     /**
-     * Set description
+     * Set url
      *
-     * @param string $description
+     * @param string $url
      * @return Product
      */
-    public function setDescription($description)
+    public function setUrl($url)
     {
-        $this->description = $description;
+        $this->url = $url;
 
         return $this;
     }
 
     /**
-     * Get description
+     * Get url
      *
      * @return string 
      */
-    public function getDescription()
+    public function getUrl()
     {
-        return $this->description;
+        return $this->url;
     }
 
     /**
@@ -300,6 +293,29 @@ class Product
     }
 
     /**
+     * Set description
+     *
+     * @param string $description
+     * @return Product
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * Set brand
      *
      * @param \Youppers\CompanyBundle\Entity\Brand $brand
@@ -323,25 +339,25 @@ class Product
     }
 
     /**
-     * Set url
+     * Set qr
      *
-     * @param string $url
+     * @param \Youppers\CommonBundle\Entity\Qr $qr
      * @return Product
      */
-    public function setUrl($url)
+    public function setQr(\Youppers\CommonBundle\Entity\Qr $qr = null)
     {
-        $this->url = $url;
+        $this->qr = $qr;
 
         return $this;
     }
 
     /**
-     * Get url
+     * Get qr
      *
-     * @return string 
+     * @return \Youppers\CommonBundle\Entity\Qr 
      */
-    public function getUrl()
+    public function getQr()
     {
-        return $this->url;
+        return $this->qr;
     }
 }

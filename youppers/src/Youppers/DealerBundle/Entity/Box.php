@@ -123,20 +123,13 @@ class Box
 	{
 		$this->updatedAt = new \DateTime();
 	}	
-		
-	public function getQr() {
-		$store = $this->getStore();
-		if ($store) {
-			$dealer = $store->getDealer();
-			if ($dealer) {
-				return implode('-',array($dealer->getCode(), $store->getCode(), $this->getCode()));
-			}
-		}
-		return "--";
-	}
 	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Youppers\CommonBundle\Entity\Qr")
+	 */
+	protected $qr;
+		
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
-
     /**
      * Constructor
      */
@@ -314,5 +307,28 @@ class Box
     public function getStore()
     {
         return $this->store;
+    }
+
+    /**
+     * Set qr
+     *
+     * @param \Youppers\CommonBundle\Entity\Qr $qr
+     * @return Box
+     */
+    public function setQr(\Youppers\CommonBundle\Entity\Qr $qr = null)
+    {
+        $this->qr = $qr;
+
+        return $this;
+    }
+
+    /**
+     * Get qr
+     *
+     * @return \Youppers\CommonBundle\Entity\Qr 
+     */
+    public function getQr()
+    {
+        return $this->qr;
     }
 }

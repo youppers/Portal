@@ -10,6 +10,46 @@ use Symfony\Component\HttpFoundation\Response;
 
 class QrController extends Controller
 {
+
+	/**
+	 * @Route("/qr/{id}")
+	 *
+	 * cerca il qr
+	 */
+	public function findAction($id)
+	{
+		$qr = $this->getDoctrine()
+		->getRepository('YouppersCommonBundle:Qr')
+		->find($id);
+
+		if ($qr == null) {
+			return new Response('Invalid QR code');
+		}
+		
+		// TODO gestire ricerca con date e enabled
+		$box = $this->getDoctrine()
+			->getRepository('YouppersDealerBundle:Box')
+			->findOneBy(array('qr' => $qr));
+		 
+		if ($box) {
+			// visualizza la pagina del box
+			return $this->redirectToRoute("youppers_dealer_box_show",array("id" => $box->getId()));
+		}
+
+		// TODO gestire ricerca con date e enabled
+		$product = $this->getDoctrine()
+			->getRepository('YouppersCompanyBundle:Product')
+			->findOneBy(array('qr' => $qr));
+			
+		if ($product) {
+			// visualizza la pagina del box
+			return $this->redirectToRoute("youppers_company_product_show",array("id" => $product->getId()));
+		}
+		
+		// TODO gestire meglio errore
+		return new Response('Invalid QR code, not found');
+	}
+	
     /**
      * @Route("/qr/box/{qr}")
      * 
