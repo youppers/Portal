@@ -37,4 +37,13 @@ abstract class Product extends BaseProduct
     {
         return $this->id;
     }
+    
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+        
 }

@@ -20,4 +20,40 @@ namespace Application\Sonata\ProductBundle\Entity;
  */
 class Tile extends Generic
 {
+	/**
+	 * @var string
+	 */
+	protected $size;
+	
+	/**
+	 * @param string $size
+	 */
+	public function setSize($size)
+	{
+		$this->size = $size;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getSize()
+	{
+		return $this->size;
+	}
+	
+	const SIZE_TSP = 'Small (Tea spoon)';
+	const SIZE_S = 'Medium (Spoon)';
+	const SIZE_TBSP = 'Large (Tablespoon)';
+	
+	/**
+	 * @return array
+	 */
+	public static function getSizeList()
+	{
+		return array(
+				static::SIZE_TSP => static::SIZE_TSP,
+				static::SIZE_S => static::SIZE_S,
+				static::SIZE_TBSP => static::SIZE_TBSP,
+		);
+	}
 }

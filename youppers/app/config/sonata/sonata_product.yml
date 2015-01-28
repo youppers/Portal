@@ -20,6 +20,8 @@ sonata_product:
         youppers.company.product.tile:
             provider: youppers.company.product.tile.type
             manager: youppers.company.product.tile.manager
+            variations:
+              fields: [size]
 
     seo:
         product:

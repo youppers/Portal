@@ -19,6 +19,8 @@
 
             ie : <field name="customField" column="prefix_custom_field" type="string" length="255" />
         -->
+        
+		<field name="size" column="size" type="string" length="50" nullable="true" />
 
     </entity>
 </doctrine-mapping>
