@@ -1,0 +1,11 @@
+sonata_doctrine_orm_admin:
+    audit:
+        force: false
+    
+simple_things_entity_audit:
+    audited_entities:
+        - YouppersDealerBundle\Entity\Box
+        - YouppersDealerBundle\Entity\BoxProduct
+    global_ignore_columns:
+        - created_at
+        - updated_at

@@ -52,6 +52,9 @@ imports:
     - { resource: "@YouppersCompanyBundle/Resources/config/products.yml" }
     - { resource: "@YouppersDealerBundle/Resources/config/admin.xml" }
 
+    # Audit
+    - { resource: audit.yml }
+
 framework:
     #esi:             ~
     translator:      { fallback: "%locale%" }
@@ -125,7 +128,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
-        
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

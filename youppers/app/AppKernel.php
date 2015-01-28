@@ -58,7 +58,7 @@ class AppKernel extends Kernel
         	new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
         		
         	// Disable this if you don't want the audit on entities
-        	//new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
+        	new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
         		
         	// API
         	new FOS\RestBundle\FOSRestBundle(),
