@@ -12,3 +12,8 @@ services:
       - '%happyr.google.analytics.param.requestTimeout%'
     calls:
           - [setRequest, ['@?request=']]
+
+ 
+  youppers.common.qr:
+      class: 'Youppers\CommonBundle\Qr\QrService'
+      arguments: ['@session', '@doctrine.orm.entity_manager' ]

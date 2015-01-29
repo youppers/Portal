@@ -10,11 +10,18 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Symfony\Component\Validator\Constraints as Assert;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-
-#use Sonata\Bundle\DemoBundle\Entity\Inspection;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class BoxAdmin extends Admin
 {
+	
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->add('qr', $this->getRouterIdParameter().'/qr');
+		$collection->add('clone', $this->getRouterIdParameter().'/clone');
+		$collection->add('enable', $this->getRouterIdParameter().'/enable');
+	}
+	
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
 		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
@@ -24,7 +31,9 @@ class BoxAdmin extends Admin
 	
 		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
 		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-			
+		if ($action == 'show') $menu->addChild('Assign Qr', array('uri' => $admin->generateUrl('qr', array('id' => $id))));		
+		if ($action == 'show') $menu->addChild('Clone', array('uri' => $admin->generateUrl('clone', array('id' => $id))));
+		if ($action == 'show') $menu->addChild('Enable', array('uri' => $admin->generateUrl('enable', array('id' => $id))));		
 	}
 	
 	/**
@@ -40,7 +49,6 @@ class BoxAdmin extends Admin
 		->add('description')
 		->add('boxProducts', null, array('route' => array('name' => 'edit'), 'associated_property' => 'nameProduct'))
 		->add('id', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
-		//->add('products')
 		;
 	}
 
@@ -51,7 +59,6 @@ class BoxAdmin extends Admin
 	{
 		$listMapper
 		->add('enabled')
-		//->add('id')
 		->add('store.code')		
 		->add('store', null, array(
                  'route' => array(
@@ -75,7 +82,6 @@ class BoxAdmin extends Admin
 		->add('name')
 		->add('store')
 		->add('enabled')
-		//->add('store')
 		;
 	}
 	
@@ -96,7 +102,6 @@ class BoxAdmin extends Admin
 		$formMapper
 		->with('Box', array('class' => 'col-md-8'));
 		if (!$this->hasParentFieldDescription()) {
-			//$formMapper->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
 			$formMapper
 			->add('store', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
 		}		
@@ -108,12 +113,6 @@ class BoxAdmin extends Admin
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
 		->end();
-		/*
-		->with('Options', array('class' => 'col-md-6'))
-		->add('engine', 'sonata_type_model_list')
-		->add('color', 'sonata_type_model_list')
-		->end()
-		*/
 		if (!$this->hasParentFieldDescription()) {
 			$formMapper
 				->with('Products', array('class' => 'col-md-12'))
@@ -126,7 +125,7 @@ class BoxAdmin extends Admin
 				), array(
 	                'edit' => 'inline',
 	                'inline' => 'table',
-	                'sortable' => 'position',  // FIXME non mostra la posizione aggiornata secondo posizione
+	                'sortable' => 'position',
 	            ))
 			->end();
 		}
@@ -148,13 +147,6 @@ class BoxAdmin extends Admin
 		
 		$object->setEnabled(true);
 
-		/*
-		$inspection = new Inspection();
-		$inspection->setDate(new \DateTime());
-		$inspection->setComment("Initial inpection");
-
-		$object->addInspection($inspection);
-		*/
 		return $object;
 	}
 }

@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Youppers\CompanyBundle\Entity\ProductModel;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class QrController extends Controller
 {
@@ -23,31 +25,25 @@ class QrController extends Controller
 		->find($id);
 
 		if ($qr == null) {
-			return new Response('Invalid QR code');
-		}
-		
-		// TODO gestire ricerca con date e enabled
-		$box = $this->getDoctrine()
-			->getRepository('YouppersDealerBundle:Box')
-			->findOneBy(array('qr' => $qr));
-		 
-		if ($box) {
-			// visualizza la pagina del box
-			return $this->redirectToRoute("youppers_dealer_box_show",array("id" => $box->getId()));
+			throw new ResourceNotFoundException('QR code not found');
 		}
 
-		// TODO gestire ricerca con date e enabled
-		$product = $this->getDoctrine()
-			->getRepository('YouppersCompanyBundle:Product')
-			->findOneBy(array('qr' => $qr));
-			
-		if ($product) {
-			// visualizza la pagina del box
-			return $this->redirectToRoute("youppers_company_product_show",array("id" => $product->getId()));
+		if (!$qr->getEnabled() && false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        	throw $this->createAccessDeniedException('Only allowed to admin',new DisabledException('Disabled QRCode'));
+    	}
+    	
+    	$type = $qr->getType();
+    	
+		$target = $this->getDoctrine()
+			->getRepository($this->get('youppers.common.qr')->getClassName($type))
+			->findOneBy(array('enabled' => true, 'qr' => $qr));
+		 
+		if ($target) {
+			return $this->redirectToRoute($this->get('youppers.common.qr')->getRouteName($type),
+					array("id" => $target->getId()));
+		} else {
+			throw new ResourceNotFoundException('QR code target not found');
 		}
-		
-		// TODO gestire meglio errore
-		return new Response('Invalid QR code, not found');
 	}
 	
     /**
