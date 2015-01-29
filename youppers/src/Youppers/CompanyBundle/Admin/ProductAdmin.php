@@ -9,11 +9,17 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-
-#use Sonata\Bundle\DemoBundle\Entity\Inspection;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class ProductAdmin extends Admin
 {
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->add('qr', $this->getRouterIdParameter().'/qr');
+		$collection->add('clone', $this->getRouterIdParameter().'/clone');
+		$collection->add('enable', $this->getRouterIdParameter().'/enable');
+	}	
+		
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
 		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
@@ -23,6 +29,9 @@ class ProductAdmin extends Admin
 	
 		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
 		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+		if ($action == 'show') $menu->addChild('Assign Qr', array('uri' => $admin->generateUrl('qr', array('id' => $id))));		
+		if ($action == 'show') $menu->addChild('Clone', array('uri' => $admin->generateUrl('clone', array('id' => $id))));
+		if ($action == 'show') $menu->addChild('Enable', array('uri' => $admin->generateUrl('enable', array('id' => $id))));		
 	}
 	
 	/**

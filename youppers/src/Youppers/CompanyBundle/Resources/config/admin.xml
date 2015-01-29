@@ -41,7 +41,7 @@
 
             <argument />
             <argument>Youppers\CompanyBundle\Entity\Product</argument>
-            <argument />
+            <argument>YouppersCompanyBundle:ProductCRUD</argument>
         </service>
 
 
