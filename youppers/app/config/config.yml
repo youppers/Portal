@@ -53,7 +53,7 @@ imports:
     - { resource: "@YouppersDealerBundle/Resources/config/admin.xml" }
 
     # Audit
-    - { resource: audit.yml }
+    #- { resource: audit.yml }
 
 framework:
     #esi:             ~

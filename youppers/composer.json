@@ -41,8 +41,7 @@
         "sonata-project/ecommerce": "dev-master",
         "sonata-project/comment-bundle": "~2.2@dev",
         "friendsofsymfony/comment-bundle": "~2.0@dev",
-        "sonata-project/formatter-bundle": "~2.3",
-        "simplethings/entity-audit-bundle": "0.7.*"
+        "sonata-project/formatter-bundle": "~2.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.5"

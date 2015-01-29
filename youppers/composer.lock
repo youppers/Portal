@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "46edf8ad5ce89dbcaf888dc32f3abed2",
+    "hash": "32101ac7d98ce4a524fc53db25412574",
     "packages": [
         {
             "name": "components/bootstrap",
@@ -3116,49 +3116,6 @@
             ],
             "description": "A security checker for your composer.lock",
             "time": "2014-07-19 10:52:35"
-        },
-        {
-            "name": "simplethings/entity-audit-bundle",
-            "version": "v0.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/simplethings/EntityAudit.git",
-                "reference": "37f8aeaea4cb7e4b7fba07db4109843080a22d0a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/simplethings/EntityAudit/zipball/37f8aeaea4cb7e4b7fba07db4109843080a22d0a",
-                "reference": "37f8aeaea4cb7e4b7fba07db4109843080a22d0a",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/orm": "~2.1"
-            },
-            "require-dev": {
-                "symfony/framework-bundle": "~2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "SimpleThings\\EntityAudit": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "New BSD"
-            ],
-            "description": "Audit for Doctrine Entities",
-            "keywords": [
-                "Audit",
-                "database",
-                "persistence"
-            ],
-            "time": "2014-11-10 16:07:56"
         },
         {
             "name": "sonata-project/admin-bundle",
