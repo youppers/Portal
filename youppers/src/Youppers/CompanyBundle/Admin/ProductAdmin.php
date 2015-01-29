@@ -59,8 +59,8 @@ class ProductAdmin extends Admin
 				'inline' => 'table'
 		))
 		*/
-		->add('id', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
-		
+		->add('qr', null, array('label' => 'QRCode', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
+		->add('qr.products', null, array('route' => array('name' => 'show'), 'associated_property' => 'name'))
 		;
 	}
 
@@ -123,6 +123,8 @@ class ProductAdmin extends Admin
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
+		->add('qr', null, array('property' => 'id'))
+		//->add('qr.products')		
 		->end()
 		/*
 		->with('Options', array('class' => 'col-md-6'))

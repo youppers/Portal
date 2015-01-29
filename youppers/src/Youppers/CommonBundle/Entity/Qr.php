@@ -38,6 +38,16 @@ class Qr
 	protected $createdAt;
 	
 	/**
+	 * @ORM\OneToMany(targetEntity="\Youppers\CompanyBundle\Entity\Product", mappedBy="qr", fetch="EAGER")
+	 **/
+	private $products;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="\Youppers\DealerBundle\Entity\Box", mappedBy="qr", fetch="EAGER")
+	 **/
+	private $boxes;
+	
+	/**
 	 * @ORM\PrePersist()
 	 */
 	public function prePersist()
@@ -58,7 +68,14 @@ class Qr
 	}			
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCommonBundle
-	
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->boxes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -160,5 +177,71 @@ class Qr
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Add products
+     *
+     * @param \Youppers\CompanyBundle\Entity\Product $products
+     * @return Qr
+     */
+    public function addProduct(\Youppers\CompanyBundle\Entity\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \Youppers\CompanyBundle\Entity\Product $products
+     */
+    public function removeProduct(\Youppers\CompanyBundle\Entity\Product $products)
+    {
+        $this->products->removeElement($products);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * Add boxes
+     *
+     * @param \Youppers\DealerBundle\Entity\Box $boxes
+     * @return Qr
+     */
+    public function addBox(\Youppers\DealerBundle\Entity\Box $boxes)
+    {
+        $this->boxes[] = $boxes;
+
+        return $this;
+    }
+
+    /**
+     * Remove boxes
+     *
+     * @param \Youppers\DealerBundle\Entity\Box $boxes
+     */
+    public function removeBox(\Youppers\DealerBundle\Entity\Box $boxes)
+    {
+        $this->boxes->removeElement($boxes);
+    }
+
+    /**
+     * Get boxes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBoxes()
+    {
+        return $this->boxes;
     }
 }
