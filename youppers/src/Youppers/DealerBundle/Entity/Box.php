@@ -125,7 +125,7 @@ class Box
 	}	
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Youppers\CommonBundle\Entity\Qr")
+	 * @ORM\ManyToOne(targetEntity="Youppers\CommonBundle\Entity\Qr", inversedBy="boxes")
 	 */
 	protected $qr;
 		
