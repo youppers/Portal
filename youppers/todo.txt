@@ -1,9 +1,13 @@
 WIP
 
-http://sonata-project.org/bundles/ecommerce/develop/doc/reference/bundles/product.html
-	app/console sonata:product:generate Generic youppers.company.product.generic	
-	php app/console doctrine:schema:update
-	
+usare getLocale() di user per la locale della session
+estendere sonata intl localedetectorinterface
+
+http://symfony.com/doc/current/cookbook/session/locale_sticky_session.html
+
+http://www.tribulations.eu/articles/symfony2-fosuserbundle-select-locale-on-login-and-set-it-in-session.html
+
+
 
 TODO
 
