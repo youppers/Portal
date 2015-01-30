@@ -50,9 +50,14 @@ class ProductController extends Controller
     	   	
     	$data['z'] = rand();
     	
-    	$tracker->send($data, 'event');
-    	$tracker->send($data, 'pageview');
-    	 
+        $logger = $this->get('logger');    	
+    	$res = $tracker->send($data, 'event');
+    	if ($res) {
+    		$logger->info("Sent to GoogleAnalytics: " . var_export($data, true));
+    	} else {
+    		$logger->error("Failed sending to GoogleAnalytics: " . var_export($data, true));
+    	}    	    	
+    	    	 
     	return array('product' => $product);
     }
     
