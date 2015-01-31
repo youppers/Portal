@@ -1,14 +1,3 @@
-WIP
-
-usare getLocale() di user per la locale della session
-estendere sonata intl localedetectorinterface
-
-http://symfony.com/doc/current/cookbook/session/locale_sticky_session.html
-
-http://www.tribulations.eu/articles/symfony2-fosuserbundle-select-locale-on-login-and-set-it-in-session.html
-
-
-
 TODO
 
 Usare "scarper" per inserire nel DB la classificazione di ICS
