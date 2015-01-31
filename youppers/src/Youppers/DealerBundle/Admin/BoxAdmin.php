@@ -47,6 +47,8 @@ class BoxAdmin extends Admin
 		->add('code')
 		->add('enabled')
 		->add('description')
+		->add('createdAt')
+		->add('updatedAt')		
 		->add('boxProducts', null, array('route' => array('name' => 'edit'), 'associated_property' => 'nameProduct'))
 		->add('qr', null, array('label' => 'QRCode', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
 		->add('qr.boxes', null, array('route' => array('name' => 'show'), 'associated_property' => 'name'))
