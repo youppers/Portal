@@ -5,8 +5,31 @@
 <div class="product">
 	{% if product != null %}
 		<div class="product">
-			{{ product.name }} - {{ product.description }}
+			{{ product }} - {{ product.description }}
+			
+{% for product in scraping %}
+<div class="block">
+  <h1>{{ product.title|raw}}</h1>
+  
+  <p>{{ product.description }}</p>
+  <p>Codici ordinazione: 
+	{% for code in product.codes %}{{ code }}{% if loop.last %}.{% else %}, {% endif %}{% endfor %}
+  </p>	
+  
+  <div style="clear: both;">
+	{% for img in product.images %}
+	<img src="{{ img }}">
+	{% endfor %}
+  </div>
+  
+  <ul>
+	{% for attachment in product.attachments %}
+	<li><a href="{{ attachment.uri }}" title="{{ attachment.title }}">{{ attachment.description }}</a></li>
+	{% endfor %}
+  </ul>
+</div>
+{% endfor %}
+
 		</div>
-			<iframe src="{{ product.url }}" width="800" height="600"/>			
 		{% endif %}
 </div>	

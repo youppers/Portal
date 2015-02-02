@@ -1,0 +1,3 @@
+services:
+  youppers.scraper:
+      class: 'Youppers\ScraperBundle\Controller\DefaultController'

@@ -142,7 +142,8 @@ class BoxController extends Controller
     	} else {
     		$logger->error("Failed sending to GoogleAnalytics: " . var_export($data, true));
     	}    	    	
-    	return array('boxProduct' => $boxProduct);
+    	 
+    	return array('boxProduct' => $boxProduct, 'scraping' => $this->get('youppers.scraper')->products($product->getBrand()->getCode(),$product->getCode()));
     }
     
     
