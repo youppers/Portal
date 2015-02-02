@@ -65,26 +65,25 @@ class AppKernel extends Kernel
         	new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         		
         	// E-COMMERCE
-        	new Sonata\BasketBundle\SonataBasketBundle(),
+        	//new Sonata\BasketBundle\SonataBasketBundle(),
         	//new Application\Sonata\BasketBundle\ApplicationSonataBasketBundle(),
-        	new Sonata\CustomerBundle\SonataCustomerBundle(),
+        	//new Sonata\CustomerBundle\SonataCustomerBundle(),
         	//new Application\Sonata\CustomerBundle\ApplicationSonataCustomerBundle(),
-        	new Sonata\DeliveryBundle\SonataDeliveryBundle(),
+        	//new Sonata\DeliveryBundle\SonataDeliveryBundle(),
         	//new Application\Sonata\DeliveryBundle\ApplicationSonataDeliveryBundle(),
-        	new Sonata\InvoiceBundle\SonataInvoiceBundle(),
+        	//new Sonata\InvoiceBundle\SonataInvoiceBundle(),
         	//new Application\Sonata\InvoiceBundle\ApplicationSonataInvoiceBundle(),
-        	new Sonata\OrderBundle\SonataOrderBundle(),
+        	//new Sonata\OrderBundle\SonataOrderBundle(),
         	//new Application\Sonata\OrderBundle\ApplicationSonataOrderBundle(),
-        	new Sonata\PaymentBundle\SonataPaymentBundle(),
+        	//new Sonata\PaymentBundle\SonataPaymentBundle(),
         	//new Application\Sonata\PaymentBundle\ApplicationSonataPaymentBundle(),
-        	new Sonata\ProductBundle\SonataProductBundle(),
-        	new Application\Sonata\ProductBundle\ApplicationSonataProductBundle(),
-        	new Sonata\PriceBundle\SonataPriceBundle(),
-        	new JMS\SerializerBundle\JMSSerializerBundle($this),
-        	new FOS\CommentBundle\FOSCommentBundle(),
-        	new Sonata\CommentBundle\SonataCommentBundle(),
-        	new Application\Sonata\CommentBundle\ApplicationSonataCommentBundle(),
-        		
+        	//new Sonata\ProductBundle\SonataProductBundle(),
+        	//new Application\Sonata\ProductBundle\ApplicationSonataProductBundle(),
+        	//new Sonata\PriceBundle\SonataPriceBundle(),
+        	//new FOS\CommentBundle\FOSCommentBundle(),
+        	//new Sonata\CommentBundle\SonataCommentBundle(),
+        	//new Application\Sonata\CommentBundle\ApplicationSonataCommentBundle(),
+
         	// SONATA CORE & HELPER BUNDLES
         	new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
         	new Sonata\CoreBundle\SonataCoreBundle(),
@@ -99,6 +98,7 @@ class AppKernel extends Kernel
         	new Application\Sonata\NotificationBundle\ApplicationSonataNotificationBundle(),
         	//new Application\Sonata\SeoBundle\ApplicationSonataSeoBundle(),
         	new Sonata\DatagridBundle\SonataDatagridBundle(),
+       		new JMS\SerializerBundle\JMSSerializerBundle($this),        		
         		
         	// Search Integration
         	//new FOS\ElasticaBundle\FOSElasticaBundle(),
@@ -126,6 +126,7 @@ class AppKernel extends Kernel
             new Youppers\CommonBundle\YouppersCommonBundle(),
             new Youppers\DealerBundle\YouppersDealerBundle(),
             new Youppers\CustomerBundle\YouppersCustomerBundle(),
+            new Youppers\ProductBundle\YouppersProductBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
