@@ -43,7 +43,7 @@ class Company
 	protected $logo;
 	
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true )
 	 */
 	protected $url;
 	
