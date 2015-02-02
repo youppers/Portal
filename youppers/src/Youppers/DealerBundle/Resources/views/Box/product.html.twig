@@ -10,6 +10,30 @@
 	{% if product != null %}
 		<div class="boxProductProduct">
 			{{ product.name }} - {{ product.description }}
+			
+			{% for product in scraping %}
+<div class="block">
+  <h1>{{ product.title|raw}}</h1>
+  
+  <p>{{ product.description }}</p>
+  <p>Codici ordinazione: 
+	{% for code in product.codes %}{{ code }}{% if loop.last %}.{% else %}, {% endif %}{% endfor %}
+  </p>	
+  
+  <div style="clear: both;">
+	{% for img in product.images %}
+	<img src="{{ img }}">
+	{% endfor %}
+  </div>
+  
+  <ul>
+	{% for attachment in product.attachments %}
+	<li><a href="{{ attachment.uri }}" title="{{ attachment.title }}">{{ attachment.description }}</a></li>
+	{% endfor %}
+  </ul>
+</div>
+{% endfor %}
+			
 		</div>
 	{% endif %}
 </div>	

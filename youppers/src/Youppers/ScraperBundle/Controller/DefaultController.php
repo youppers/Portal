@@ -33,11 +33,25 @@ class DefaultController extends Controller
      */
     public function productAction($brand,$product)
     {
-    	
     	$res = array('brand' => $brand, 'product' => $product);
     	
-    	$client = new Client();
+    	$products = $this->products($brand, $product);
     	
+    	$res['products'] = $products;    	 
+    	
+    	$res['dump'] = var_export($products,true);
+    	
+    	return $res;
+    	 
+    }
+    
+    public function products($brand,$product)
+    {
+    	
+    	$client = new Client();
+
+    	$products = array();
+    	    	 
     	if ($brand == "IS") {
 
     		$parameters = array(
@@ -49,8 +63,6 @@ class DefaultController extends Controller
     		$searchcrawler = $client->request('POST', 'http://www.idealstandard.it/search.html?no_cache=1', $parameters);
     		
     		$links = $searchcrawler->filter('div.tx-indexedsearch-res > ul > li > div > h3 > a')->links();
-    		
-    		$products = array();
     		
     		foreach ($links as $link) {
     			$uri = $link->getUri();
@@ -91,15 +103,11 @@ class DefaultController extends Controller
     			$results[] = $uri;
     			$products[] = $product;
     		}
-    		
-    		$res['products'] = $products;
-    		    		
-    		$res['dump'] = var_export($products,true);
-    		
+    		    		    		    		
     	} else {
     		//
     	}
     	    	
-        return $res;
+        return $products;
     }
 }

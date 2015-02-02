@@ -56,9 +56,9 @@ class ProductController extends Controller
     		$logger->info("Sent to GoogleAnalytics: " . var_export($data, true));
     	} else {
     		$logger->error("Failed sending to GoogleAnalytics: " . var_export($data, true));
-    	}    	    	
-    	    	 
-    	return array('product' => $product);
+    	}
+    	
+    	return array('product' => $product, 'scraping' => $this->get('youppers.scraper')->products($product->getBrand()->getCode(),$product->getCode()));
     }
     
     
