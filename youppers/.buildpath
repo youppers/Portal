@@ -26,7 +26,7 @@
 	<buildpathentry kind="src" path="vendor/sonata-project/cache/lib"/>
 	<buildpathentry kind="src" path="vendor/imagine/imagine/lib"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/comment-bundle"/>
-	<buildpathentry kind="src" path="app"/>
+	<buildpathentry excluding="cache/" kind="src" path="app"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/OrderBundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/page-bundle"/>
 	<buildpathentry kind="src" path="vendor/sonata-project/ecommerce/src/InvoiceBundle"/>
