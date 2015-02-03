@@ -8,9 +8,16 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Symfony\Component\Validator\Constraints as Assert;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class BoxProductAdmin extends Admin
 {
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		// All routes are removed
+		$collection->clear();
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
