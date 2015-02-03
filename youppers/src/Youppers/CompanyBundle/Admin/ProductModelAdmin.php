@@ -54,7 +54,7 @@ class ProductModelAdmin extends Admin
 		->add('price')
 		->add('createdAt')
 		->add('updatedAt')		
-		->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))
+		//->add('id', null, array('label' => 'QR code', 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))
 		;
 	}
 	
