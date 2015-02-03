@@ -49,7 +49,8 @@ class CompanyAdmin extends Admin
 		->add('brands', null, array(
                  'route' => array(
                      'name' => 'show'
-                 )
+                 ),
+				'associated_property' => 'name'
              ))
 		;
 	}
@@ -65,7 +66,7 @@ class CompanyAdmin extends Admin
 		->add('code')		
 		//->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
 		->addIdentifier('logo', null, array('label' => 'Company Logo', 'route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))
-		->add('brands')
+		->add('brands', null, array('associated_property' => 'name'))
 		;
 	}
 
