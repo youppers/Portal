@@ -1,0 +1,11 @@
+--- vendor/sonata-project/classification-bundle/Admin/CategoryAdmin.orig        2015-02-08 21:50:36.087864980 +0100
++++ vendor/sonata-project/classification-bundle/Admin/CategoryAdmin.php 2015-02-08 22:06:44.031832587 +0100
+@@ -33,6 +33,7 @@
+                 ->add('description', 'textarea', array('required' => false))
+             ->end()
+             ->with('Options', array('class' => 'col-md-6'))
++               ->add('enabled')
+                 ->add('position', 'integer', array('required' => false, 'data' => 0))
+                 ->add('parent', 'sonata_category_selector', array(
+                     'category'      => $this->getSubject() ?: null,
+
