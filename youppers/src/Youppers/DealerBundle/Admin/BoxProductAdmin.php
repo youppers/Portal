@@ -14,8 +14,7 @@ class BoxProductAdmin extends Admin
 {
 	protected function configureRoutes(RouteCollection $collection)
 	{
-		// All routes are removed
-		$collection->clear();
+		$collection->clearExcept(array('create','delete'));
 	}
 	
 	/**

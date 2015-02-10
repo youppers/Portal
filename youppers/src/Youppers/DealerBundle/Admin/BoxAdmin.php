@@ -121,7 +121,7 @@ class BoxAdmin extends Admin
 				->with('Products', array('class' => 'col-md-12'))
 				->add('boxProducts', 'sonata_type_collection', 
 					array(
-						'type_options' => array('delete' => false),
+						//'type_options' => array('delete' => false),
 	            		'by_reference'       => false,
 	            		'cascade_validation' => true,
 						'required' => false
