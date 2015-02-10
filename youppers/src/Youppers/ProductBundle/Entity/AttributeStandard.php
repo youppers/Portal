@@ -50,6 +50,7 @@ class AttributeStandard
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="AttributeOption", mappedBy="attributeStandard", cascade={"all"}, orphanRemoval=true)
+	 * @ORM\OrderBy({"position" = "ASC"})
 	 */
 	protected $attributeOptions;
 	
