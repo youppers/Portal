@@ -26,6 +26,7 @@ Attivare https (consigliabile per l'accesso alle api)
 Fare un nuovo ClientIdprovider che usa l'utente dell'app invece che un random se non tova il cookie _ga
 
 Nella navigazione gerarchica (company > brand > product) e (dealer > store < box) visualizzare sulla breadcrumb i vari passaggi
+Vedere per questo: http://sonata-project.org/bundles/admin/master/doc/reference/architecture.html#create-child-admins
 
 OPEN ISSUES
 
