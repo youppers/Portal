@@ -51,6 +51,7 @@ imports:
     - { resource: "@YouppersCommonBundle/Resources/config/services.yml" }
     - { resource: "@YouppersCompanyBundle/Resources/config/admin.xml" }
     - { resource: "@YouppersCompanyBundle/Resources/config/products.yml" }
+    - { resource: "@YouppersProductBundle/Resources/config/services.yml" }
     - { resource: "@YouppersDealerBundle/Resources/config/admin.xml" }
 
     # Audit

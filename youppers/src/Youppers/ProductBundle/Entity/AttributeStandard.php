@@ -2,14 +2,13 @@
 namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Assetic\Exception\Exception;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="youppers_product__product_type")
+ * @ORM\Table(name="youppers_product__attribute_standard")
  * @ORM\HasLifecycleCallbacks
  */
-class ProductType
+class AttributeStandard
 {
 	public function __toString()
 	{
@@ -44,15 +43,15 @@ class ProductType
 	protected $description;
 	
 	/**
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\ManyToOne(targetEntity="AttributeType", inversedBy="attributeStandards")
+	 * @ORM\JoinColumn(name="attribute_type_id")
 	 */
-	protected $className;
+	protected $attributeType;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="productType", cascade={"all"}, orphanRemoval=true)
-	 * @ORM\OrderBy({"position" = "ASC"})
-	 **/
-	private $productAttributes;
+	 * @ORM\OneToMany(targetEntity="AttributeOption", mappedBy="attributeStandard", cascade={"all"}, orphanRemoval=true)
+	 */
+	protected $attributeOptions;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
@@ -82,23 +81,13 @@ class ProductType
 	}	
 	
 	/**
-	 * @param ProductAttribute $productAttribute
-	 * @return void
+	 * 
+	 * @param AttributeOption $attributeOption
 	 */
-	public function addProductAttribute(ProductAttribute $productAttribute)
+	public function addAttributeOption(AttributeOption $attributeOption)
 	{
-		$productAttribute->setProductType($this);
-		$this->productAttributes->add($productAttribute);
-	}
-	
-	/**
-	 * @param ProductAttribute $productAttribute
-	 * @return void
-	 */
-	public function removeProductAttribute(ProductAttribute $productAttribute)
-	{
-		$productAttribute->setProductType(null);
-		$this->productAttributes->removeElement($productAttribute);
+		$attributeOption->setAttributeStandard($this);
+		$this->attributeOptions->add($attributeOption);
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle
@@ -107,7 +96,7 @@ class ProductType
      */
     public function __construct()
     {
-        $this->productAttributes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->attributeOptions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -124,7 +113,7 @@ class ProductType
      * Set name
      *
      * @param string $name
-     * @return ProductType
+     * @return AttributeStandard
      */
     public function setName($name)
     {
@@ -147,7 +136,7 @@ class ProductType
      * Set code
      *
      * @param string $code
-     * @return ProductType
+     * @return AttributeStandard
      */
     public function setCode($code)
     {
@@ -170,7 +159,7 @@ class ProductType
      * Set enabled
      *
      * @param boolean $enabled
-     * @return ProductType
+     * @return AttributeStandard
      */
     public function setEnabled($enabled)
     {
@@ -193,7 +182,7 @@ class ProductType
      * Set description
      *
      * @param string $description
-     * @return ProductType
+     * @return AttributeStandard
      */
     public function setDescription($description)
     {
@@ -213,33 +202,10 @@ class ProductType
     }
 
     /**
-     * Set className
-     *
-     * @param string $className
-     * @return ProductType
-     */
-    public function setClassName($className)
-    {
-        $this->className = $className;
-
-        return $this;
-    }
-
-    /**
-     * Get className
-     *
-     * @return string 
-     */
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    /**
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return ProductType
+     * @return AttributeStandard
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -262,7 +228,7 @@ class ProductType
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return ProductType
+     * @return AttributeStandard
      */
     public function setCreatedAt($createdAt)
     {
@@ -282,12 +248,45 @@ class ProductType
     }
 
     /**
-     * Get productAttributes
+     * Set attributeType
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeType $attributeType
+     * @return AttributeStandard
+     */
+    public function setAttributeType(\Youppers\ProductBundle\Entity\AttributeType $attributeType = null)
+    {
+        $this->attributeType = $attributeType;
+
+        return $this;
+    }
+
+    /**
+     * Get attributeType
+     *
+     * @return \Youppers\ProductBundle\Entity\AttributeType 
+     */
+    public function getAttributeType()
+    {
+        return $this->attributeType;
+    }
+
+    /**
+     * Remove attributeOptions
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $attributeOptions
+     */
+    public function removeAttributeOption(\Youppers\ProductBundle\Entity\AttributeOption $attributeOptions)
+    {
+        $this->attributeOptions->removeElement($attributeOptions);
+    }
+
+    /**
+     * Get attributeOptions
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getProductAttributes()
+    public function getAttributeOptions()
     {
-        return $this->productAttributes;
+        return $this->attributeOptions;
     }
 }

@@ -124,7 +124,7 @@ class BoxAdmin extends Admin
 						//'type_options' => array('delete' => false),
 	            		'by_reference'       => false,
 	            		'cascade_validation' => true,
-						'required' => false
+						//'required' => false
 				), array(
 	                'edit' => 'inline',
 	                'inline' => 'table',

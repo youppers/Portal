@@ -123,10 +123,10 @@ class AppKernel extends Kernel
         	// YOUPPERS 
         	new Youppers\ScraperBundle\YouppersScraperBundle(),
         	new Youppers\CompanyBundle\YouppersCompanyBundle(),
-            new Youppers\CommonBundle\YouppersCommonBundle(),
+            new Youppers\ProductBundle\YouppersProductBundle(),
+        	new Youppers\CommonBundle\YouppersCommonBundle(),
             new Youppers\DealerBundle\YouppersDealerBundle(),
             new Youppers\CustomerBundle\YouppersCustomerBundle(),
-            new Youppers\ProductBundle\YouppersProductBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

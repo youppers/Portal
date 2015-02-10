@@ -1,0 +1,30 @@
+services:
+    youppers_product.admin.product_type:
+        class: Youppers\ProductBundle\Admin\ProductTypeAdmin
+        arguments: [~, Youppers\ProductBundle\Entity\ProductType, 'YouppersProductBundle:ProductTypeAdmin']
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Type'}
+
+    youppers_product.admin.product_attribute:
+        class: Youppers\ProductBundle\Admin\ProductAttributeAdmin
+        arguments: [~, Youppers\ProductBundle\Entity\ProductAttribute, ~]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Attribute',  show_in_dashboard: false}
+
+    youppers_product.admin.attribute_type:
+        class: Youppers\ProductBundle\Admin\AttributeTypeAdmin
+        arguments: [~, Youppers\ProductBundle\Entity\AttributeType, 'YouppersProductBundle:AttributeTypeAdmin']
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Attribute Type'}
+
+    youppers_product.admin.attribute_standard:
+        class: Youppers\ProductBundle\Admin\AttributeStandardAdmin
+        arguments: [~, Youppers\ProductBundle\Entity\AttributeStandard, 'YouppersProductBundle:AttributeStandardAdmin']
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Attribute Standard'}
+
+    youppers_product.admin.attribute_option:
+        class: Youppers\ProductBundle\Admin\AttributeOptionAdmin
+        arguments: [~, Youppers\ProductBundle\Entity\AttributeOption, ~ ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Attribute Option', show_in_dashboard: false}

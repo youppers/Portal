@@ -104,9 +104,9 @@ class BoxProductAdmin extends Admin
 			->add('position','hidden',array('attr'=>array("hidden" => true)));				
 		}
 		$formMapper
-		->add('enabled')
+		->add('enabled', null, array('required'  => false))
 		->add('name')
-		->add('product', 'sonata_type_model_list')
+		->add('product', 'sonata_type_model_list', array('required'  => false))
 		;
 	}
 
@@ -118,7 +118,8 @@ class BoxProductAdmin extends Admin
 		$object = parent::getNewInstance();
 		
 		//$object->setCreatedAt(new \DateTime());
-		$object->setPosition(1);
+		$object	->setPosition(1)
+				->setName("");
 
 		/*
 		$inspection = new Inspection();
