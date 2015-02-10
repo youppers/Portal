@@ -81,7 +81,7 @@ class ProductAdmin extends Admin
 		->add('code')
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('productModels')
-		->add('id', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
+		->add('qr', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
 
