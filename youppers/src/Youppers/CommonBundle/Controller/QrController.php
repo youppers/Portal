@@ -32,14 +32,14 @@ class QrController extends Controller
         	throw $this->createAccessDeniedException('Only allowed to admin',new DisabledException('Disabled QRCode'));
     	}
     	
-    	$type = $qr->getType();
+    	$targetType = $qr->getTargetType();
     	
 		$target = $this->getDoctrine()
-			->getRepository($this->get('youppers.common.qr')->getClassName($type))
+			->getRepository($this->get('youppers.common.qr')->getClassName($targetType))
 			->findOneBy(array('enabled' => true, 'qr' => $qr));
 		 
 		if ($target) {
-			return $this->redirectToRoute($this->get('youppers.common.qr')->getRouteName($type),
+			return $this->redirectToRoute($this->get('youppers.common.qr')->getRouteName($targetType),
 					array("id" => $target->getId()));
 		} else {
 			throw new ResourceNotFoundException('QR code target not found');

@@ -18,9 +18,9 @@ class Qr
 	protected $id;
 		
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", name="target_type")
 	 */
-	protected $type;
+	protected $targetType;
 
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
@@ -88,26 +88,26 @@ class Qr
     }
 
     /**
-     * Set type
+     * Set targetType
      *
-     * @param string $type
+     * @param string $targetType
      * @return Qr
      */
-    public function setType($type)
+    public function setTargetType($targetType)
     {
-        $this->type = $type;
+        $this->targetType = $targetType;
 
         return $this;
     }
 
     /**
-     * Get type
+     * Get targetType
      *
      * @return string 
      */
-    public function getType()
+    public function getTargetType()
     {
-        return $this->type;
+        return $this->targetType;
     }
 
     /**

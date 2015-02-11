@@ -25,40 +25,40 @@ class QrService
 	
 	/**
 	 * Get the class of the entity of the given type 
-	 * @param string $type 
+	 * @param string $targetType 
 	 * @return string 
 	 */
-	function getClassName($type) {
+	function getClassName($targetType) {
 		// TODO put these in configuration
-		if ($type == 'youpper_dealer_box') {
+		if ($targetType == 'youppers_dealer_box') {
 			return 'Youppers\DealerBundle\Entity\Box';
 		}
-		if ($type == 'youpper_company_product') {
+		if ($targetType == 'youppers_company_product') {
 			return 'Youppers\CompanyBundle\Entity\Product';
 		}
-		if ($type == 'youpper_company_variation') {
+		if ($targetType == 'youppers_company_variation') {
 			return 'Youppers\CompanyBundle\Entity\Variation';
 		}		
-		throw new InvalidArgumentException('Unsupported type ' . $type);		
+		throw new InvalidArgumentException('Unsupported target type ' . $targetType);		
 	}
 
 	/**
 	 * Get the route to show the entity of the given type 
-	 * @param string $type 
+	 * @param string $targetType 
 	 * @return string 
 	 */
-	function getRouteName($type) {
+	function getRouteName($targetType) {
 		// TODO put these in configuration
-		if ($type == 'youpper_dealer_box') {
+		if ($targetType == 'youppers_dealer_box') {
 			return 'youppers_dealer_box_show';
 		}
-		if ($type == 'youpper_company_product') {
+		if ($targetType == 'youppers_company_product') {
 			return 'youppers_company_product_show';
 		}
-		if ($type == 'youpper_company_variation') {
+		if ($targetType == 'youppers_company_variation') {
 			return 'youppers_company_variation_show';
 		}		
-		throw new InvalidArgumentException('Unsupported type ' . $type);		
+		throw new InvalidArgumentException('Unsupported target type ' . $targetType);		
 	}
 
 	/**
@@ -66,16 +66,16 @@ class QrService
 	 * @param string $className
 	 * @return string
 	 */	
-	function getType($className) {
+	function getTargetType($className) {
 		// TODO put these in configuration
 		if ($className == 'Youppers\DealerBundle\Entity\Box') {
-			return 'youpper_dealer_box';
+			return 'youppers_dealer_box';
 		}
 		if ($className == 'Youppers\CompanyBundle\Entity\Product') {
-			return 'youpper_company_product';
+			return 'youppers_company_product';
 		}
 		if ($className == 'Youppers\CompanyBundle\Entity\Variation') {
-			return 'youpper_company_variation';
+			return 'youppers_company_variation';
 		}
 		throw new InvalidArgumentException('Unsupported class ' . $className);		
 	}
@@ -88,7 +88,7 @@ class QrService
 	 * @param Entity $object
 	 */
 	public function assign($object, $qr = null) {
-		$type = $this->getType(get_class($object));
+		$targetType = $this->getTargetType(get_class($object));
 		if ($qr === null) {
 			$qr = $object->getQr();				
 			if ($qr !== null) {
@@ -96,17 +96,17 @@ class QrService
 				return;
 			}
 			$qr = new Qr();
-			$qr->setType($type);
+			$qr->setTargetType($targetType);
 			$object->setQr($qr);			
 			$this->em->persist($qr);
 			$this->em->flush();
 			$this->session->getFlashBag()->add('sonata_flash_success','assigned_new_qr');				
 		} else {
-			if ($qr->getType() == $type) {
+			if ($qr->getTargetType() == $targetType) {
 				$object->setQr($qr);				
 				$this->em->flush();
 			} else {
-				throw new InvalidArgumentException('Wrong type, given ' . $type . ' expected ' . $qr->getType());
+				throw new InvalidArgumentException('Wrong type, given ' . $targetType . ' expected ' . $qr->getTargetType());
 			}
 			$this->session->getFlashBag()->add('sonata_flash_success','assigned_qr');				
 		}		
@@ -128,8 +128,8 @@ class QrService
 			return;				
 		}
 		
-		if ($qr->getType() !== $this->getType($className)) {
-			throw new InvalidArgumentException('Wrong type, qr:' . $qr->getType() . ' object:' . $this->getType($className));
+		if ($qr->getTargetType() !== $this->getTargetType($className)) {
+			throw new InvalidArgumentException('Wrong type, qr:' . $qr->getTargetType() . ' object:' . $this->getTargetType($className));
 		}
 		
 		if (!$qr->getEnabled()) {
