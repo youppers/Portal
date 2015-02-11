@@ -27,7 +27,7 @@ class AppKernel extends Kernel
 
         	// DOCTRINE
         	new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-        	//new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+        	new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
         	
         	// KNP HELPER BUNDLES
         	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
