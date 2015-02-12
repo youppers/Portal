@@ -15,6 +15,10 @@ class ProductAttribute
 		return $this->getProductType() && $this->getAttributeType() ? $this->getProductType() . ' - ' . $this->getAttributeType() : 'New';
 	}
 	
+	public function getDescription() {
+		return $this->getAttributeType() . ($this->variant ? " (Variant)": "") . ($this->enabled ? "" : " (Disabled)");
+	}
+	
 	/**
 	 * @ORM\ManyToOne(targetEntity="ProductType", inversedBy="productAttributes")
 	 * @ORM\Id

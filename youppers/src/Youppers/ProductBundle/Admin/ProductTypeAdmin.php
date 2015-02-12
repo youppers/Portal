@@ -32,7 +32,7 @@ class ProductTypeAdmin extends YouppersAdmin
             ->add('enabled', null, array('editable' => true))
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('code')
-            ->add('productAttributes', null, array('associated_property' => 'attributeType'))
+            ->add('productAttributes', null, array('associated_property' => 'description'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     //'show' => array(),
@@ -82,7 +82,7 @@ class ProductTypeAdmin extends YouppersAdmin
             ->add('enabled')
             ->add('description')
             ->add('className')
-            ->add('productAttributes', null, array('route' => array('name' => 'show'),'associated_property' => 'attributeType'))
+            ->add('productAttributes', null, array('route' => array('name' => 'show'),'associated_property' => 'description'))
             //->add('productAttributes.attributeType')
             ->add('updatedAt')
             ->add('createdAt')
