@@ -28,3 +28,22 @@ services:
         arguments: [~, Youppers\ProductBundle\Entity\AttributeOption, ~ ]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Product, label: 'Attribute Option', show_in_dashboard: false}
+
+    youppers_product.admin.product_collection:
+        class: Youppers\ProductBundle\Admin\ProductCollectionAdmin
+        arguments: [~, Youppers\ProductBundle\Entity\ProductCollection, ~ ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Collection'}
+
+    youppers_product.admin.product_variant:
+        class: Youppers\ProductBundle\Admin\ProductVariantAdmin
+        arguments: [~, Youppers\ProductBundle\Entity\ProductVariant, ~ ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Variant', show_in_dashboard: false}
+
+    youppers_product.admin.variant_property:
+        class: Youppers\ProductBundle\Admin\VariantPropertyAdmin
+        arguments: [~, Youppers\ProductBundle\Entity\VariantProperty, ~ ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Variant Property', show_in_dashboard: false}
+            
