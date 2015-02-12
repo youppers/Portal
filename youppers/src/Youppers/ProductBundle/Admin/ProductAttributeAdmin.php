@@ -12,6 +12,10 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class ProductAttributeAdmin extends Admin
 {
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->clearExcept(array('create','delete'));
+	}
 	
 	/**
 	 * {@inheritdoc}
