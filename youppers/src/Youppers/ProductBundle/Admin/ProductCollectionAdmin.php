@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductCollectionAdmin extends YouppersAdmin
 {
@@ -29,7 +30,9 @@ class ProductCollectionAdmin extends YouppersAdmin
     {
         $listMapper
             ->add('enabled', null, array('editable' => true))
-        	->addIdentifier('name', null, array('route' => array('name' => 'show')))
+        	->add('brand', null, array('route' => array('name' => 'show')))
+        	->add('productType', null, array('route' => array('name' => 'show')))        	
+            ->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('productVariants')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -48,7 +51,9 @@ class ProductCollectionAdmin extends YouppersAdmin
     {
         $formMapper
         	->with('Product Collection', array('class' => 'col-md-8'))
-            ->add('name')
+			->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
+        	->add('productType', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
+        	->add('name')
             //->add('description')
             ->end()
             ->with('Options', array('class' => 'col-md-4'))
@@ -73,8 +78,9 @@ class ProductCollectionAdmin extends YouppersAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('name')
-            //->add('code')
+            ->add('brand')
+            ->add('productType')
+        	->add('name')
             ->add('enabled')
             //->add('description')
             ->add('productVariants', null, array('route' => array('name' => 'show')))

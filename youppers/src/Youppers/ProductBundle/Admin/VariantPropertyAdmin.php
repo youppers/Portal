@@ -23,9 +23,9 @@ class VariantPropertyAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-		->add('enabled', null, array('required'  => false))
+		//->add('enabled', null, array('required'  => false))
 		->add('position','hidden',array('attr'=>array("hidden" => true)))			
-		->add('value')
+		->add('attributeOption', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
 		;
 	}
 
@@ -37,7 +37,6 @@ class VariantPropertyAdmin extends Admin
 		$object = parent::getNewInstance();
 		
 		$object->setPosition(1);
-		$object->setEnabled(true);
 
 		return $object;
 	}

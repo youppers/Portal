@@ -32,6 +32,7 @@ class AttributeTypeAdmin extends YouppersAdmin
             ->add('enabled', null, array('editable' => true))
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('code')
+            ->add('attributeStandards')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     //'show' => array(),

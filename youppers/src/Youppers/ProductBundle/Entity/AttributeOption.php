@@ -15,7 +15,41 @@ class AttributeOption
 {
 	public function __toString()
 	{
-		return $this->getValue() ?: 'New';
+		return $this->getAttributeStandard()->getAttributeType() . ": " . $this->getValueWithStandard();
+	}
+	
+	public function getValueWithStandard() {
+		return ($this->getValue() ? : 'New') . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getCode():''); 
+	}
+	
+	public function getValueWithEquivalence()
+	{
+		$equivalent = $this->getEquivalentOption();
+		if ($equivalent === null) {
+			return $this->getValueWithStandard();
+		} else {
+			return $this->getValueWithStandard() . ' ~ ' . $equivalent->getValueWithStandard();
+		}		 
+	}
+
+	public function getValueWithEquivalences()
+	{
+		$equivalents = $this->getEquivalentOptions();
+		if ($equivalents === null) {
+			return $this->getValueWithEquivalence();
+		} else {
+			$res = $this->getValueWithStandard();
+			foreach ($equivalents as $equivalent) {
+				$res .= ' ~ ' . $equivalent->getValueWithStandard();
+			}
+			return $res;
+		}
+			
+	}
+	
+	public function getAttributeType()
+	{
+		return $this->getAttributeStandard() ? $this->getAttributeStandard()->getAttributeType() : null;
 	}
 	
 	/**
@@ -47,6 +81,17 @@ class AttributeOption
 	protected $attributeStandard;
 	
 	/**
+	 * @ORM\OneToMany(targetEntity="AttributeOption", mappedBy="equivalentOption")
+	 **/
+	protected $equivalentOptions;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="AttributeOption", inversedBy="equivalentOptions")
+	 * @ORM\JoinColumn(name="equivalent_option_id", referencedColumnName="id")
+	 */
+	protected $equivalentOption;
+	
+	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -72,8 +117,15 @@ class AttributeOption
 	{
 		$this->updatedAt = new \DateTime();
 	}	
-	
+		
 	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->equivalentOptions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -221,5 +273,61 @@ class AttributeOption
     public function getAttributeStandard()
     {
         return $this->attributeStandard;
+    }
+
+    /**
+     * Add equivalentOptions
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $equivalentOptions
+     * @return AttributeOption
+     */
+    public function addEquivalentOption(\Youppers\ProductBundle\Entity\AttributeOption $equivalentOptions)
+    {
+        $this->equivalentOptions[] = $equivalentOptions;
+
+        return $this;
+    }
+
+    /**
+     * Remove equivalentOptions
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $equivalentOptions
+     */
+    public function removeEquivalentOption(\Youppers\ProductBundle\Entity\AttributeOption $equivalentOptions)
+    {
+        $this->equivalentOptions->removeElement($equivalentOptions);
+    }
+
+    /**
+     * Get equivalentOptions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEquivalentOptions()
+    {
+        return $this->equivalentOptions;
+    }
+
+    /**
+     * Set equivalentOption
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $equivalentOption
+     * @return AttributeOption
+     */
+    public function setEquivalentOption(\Youppers\ProductBundle\Entity\AttributeOption $equivalentOption = null)
+    {
+        $this->equivalentOption = $equivalentOption;
+
+        return $this;
+    }
+
+    /**
+     * Get equivalentOption
+     *
+     * @return \Youppers\ProductBundle\Entity\AttributeOption 
+     */
+    public function getEquivalentOption()
+    {
+        return $this->equivalentOption;
     }
 }

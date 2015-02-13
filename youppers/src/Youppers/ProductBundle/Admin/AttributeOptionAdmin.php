@@ -14,9 +14,34 @@ class AttributeOptionAdmin extends Admin
 {
 	protected function configureRoutes(RouteCollection $collection)
 	{
-		$collection->clearExcept(array('create','delete'));
+		//$collection->clearExcept(array('create','delete'));
+	}
+
+	/**
+	 * @param DatagridMapper $datagridMapper
+	 */
+	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+	{
+		$datagridMapper
+		->add('attributeStandard.attributeType')
+		->add('attributeStandard')
+		;
 	}
 	
+	/**
+	 * @param ListMapper $listMapper
+	 */
+	protected function configureListFields(ListMapper $listMapper)
+	{
+		$listMapper
+		->add('enabled', null, array('editable' => true))
+
+		->add('attributeStandard.attributeType', null, array('route' => array('name' => 'show')))
+		->add('attributeStandard', null, array('route' => array('name' => 'show')))
+		->add('valueWithEquivalences')
+		;
+	}
+		
 	/**
 	 * {@inheritdoc}
 	 */
@@ -26,8 +51,10 @@ class AttributeOptionAdmin extends Admin
 		->add('enabled', null, array('required'  => false))
 		->add('position','hidden',array('attr'=>array("hidden" => true)))			
 		->add('value')
+		->add('equivalentOption')
 		;
-	}
+
+	}	
 
 	/**
 	 * {@inheritdoc}

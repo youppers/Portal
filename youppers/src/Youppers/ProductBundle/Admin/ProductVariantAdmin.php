@@ -30,9 +30,10 @@ class ProductVariantAdmin extends YouppersAdmin
     {
         $listMapper
             ->add('enabled', null, array('editable' => true))
+            ->add('productCollection')
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('code')
-            ->add('productAttributes', null, array('associated_property' => 'description'))
+            ->add('variantProperties', null, array('associated_property' => 'attributeOption'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     //'show' => array(),
@@ -52,14 +53,15 @@ class ProductVariantAdmin extends YouppersAdmin
         	->with('Product Type', array('class' => 'col-md-8'))
             ->add('name')
             ->add('code')
-            ->add('description')
+            //->add('description')
             ->end()
             ->with('Options', array('class' => 'col-md-4'))
             ->add('enabled', null, array('required'  => false))
-            ->add('className')
+			->add('position','hidden',array('attr'=>array("hidden" => true)))			
+            //->add('className')
             ->end()
-            ->with('Attributes', array('class' => 'col-md-12'))
-            ->add('productAttributes', 'sonata_type_collection', 
+            ->with('Properties', array('class' => 'col-md-12'))
+            ->add('variantProperties', 'sonata_type_collection', 
             		array('by_reference' => false),
             		array(
 		                'edit' => 'inline',
@@ -77,7 +79,8 @@ class ProductVariantAdmin extends YouppersAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('name')
+            ->add('productCollection', null, array('route' => array('name' => 'show')))
+        	->add('name')
             ->add('code')
             ->add('enabled')
             ->add('description')
@@ -88,4 +91,17 @@ class ProductVariantAdmin extends YouppersAdmin
             ->add('createdAt')
         ;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getNewInstance()
+    {
+    	$object = parent::getNewInstance();
+    
+    	$object->setPosition(1);
+    
+    	return $object;
+    }
+    
 }

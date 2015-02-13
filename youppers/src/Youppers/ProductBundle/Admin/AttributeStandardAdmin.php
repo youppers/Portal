@@ -50,13 +50,13 @@ class AttributeStandardAdmin extends YouppersAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-        	->with('Atribute Standard', array('class' => 'col-md-8'))
-            ->add('name')
+        	->with('Attribute Standard', array('class' => 'col-md-8'))
+            ->add('attributeType')
+        	->add('name')
             ->add('code')
             ->add('description')
             ->end()
             ->with('Options', array('class' => 'col-md-4'))
-            ->add('attributeType')
             ->add('enabled', null, array('required'  => false))
             ->end()
             ->with('Values', array('class' => 'col-md-12'))
@@ -80,7 +80,8 @@ class AttributeStandardAdmin extends YouppersAdmin
             ->add('code')
             ->add('enabled')
             ->add('description')
-            ->add('attributeOptions')
+            //->add('attributeOptions', null, array('associated_property' => 'valueWithEquivalence'))
+            ->add('attributeOptions', null, array('associated_property' => 'valueWithEquivalences'))
             ->add('updatedAt')
             ->add('createdAt')
         ;

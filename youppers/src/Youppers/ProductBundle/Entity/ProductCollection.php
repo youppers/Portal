@@ -97,7 +97,7 @@ class ProductCollection
 	public function removeProductVariant(ProductVariant $productVariant)
 	{
 		$productVariant->setProductCollection(null);
-		$this->productvariants->removeElement($productVariant);
+		$this->productVariants->removeElement($productVariant);
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle

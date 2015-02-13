@@ -15,6 +15,11 @@ class VariantProperty
 		return $this->getAttributeOption() ?: 'New';
 	}
 	
+	public function getAttributeType()
+	{
+		return $this->getAttributeOption() ? $this->getAttributeOption()->getAttributeType() : null; 
+	}
+	
 	/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id

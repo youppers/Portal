@@ -107,13 +107,17 @@ class ProductVariant
 		$attributesType = array();
 		foreach ($this->getAttributesVariant() as $productAttribute) {
 			$attributeType = $productAttribute->getAttributeType();
-			$attributesType[] = $attributeType; 
+			$attributeType->getName(); // fetch
+			$attributesType[]= $attributeType;
 		}
+		dump($attributesType);
 		$criteria = Criteria::create()->where(Criteria::expr()->in("attributeType", $attributesType));
-		$options = $this->getVariantProperties->getAttributeOption()->matching($criteria);
+		dump($attributesType);
+		dump($this->getVariantProperties());
+		$properties = $this->getVariantProperties()->matching($criteria);
 		$nameAtoms = array();
-		foreach ($options as $option) {
-			$nameAtoms[] = $option->getValue();
+		foreach ($properties as $property) {
+			$nameAtoms[] = $property->getAttributeOption()->getValue();
 		}
 		$this->setName(implode(", ",$nameAtoms));
 	}
@@ -126,7 +130,7 @@ class ProductVariant
 	{
 		$variantProperty->setProductVariant($this);
 		$this->variantProperties->add($variantProperty);
-		$this->updateName();
+		//$this->updateName();
 	}
 	
 	/**

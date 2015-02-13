@@ -2,6 +2,8 @@ BUGS
 
 da verificare: quando si cancella una categoria cerca di cancellare anche la categoria parent ?
 
+Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su setEquivalentOption ?) 
+
 TODO
 
 Usare "enabled" degli elementi quando viene mostrato un box
