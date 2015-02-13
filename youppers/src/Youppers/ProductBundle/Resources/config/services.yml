@@ -39,7 +39,7 @@ services:
         class: Youppers\ProductBundle\Admin\ProductVariantAdmin
         arguments: [~, Youppers\ProductBundle\Entity\ProductVariant, ~ ]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Variant', show_in_dashboard: false}
+            - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Variant'}
 
     youppers_product.admin.variant_property:
         class: Youppers\ProductBundle\Admin\VariantPropertyAdmin
