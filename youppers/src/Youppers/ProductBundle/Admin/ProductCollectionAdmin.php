@@ -28,7 +28,7 @@ class ProductCollectionAdmin extends YouppersAdmin
 				if ($action != 'edit') $menu->addChild('Edit', array('uri' => $childAdmin->generateUrl('edit', array('id' => $id))));
 			}	
 		} else {
-			parent::configureTabMenu($menu, $action);				
+			parent::configureTabMenu($menu, $action,$childAdmin);				
 			if (in_array($action, array('edit', 'show'))) {
 				$id = $this->getRequest()->get('id');
 				$menu->addChild('Variants', array('uri' => $this->generateUrl('youppers_product.admin.product_variant.list', array('id' => $id))));
