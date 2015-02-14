@@ -29,4 +29,20 @@ abstract class YouppersAdmin extends Admin
 	
 	}
 	
+	/**
+	 * {@inheritdoc}
+	 * getSubject in Admin is Buggy
+	 * see: https://github.com/sonata-project/SonataAdminBundle/pull/2697 
+	 */
+	public function getSubject()
+	{
+		if ($this->subject === null && $this->request) {
+			$id = $this->request->get($this->getIdParameter());
+			$this->subject = $this->getModelManager()->find($this->getClass(), $id);
+		}
+	
+		return $this->subject;
+	}
+	
+	
 }
