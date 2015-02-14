@@ -25,7 +25,7 @@ class VariantPropertyAdmin extends Admin
 		$formMapper
 		//->add('enabled', null, array('required'  => false))
 		->add('position','hidden',array('attr'=>array("hidden" => true)))			
-		->add('attributeOption', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
+		->add('attributeOption', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 		;
 	}
 

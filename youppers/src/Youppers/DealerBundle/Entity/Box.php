@@ -2,6 +2,7 @@
 namespace Youppers\DealerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -11,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="store_box_code_idx", columns={"store_id", "code"}),
  *   })
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity({"name", "store"})
+ * @UniqueEntity({"code", "store"})
  */
 class Box
 {

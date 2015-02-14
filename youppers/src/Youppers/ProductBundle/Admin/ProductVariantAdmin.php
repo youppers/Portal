@@ -8,6 +8,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
+use Symfony\Component\Validator\Constraints as Assert;
+use Youppers\ProductBundle\YouppersProductBundle;
 
 class ProductVariantAdmin extends YouppersAdmin
 {
@@ -50,8 +52,9 @@ class ProductVariantAdmin extends YouppersAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-        	->with('Product Type', array('class' => 'col-md-8'))
-            ->add('name')
+        	->with('Product Variant', array('class' => 'col-md-8'))
+            ->add('productCollection', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+        	->add('name')
             ->add('code')
             //->add('description')
             ->end()
@@ -98,7 +101,15 @@ class ProductVariantAdmin extends YouppersAdmin
     public function getNewInstance()
     {
     	$object = parent::getNewInstance();
-    
+    	$filterParameters = $this->getFilterParameters();
+    	
+    	if (isset($filterParameters['productCollection'])) {
+    		$productCollection = $this->getModelManager()->find('Youppers\ProductBundle\Entity\ProductCollection',$filterParameters['productCollection']['value']);
+    		$object->setProductCollection($productCollection);
+    	}
+    	
+    	$object->setEnabled(true);
+    	 
     	$object->setPosition(1);
     
     	return $object;

@@ -78,7 +78,7 @@ class StoreAdmin extends Admin
 		->with('Store', array('class' => 'col-md-8'));
 		
 		if (!$this->hasParentFieldDescription()) {
-			$formMapper->add('dealer', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
+			$formMapper->add('dealer', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
 		}
 		
 		$formMapper

@@ -106,7 +106,7 @@ class BoxAdmin extends Admin
 		->with('Box', array('class' => 'col-md-8'));
 		if (!$this->hasParentFieldDescription()) {
 			$formMapper
-			->add('store', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
+			->add('store', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
 		}		
 		$formMapper
 		->add('code')

@@ -51,8 +51,8 @@ class ProductCollectionAdmin extends YouppersAdmin
     {
         $formMapper
         	->with('Product Collection', array('class' => 'col-md-8'))
-			->add('brand', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
-        	->add('productType', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()))
+			->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+        	->add('productType', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
         	->add('name')
             //->add('description')
             ->end()
@@ -89,4 +89,25 @@ class ProductCollectionAdmin extends YouppersAdmin
             ->add('createdAt')
         ;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNewInstance()
+    {
+    	$object = parent::getNewInstance();
+    
+    	$filterParameters = $this->getFilterParameters();
+    
+    	if (isset($filterParameters['brand'])) {
+    		$brand = $this->getModelManager()->find('Youppers\CompanyBundle\Entity\Brand',$filterParameters['brand']['value']);
+    		$object->setBrand($brand);
+    	}
+    
+    	$object->setEnabled(true);
+    
+    	return $object;
+    }
+    
+
 }

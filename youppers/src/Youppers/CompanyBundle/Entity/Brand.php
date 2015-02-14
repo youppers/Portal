@@ -2,6 +2,7 @@
 namespace Youppers\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -11,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="company_brand_code_idx", columns={"company_id", "code"}),
  *   })
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity({"company", "name"})
+ * @UniqueEntity({"company", "code"})
  */
 class Brand
 {

@@ -2,14 +2,18 @@
 namespace Youppers\DealerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="box_product",
  *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="box_product_idx", columns={"box_id", "product_id"})
+ *     @ORM\UniqueConstraint(name="box_product_idx", columns={"box_id", "product_id"}),
+ *     @ORM\UniqueConstraint(name="box_name_idx", columns={"box_id", "name"})
  *   })
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity({"name", "box"})
+ * @UniqueEntity({"product", "box"})
  */
 class BoxProduct
 {

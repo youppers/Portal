@@ -125,8 +125,7 @@ class BrandAdmin extends Admin
 		->with('Brand', array('class' => 'col-md-8'));
 		
 		if (!$this->hasParentFieldDescription()) {
-			$formMapper->add('company', 'sonata_type_model_list', array('constraints' => new Assert\NotNull()));
-			//$formMapper->add('company', 'sonata_type_model_list');
+			$formMapper->add('company', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
 		}
 		
 		$formMapper
@@ -151,7 +150,6 @@ class BrandAdmin extends Admin
 			$formMapper
 			->with('Details', array('class' => 'col-md-4'))
 			->add('enabled', 'checkbox', array('required'  => false))
-			//->add('createdAt', 'sonata_type_datetime_picker', array('dp_side_by_side' => true))
 			->end();
 		}
 		#->end()
