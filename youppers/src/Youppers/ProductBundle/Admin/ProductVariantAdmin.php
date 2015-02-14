@@ -86,10 +86,7 @@ class ProductVariantAdmin extends YouppersAdmin
         	->add('name')
             ->add('code')
             ->add('enabled')
-            ->add('description')
-            ->add('className')
-            ->add('productAttributes', null, array('route' => array('name' => 'show'),'associated_property' => 'description'))
-            //->add('productAttributes.attributeType')
+            ->add('variantProperties', null, array('associated_property' => 'attributeOption'))            
             ->add('updatedAt')
             ->add('createdAt')
         ;
