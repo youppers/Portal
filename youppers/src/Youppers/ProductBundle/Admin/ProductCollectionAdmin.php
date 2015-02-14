@@ -9,9 +9,33 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Symfony\Component\Validator\Constraints as Assert;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class ProductCollectionAdmin extends YouppersAdmin
 {
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+	{
+		if ($childAdmin) {
+			if ($action == 'list') $menu->addChild('Create', array('uri' => $childAdmin->generateUrl('create')));
+			if (in_array($action, array('edit', 'show'))) {
+				$id = $this->getRequest()->get('childId');
+				if ($action != 'show') $menu->addChild('Show', array('uri' => $childAdmin->generateUrl('show', array('id' => $id))));
+				if ($action != 'edit') $menu->addChild('Edit', array('uri' => $childAdmin->generateUrl('edit', array('id' => $id))));
+			}	
+		} else {
+			parent::configureTabMenu($menu, $action);				
+			if (in_array($action, array('edit', 'show'))) {
+				$id = $this->getRequest()->get('id');
+				$menu->addChild('Variants', array('uri' => $this->generateUrl('youppers_product.admin.product_variant.list', array('id' => $id))));
+			}
+		}
+	}
+	
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -33,7 +57,6 @@ class ProductCollectionAdmin extends YouppersAdmin
         	->add('brand', null, array('route' => array('name' => 'show')))
         	->add('productType', null, array('route' => array('name' => 'show')))        	
             ->addIdentifier('name', null, array('route' => array('name' => 'show')))
-            ->add('productVariants')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     //'show' => array(),
@@ -59,6 +82,7 @@ class ProductCollectionAdmin extends YouppersAdmin
             ->with('Options', array('class' => 'col-md-4'))
             ->add('enabled', null, array('required'  => false))
             ->end()
+            /*
             ->with('Variants', array('class' => 'col-md-12'))
             ->add('productVariants', 'sonata_type_collection', 
             		array('by_reference' => false),
@@ -69,6 +93,7 @@ class ProductCollectionAdmin extends YouppersAdmin
             		)
             	)
             ->end()
+            */
         ;
     }
 
@@ -83,7 +108,7 @@ class ProductCollectionAdmin extends YouppersAdmin
         	->add('name')
             ->add('enabled')
             //->add('description')
-            ->add('productVariants', null, array('route' => array('name' => 'show')))
+            //->add('productVariants', null, array('route' => array('name' => 'show')))
             //->add('productAttributes.attributeType')
             ->add('updatedAt')
             ->add('createdAt')

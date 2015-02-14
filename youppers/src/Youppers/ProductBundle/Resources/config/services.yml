@@ -34,6 +34,8 @@ services:
         arguments: [~, Youppers\ProductBundle\Entity\ProductCollection, ~ ]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Collection'}
+        calls:
+            - [addChild, ['@youppers_product.admin.product_variant']]
 
     youppers_product.admin.product_variant:
         class: Youppers\ProductBundle\Admin\ProductVariantAdmin

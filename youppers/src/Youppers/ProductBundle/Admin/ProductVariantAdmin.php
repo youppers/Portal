@@ -13,12 +13,18 @@ use Youppers\ProductBundle\YouppersProductBundle;
 
 class ProductVariantAdmin extends YouppersAdmin
 {
+	public function getParentAssociationMapping()
+	{
+		return 'productCollection';
+	}
+		
     /**
      * @param DatagridMapper $datagridMapper
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+        	//->add('productCollection')
             ->add('name')
             ->add('code')
             ->add('enabled')

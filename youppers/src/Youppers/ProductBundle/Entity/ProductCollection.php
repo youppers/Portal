@@ -18,7 +18,7 @@ class ProductCollection
 {
 	public function __toString()
 	{
-		return $this->getName() ?: 'New';
+		return $this->getName() ? $this->getBrand() . ' - ' . $this->getName() : 'New';
 	}
 	
 	/**
