@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use GuzzleHttp;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 class BoxController extends Controller
 {
@@ -59,12 +60,15 @@ class BoxController extends Controller
     	
     	$data['z'] = rand();
     	     	
-    	$logger = $this->get('logger');    	
+    	$logger = $this->get('logger');
+    	$stopwatch = new Stopwatch();
+    	$stopwatch->start('GoogleAnalytics');
     	$res = $tracker->send($data, 'event');
+    	$event = $stopwatch->stop('GoogleAnalytics');
     	if ($res) {
-    		$logger->info("Sent to GoogleAnalytics: " . var_export($data, true));
+    		$logger->info("Sent event to GoogleAnalytics: " . $event->getDuration() . "mS " . var_export($data, true));
     	} else {
-    		$logger->error("Failed sending to GoogleAnalytics: " . var_export($data, true));
+    		$logger->error("Failed sending event to GoogleAnalytics: " . var_export($data, true));
     	}
     	return array('box' => $box);    	 
     }
@@ -136,11 +140,14 @@ class BoxController extends Controller
     	$data['z'] = rand();
     	
         $logger = $this->get('logger');    	
+    	$stopwatch = new Stopwatch();
+    	$stopwatch->start('GoogleAnalytics');
     	$res = $tracker->send($data, 'event');
-    	if ($res) {
-    		$logger->info("Sent to GoogleAnalytics: " . var_export($data, true));
-    	} else {
-    		$logger->error("Failed sending to GoogleAnalytics: " . var_export($data, true));
+    	$event = $stopwatch->stop('GoogleAnalytics');
+        if ($res) {
+    		$logger->info("Sent event to GoogleAnalytics: " . $event->getDuration() . "mS " . var_export($data, true));
+        } else {
+    		$logger->error("Failed sending event to GoogleAnalytics: " . var_export($data, true));
     	}    	    	
     	 
     	return array('boxProduct' => $boxProduct, 'scraping' => $this->get('youppers.scraper')->products($product->getBrand()->getCode(),$product->getCode()));
