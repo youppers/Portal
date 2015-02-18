@@ -22,19 +22,28 @@ class BoxController extends Controller
     	->find($id);
     	
     	if (!$box) {
-    		// visualizza la pagina di "prodotto non trovato"
     		return new Response('Invalid box code');
+    	}
+    	
+    	if (!$box->getEnabled()) {
+    		return new Response('Box not enabled');    		
     	}
     	 
     	$tracker = $this->get('happyr.google.analytics.tracker');
     	$data=array(
-    			'dl' => $this->getRequest()->getUri(),
+    			't' => 'event',
+    			'dp' => $this->getRequest()->getPathInfo(),
+    			'ds' => 'server',
     			'dt'=>'Show Box: ' . $box,
-    			'ec' => 'Box',
-    			'ea' => 'Show',
-    			'el' => '' . $box,    			 
+    			'ec' => 'Server',
+    			'ea' => 'Box Show',
+    			'el' => '' . $box
     	);
     	
+    	// use dealer geoid
+    	$data['geoid']=1008736; // Rome,"Rome,Rome,Lazio,Italy",9053431,IT,City
+    	
+    	// Product Impression List Name
     	$data['il1nm']= 'Box ' . $box;
     	
     	$boxProducts = $box->getBoxProducts();
@@ -63,7 +72,7 @@ class BoxController extends Controller
     	$logger = $this->get('logger');
     	$stopwatch = new Stopwatch();
     	$stopwatch->start('GoogleAnalytics');
-    	$res = $tracker->send($data, 'event');
+    	$res = $tracker->send($data);
     	$event = $stopwatch->stop('GoogleAnalytics');
     	if ($res) {
     		$logger->info("Sent event to GoogleAnalytics: " . $event->getDuration() . "mS " . var_export($data, true));
@@ -88,53 +97,44 @@ class BoxController extends Controller
     		return new Response('Invalid box product code');    		
     	}
 
-    	/*
-    	 * v=1                                  // Version.
-&tid=UA-XXXX-Y                       // Tracking ID / Property ID.
-&cid=555                             // Anonymous Client ID.
-&t=event                             // Event hit type.
-&ec=UX                               // Event Category. Required.
-&ea=click                            // Event Action. Required.
-&el=Results                          // Event label.
-
-&pa=click                            // Product action (click). Required.
-&pal=Search%20Results                // Product Action List.
-&pr1id=P12345                        // Product 1 ID. Either ID or name must be set.
-&pr1nm=Android%20Warhol%20T-Shirt    // Product 1 name. Either ID or name must be set.
-&pr1ca=Apparel                       // Product 1 category.
-&pr1br=Google                        // Product 1 brand.
-&pr1va=Black                         // Product 1 variant.
-&pr1ps=1                             // Product 1 position.
-    	 */
-    	
     	$tracker = $this->get('happyr.google.analytics.tracker');
     	$data=array(
-    			'dl' => $this->getRequest()->getUri(),
+    			't' => 'event',
+    			'dp' => $this->getRequest()->getPathInfo(),
+    			'ds' => 'server',
     			'dt' => 'Show Box Product: ' . $boxProduct,
-    			'ec' => 'Box',
-    			'ea' => 'Product',
+    			'ec' => 'Server',
+    			'ea' => 'Box Product',
     			'el' => '' . $boxProduct,
     	);
 
+    	// use dealer geoid
+    	$data['geoid']=1008736; // Rome,"Rome,Rome,Lazio,Italy",9053431,IT,City
+
+    	// Product Action
     	$data['pa']= 'detail';
+    	
+    	// Product Position
     	$data['pr1ps'] = $boxProduct->getPosition();
-    	$data['il1pi1ps'] = $boxProduct->getPosition();
+    	
+    	//$data['pal'] = 'Box Show';
+    	//$data['il1pi1ps'] = $boxProduct->getPosition();
     	if ($product = $boxProduct->getProduct()) {
 			$data['pr1id'] = $product->getId();
     		$data['pr1nm'] = $product->getName();
     		// add category
     		// add variant
-    	    $data['il1pi1id'] = $product->getId();
-    		$data['il1pi1nm'] = $product->getName();
+    	    //$data['il1pi1id'] = $product->getId();
+    		//$data['il1pi1nm'] = $product->getName();
     		if ($brand = $product->getBrand()) {
     			$data['pr1br'] = $brand->getName();    			     			
-    			$data['il1pi1br'] = $brand->getName();
+    			//$data['il1pi1br'] = $brand->getName();
     		}
     		// add category
     		// add variant
     	} else {
     		$data['pr1nm'] = $boxProduct->getName();
-    		$data['il1pi1nm'] = $boxProduct->getName();
+    		//$data['il1pi1nm'] = $boxProduct->getName();
     	}
     	    	
     	$data['z'] = rand();
@@ -142,7 +142,7 @@ class BoxController extends Controller
         $logger = $this->get('logger');    	
     	$stopwatch = new Stopwatch();
     	$stopwatch->start('GoogleAnalytics');
-    	$res = $tracker->send($data, 'event');
+    	$res = $tracker->send($data);
     	$event = $stopwatch->stop('GoogleAnalytics');
         if ($res) {
     		$logger->info("Sent event to GoogleAnalytics: " . $event->getDuration() . "mS " . var_export($data, true));

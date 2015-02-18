@@ -29,10 +29,12 @@ class ProductController extends Controller
     	
     	$tracker = $this->get('happyr.google.analytics.tracker');
     	$data=array(
-    			'dl' => $this->getRequest()->getUri(),
+    			't' => 'event',
+    			'dp' => $this->getRequest()->getPathInfo(),
+    			'ds' => 'server',
     			'dt' => 'Show Product: ' . $product,
-    			'ec' => 'Company',
-    			'ea' => 'Product',
+    			'ec' => 'Server',
+    			'ea' => 'Product Show',
     			'el' => '' . $product,
     	);
 
@@ -51,7 +53,7 @@ class ProductController extends Controller
     	$data['z'] = rand();
     	
         $logger = $this->get('logger');    	
-    	$res = $tracker->send($data, 'event');
+    	$res = $tracker->send($data);
     	if ($res) {
     		$logger->info("Sent to GoogleAnalytics: " . var_export($data, true));
     	} else {
