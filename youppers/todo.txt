@@ -6,6 +6,10 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+Load geoid for GA from https://developers.google.com/analytics/devguides/collection/protocol/v1/geoid
+
+Usare doctrine cache + "&qt=" per gli hit di analytics
+
 Usare "enabled" degli elementi quando viene mostrato un box
 
 Usare "enabled" del box 
