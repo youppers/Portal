@@ -12,6 +12,7 @@ services:
       - '%happyr.google.analytics.param.requestTimeout%'
     calls:
           - [setRequest, ['@?request=']]
+          - [setLogger, ['@logger']]
 
  
   youppers.common.qr:
