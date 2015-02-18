@@ -7,6 +7,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
+
 /**
  * Class HttpClient
  *
@@ -28,6 +30,12 @@ class HttpClient extends Happyr\HttpClient implements Happyr\HttpClientInterface
 		$this->request = $request;
 	}
 	
+	private $logger;
+	
+	public function setLogger(LoggerInterface $logger) {
+		$this->logger = $logger;
+	}
+	
     protected function getClient()
     {
         if ($this->client === null) {
@@ -41,6 +49,28 @@ class HttpClient extends Happyr\HttpClient implements Happyr\HttpClientInterface
 
         return $this->client;
     }
-	
+
+	/**
+	 * 
+	 * @param array $data
+	 * @return \GuzzleHttp\Message\mixed
+	 */
+    public function send(array $data = array())
+    {
+    	$client = $this->getClient();
+    	$options = array(
+    			'body' => $data,
+    			'timeout' => $this->requestTimeout,
+    	);
+    	$request = $client->createRequest('POST', $this->endpoint, $options);
+    
+    	$response = $client->send($request);
+    	if ($this->logger) {
+    		$this->logger->debug($request);
+    		$this->logger->debug($response);
+    	}
+    
+ 		return $response->getStatusCode() == '200';
+     }
 
 }
