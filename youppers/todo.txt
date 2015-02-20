@@ -6,6 +6,8 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+AttributeOptionAdmin deve essere child di AttributeStandardAdmin
+
 Load geoid for GA from https://developers.google.com/analytics/devguides/collection/protocol/v1/geoid
 
 Usare doctrine cache + "&qt=" per gli hit di analytics
@@ -21,11 +23,9 @@ Usare scraper per caricare "media" di prodotto
 
 Sistemare sonata-classification e sonata-media
 
-Associare ai modelli di prodotto:
-- dimensioni 
-- colori
-- finiture
-- applicazioni (tag: bagno, ecc.) 
+Associare ai tipo di prodotto:
+- applicazioni (tag: bagno, ecc.)
+- categoria 
 
 Attivare https (consigliabile per l'accesso alle api)
 
