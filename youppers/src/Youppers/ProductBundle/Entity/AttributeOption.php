@@ -15,11 +15,11 @@ class AttributeOption
 {
 	public function __toString()
 	{
-		return $this->getAttributeStandard()->getAttributeType() . ": " . $this->getValueWithStandard();
+		return $this->getAttributeStandard() ? $this->getAttributeStandard()->getAttributeType() . ": " . $this->getValueWithStandard() : "New";
 	}
 	
 	public function getValueWithStandard() {
-		return ($this->getValue() ? : 'New') . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getCode():''); 
+		return (null === $this->getValue() ? 'New' : $this->getValue()) . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getCode():''); 
 	}
 	
 	public function getValueWithEquivalence()
@@ -68,6 +68,11 @@ class AttributeOption
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
 	protected $enabled;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 */
+	protected $image;
 	
 	/**
 	 * @ORM\Column(type="integer")
@@ -329,5 +334,28 @@ class AttributeOption
     public function getEquivalentOption()
     {
         return $this->equivalentOption;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $image
+     * @return AttributeOption
+     */
+    public function setImage(\Application\Sonata\MediaBundle\Entity\Media $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

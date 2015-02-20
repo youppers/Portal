@@ -40,6 +40,23 @@ sonata_media:
                 wide:     { width: 820, quality: 100}
                 small: { width: 100, quality: 100}
                 big:   { width: 970 , quality: 100}
+
+        youppers_product:
+            providers:
+                - sonata.media.provider.image
+
+            formats:
+                show: { width: 220}
+                list: { height: 120}
+                attribute: { height: 80}
+
+        youppers_attribute:
+            providers:
+                - sonata.media.provider.image
+
+            formats:
+                show: { width: 220}
+                list: { height: 80}
             
         #news:
         #    providers:
@@ -110,11 +127,6 @@ sonata_media:
     pixlr:
         enabled:  false # true
         referrer: Youppers
-
-    resizer:
-        simple:
-#            mode:  outbound
-            mode:  inset
 
 #
 # The LiipImagineBundle can be used if you want to convert on demand an image

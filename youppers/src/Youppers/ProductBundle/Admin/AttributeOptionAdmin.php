@@ -35,10 +35,10 @@ class AttributeOptionAdmin extends Admin
 	{
 		$listMapper
 		->add('enabled', null, array('editable' => true))
-
 		->add('attributeStandard.attributeType', null, array('route' => array('name' => 'show')))
 		->add('attributeStandard', null, array('route' => array('name' => 'show')))
-		->add('valueWithEquivalences')
+		->addIdentifier('image', null, array('route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))		
+		->addIdentifier('valueWithEquivalences')
 		;
 	}
 		
@@ -47,10 +47,24 @@ class AttributeOptionAdmin extends Admin
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
+		if (!$this->hasParentFieldDescription()) {
+			$formMapper
+			->add('attributeStandard', null, array('required'  => false));				
+		}
 		$formMapper
 		->add('enabled', null, array('required'  => false))
 		->add('position','hidden',array('attr'=>array("hidden" => true)))			
 		->add('value')
+		->add('image', 'sonata_type_model_list',
+				array(
+						'required' => false
+				), array(
+						'link_parameters' => array(
+								'context'  => 'youppers_attribute',
+								'filter'   => array('context' => array('value' => 'youppers_attribute'))
+						)
+				)
+		)		
 		->add('equivalentOption')
 		;
 

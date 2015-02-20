@@ -55,7 +55,8 @@ class ProductCollectionAdmin extends YouppersAdmin
         $listMapper
             ->add('enabled', null, array('editable' => true))
         	->add('brand', null, array('route' => array('name' => 'show')))
-        	->add('productType', null, array('route' => array('name' => 'show')))        	
+        	->add('productType', null, array('route' => array('name' => 'show')))
+        	->addIdentifier('image', null, array('route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
             ->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -78,7 +79,17 @@ class ProductCollectionAdmin extends YouppersAdmin
         	->add('productType', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
         	->add('name')
             //->add('description')
-            ->end()
+	        ->add('image', 'sonata_type_model_list', 
+	        	array(
+	        		'required' => false
+	        	), array(
+	        		'link_parameters' => array(
+	        				'context'  => 'youppers_product',
+	        				'filter'   => array('context' => array('value' => 'youppers_product'))
+	        		)
+	        	)
+	        )	        
+	        ->end()
             ->with('Options', array('class' => 'col-md-4'))
             ->add('enabled', null, array('required'  => false))
             ->end()
@@ -107,6 +118,7 @@ class ProductCollectionAdmin extends YouppersAdmin
             ->add('productType')
         	->add('name')
             ->add('enabled')
+            ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))            
             //->add('description')
             //->add('productVariants', null, array('route' => array('name' => 'show')))
             //->add('productAttributes.attributeType')

@@ -48,12 +48,17 @@ class ProductCollection
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
 	protected $enabled;
-			
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 */	
+	protected $image;
+	
 	/**
 	 * @ORM\OneToMany(targetEntity="ProductVariant", mappedBy="productCollection", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 **/
-	private $productVariants;
+	protected $productVariants;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
@@ -267,5 +272,28 @@ class ProductCollection
     public function getProductVariants()
     {
         return $this->productVariants;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $image
+     * @return ProductCollection
+     */
+    public function setImage(\Application\Sonata\MediaBundle\Entity\Media $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }
