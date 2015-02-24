@@ -74,6 +74,10 @@ class Brand
 	 **/
 	private $products;
 	
+	/**
+	 * @ORM\OneToMany(targetEntity="Pricelist", mappedBy="brand")
+	 **/
+	private $pricelists;
 	
 	public function __toString()
 	{
@@ -358,5 +362,38 @@ class Brand
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Add pricelists
+     *
+     * @param \Youppers\CompanyBundle\Entity\Pricelist $pricelists
+     * @return Brand
+     */
+    public function addPricelist(\Youppers\CompanyBundle\Entity\Pricelist $pricelists)
+    {
+        $this->pricelists[] = $pricelists;
+
+        return $this;
+    }
+
+    /**
+     * Remove pricelists
+     *
+     * @param \Youppers\CompanyBundle\Entity\Pricelist $pricelists
+     */
+    public function removePricelist(\Youppers\CompanyBundle\Entity\Pricelist $pricelists)
+    {
+        $this->pricelists->removeElement($pricelists);
+    }
+
+    /**
+     * Get pricelists
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPricelists()
+    {
+        return $this->pricelists;
     }
 }
