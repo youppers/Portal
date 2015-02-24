@@ -119,6 +119,7 @@ class AppKernel extends Kernel
         		
         	new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
         	new Happyr\Google\AnalyticsBundle\HappyrGoogleAnalyticsBundle(),
+        	new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
         		
         	// YOUPPERS 
         	new Youppers\ScraperBundle\YouppersScraperBundle(),
