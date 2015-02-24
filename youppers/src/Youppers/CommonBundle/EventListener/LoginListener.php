@@ -39,8 +39,14 @@ class LoginListener
 	public function handle(AuthenticationEvent $event)
 	{
 		$user = $event->getAuthenticationToken()->getUser();
-		if ($user instanceof UserInterface) {
-			$this->locale = $user->getLocale();
+		if ($user instanceof UserInterface && !empty($user->getLocale())) {
+			$localeParts = explode('_',$user->getLocale());
+			// it_IT -> it
+			if (strcasecmp($localeParts[0],$localeParts[1]) == 0) {
+				$this->locale = $localeParts[0]; 
+			} else {
+				$this->locale = $user->getLocale();
+			}
 		}
 	}
 
