@@ -39,7 +39,8 @@ class PricelistAdmin extends YouppersAdmin
 		->add('enabled')	
 		->add('brand.company', null, array('route' => array('name' => 'show')))
 		->add('brand', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
-		->add('name')
+		->add('code')
+		->add('currency')		
 		->add('validFrom')
 		->add('validTo')
 		->add('createdAt')
@@ -58,7 +59,8 @@ class PricelistAdmin extends YouppersAdmin
                      'name' => 'show'
                  )
              ))
-		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->addIdentifier('code', null, array('route' => array('name' => 'show')))
+		->add('currency')
 		->add('validFrom')
 		->add('validTo')
 		;
@@ -72,6 +74,7 @@ class PricelistAdmin extends YouppersAdmin
 		$datagridMapper
 		->add('brand.company')
 		->add('brand')
+		->add('currency')		
 		->add('enabled')
 		;
 	}
@@ -84,11 +87,12 @@ class PricelistAdmin extends YouppersAdmin
 		$formMapper
 		->with('Brand', array('class' => 'col-md-6'))
 		->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-		->add('name')
+		->add('code')
+		->add('currency', 'sonata_currency')		
 		->end()
 		->with('Validity', array('class' => 'col-md-6'))
-		->add('validFrom', 'sonata_type_date_picker',array('dp_language'=>$this->getRequest()->getLocale()))
-		->add('validTo', 'sonata_type_date_picker',array('dp_language'=>$this->getRequest()->getLocale()))
+		->add('validFrom', 'sonata_type_datetime_picker',array('dp_side_by_side' => true, 'dp_language'=>$this->getRequest()->getLocale()))
+		->add('validTo', 'sonata_type_datetime_picker',array('dp_side_by_side' => true, 'dp_language'=>$this->getRequest()->getLocale()))
 		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
 		;
@@ -108,6 +112,7 @@ class PricelistAdmin extends YouppersAdmin
 			$object->setBrand($brand);		
 		}
 		
+		$object->setCurrency('EUR'); //TODO configurabile
 		$object->setValidFrom((new \DateTime())->setTime(0,0,0));
 		$object->setValidTo((new \DateTime())->setTime(0,0,0)->setDate($object->getValidFrom()->format('Y'),12,31));
 		$object->setEnabled(true);

@@ -49,7 +49,7 @@ class ProductAdmin extends Admin
 		->add('url')
 		->add('createdAt')
 		->add('updatedAt')
-		->add('productModels', null, array('route' => array('name' => 'show')))
+		//->add('productModels', null, array('route' => array('name' => 'show')))
 		/*
 		->add('productModels', 'sonata_type_collection', array(
 				'by_reference'       => false,
@@ -80,7 +80,7 @@ class ProductAdmin extends Admin
              ))
 		->add('code')
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
-		->add('productModels')
+		//->add('productModels')
 		->add('qr', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
@@ -132,8 +132,8 @@ class ProductAdmin extends Admin
 		->add('color', 'sonata_type_model_list')
 		->end()
 		*/
-		->with('Models', array('class' => 'col-md-12'))
-			->add('productModels', 'sonata_type_collection', array(
+		->with('Prices', array('class' => 'col-md-12'))
+			->add('productPrices', 'sonata_type_collection', array(
 				'by_reference'       => false,
 				'cascade_validation' => true,	
 			) , array(

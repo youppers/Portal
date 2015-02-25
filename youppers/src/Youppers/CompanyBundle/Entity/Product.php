@@ -28,10 +28,10 @@ class Product
 	protected $brand;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="ProductModel", cascade={"persist", "remove"}, mappedBy="product")
+	 * @ORM\OneToMany(targetEntity="ProductPrice", cascade={"all"}, mappedBy="product")
      * @Assert\Valid
 	 **/
-	private $productModels;	
+	private $productPrices;	
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
@@ -77,9 +77,9 @@ class Product
 	/**
 	 * @param ProductModel[] $models
 	 */
-	public function setProductModels($models)
+	public function setProductPrices($models)
 	{
-		$this->productModels->clear();
+		$this->productPrices->clear();
 	
 		foreach ($models as $model) {
 			$this->addProductModel($model);
@@ -89,9 +89,9 @@ class Product
 	/**
 	 * @return ProductModel[]
 	 */
-	public function getProductModels()
+	public function getProductPrices()
 	{
-		return $this->productModels;
+		return $this->productPrices;
 	}
 	
 	/**
@@ -101,7 +101,7 @@ class Product
 	public function addProductModel(ProductModel $model)
 	{
 		$model->setProduct($this);
-		$this->productModels->add($model);
+		$this->productPrices->add($model);
 	}
 	
 	/**
@@ -110,7 +110,7 @@ class Product
 	 */
 	public function removeProductModel(ProductModel $model)
 	{
-		$this->productModels->removeElement($model);
+		$this->productPrices->removeElement($model);
 	}	
 	
 	public function __toString()
@@ -141,7 +141,7 @@ class Product
      */
     public function __construct()
     {
-        $this->productModels = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productPrices = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -336,6 +336,29 @@ class Product
     public function getBrand()
     {
         return $this->brand;
+    }
+
+    /**
+     * Add productPrices
+     *
+     * @param \Youppers\CompanyBundle\Entity\ProductPrices $productPrices
+     * @return Product
+     */
+    public function addProductPrice(\Youppers\CompanyBundle\Entity\ProductPrices $productPrices)
+    {
+        $this->productPrices[] = $productPrices;
+
+        return $this;
+    }
+
+    /**
+     * Remove productPrices
+     *
+     * @param \Youppers\CompanyBundle\Entity\ProductPrices $productPrices
+     */
+    public function removeProductPrice(\Youppers\CompanyBundle\Entity\ProductPrices $productPrices)
+    {
+        $this->productPrices->removeElement($productPrices);
     }
 
     /**

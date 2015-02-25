@@ -24,9 +24,15 @@ class Pricelist
 	protected $brand;
 	
 	/**
-	 * @ORM\Column(type="string", length=60)
+	 * @ORM\Column(type="string", length=60, unique=true)
 	 */
-	protected $name;
+	protected $code;
+	
+	/**
+	 * @ORM\Column(type="currency")
+     * @var CurrencyInterface $currency
+     */
+    protected $currency;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
@@ -34,12 +40,12 @@ class Pricelist
 	protected $enabled;
 
 	/**
-	 * @ORM\Column(type="date", name="valid_from")
+	 * @ORM\Column(type="datetime", name="valid_from")
 	 */
 	protected $validFrom;
 	
 	/**
-	 * @ORM\Column(type="date", name="valid_to")
+	 * @ORM\Column(type="datetime", name="valid_to")
 	 */
 	protected $validTo;
 	
@@ -55,8 +61,13 @@ class Pricelist
 	
 	public function __toString()
 	{
-		return $this->getBrand() ? $this->getBrand() . ' - ' . $this->getValidFrom()->format(\DateTime::RFC822) : 'New';
+		return $this->getCode() ? $this->getDescription() : "New";
 	}
+	
+	public function getDescription()
+	{
+		return ($this->getBrand() ? $this->getBrand() . ' - ' : '') . ($this->getCode() ?:'');
+	} 
 	
 	/**
 	 * @ORM\PrePersist()
@@ -88,26 +99,49 @@ class Pricelist
     }
 
     /**
-     * Set name
+     * Set code
      *
-     * @param string $name
+     * @param string $code
      * @return Pricelist
      */
-    public function setName($name)
+    public function setCode($code)
     {
-        $this->name = $name;
+        $this->code = $code;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get code
      *
      * @return string 
      */
-    public function getName()
+    public function getCode()
     {
-        return $this->name;
+        return $this->code;
+    }
+
+    /**
+     * Set currency
+     *
+     * @param currency $currency
+     * @return Pricelist
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get currency
+     *
+     * @return currency 
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 
     /**
