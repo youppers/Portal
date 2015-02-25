@@ -79,7 +79,7 @@ class AppKernel extends Kernel
         	//new Application\Sonata\PaymentBundle\ApplicationSonataPaymentBundle(),
         	//new Sonata\ProductBundle\SonataProductBundle(),
         	//new Application\Sonata\ProductBundle\ApplicationSonataProductBundle(),
-        	//new Sonata\PriceBundle\SonataPriceBundle(),
+        	new Sonata\PriceBundle\SonataPriceBundle(),
         	//new FOS\CommentBundle\FOSCommentBundle(),
         	//new Sonata\CommentBundle\SonataCommentBundle(),
         	//new Application\Sonata\CommentBundle\ApplicationSonataCommentBundle(),

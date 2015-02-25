@@ -37,7 +37,7 @@ imports:
     #- { resource: sonata/sonata_notification.yml }
 
 #    # Sonata e-commerce bundles
-#    - { resource: sonata/sonata_price.yml }
+    - { resource: sonata/sonata_price.yml }
 #    #- { resource: sonata/sonata_order.yml }
 #    - { resource: sonata/sonata_payment.yml }
 #    - { resource: sonata/sonata_product.yml }
@@ -125,7 +125,7 @@ doctrine:
         #     path:     "%database_path%"
         types:
             json:     Sonata\Doctrine\Types\JsonType
-            #currency: Sonata\Component\Currency\CurrencyDoctrineType
+            currency: Sonata\Component\Currency\CurrencyDoctrineType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"

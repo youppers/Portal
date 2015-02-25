@@ -43,7 +43,8 @@
 		"sonata-project/formatter-bundle" : "~2.3",
 		"doctrine/doctrine-migrations-bundle" : "~1.0",
 		"doctrine/migrations" : "1.0.x-dev",
-		"ddeboer/data-import-bundle": "0.1.*"
+		"ddeboer/data-import-bundle" : "0.1.*",
+		"sonata-project/ecommerce" : "@dev"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~2.5"
