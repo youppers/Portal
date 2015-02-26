@@ -17,19 +17,6 @@ class ClientIdProvider extends Happyr\ClientIdProvider
 	const SESSION_CLIENTID_NAME = '_ga_ClientId';
 	
     /**
-     * @var \Symfony\Component\HttpFoundation\Request request
-     */
-    private $request;
-
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
-    }
-
-    /**
      * Get client id from cookie... if we can
      *
      *
