@@ -12,27 +12,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
 
-class StoreAdmin extends YouppersAdmin
-{
-		
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function configureShowFields(ShowMapper $showMapper)
-	{
-		$showMapper
-		->add('enabled')
-		->add('dealer', null, array('route' => array('name' => 'show')))
-		->add('code')
-		->add('name')
-		->add('description')
-		->add('consultants', null, array('route' => array('name' => 'show')))
-		->add('boxes', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
-		->add('createdAt')
-		->add('updatedAt')
-		;
-	}
-
+class ConsultantAdmin extends YouppersAdmin
+{		
 	/**
 	 * {@inheritdoc}
 	 */
@@ -40,10 +21,11 @@ class StoreAdmin extends YouppersAdmin
 	{
 		$listMapper		
 		->add('enabled', null, array('editable' => true))
-		->add('dealer', null, array('route' => array('name' => 'show')))		
 		->addIdentifier('code', null, array('route' => array('name' => 'show')))
-		->addIdentifier('name', null, array('route' => array('name' => 'show')))
-		->add('boxes', null, array('associated_property' => 'name'))
+		->addIdentifier('fullname', null, array('route' => array('name' => 'show')))
+		->add('photo', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))		
+		->add('dealer', null, array('route' => array('name' => 'show')))		
+		->add('stores', null, array('associated_property' => 'name'))
 		;
 	}
 
@@ -54,8 +36,8 @@ class StoreAdmin extends YouppersAdmin
 	{
 		$datagridMapper
 		->add('dealer')
-		->add('name')
 		->add('code')
+		->add('fullname')
 		->add('enabled')
 		;
 	}
@@ -63,37 +45,51 @@ class StoreAdmin extends YouppersAdmin
 	/**
 	 * {@inheritdoc}
 	 */
+	protected function configureShowFields(ShowMapper $showMapper)
+	{
+		$showMapper
+		->add('enabled')
+		->add('dealer', null, array('route' => array('name' => 'show')))
+		->add('stores', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
+		->add('code')
+		->add('fullname')
+		->add('description')
+		->add('photo', null, array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
+		->add('createdAt')
+		->add('updatedAt')
+		;
+	}
+		
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-		->with('Store', array('class' => 'col-md-8'));
+		->with('Consultant', array('class' => 'col-md-6'));
 		
 		if (!$this->hasParentFieldDescription()) {
 			$formMapper->add('dealer', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
 		}
 		
 		$formMapper
-		->add('name')
+		->add('stores')
 		->add('code')
+		->add('fullname')
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
+		->end()
+		->with('Photo', array('class' => 'col-md-6'))
+		->add('photo', 'sonata_type_model_list', 
+				array('required' => false), 
+				array('link_parameters' => array(
+						'context'  => 'youppers_consultant_photo'
+				))
+			)
 		->end();
 		
-		if (!$this->hasParentFieldDescription()) {
-			$formMapper
-				->with('Boxes', array('class' => 'col-md-12'))
-				->add('boxes', 'sonata_type_collection', array(
-					'by_reference'       => false,
-					'cascade_validation' => true,
-					'required' => false
-				), array(
-					'edit' => 'inline',
-					'inline' => 'table'
-				))
-				->end();
-		}		
 	}
 
 	/**

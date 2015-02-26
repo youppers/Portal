@@ -57,7 +57,15 @@ sonata_media:
             formats:
                 show: { width: 220}
                 list: { height: 80}
-            
+                
+        youppers_consultant_photo:
+            providers:
+                - sonata.media.provider.image
+
+            formats:
+                show: { width: 220}
+                list: { height: 80}
+        
         #news:
         #    providers:
         #        - sonata.media.provider.image

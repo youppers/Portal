@@ -60,6 +60,12 @@ class Store
 	protected $description;
 	
 	/**
+	 * @ORM\ManyToMany(targetEntity="Consultant", mappedBy="stores",  cascade={"all"})
+	 * @ORM\JoinTable(name="youppers_dealer__consultants_stores")
+	 **/
+	protected $consultants;
+		
+	/**
 	 * @ORM\OneToMany(targetEntity="Box", mappedBy="store", cascade={"all"}, orphanRemoval=true)
 	 **/
 	private $boxes;
@@ -316,5 +322,38 @@ class Store
     public function getBoxes()
     {
         return $this->boxes;
+    }
+
+    /**
+     * Add consultants
+     *
+     * @param \Youppers\DealerBundle\Entity\Consultant $consultants
+     * @return Store
+     */
+    public function addConsultant(\Youppers\DealerBundle\Entity\Consultant $consultants)
+    {
+        $this->consultants[] = $consultants;
+
+        return $this;
+    }
+
+    /**
+     * Remove consultants
+     *
+     * @param \Youppers\DealerBundle\Entity\Consultant $consultants
+     */
+    public function removeConsultant(\Youppers\DealerBundle\Entity\Consultant $consultants)
+    {
+        $this->consultants->removeElement($consultants);
+    }
+
+    /**
+     * Get consultants
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getConsultants()
+    {
+        return $this->consultants;
     }
 }

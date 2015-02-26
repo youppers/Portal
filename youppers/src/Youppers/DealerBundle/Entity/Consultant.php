@@ -6,12 +6,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="youppers_dealer__dealer")
+ * @ORM\Table(name="youppers_dealer__consultant",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="dealer_consultant_name_idx", columns={"dealer_id", "fullname"}),
+ *     @ORM\UniqueConstraint(name="dealer_consultant_code_idx", columns={"dealer_id", "code"}),
+ *   })
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity("name")
- * @UniqueEntity("code")
+ * @UniqueEntity({"fullname", "dealer"})
+ * @UniqueEntity({"code", "dealer"})
  */
-class Dealer
+class Consultant
 {
 	/**
 	 * @ORM\Column(type="guid")
@@ -21,20 +25,41 @@ class Dealer
 	protected $id;
 
 	/**
-	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @ORM\ManyToOne(targetEntity="Dealer", inversedBy="consultants")
 	 */
-	protected $name;
+	protected $dealer;
 
 	/**
-	 * @ORM\Column(name="code", type="string", length=20, unique=true)
+	 * @ORM\ManyToMany(targetEntity="Store", inversedBy="consultants",  cascade={"all"})
+	 * @ORM\JoinTable(name="youppers_dealer__consultants_stores")
 	 */
-	protected $code;
-
+	protected $stores;
+	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
 	protected $enabled;
 	
+	/**
+	 * @ORM\Column(name="code", type="string", length=20)
+	 */
+	protected $code;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected $fullname;
+
+	/**
+	 * @ORM\Column(type="text", nullable=true )
+	 */
+	protected $description;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 */
+	protected $photo;	
+
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
@@ -44,30 +69,15 @@ class Dealer
 	 * @ORM\Column(type="datetime", name="created_at")
 	 */
 	protected $createdAt;
-		
-	/**
-	 * @ORM\Column(type="text", nullable=true )
-	 */
-	protected $description;
-	
-	/**
-	 * @ORM\OneToMany(targetEntity="Store", mappedBy="dealer")
-	 **/
-	protected $stores;
-	
-	/**
-	 * @ORM\OneToMany(targetEntity="Consultant", mappedBy="dealer")
-	 **/
-	protected $consultants;
-	
+
 	public function __toString()
 	{
-		return $this->getName() ?: 'New';
+		return $this->getFullname() ? $this->getDealer() . ' - ' . $this->getFullname(): 'New';
 	}
 	
 	/**
 	 * @ORM\PrePersist()
-	 */	
+	 */
 	public function prePersist()
 	{
 		$this->createdAt = new \DateTime();
@@ -83,14 +93,12 @@ class Dealer
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
-
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->stores = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->consultants = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -104,56 +112,10 @@ class Dealer
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Dealer
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return Dealer
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string 
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
      * Set enabled
      *
      * @param boolean $enabled
-     * @return Dealer
+     * @return Consultant
      */
     public function setEnabled($enabled)
     {
@@ -173,10 +135,79 @@ class Dealer
     }
 
     /**
+     * Set code
+     *
+     * @param string $code
+     * @return Consultant
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set fullname
+     *
+     * @param string $fullname
+     * @return Consultant
+     */
+    public function setFullname($fullname)
+    {
+        $this->fullname = $fullname;
+
+        return $this;
+    }
+
+    /**
+     * Get fullname
+     *
+     * @return string 
+     */
+    public function getFullname()
+    {
+        return $this->fullname;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Consultant
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Dealer
+     * @return Consultant
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -199,7 +230,7 @@ class Dealer
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Dealer
+     * @return Consultant
      */
     public function setCreatedAt($createdAt)
     {
@@ -219,33 +250,33 @@ class Dealer
     }
 
     /**
-     * Set description
+     * Set dealer
      *
-     * @param string $description
-     * @return Dealer
+     * @param \Youppers\DealerBundle\Entity\Dealer $dealer
+     * @return Consultant
      */
-    public function setDescription($description)
+    public function setDealer(\Youppers\DealerBundle\Entity\Dealer $dealer = null)
     {
-        $this->description = $description;
+        $this->dealer = $dealer;
 
         return $this;
     }
 
     /**
-     * Get description
+     * Get dealer
      *
-     * @return string 
+     * @return \Youppers\DealerBundle\Entity\Dealer 
      */
-    public function getDescription()
+    public function getDealer()
     {
-        return $this->description;
+        return $this->dealer;
     }
 
     /**
      * Add stores
      *
      * @param \Youppers\DealerBundle\Entity\Store $stores
-     * @return Dealer
+     * @return Consultant
      */
     public function addStore(\Youppers\DealerBundle\Entity\Store $stores)
     {
@@ -275,35 +306,25 @@ class Dealer
     }
 
     /**
-     * Add consultants
+     * Set photo
      *
-     * @param \Youppers\DealerBundle\Entity\Consultant $consultants
-     * @return Dealer
+     * @param \Application\Sonata\MediaBundle\Entity\Media $photo
+     * @return Consultant
      */
-    public function addConsultant(\Youppers\DealerBundle\Entity\Consultant $consultants)
+    public function setPhoto(\Application\Sonata\MediaBundle\Entity\Media $photo = null)
     {
-        $this->consultants[] = $consultants;
+        $this->photo = $photo;
 
         return $this;
     }
 
     /**
-     * Remove consultants
+     * Get photo
      *
-     * @param \Youppers\DealerBundle\Entity\Consultant $consultants
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
      */
-    public function removeConsultant(\Youppers\DealerBundle\Entity\Consultant $consultants)
+    public function getPhoto()
     {
-        $this->consultants->removeElement($consultants);
-    }
-
-    /**
-     * Get consultants
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getConsultants()
-    {
-        return $this->consultants;
+        return $this->photo;
     }
 }
