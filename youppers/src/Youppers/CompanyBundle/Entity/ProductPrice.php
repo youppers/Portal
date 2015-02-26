@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="company__product_price")
+ * @ORM\Table(name="youppers_company__product_price")
  * @ORM\HasLifecycleCallbacks
  */
 class ProductPrice

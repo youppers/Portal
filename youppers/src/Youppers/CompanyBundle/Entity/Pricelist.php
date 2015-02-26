@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="pricelist")
+ * @ORM\Table(name="youppers_company__pricelist")
  * @ORM\HasLifecycleCallbacks
  */
 class Pricelist

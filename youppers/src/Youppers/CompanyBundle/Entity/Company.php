@@ -6,7 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="company")
+ * @ORM\Table(name="youppers_company__company")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("name")
  * @UniqueEntity("code")
