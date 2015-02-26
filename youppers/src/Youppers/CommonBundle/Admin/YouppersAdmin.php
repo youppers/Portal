@@ -20,11 +20,12 @@ abstract class YouppersAdmin extends Admin
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
 		$admin = $this->isChild() ? $this->getParent() : $this;
-		if ($action == 'list') $menu->addChild('Create', array('uri' => $admin->generateUrl('create')));
+		if ($action == 'list') $menu->addChild($this->trans('link_action_create', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('create')));
 		if ($childAdmin || in_array($action, array('edit', 'show'))) { 
 			$id = $admin->getRequest()->get('id');
-			if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));		
-			if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+			if ($action != 'show') $menu->addChild($this->trans('link_action_show', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('show', array('id' => $id))));		
+			if ($action != 'edit') $menu->addChild($this->trans('link_action_edit', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+			if ($action != 'edit') $menu->addChild($this->trans('link_action_list', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('list')));
 		}
 	
 	}
