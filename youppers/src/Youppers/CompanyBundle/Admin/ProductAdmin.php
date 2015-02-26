@@ -10,8 +10,9 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Youppers\CommonBundle\Admin\YouppersAdmin;
 
-class ProductAdmin extends Admin
+class ProductAdmin extends YouppersAdmin
 {
 	protected function configureRoutes(RouteCollection $collection)
 	{
@@ -22,16 +23,16 @@ class ProductAdmin extends Admin
 		
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
-		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+		parent::configureTabMenu($menu, $action,$childAdmin);
+		
+		if ($action == 'show') {	
+			$admin = $this->isChild() ? $this->getParent() : $this;
+			$id = $admin->getRequest()->get('id');
 	
-		$admin = $this->isChild() ? $this->getParent() : $this;
-		$id = $admin->getRequest()->get('id');
-	
-		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
-		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-		if ($action == 'show') $menu->addChild('Assign Qr', array('uri' => $admin->generateUrl('qr', array('id' => $id))));		
-		if ($action == 'show') $menu->addChild('Clone', array('uri' => $admin->generateUrl('clone', array('id' => $id))));
-		if ($action == 'show') $menu->addChild('Enable', array('uri' => $admin->generateUrl('enable', array('id' => $id))));		
+			$menu->addChild('Assign Qr', array('uri' => $admin->generateUrl('qr', array('id' => $id))));		
+			$menu->addChild('Clone', array('uri' => $admin->generateUrl('clone', array('id' => $id))));
+			$menu->addChild('Enable', array('uri' => $admin->generateUrl('enable', array('id' => $id))));
+		}		
 	}
 	
 	/**
@@ -47,18 +48,9 @@ class ProductAdmin extends Admin
 		->add('code')
 		->add('description')
 		->add('url')
+		->add('productPrices')
 		->add('createdAt')
 		->add('updatedAt')
-		//->add('productModels', null, array('route' => array('name' => 'show')))
-		/*
-		->add('productModels', 'sonata_type_collection', array(
-				'by_reference'       => false,
-				'cascade_validation' => true,
-		) , array(
-				'edit' => 'inline',
-				'inline' => 'table'
-		))
-		*/
 		->add('qr', null, array('label' => 'QRCode', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
 		->add('qr.products', null, array('route' => array('name' => 'show'), 'associated_property' => 'name'))
 		;
@@ -71,16 +63,13 @@ class ProductAdmin extends Admin
 	{
 		$listMapper
 		->add('enabled', null, array('editable' => true))
-		//->add('id')
-		//->add('brand.code')		
 		->add('brand', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
              ))
-		->add('code')
+		->addIdentifier('code', null, array('route' => array('name' => 'show')))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
-		//->add('productModels')
 		->add('qr', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
@@ -91,6 +80,7 @@ class ProductAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
+		->add('gtin')
 		->add('code')
 		->add('name')
 		->add('brand.company')
@@ -100,15 +90,6 @@ class ProductAdmin extends Admin
 	}
 	
 	/**
-	 * Default Datagrid values
-	 *
-	 * @var array
-	 */
-	protected $datagridValues = array(
-			//'enabled' => array('value' => 1)
-	);
-
-	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
@@ -116,6 +97,7 @@ class ProductAdmin extends Admin
 		$formMapper
 		->with('Product', array('class' => 'col-md-8'))
 		->add('brand')
+		->add('gtin')
 		->add('code')
 		->add('name')
 		->add('description')
@@ -123,15 +105,8 @@ class ProductAdmin extends Admin
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
-		->add('qr', null, array('property' => 'id'))
-		//->add('qr.products')		
+		//->add('qr', null, array('property' => 'id'))
 		->end()
-		/*
-		->with('Options', array('class' => 'col-md-6'))
-		->add('engine', 'sonata_type_model_list')
-		->add('color', 'sonata_type_model_list')
-		->end()
-		*/
 		->with('Prices', array('class' => 'col-md-12'))
 			->add('productPrices', 'sonata_type_collection', array(
 				'by_reference'       => false,

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="company__product_price")
- * 
+ * @ORM\HasLifecycleCallbacks
  */
 class ProductPrice
 {
@@ -33,6 +33,11 @@ class ProductPrice
 	protected $price;
 	
 	/**
+	 * @ORM\Column(type="string", length=10)
+	 */
+	protected $uom;	
+	
+	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -42,18 +47,34 @@ class ProductPrice
 	 */
 	protected $createdAt;	
 		
+	/**
+	 * @ORM\PrePersist()
+	 */
 	public function prePersist()
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
-	
+
+	/**
+	 * @ORM\PreUpdate()
+	 */
 	public function preUpdate()
 	{
 		$this->updatedAt = new \DateTime();
+	}	
+	
+	public function __toString()
+	{
+		return $this->price ? $this->getDescription() : "New";
 	}
 	
+	public function getDescription() {
+		return ($this->getProduct()?:'?') . ' : ' . ($this->getPricelist()?:'?') . ' = ' . $this->getPrice() . ' / ' . $this->getUom();
+	}	
+		
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle 
+
 
     /**
      * Get id
@@ -68,10 +89,10 @@ class ProductPrice
     /**
      * Set price
      *
-     * @param \money $price
+     * @param string $price
      * @return ProductPrice
      */
-    public function setPrice(\money $price)
+    public function setPrice($price)
     {
         $this->price = $price;
 
@@ -81,11 +102,34 @@ class ProductPrice
     /**
      * Get price
      *
-     * @return \money 
+     * @return string 
      */
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set uom
+     *
+     * @param string $uom
+     * @return ProductPrice
+     */
+    public function setUom($uom)
+    {
+        $this->uom = $uom;
+
+        return $this;
+    }
+
+    /**
+     * Get uom
+     *
+     * @return string 
+     */
+    public function getUom()
+    {
+        return $this->uom;
     }
 
     /**

@@ -29,15 +29,19 @@ class Product
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="ProductPrice", cascade={"all"}, mappedBy="product")
-     * @Assert\Valid
 	 **/
-	private $productPrices;	
+	protected $productPrices;	
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 */
 	protected $name;
 	
+	/**
+	 * @ORM\Column(type="string", length=20, unique=true, nullable=true)
+	 */
+	protected $gtin;
+
 	/**
 	 * @ORM\Column(type="string", length=20)
 	 */
@@ -75,19 +79,19 @@ class Product
 	protected $qr;
 	
 	/**
-	 * @param ProductModel[] $models
+	 * @param ProductPrice[] $prices
 	 */
-	public function setProductPrices($models)
+	public function setProductPrices($prices)
 	{
 		$this->productPrices->clear();
 	
-		foreach ($models as $model) {
-			$this->addProductModel($model);
+		foreach ($prices as $price) {
+			$this->addProductPrice($price);
 		}
 	}
 	
 	/**
-	 * @return ProductModel[]
+	 * @return ProductPrice[]
 	 */
 	public function getProductPrices()
 	{
@@ -95,22 +99,23 @@ class Product
 	}
 	
 	/**
-	 * @param ProductModel $model
+	 * @param ProductPrice $price
 	 * @return void
 	 */
-	public function addProductModel(ProductModel $model)
+	public function addProductPrice(ProductPrice $price)
 	{
-		$model->setProduct($this);
-		$this->productPrices->add($model);
+		$price->setProduct($this);
+		$this->productPrices->add($price);
 	}
 	
 	/**
-	 * @param ProductModel $model
+	 * @param ProductPrice $price
 	 * @return void
 	 */
-	public function removeProductModel(ProductModel $model)
+	public function removeProductPrice(ProductPrice $price)	
 	{
-		$this->productPrices->removeElement($model);
+		//$price->setProduct(null);
+		$this->productPrices->removeElement($price);
 	}	
 	
 	public function __toString()
@@ -175,6 +180,29 @@ class Product
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set gtin
+     *
+     * @param string $gtin
+     * @return Product
+     */
+    public function setGtin($gtin)
+    {
+        $this->gtin = $gtin;
+
+        return $this;
+    }
+
+    /**
+     * Get gtin
+     *
+     * @return string 
+     */
+    public function getGtin()
+    {
+        return $this->gtin;
     }
 
     /**
@@ -336,29 +364,6 @@ class Product
     public function getBrand()
     {
         return $this->brand;
-    }
-
-    /**
-     * Add productPrices
-     *
-     * @param \Youppers\CompanyBundle\Entity\ProductPrices $productPrices
-     * @return Product
-     */
-    public function addProductPrice(\Youppers\CompanyBundle\Entity\ProductPrices $productPrices)
-    {
-        $this->productPrices[] = $productPrices;
-
-        return $this;
-    }
-
-    /**
-     * Remove productPrices
-     *
-     * @param \Youppers\CompanyBundle\Entity\ProductPrices $productPrices
-     */
-    public function removeProductPrice(\Youppers\CompanyBundle\Entity\ProductPrices $productPrices)
-    {
-        $this->productPrices->removeElement($productPrices);
     }
 
     /**

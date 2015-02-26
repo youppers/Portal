@@ -22,12 +22,22 @@ class PricelistAdmin extends YouppersAdmin
 		
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
-		parent::configureTabMenu($menu, $action,$childAdmin);				
 		
-		$admin = $this->isChild() ? $this->getParent() : $this;
-		$id = $admin->getRequest()->get('id');
-	
-		if ($action == 'show') $menu->addChild('Enable', array('uri' => $admin->generateUrl('enable', array('id' => $id))));		
+		if ($childAdmin) {
+			if ($action == 'list') $menu->addChild('Add', array('uri' => $childAdmin->generateUrl('create')));
+			if (in_array($action, array('edit', 'show'))) {
+				$id = $this->getRequest()->get('childId');
+				if ($action != 'show') $menu->addChild('Show', array('uri' => $childAdmin->generateUrl('show', array('id' => $id))));
+				if ($action != 'edit') $menu->addChild('Edit', array('uri' => $childAdmin->generateUrl('edit', array('id' => $id))));
+			}
+		} else {
+			parent::configureTabMenu($menu, $action,$childAdmin);
+			if (in_array($action, array('edit', 'show'))) {
+				$id = $this->getRequest()->get('id');
+				$menu->addChild('Products Prices', array('uri' => $this->generateUrl('youppers.company.admin.product_price.list', array('id' => $id))));
+			}
+		}
+		
 	}
 	
 	/**
@@ -40,7 +50,7 @@ class PricelistAdmin extends YouppersAdmin
 		->add('brand.company', null, array('route' => array('name' => 'show')))
 		->add('brand', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		->add('code')
-		->add('currency')		
+		->add('currency')
 		->add('validFrom')
 		->add('validTo')
 		->add('createdAt')
