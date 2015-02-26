@@ -6,7 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="box",
+ * @ORM\Table(name="youppers_dealer__box",
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(name="store_box_name_idx", columns={"store_id", "name"}),
  *     @ORM\UniqueConstraint(name="store_box_code_idx", columns={"store_id", "code"}),
