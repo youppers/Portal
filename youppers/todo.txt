@@ -6,6 +6,10 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+Add Brand as child admin of Company
+
+Add Products as child admin of Brand
+
 AttributeOptionAdmin deve essere child di AttributeStandardAdmin
 
 Load geoid for GA from https://developers.google.com/analytics/devguides/collection/protocol/v1/geoid
