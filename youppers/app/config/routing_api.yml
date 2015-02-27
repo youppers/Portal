@@ -29,7 +29,7 @@ sonata_api_notification:
 
 #sonata_api_ecommerce_order:
 #    type:         rest
-#    prefix:       /ecommerce
+#    prefix:       /ecommerceCustomer
 #    resource:     "@SonataOrderBundle/Resources/config/routing/api.xml"
 #
 #sonata_api_ecommerce_invoice:
@@ -56,3 +56,8 @@ sonata_api_user:
     type:         rest
     prefix:       /user
     resource:     "@SonataUserBundle/Resources/config/routing/api.xml"
+
+youppers_api_customer:
+    type:         rest
+    prefix:       /customer
+    resource:     "@YouppersCustomerBundle/Resources/config/routing/api.xml"
