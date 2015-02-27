@@ -47,12 +47,12 @@ imports:
 #    #- { resource: sonata/sonata_basket.yml }
     
     # Youppers
-    - { resource: "@YouppersScraperBundle/Resources/config/services.yml" }
-    - { resource: "@YouppersCommonBundle/Resources/config/services.yml" }
-    - { resource: "@YouppersCompanyBundle/Resources/config/admin.xml" }
-    - { resource: "@YouppersCompanyBundle/Resources/config/products.yml" }
-    - { resource: "@YouppersProductBundle/Resources/config/services.yml" }
-    - { resource: "@YouppersDealerBundle/Resources/config/admin.xml" }
+    #- { resource: "@YouppersScraperBundle/Resources/config/services.yml" }
+    #- { resource: "@YouppersCommonBundle/Resources/config/services.yml" }
+    #- { resource: "@YouppersCompanyBundle/Resources/config/admin.xml" }
+    #- { resource: "@YouppersCompanyBundle/Resources/config/products.yml" }
+    #- { resource: "@YouppersProductBundle/Resources/config/services.yml" }
+    #- { resource: "@YouppersDealerBundle/Resources/config/admin.xml" }
 
     # Audit
     #- { resource: audit.yml }

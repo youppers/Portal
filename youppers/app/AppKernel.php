@@ -34,6 +34,14 @@ class AppKernel extends Kernel
         	new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
         	//new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
+        	// YOUPPERS
+        	new Youppers\CommonBundle\YouppersCommonBundle(),
+        	new Youppers\ScraperBundle\YouppersScraperBundle(),
+        	new Youppers\CompanyBundle\YouppersCompanyBundle(),
+        	new Youppers\ProductBundle\YouppersProductBundle(),
+        	new Youppers\DealerBundle\YouppersDealerBundle(),
+        	new Youppers\CustomerBundle\YouppersCustomerBundle(),        	
+        		
         	// USER
         	new FOS\UserBundle\FOSUserBundle(),
         	new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
@@ -121,13 +129,6 @@ class AppKernel extends Kernel
         	new Happyr\Google\AnalyticsBundle\HappyrGoogleAnalyticsBundle(),
         	new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
         		
-        	// YOUPPERS 
-        	new Youppers\ScraperBundle\YouppersScraperBundle(),
-        	new Youppers\CompanyBundle\YouppersCompanyBundle(),
-            new Youppers\ProductBundle\YouppersProductBundle(),
-        	new Youppers\CommonBundle\YouppersCommonBundle(),
-            new Youppers\DealerBundle\YouppersDealerBundle(),
-            new Youppers\CustomerBundle\YouppersCustomerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

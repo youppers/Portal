@@ -1,6 +1,6 @@
 <?php
 
-namespace Youppers\ScraperBundle\DependencyInjection;
+namespace Youppers\ProductBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class YouppersScraperExtension extends Extension
+class YouppersProductExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -21,11 +21,21 @@ class YouppersScraperExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-
+        $bundles = $container->getParameter('kernel.bundles');
+        
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $yloader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        //$yloader->load('services.yml');
+        
+        //$loader->load('orm.xml');
+        //$loader->load('form.xml');
+       	//$loader->load('serializer/Session.xml');
+        //$loader->load('api_controllers.xml');
+        //$loader->load('api_form.xml');
+        
+        if (isset($bundles['SonataAdminBundle'])) {
+        	$yloader->load('admin.yml');
+        }
                 
-        $loader->load('services.xml');
-        $yloader->load('services.yml');
     }
 }
