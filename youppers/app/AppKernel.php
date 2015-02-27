@@ -34,6 +34,10 @@ class AppKernel extends Kernel
         	new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
         	//new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
+        	// API
+        	new FOS\RestBundle\FOSRestBundle(),
+        	new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+        		
         	// YOUPPERS
         	new Youppers\CommonBundle\YouppersCommonBundle(),
         	new Youppers\ScraperBundle\YouppersScraperBundle(),
@@ -67,11 +71,7 @@ class AppKernel extends Kernel
         		
         	// Disable this if you don't want the audit on entities
         	//new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
-        		
-        	// API
-        	new FOS\RestBundle\FOSRestBundle(),
-        	new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-        		
+        		        		
         	// E-COMMERCE
         	//new Sonata\BasketBundle\SonataBasketBundle(),
         	//new Application\Sonata\BasketBundle\ApplicationSonataBasketBundle(),

@@ -30,7 +30,7 @@ class YouppersCustomerExtension extends Extension
         //$loader->load('form.xml');
        	//$loader->load('serializer/Session.xml');
         $loader->load('api_controllers.xml');
-        $loader->load('api_form.xml');
+        //$loader->load('api_form.xml');
         
         if (isset($bundles['SonataAdminBundle'])) {
         	$loader->load('admin.xml');

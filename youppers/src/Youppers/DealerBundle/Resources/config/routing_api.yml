@@ -1,0 +1,5 @@
+api_youppers_dealer_get_consultants:
+    pattern:  /consultants
+    defaults: { _controller: 'YouppersDealerBundle:Consultant:all', _format: ~ }
+    requirements:
+        _method: GET

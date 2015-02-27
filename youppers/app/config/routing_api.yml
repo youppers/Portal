@@ -2,6 +2,16 @@ NelmioApiDocBundle:
     resource:     "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:       /doc
 
+youppers_api_dealer:
+    type:         rest
+    prefix:       /dealer
+    resource:     "@YouppersDealerBundle/Resources/config/routing_api.yml"
+
+youppers_api_customer:
+    type:         rest
+    prefix:       /customer
+    resource:     "@YouppersCustomerBundle/Resources/config/routing/api.xml"
+
 sonata_api_classification:
     type:         rest
     prefix:       /classification
@@ -56,8 +66,3 @@ sonata_api_user:
     type:         rest
     prefix:       /user
     resource:     "@SonataUserBundle/Resources/config/routing/api.xml"
-
-youppers_api_customer:
-    type:         rest
-    prefix:       /customer
-    resource:     "@YouppersCustomerBundle/Resources/config/routing/api.xml"

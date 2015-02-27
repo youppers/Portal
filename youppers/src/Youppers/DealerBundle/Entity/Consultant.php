@@ -2,7 +2,8 @@
 namespace Youppers\DealerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -12,8 +13,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     @ORM\UniqueConstraint(name="dealer_consultant_code_idx", columns={"dealer_id", "code"}),
  *   })
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity({"fullname", "dealer"})
- * @UniqueEntity({"code", "dealer"})
+ * @Validator\UniqueEntity({"fullname", "dealer"})
+ * @Validator\UniqueEntity({"code", "dealer"})
+ * @JMS\ExclusionPolicy("all")
  */
 class Consultant
 {
@@ -21,45 +23,56 @@ class Consultant
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @JMS\Expose()
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Dealer", inversedBy="consultants")
+	 * @JMS\MaxDepth(1)
+	 * @JMS\Expose()
 	 */
 	protected $dealer;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Store", inversedBy="consultants",  cascade={"all"})
 	 * @ORM\JoinTable(name="youppers_dealer__consultants_stores")
+	 * @JMS\MaxDepth(2)
+	 * @JMS\Expose()
 	 */
 	protected $stores;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @JMS\Expose()
 	 */
 	protected $enabled;
 	
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
+	 * @JMS\Expose()
 	 */
 	protected $code;
 	
 	/**
 	 * @ORM\Column(type="string")
+	 * @JMS\Expose()
 	 */
 	protected $fullname;
 
 	/**
 	 * @ORM\Column(type="text", nullable=true )
+	 * @JMS\Expose()
 	 */
 	protected $description;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 * @JMS\MaxDepth(1)
+	 * @JMS\Expose()
 	 */
 	protected $photo;	
-
+	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */

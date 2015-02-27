@@ -2,7 +2,7 @@
 <serializer>
     <class name="Youppers\CustomerBundle\Entity\Session" exclusion-policy="all" xml-root-name="session">
 
-        <property xml-attribute-map="true" name="id" type="string" expose="true" since-version="1.0" groups="sonata_api_read,sonata_api_write,sonata_search" />
+        <property xml-attribute-map="true" name="id" type="String" expose="true" since-version="1.0" groups="sonata_api_read,sonata_api_write,sonata_search" />
 
         <property name="createdAt" type="DateTime" expose="true" since-version="1.0" groups="sonata_api_read,sonata_search" />
         <property name="updatedAt" type="DateTime" expose="true" since-version="1.0" groups="sonata_api_read,sonata_search" />

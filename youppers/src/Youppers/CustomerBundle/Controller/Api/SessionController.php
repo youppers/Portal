@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Youppers\CustomerBundle\Model\sessionManagerInterface;
+use Youppers\CustomerBundle\Model\SessionManagerInterface;
 
 class SessionController
 {
@@ -48,18 +48,17 @@ class SessionController
     	$this->formFactory = $formFactory;
     }
 
+    
     /**
      * Start a session
      *
      * @ApiDoc(
-     *  input={"class"="youppers_customer_api_form_session", "name"="", "groups"={"sonata_api_write"}},
+     *  input={"class"="Youppers\CustomerBundle\Form\SessionType", "groups"={"sonata_api_write"}},
      *  output={"class"="Youppers\CustomerBundle\Entity\Session", "groups"={"sonata_api_read"}},
      *  statusCodes={
      *      200="Returned when successful",
-     *      400="Returned when an error has occurred while session creation",
-     *      404="Returned when unable to find session"
+     *      400="Returned when an error has occurred while session creation"
      *  }
-
      * )
      *
      * @param Request $request A Symfony request
@@ -72,6 +71,30 @@ class SessionController
     {
     	return $this->handleStartSession($request);
     }
+    
+    /**
+     * Start a session
+     *
+     * @ApiDoc(
+     *  input={"class"="Youppers\CustomerBundle\Form\SessionType", "name"="session", "groups"={"sonata_api_write"}},
+     *  output={"class"="Youppers\CustomerBundle\Entity\Session", "groups"={"sonata_api_read"}},
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      400="Returned when an error has occurred while session creation"
+     *  }
+     * )
+     *
+     * @param Request $request A Symfony request
+     *
+     * @return Session
+     *
+     * @throws NotFoundHttpException
+     */
+    public function getSessionAction(Request $request)
+    {
+    	return $this->handleStartSession($request);
+    }
+    
         
     /**
      * Start a session
@@ -80,13 +103,11 @@ class SessionController
      *
      * @return \FOS\RestBundle\View\View|FormInterface
      */    
-    protected function handleStartSession($request)    # Youppers Customer
-    #- { resource: "@YouppersCustomerBundle/Resources/config/admin.xml" }
-    #- { resource: "@YouppersCustomerBundle/Resources/config/api_controllers.xml" }
-    #- { resource: "@YouppersCustomerBundle/Resources/config/api_form.xml" }
-    
+    protected function handleStartSession($request)
     {
-    	//return $this->handleWriteSession($request);
+    	$session = $this->sessionManager->create();
+    	$this->sessionManager->save($session);
+    	return $session;
     }
     
     /**
