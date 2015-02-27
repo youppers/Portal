@@ -42,7 +42,7 @@ class LoginListener
 		if ($user instanceof UserInterface && !empty($user->getLocale())) {
 			$localeParts = explode('_',$user->getLocale());
 			// it_IT -> it
-			if (strcasecmp($localeParts[0],$localeParts[1]) == 0) {
+			if (count($localeParts) == 2 && strcasecmp($localeParts[0],$localeParts[1]) == 0) {
 				$this->locale = $localeParts[0]; 
 			} else {
 				$this->locale = $user->getLocale();
