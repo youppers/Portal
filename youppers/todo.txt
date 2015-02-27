@@ -6,6 +6,9 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+Url delle immagini nelle API:
+http://stackoverflow.com/questions/18956983/fosrestbundle-jms-serializer-and-sonatamediabundle-return-public-url-for-image
+
 Add Brand as child admin of Company
 
 Add Products as child admin of Brand
