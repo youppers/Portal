@@ -4,12 +4,47 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="youppers.customer.admin.profile" class="Youppers\CustomerBundle\Admin\ProfileAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Customer" label="Profile" />
+
+            <argument />
+            <argument>Youppers\CustomerBundle\Entity\Profile</argument>
+            <argument />
+
+        </service>
+
         <service id="youppers.customer.admin.session" class="Youppers\CustomerBundle\Admin\SessionAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Customer" label="Session" />
 
             <argument />
             <argument>Youppers\CustomerBundle\Entity\Session</argument>
             <argument />
+
+        </service>
+
+        <service id="youppers.customer.admin.item" class="Youppers\CustomerBundle\Admin\ItemAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Customer" label="Item" />
+
+            <argument />
+            <argument>Youppers\CustomerBundle\Entity\Item</argument>
+            <argument />
+
+        </service>
+
+        <service id="youppers.customer.admin.history" class="Youppers\CustomerBundle\Admin\HistoryAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Customer" label="History" />
+
+            <argument />
+            <argument>Youppers\CustomerBundle\Entity\History</argument>
+            <argument />
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="QrBox">Youppers\CustomerBundle\Entity\HistoryQrBox</argument>
+                    <argument key="QrVariant">Youppers\CustomerBundle\Entity\HistoryQrVariant</argument>
+                    <argument key="ItemAdd">Youppers\CustomerBundle\Entity\HistoryAdd</argument>
+                    <argument key="ItemRemove">Youppers\CustomerBundle\Entity\HistoryRemove</argument>
+                </argument>
+            </call>
 
         </service>
 
