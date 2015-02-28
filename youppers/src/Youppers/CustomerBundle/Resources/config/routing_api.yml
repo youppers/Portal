@@ -1,0 +1,18 @@
+api_youppers_customer_get_sessions:
+    pattern:  /sessions
+    defaults: { _controller: 'YouppersCustomerBundle:Session:getSessions', _format: ~ }
+    requirements:
+        _method: GET
+        
+api_youppers_customer_post_sessions:
+    pattern:  /sessions
+    defaults: { _controller: 'YouppersCustomerBundle:Session:newSession', _format: ~ }
+    requirements:
+        _method: POST
+        
+api_youppers_customer_get_session:
+    pattern:  /sessions/{id}
+    defaults: { _controller: 'YouppersCustomerBundle:Session:getSession', _format: ~ }
+    requirements:
+        _method: GET
+                

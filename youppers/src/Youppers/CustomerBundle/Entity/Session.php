@@ -3,11 +3,13 @@ namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="youppers_customer__session")
  * @ORM\HasLifecycleCallbacks
+ * @JMS\ExclusionPolicy("all")
  */
 class Session
 {
@@ -15,37 +17,48 @@ class Session
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @JMS\Expose()
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Profile", inversedBy="sessions")
+	 * @JMS\MaxDepth(1)
+	 * @JMS\Expose()
 	 */
 	protected $profile;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Store")
+	 * @JMS\MaxDepth(1)
+	 * @JMS\Expose()
 	 */
 	protected $store;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Consultant")
+	 * @JMS\MaxDepth(1)
+	 * @JMS\Expose()
 	 */
 	protected $consultant;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
 	 * @var Item[]
+	 * @JMS\MaxDepth(6)
+	 * @JMS\Expose()
 	 */
 	protected $items;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
+	 * @JMS\Expose()
 	 */
 	protected $updatedAt;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @JMS\Expose()
 	 */
 	protected $createdAt;
 			

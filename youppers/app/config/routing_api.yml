@@ -10,7 +10,7 @@ youppers_api_dealer:
 youppers_api_customer:
     type:         rest
     prefix:       /customer
-    resource:     "@YouppersCustomerBundle/Resources/config/routing/api.xml"
+    resource:     "@YouppersCustomerBundle/Resources/config/routing_api.yml"
 
 sonata_api_classification:
     type:         rest
