@@ -6,6 +6,10 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+Gestire voci tabMenu in YouppersAdmin quando ci sono subClasses 
+
+usare servizio sonata.intl.templating.helper.datetime per formattare createdAt
+
 Url delle immagini nelle API:
 http://stackoverflow.com/questions/18956983/fosrestbundle-jms-serializer-and-sonatamediabundle-return-public-url-for-image
 
