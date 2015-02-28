@@ -21,7 +21,9 @@ class SessionAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('profile', null, array('route' => array('name' => 'show')))
 		->add('store', null, array('route' => array('name' => 'show')))
+		->add('consultant', null, array('route' => array('name' => 'show')))
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -33,7 +35,9 @@ class SessionAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
+		->add('profile', null, array('route' => array('name' => 'show')))
 		->add('store', null, array('route' => array('name' => 'show')))
+		->add('consultant', null, array('route' => array('name' => 'show')))
 		->addIdentifier('createdAt', null, array('route' => array('name' => 'show')))
 		;
 	}
@@ -44,7 +48,9 @@ class SessionAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
+		->add('profile')
 		->add('store')
+		->add('consultant')
 		->add('createdAt')		
 		;
 	}
@@ -54,16 +60,11 @@ class SessionAdmin extends YouppersAdmin
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$formMapper
-		->with('Store', array('class' => 'col-md-8'));
 		
-		if (!$this->hasParentFieldDescription()) {
-			$formMapper
-			->add('store', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
-		}
 		$formMapper
-		->end()
-		;
+			->add('profile', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+			->add('store', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+			->add('consultant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
 	}
 
 }
