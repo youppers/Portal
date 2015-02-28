@@ -36,14 +36,21 @@ abstract class YouppersAdmin extends Admin
 	 * see: https://github.com/sonata-project/SonataAdminBundle/pull/2697 
 	 */
 	public function getSubject()
-	{
+	{		
+		if ($this->subject === false) {
+			return null;
+		}
+		
 		if ($this->subject === null && $this->request) {
 			$id = $this->request->get($this->getIdParameter());
-			$this->subject = $this->getModelManager()->find($this->getClass(), $id);
+			if (empty($id)) {
+				$this->subject = false;
+			} else {
+				$this->subject = $this->getModelManager()->find($this->getClass(), $id);
+			}
 		}
 	
 		return $this->subject;
 	}
-	
 	
 }
