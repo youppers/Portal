@@ -24,12 +24,12 @@ class YouppersCustomerExtension extends Extension
         $bundles = $container->getParameter('kernel.bundles');
         
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        //$loader->load('services.xml');
         
         //$loader->load('orm.xml');
         //$loader->load('form.xml');
        	//$loader->load('serializer/Session.xml');
-        $loader->load('api_controllers.xml');
+        //$loader->load('api_controllers.xml');
         //$loader->load('api_form.xml');
         
         if (isset($bundles['SonataAdminBundle'])) {
