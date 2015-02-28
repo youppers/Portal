@@ -3,13 +3,14 @@ namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Application\Sonata\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="youppers_customer__session")
+ * @ORM\Table(name="youppers_customer__profile")
  * @ORM\HasLifecycleCallbacks
  */
-class Session
+class Profile
 {
 	/**
 	 * @ORM\Column(type="guid")
@@ -19,25 +20,16 @@ class Session
 	protected $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Profile", inversedBy="sessions")
+	 * @ORM\OneToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
+	 * @return User
 	 */
-	protected $profile;
+	protected $user;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Store")
+	 * @ORM\OneToMany(targetEntity="Session", mappedBy="profile")
+	 * @return User
 	 */
-	protected $store;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Consultant")
-	 */
-	protected $consultant;
-	
-	/**
-	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
-	 * @var Item[]
-	 */
-	protected $items;
+	protected $sessions;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
@@ -51,9 +43,7 @@ class Session
 			
 	public function __toString()
 	{
-		return ($this->getProfile() ? $this->getProfile() . ' - ':'') 
-			 . ($this->getStore() ? $this->getStore() . ' - ':'')
-			 . ($this->getCreatedAt() ? $this->getCreatedAt()->format('c'): 'New');
+		return $this->getUser() ? 'User: ' . $this->getUser() : 'New';
 	}
 	
 	/**
@@ -74,6 +64,13 @@ class Session
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->sessions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -89,7 +86,7 @@ class Session
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Session
+     * @return Profile
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -112,7 +109,7 @@ class Session
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Session
+     * @return Profile
      */
     public function setCreatedAt($createdAt)
     {
@@ -132,71 +129,58 @@ class Session
     }
 
     /**
-     * Set profile
+     * Set user
      *
-     * @param \Youppers\CustomerBundle\Entity\Profile $profile
-     * @return Session
+     * @param \Application\Sonata\UserBundle\Entity\User $user
+     * @return Profile
      */
-    public function setProfile(\Youppers\CustomerBundle\Entity\Profile $profile = null)
+    public function setUser(\Application\Sonata\UserBundle\Entity\User $user = null)
     {
-        $this->profile = $profile;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get profile
+     * Get user
      *
-     * @return \Youppers\CustomerBundle\Entity\Profile 
+     * @return \Application\Sonata\UserBundle\Entity\User 
      */
-    public function getProfile()
+    public function getUser()
     {
-        return $this->profile;
+        return $this->user;
     }
 
     /**
-     * Set store
+     * Add sessions
      *
-     * @param \Youppers\DealerBundle\Entity\Store $store
-     * @return Session
+     * @param \Youppers\CustomerBundle\Entity\Session $sessions
+     * @return Profile
      */
-    public function setStore(\Youppers\DealerBundle\Entity\Store $store = null)
+    public function addSession(\Youppers\CustomerBundle\Entity\Session $sessions)
     {
-        $this->store = $store;
+        $this->sessions[] = $sessions;
 
         return $this;
     }
 
     /**
-     * Get store
+     * Remove sessions
      *
-     * @return \Youppers\DealerBundle\Entity\Store 
+     * @param \Youppers\CustomerBundle\Entity\Session $sessions
      */
-    public function getStore()
+    public function removeSession(\Youppers\CustomerBundle\Entity\Session $sessions)
     {
-        return $this->store;
+        $this->sessions->removeElement($sessions);
     }
 
     /**
-     * Set consultant
+     * Get sessions
      *
-     * @param \Youppers\DealerBundle\Entity\Consultant $consultant
-     * @return Session
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function setConsultant(\Youppers\DealerBundle\Entity\Consultant $consultant = null)
+    public function getSessions()
     {
-        $this->consultant = $consultant;
-
-        return $this;
-    }
-
-    /**
-     * Get consultant
-     *
-     * @return \Youppers\DealerBundle\Entity\Consultant 
-     */
-    public function getConsultant()
-    {
-        return $this->consultant;
+        return $this->sessions;
     }
 }
