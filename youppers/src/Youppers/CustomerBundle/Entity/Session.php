@@ -9,7 +9,6 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @ORM\Table(name="youppers_customer__session")
  * @ORM\HasLifecycleCallbacks
- * @JMS\ExclusionPolicy("all")
  */
 class Session
 {
@@ -17,28 +16,28 @@ class Session
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Expose()
+	 * @JMS\Groups({"list", "details"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Profile", inversedBy="sessions")
 	 * @JMS\MaxDepth(1)
-	 * @JMS\Expose()
+	 * @JMS\Groups({"details","update"})
 	 */
 	protected $profile;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Store")
-	 * @JMS\MaxDepth(1)
-	 * @JMS\Expose()
+	 * @JMS\MaxDepth(4)
+	 * @JMS\Groups({"list","details","update"})
 	 */
 	protected $store;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Consultant")
-	 * @JMS\MaxDepth(1)
-	 * @JMS\Expose()
+	 * @JMS\MaxDepth(4)
+	 * @JMS\Groups({"list","details","update"})
 	 */
 	protected $consultant;
 	
@@ -46,19 +45,19 @@ class Session
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
 	 * @var Item[]
 	 * @JMS\MaxDepth(6)
-	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $items;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $updatedAt;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @JMS\Expose()
+	 * @JMS\Groups({"list","details"})
 	 */
 	protected $createdAt;
 			

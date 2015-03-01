@@ -4,6 +4,7 @@ namespace Youppers\CustomerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Application\Sonata\UserBundle\Entity\User;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -16,12 +17,14 @@ class Profile
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @JMS\Groups({"details","update"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\OneToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
 	 * @return User
+	 * @JMS\Groups({"details","update"})
 	 */
 	protected $user;
 	
@@ -33,11 +36,13 @@ class Profile
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
+	 * @JMS\Groups({"details","update"})
 	 */
 	protected $updatedAt;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @JMS\Groups({"details","update"})
 	 */
 	protected $createdAt;
 			

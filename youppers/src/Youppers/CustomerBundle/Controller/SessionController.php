@@ -3,9 +3,9 @@
 namespace Youppers\CustomerBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\View;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use JMS\Serializer\Annotation\MaxDepth;
+use Youppers\DealerBundle\Entity\Consultant;
 
 class SessionController extends FOSRestController
 {
@@ -15,11 +15,16 @@ class SessionController extends FOSRestController
 	 * 
 	 * @ApiDoc(
 	 * 		section="Customer",
-	 * 		description="Return a list of sessions"
+	 * 		description="Return a list of sessions",
+	 * 		output={
+	 * 			"class"="Youppers\CustomerBundle\Entity\Session",
+	 * 			"groups"={"list"}
+	 * 		}
 	 * )
 	 * 
-	 * @View(
-	 * 		serializerEnableMaxDepthChecks=true
+	 * @Rest\View(
+	 * 		serializerEnableMaxDepthChecks=true,
+	 * 		serializerGroups={"list"}
 	 * )
 	 * 
 	 */
@@ -36,12 +41,15 @@ class SessionController extends FOSRestController
 	 * Return a new Session
 	 *
 	 * @ApiDoc(
+	 * 
 	 * 		section="Customer",
-	 * 		description="Create a new session"
+	 * 		description="Create a new session",
+	 * 		output="Youppers\CustomerBundle\Entity\Session"
 	 * )
 	 *
-	 * @View(
-	 * 		serializerEnableMaxDepthChecks=true
+	 * @Rest\View(
+	 * 		serializerEnableMaxDepthChecks=true,
+	 * 		serializerGroups={"details"}
 	 * )
 	 *
 	 */
@@ -62,11 +70,13 @@ class SessionController extends FOSRestController
 	 *
 	 * @ApiDoc(
 	 * 		section="Customer",
-	 * 		description="Get a session"
+	 * 		description="Get a session",
+	 * 		output="Youppers\CustomerBundle\Entity\Session"
 	 * )
 	 *
-	 * @View(
-	 * 		serializerEnableMaxDepthChecks=true
+	 * @Rest\View(
+	 * 		serializerEnableMaxDepthChecks=true,
+	 * 		serializerGroups={"details"}
 	 * )
 	 *
 	 */
@@ -75,6 +85,27 @@ class SessionController extends FOSRestController
 		$repo = $this->getDoctrine()->getRepository('YouppersCustomerBundle:Session');
 	
 		return $repo->find($id);
+	}
+	
+	/**
+	 * Update a Session
+	 *
+	 * @ApiDoc(
+	 * 		section="Customer",
+	 * 		resource=true,
+	 * 		description="Update a session",
+	 * 		input="Youppers\CustomerBundle\Entity\Session",
+	 * 		output="Youppers\CustomerBundle\Entity\Session"
+	 * )
+	 * @Rest\View(
+	 * 		serializerEnableMaxDepthChecks=true,
+	 * 		serializerGroups={"update"}
+	 * )
+	 *
+	 */
+	public function putSessionAction($id)
+	{
+		
 	}
 	
 }
