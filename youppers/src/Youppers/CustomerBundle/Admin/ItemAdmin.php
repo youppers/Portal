@@ -63,9 +63,21 @@ class ItemAdmin extends YouppersAdmin
 		$formMapper
 			->add('session', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			->add('variant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-			->add('removed')
+			->add('removed', null, array('required'  => false))
 			->add('placing')
 		;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getNewInstance()
+	{
+		$object = parent::getNewInstance();
+	
+		$object->setRemoved(false);
+
+		return $object;
+	}
+	
 }
