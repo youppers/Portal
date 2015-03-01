@@ -21,11 +21,30 @@ class HistoryAdmin extends Admin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-		->add('session', null, array('route' => array('name' => 'show')))
-		->add('type', 'text')
-		->add('createdAt')
-		->add('updatedAt')
-		;
+			->add('session', null, array('route' => array('name' => 'show')))
+			->add('type', 'text')
+			;
+		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryQrBox") {
+			$showMapper
+			->add('box', null, array('route' => array('name' => 'show')))
+			;
+		}
+		
+		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryQrVariant") {
+			$showMapper
+			->add('variant', null, array('route' => array('name' => 'show')))
+			;
+		}
+		
+		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryAdd" || $this->getClass() == "Youppers\CustomerBundle\Entity\HistoryRemove") {
+			$showMapper
+			->add('item', null, array('route' => array('name' => 'show')))
+			;
+		}
+		$showMapper
+			->add('createdAt')
+			->add('updatedAt')
+			;
 	}
 
 	/**
@@ -37,8 +56,10 @@ class HistoryAdmin extends Admin
 		->add('session', null, array('route' => array('name' => 'show')))
 		->addIdentifier('type', 'text', array('route' => array('name' => 'show')))
 		->addIdentifier('createdAt', null, array('route' => array('name' => 'show')))
-		//->addIdentifier('type', null, array('route' => array('name' => 'show')))
-		;
+		->add('box', null, array('route' => array('name' => 'show')))
+		->add('variant', null, array('route' => array('name' => 'show')))
+		->add('item', null, array('route' => array('name' => 'show')))
+		;				
 	}
 
 	/**

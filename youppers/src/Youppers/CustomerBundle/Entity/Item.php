@@ -53,7 +53,7 @@ class Item
 			
 	public function __toString()
 	{
-		return $this->getCreatedAt() ? $this->getCreatedAt()->format('c'): 'New';
+		return $this->getVariant() ? $this->getVariant() . '@' . $this->getPlacing() : 'New';
 	}
 	
 	/**
