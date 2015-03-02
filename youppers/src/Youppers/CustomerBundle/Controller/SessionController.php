@@ -57,7 +57,7 @@ class SessionController extends FOSRestController
 	{
 		$repo = $this->getDoctrine()->getRepository('YouppersCustomerBundle:Session');
 		$sessionClass = $repo->getClassName();
-		$em = $this->getDoctrine()->getEntityManagerForClass($sessionClass);
+		$em = $this->getDoctrine()->getManagerForClass($sessionClass);
 		$session = new $sessionClass;
 		$em->persist($session);
 		$em->flush();
