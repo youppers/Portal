@@ -18,3 +18,9 @@ services:
   youppers.common.qr:
       class: 'Youppers\CommonBundle\Qr\QrService'
       arguments: ['@session', '@doctrine.orm.entity_manager' ]
+
+  youppers.common.serialization_listener:
+      class: Youppers\CommonBundle\EventListener\SerializationListener
+      tags:
+          - { name: jms_serializer.event_subscriber }
+      
