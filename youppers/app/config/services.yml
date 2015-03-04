@@ -7,16 +7,3 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-
-    youppers.locale_listener:
-        class: Youppers\CommonBundle\EventListener\LocaleListener
-        arguments: ["%kernel.default_locale%"]
-        tags:
-            - { name: kernel.event_subscriber }
-            
-    youppers.user.login:
-        class: Youppers\CommonBundle\EventListener\LoginListener
-        arguments: ["@security.context", "@router"]
-        tags:
-            - { name: kernel.event_listener, event: security.authentication.success, method: handle }
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }            
