@@ -29,7 +29,9 @@ services:
  
   youppers.common.qr:
       class: 'Youppers\CommonBundle\Qr\QrService'
-      arguments: ['@session', '@doctrine.orm.entity_manager' ]
+      arguments: ['@session']
+      calls:
+        - [ setContainer, [ '@service_container' ] ]
 
   youppers.common.serialization_listener:
       class: Youppers\CommonBundle\EventListener\SerializationListener

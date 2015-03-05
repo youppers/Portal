@@ -22,7 +22,6 @@ class YouppersCommonExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $bundles = $container->getParameter('kernel.bundles');
-        
         //$loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $yloader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         //$loader->load('services.xml');
@@ -32,5 +31,17 @@ class YouppersCommonExtension extends Extension
         	//$loader->load('admin.xml');
         }
         
+        $this->configureQr($container, $config);
     }
+    
+    /**
+     * 
+     * @param ContainerBuilder $container
+     * @param array $config
+     */
+    protected function configureQr(ContainerBuilder $container, array $config)
+    {
+    	$container->setParameter($this->getAlias() . '.qr', $config['qr']);
+    }
+    
 }
