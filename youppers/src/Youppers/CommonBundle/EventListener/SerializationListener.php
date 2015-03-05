@@ -7,8 +7,6 @@ use JMS\Serializer\EventDispatcher\ObjectEvent;
 /**
  * Add data after serialization
  *
- * @Service("axo.listener.serializationlistener")
- * @Tag("jms_serializer.event_subscriber")
  */
 class SerializationListener implements EventSubscriberInterface
 {
