@@ -14,18 +14,18 @@ services:
           - [setRequest, ['@?request=']]
           - [setLogger, ['@logger']]
 
-    youppers.locale_listener:
-        class: Youppers\CommonBundle\EventListener\LocaleListener
-        arguments: ["%kernel.default_locale%"]
-        tags:
-            - { name: kernel.event_subscriber }
+  youppers.common.locale_listener:
+      class: Youppers\CommonBundle\EventListener\LocaleListener
+      arguments: ["%kernel.default_locale%"]
+      tags:
+          - { name: kernel.event_subscriber }
             
-    youppers.user.login:
-        class: Youppers\CommonBundle\EventListener\LoginListener
-        arguments: ["@security.context", "@router"]
-        tags:
-            - { name: kernel.event_listener, event: security.authentication.success, method: handle }
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }            
+  youppers.common.user.login:
+      class: Youppers\CommonBundle\EventListener\LoginListener
+      arguments: ["@security.context", "@router"]
+      tags:
+          - { name: kernel.event_listener, event: security.authentication.success, method: handle }
+          - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }            
  
   youppers.common.qr:
       class: 'Youppers\CommonBundle\Qr\QrService'
