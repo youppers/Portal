@@ -24,7 +24,7 @@ class ItemAdmin extends YouppersAdmin
 		->add('session', null, array('route' => array('name' => 'show')))
 		->add('variant', null, array('route' => array('name' => 'show')))
 		->add('removed')
-		->addIdentifier('placing', null, array('route' => array('name' => 'show')))
+		->addIdentifier('zone', null, array('route' => array('name' => 'show')))
 		;
 	}
 
@@ -35,7 +35,7 @@ class ItemAdmin extends YouppersAdmin
 	{
 		$datagridMapper
 		->add('session')
-		->add('placing')
+		->add('zone')
 		;
 	}
 
@@ -48,7 +48,7 @@ class ItemAdmin extends YouppersAdmin
 		->add('session', null, array('route' => array('name' => 'show')))
 		->add('variant', null, array('route' => array('name' => 'show')))
 		->add('removed')
-		->add('placing')
+		->add('zone')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -64,7 +64,7 @@ class ItemAdmin extends YouppersAdmin
 			->add('session', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			->add('variant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			->add('removed', null, array('required'  => false))
-			->add('placing')
+			->add('zone')
 		;
 	}
 

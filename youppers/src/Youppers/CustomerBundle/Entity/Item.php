@@ -39,7 +39,7 @@ class Item
 	 * @ORM\Column(type="string")
 	 * TODO deve essere una choice su una tabella
 	 */
-	protected $placing;
+	protected $zone;
 		
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
@@ -53,7 +53,7 @@ class Item
 			
 	public function __toString()
 	{
-		return $this->getVariant() ? $this->getVariant() . '@' . $this->getPlacing() : 'New';
+		return $this->getVariant() ? $this->getVariant() . '@' . $this->getZone() : 'New';
 	}
 	
 	/**
@@ -75,6 +75,7 @@ class Item
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle:Item
 
+
     /**
      * Get id
      *
@@ -83,6 +84,52 @@ class Item
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set removed
+     *
+     * @param boolean $removed
+     * @return Item
+     */
+    public function setRemoved($removed)
+    {
+        $this->removed = $removed;
+
+        return $this;
+    }
+
+    /**
+     * Get removed
+     *
+     * @return boolean 
+     */
+    public function getRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
+     * Set zone
+     *
+     * @param string $zone
+     * @return Item
+     */
+    public function setZone($zone)
+    {
+        $this->zone = $zone;
+
+        return $this;
+    }
+
+    /**
+     * Get zone
+     *
+     * @return string 
+     */
+    public function getZone()
+    {
+        return $this->zone;
     }
 
     /**
@@ -175,51 +222,5 @@ class Item
     public function getVariant()
     {
         return $this->variant;
-    }
-
-    /**
-     * Set placing
-     *
-     * @param string $placing
-     * @return Item
-     */
-    public function setPlacing($placing)
-    {
-        $this->placing = $placing;
-
-        return $this;
-    }
-
-    /**
-     * Get placing
-     *
-     * @return string 
-     */
-    public function getPlacing()
-    {
-        return $this->placing;
-    }
-
-    /**
-     * Set removed
-     *
-     * @param boolean $removed
-     * @return Item
-     */
-    public function setRemoved($removed)
-    {
-        $this->removed = $removed;
-
-        return $this;
-    }
-
-    /**
-     * Get removed
-     *
-     * @return boolean 
-     */
-    public function getRemoved()
-    {
-        return $this->removed;
     }
 }
