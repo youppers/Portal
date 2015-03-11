@@ -23,20 +23,20 @@ class Session
 	/**
 	 * @ORM\ManyToOne(targetEntity="Profile", inversedBy="sessions")
 	 * @JMS\MaxDepth(1)
-	 * @JMS\Groups({"details","update"})
+	 * @JMS\Groups({"list","details","update"})
 	 */
 	protected $profile;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Store")
-	 * @JMS\MaxDepth(4)
+	 * @JMS\MaxDepth(1) // 4
 	 * @JMS\Groups({"list","details","update"})
 	 */
 	protected $store;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Consultant")
-	 * @JMS\MaxDepth(4)
+	 * @JMS\MaxDepth(1) // 4
 	 * @JMS\Groups({"list","details","update"})
 	 */
 	protected $consultant;
@@ -44,7 +44,7 @@ class Session
 	/**
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
 	 * @var Item[]
-	 * @JMS\MaxDepth(6)
+	 * @JMS\MaxDepth(1) // 6
 	 * @JMS\Groups({"details"})
 	 */
 	protected $items;

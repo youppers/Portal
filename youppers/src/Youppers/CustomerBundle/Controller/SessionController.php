@@ -16,6 +16,10 @@ class SessionController extends FOSRestController
 	 * @ApiDoc(
 	 * 		section="Customer",
 	 * 		description="Return a list of sessions",
+	 *  	filters={
+     *      	{"name"="store[code]", "dataType"="string"},
+     *      	{"name"="profile[user][id]", "dataType"="string"}
+     *      },
 	 * 		output={
 	 * 			"class"="Youppers\CustomerBundle\Entity\Session",
 	 * 			"groups"={"list"}
@@ -44,7 +48,10 @@ class SessionController extends FOSRestController
 	 * 
 	 * 		section="Customer",
 	 * 		description="Create a new session",
-	 * 		output="Youppers\CustomerBundle\Entity\Session"
+	 * 		output={
+	 * 			"class"="Youppers\CustomerBundle\Entity\Session",
+	 * 			"groups"={"details"}
+	 * 		}
 	 * )
 	 *
 	 * @Rest\View(
@@ -71,7 +78,10 @@ class SessionController extends FOSRestController
 	 * @ApiDoc(
 	 * 		section="Customer",
 	 * 		description="Get a session",
-	 * 		output="Youppers\CustomerBundle\Entity\Session"
+	 * 		output={
+	 * 			"class"="Youppers\CustomerBundle\Entity\Session",
+	 * 			"groups"={"details"}
+	 * 		}
 	 * )
 	 *
 	 * @Rest\View(
@@ -94,9 +104,16 @@ class SessionController extends FOSRestController
 	 * 		section="Customer",
 	 * 		resource=true,
 	 * 		description="Update a session",
-	 * 		input="Youppers\CustomerBundle\Entity\Session",
-	 * 		output="Youppers\CustomerBundle\Entity\Session"
+	 * 		input={
+	 * 			"class"="Youppers\CustomerBundle\Entity\Session",
+	 * 			"groups"={"update"}
+	 * 		},
+	 * 		output={
+	 * 			"class"="Youppers\CustomerBundle\Entity\Session",
+	 * 			"groups"={"update"}
+	 * 		}
 	 * )
+	 * 
 	 * @Rest\View(
 	 * 		serializerEnableMaxDepthChecks=true,
 	 * 		serializerGroups={"update"}
