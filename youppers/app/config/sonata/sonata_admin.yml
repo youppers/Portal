@@ -9,6 +9,7 @@ sonata_admin:
         #layout:  SonataAdminBundle::standard_layout.html.twig
         layout: YouppersCommonBundle:Admin:layout.html.twig
         short_object_description: YouppersCommonBundle:Helper:short-object-description.html.twig
+        select:               'YouppersCommonBundle:CRUD:list__select.html.twig'
 
     dashboard:
         blocks:
