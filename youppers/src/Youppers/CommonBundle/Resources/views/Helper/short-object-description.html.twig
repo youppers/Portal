@@ -5,7 +5,7 @@
     {% if object and admin.hasRoute('edit') and admin.isGranted('EDIT') %}
         <a href="{{ admin.generateObjectUrl('edit', object, link_parameters) }}" target="new">
 		{% if object.providerName is defined and object.providerName == 'sonata.media.provider.image' %}
-        	{% media object, 'reference' %}
+        	{% media object, 'admin' %}
     	{% else %}
     		{{ description }}
     	{% endif %}
