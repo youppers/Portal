@@ -6,6 +6,8 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+Inviare a GA i click su elenco prodotti
+
 Gestire voci tabMenu in YouppersAdmin quando ci sono subClasses 
 
 usare servizio sonata.intl.templating.helper.datetime per formattare createdAt
