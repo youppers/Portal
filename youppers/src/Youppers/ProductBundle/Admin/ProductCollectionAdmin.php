@@ -58,14 +58,8 @@ class ProductCollectionAdmin extends YouppersAdmin
         	->add('productType', null, array('route' => array('name' => 'show')))
         	->addIdentifier('image', null, array('route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
             ->addIdentifier('name', null, array('route' => array('name' => 'show')))
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    //'show' => array(),
-                    'edit' => array(),
-                    //'delete' => array(),
-                )
-            ))
-        ;
+        	->add('pdfGallery', null, array('associated_property' => 'name', 'route' => array('name' => 'edit', 'parameters' => array('context' => 'pdf'))))        
+            ;
     }
 
     /**
@@ -74,12 +68,15 @@ class ProductCollectionAdmin extends YouppersAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-        	->with('Product Collection', array('class' => 'col-md-8'))
+        	->with('Product Collection', array('class' => 'col-md-6'))
 			->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
         	->add('productType', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
         	->add('name')
-            //->add('description')
-	        ->add('image', 'sonata_type_model_list', 
+        	->add('description')
+        	->add('enabled', null, array('required'  => false))
+	        ->end()
+	        ->with('Image', array('class' => 'col-md-6'))
+            ->add('image', 'sonata_type_model_list', 
 	        	array(
 	        		'required' => false
 	        	), array(
@@ -89,9 +86,18 @@ class ProductCollectionAdmin extends YouppersAdmin
 	        		)
 	        	)
 	        )	        
-	        ->end()
-            ->with('Options', array('class' => 'col-md-4'))
-            ->add('enabled', null, array('required'  => false))
+            ->end()
+            ->with('Attachments', array('class' => 'col-md-12'))
+            ->add('pdfGallery', 'sonata_type_model_list', 
+	        	array(
+	        		'required' => false
+	        	), array(
+	        		'link_parameters' => array(
+	        				'context'  => 'pdf',
+	        				'filter'   => array('context' => array('value' => 'pdf'))
+	        		)
+	        	)
+	        )	        
             ->end()
             /*
             ->with('Variants', array('class' => 'col-md-12'))
@@ -105,6 +111,7 @@ class ProductCollectionAdmin extends YouppersAdmin
             	)
             ->end()
             */
+        
         ;
     }
 
@@ -117,11 +124,12 @@ class ProductCollectionAdmin extends YouppersAdmin
             ->add('brand')
             ->add('productType')
         	->add('name')
-            ->add('enabled')
-            ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))            
-            //->add('description')
+            ->add('description')
+        	->add('enabled')
+            ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
             //->add('productVariants', null, array('route' => array('name' => 'show')))
             //->add('productAttributes.attributeType')
+        	->add('pdfGallery', null, array('associated_property' => 'name', 'route' => array('name' => 'edit', 'parameters' => array('context' => 'pdf'))))        
             ->add('updatedAt')
             ->add('createdAt')
         ;

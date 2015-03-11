@@ -9,17 +9,26 @@ sonata_media:
             download:
                 mode: http # X-Sendfile | http
             providers:
-                #- sonata.media.provider.dailymotion
-                #- sonata.media.provider.youtube
+                - sonata.media.provider.dailymotion
+                - sonata.media.provider.youtube
                 - sonata.media.provider.image
-                #- sonata.media.provider.file
-                #- sonata.media.provider.vimeo
+                - sonata.media.provider.file
+                - sonata.media.provider.vimeo
 
             formats:
                 abstract: { width: 100, quality: 100}
                 wide:     { width: 820, quality: 100}
                 small: { width: 100, quality: 100}
                 big:   { width: 970 , quality: 100}
+
+        pdf:
+            download:
+                mode: http # X-Sendfile | http
+            providers:
+                - sonata.media.provider.file
+
+            formats:
+                default:
                                 
         youppers_company_logo:
             providers:
@@ -115,6 +124,12 @@ sonata_media:
         file:
             # the resizer must be set to false, otherwhise this can delete icon files from the fs
             resizer:    false
+            
+            allowed_extensions:
+                - pdf
+            allowed_mime_types:
+                - "application/pdf"       
+                     
         image:
            thumbnail: sonata.media.thumbnail.format          # default value
 #           thumbnail: sonata.media.thumbnail.consumer.format # can be used to dispatch the resize action to async task

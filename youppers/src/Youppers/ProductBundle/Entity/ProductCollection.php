@@ -32,7 +32,12 @@ class ProductCollection
 	 * @ORM\Column(type="string", length=60)
 	 */
 	protected $name;
-
+	
+	/**
+	 * @ORM\Column(type="text", nullable=true )
+	 */
+	protected $description;
+	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Youppers\CompanyBundle\Entity\Brand")
 	 */
@@ -53,6 +58,12 @@ class ProductCollection
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 */	
 	protected $image;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery")
+	 * @ORM\JoinColumn(name="pdf_gallery_id")
+	 */
+	protected $pdfGallery;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="ProductVariant", mappedBy="productCollection", cascade={"all"}, orphanRemoval=true)
@@ -147,6 +158,29 @@ class ProductCollection
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return ProductCollection
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -265,16 +299,6 @@ class ProductCollection
     }
 
     /**
-     * Get productVariants
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProductVariants()
-    {
-        return $this->productVariants;
-    }
-
-    /**
      * Set image
      *
      * @param \Application\Sonata\MediaBundle\Entity\Media $image
@@ -295,5 +319,38 @@ class ProductCollection
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set pdfGallery
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Gallery $pdfGallery
+     * @return ProductCollection
+     */
+    public function setPdfGallery(\Application\Sonata\MediaBundle\Entity\Gallery $pdfGallery = null)
+    {
+        $this->pdfGallery = $pdfGallery;
+
+        return $this;
+    }
+
+    /**
+     * Get pdfGallery
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Gallery 
+     */
+    public function getPdfGallery()
+    {
+        return $this->pdfGallery;
+    }
+
+    /**
+     * Get productVariants
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProductVariants()
+    {
+        return $this->productVariants;
     }
 }
