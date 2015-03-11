@@ -19,7 +19,7 @@ class AttributeStandardAdmin extends YouppersAdmin
         $datagridMapper
             ->add('attributeType')
         	->add('name')
-            ->add('code')
+            ->add('symbol')
             ->add('enabled')
         ;
     }
@@ -33,7 +33,7 @@ class AttributeStandardAdmin extends YouppersAdmin
             ->add('enabled', null, array('editable' => true))
             ->add('attributeType', null, array('route' => array('name' => 'show')))
             ->addIdentifier('name', null, array('route' => array('name' => 'show')))
-            ->add('code')
+            ->add('symbol')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     //'show' => array(),
@@ -53,7 +53,7 @@ class AttributeStandardAdmin extends YouppersAdmin
         	->with('Attribute Standard', array('class' => 'col-md-8'))
             ->add('attributeType')
         	->add('name')
-            ->add('code')
+            ->add('symbol')
             ->add('description')
             ->end()
             ->with('Options', array('class' => 'col-md-4'))
@@ -77,7 +77,7 @@ class AttributeStandardAdmin extends YouppersAdmin
         $showMapper
         	->add('attributeType', null, array('route' => array('name' => 'show')))
             ->add('name')
-            ->add('code')
+            ->add('symbol')
             ->add('enabled')
             ->add('description')
             //->add('attributeOptions', null, array('associated_property' => 'valueWithEquivalence'))

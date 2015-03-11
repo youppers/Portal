@@ -28,9 +28,9 @@ class AttributeStandard
 	protected $name;
 
 	/**
-	 * @ORM\Column(name="code", type="string", length=60, unique=true)
+	 * @ORM\Column(type="string", length=60, nullable=true )
 	 */
-	protected $code;
+	protected $symbol;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
@@ -134,26 +134,26 @@ class AttributeStandard
     }
 
     /**
-     * Set code
+     * Set symbol
      *
-     * @param string $code
+     * @param string $symbol
      * @return AttributeStandard
      */
-    public function setCode($code)
+    public function setSymbol($symbol)
     {
-        $this->code = $code;
+        $this->symbol = $symbol;
 
         return $this;
     }
 
     /**
-     * Get code
+     * Get symbol
      *
      * @return string 
      */
-    public function getCode()
+    public function getSymbol()
     {
-        return $this->code;
+        return $this->symbol;
     }
 
     /**

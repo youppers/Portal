@@ -19,7 +19,7 @@ class AttributeOption
 	}
 	
 	public function getValueWithStandard() {
-		return (null === $this->getValue() ? 'New' : $this->getValue()) . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getCode():''); 
+		return (null === $this->getValue() ? 'New' : $this->getValue()) . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getSymbol():''); 
 	}
 	
 	public function getValueWithEquivalence()
