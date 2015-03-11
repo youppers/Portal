@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="pdf">
+                <source>pdf</source>
+                <target>Pdf</target>
+            </trans-unit>
             <trans-unit id="youppers_company_logo">
                 <source>youppers_company_logo</source>
                 <target>Logo Aziende</target>
@@ -9,6 +13,26 @@
             <trans-unit id="youppers_brand_logo">
                 <source>youppers_brand_logo</source>
                 <target>Logo Marchi</target>
+            </trans-unit>
+            <trans-unit id="youppers_product">
+                <source>youppers_product</source>
+                <target>Immagini Prodotto</target>
+            </trans-unit>
+            <trans-unit id="youppers_attribute">
+                <source>youppers_attribute</source>
+                <target>Immagini Attributo</target>
+            </trans-unit>
+            <trans-unit id="youppers_consultant_photo">
+                <source>youppers_consultant_photo</source>
+                <target>Foto Consulente</target>
+            </trans-unit>
+            <trans-unit id="label.protected_download_url">
+                <source>label.protected_download_url</source>
+                <target>URL Download</target>
+            </trans-unit>
+            <trans-unit id="label.flushed_at">
+                <source>label.flushed_at</source>
+                <target>Aggiornato il </target>
             </trans-unit>
         
         <!--
@@ -192,10 +216,6 @@
                 <source>label.to_be_flushed</source>
                 <target>Flushable</target>
             </trans-unit>
-            <trans-unit id="label.flushed_at">
-                <source>label.flushed_at</source>
-                <target>Flushed at</target>
-            </trans-unit>
             <trans-unit id="label.public_url">
                 <source>label.public_url</source>
                 <target>Public URL</target>
@@ -235,10 +255,6 @@
             <trans-unit id="label.select_provider">
                 <source>label.select_provider</source>
                 <target>Type : </target>
-            </trans-unit>
-            <trans-unit id="label.protected_download_url">
-                <source>label.protected_download_url</source>
-                <target>Protected URL</target>
             </trans-unit>
             <trans-unit id="label.protected_download_url_notice">
                 <source>label.protected_download_url_notice</source>
