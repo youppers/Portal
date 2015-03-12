@@ -45,7 +45,8 @@
 		"doctrine/migrations" : "1.0.x-dev",
 		"ddeboer/data-import-bundle" : "0.1.*",
 		"sonata-project/ecommerce" : "@dev",
-		"authbucket/oauth2-symfony-bundle": "~2.4"
+		"authbucket/oauth2-symfony-bundle": "~2.4",
+		"wa72/jsonrpc-bundle": "0.5.*"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~2.5"

@@ -3,6 +3,7 @@ namespace Youppers\DealerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -14,6 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity({"name", "box"})
  * @UniqueEntity({"product", "box"})
+ * @Serializer\ExclusionPolicy("all") 
  */
 class BoxProduct
 {
@@ -26,6 +28,8 @@ class BoxProduct
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $name;
 	
@@ -36,11 +40,15 @@ class BoxProduct
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\CompanyBundle\Entity\Product")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json"})
 	 **/
 	protected $product;
 
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $position;
 	

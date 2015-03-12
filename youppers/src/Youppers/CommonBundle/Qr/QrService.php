@@ -145,4 +145,24 @@ class QrService extends Controller
 		$this->session->getFlashBag()->add('sonata_flash_success','enabled_qr');
 		
 	}
+	
+	public function find($id) {
+		$logger = $this->get('logger');
+		
+		$logger->info("Searching qr '$id'");
+		
+		$qr = $this->getManager()
+		->getRepository('YouppersCommonBundle:Qr')
+		->find($id);
+
+		if ($qr === null) {
+			$logger->warning("Not found qr '$id'");
+		} else {
+			$logger->info("Found qr '$id': "  . $qr->getTargetType());
+		}
+		//$serializer = $this->get('jms_serializer');
+		//return $serializer->serialize($qr, 'json');
+		
+		return $qr;
+	}
 }

@@ -5,7 +5,6 @@ namespace Youppers\CommonBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Youppers\CompanyBundle\Entity\ProductModel;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;

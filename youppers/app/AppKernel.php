@@ -130,7 +130,7 @@ class AppKernel extends Kernel
         	new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
         		
         	new AuthBucket\Bundle\OAuth2Bundle\AuthBucketOAuth2Bundle(),
-        		
+        	new Wa72\JsonRpcBundle\Wa72JsonRpcBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

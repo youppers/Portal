@@ -3,6 +3,7 @@ namespace Youppers\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="brand_product_code_name_idx", columns={"brand_id", "code", "name"}),
  *   })
  * @ORM\HasLifecycleCallbacks
+ * @Serializer\ExclusionPolicy("all") 
  */
 class Product
 {
@@ -24,6 +26,9 @@ class Product
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\MaxDepth(4)
 	 */
 	protected $brand;
 	
@@ -34,16 +39,22 @@ class Product
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\Column(type="string", length=20, unique=true, nullable=true)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $gtin;
 
 	/**
 	 * @ORM\Column(type="string", length=20)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $code;
 	
@@ -70,6 +81,8 @@ class Product
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $description;
 	

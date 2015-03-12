@@ -2,11 +2,14 @@
 namespace Youppers\CommonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="youppers__qr")
  * @ORM\HasLifecycleCallbacks
+ * @Serializer\ExclusionPolicy("all") 
  */
 class Qr
 {
@@ -14,16 +17,21 @@ class Qr
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"list", "details"})
 	 */
 	protected $id;
 		
 	/**
 	 * @ORM\Column(type="string", name="target_type")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $targetType;
 
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $enabled;
 	
@@ -40,12 +48,31 @@ class Qr
 	/**
 	 * @ORM\OneToMany(targetEntity="\Youppers\CompanyBundle\Entity\Product", mappedBy="qr", fetch="EAGER")
 	 **/
-	private $products;
+	protected $products;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="\Youppers\DealerBundle\Entity\Box", mappedBy="qr", fetch="EAGER")
 	 **/
-	private $boxes;
+	protected $boxes;
+
+	/**
+	 * @Serializer\VirtualProperty
+	 * @Serializer\SerializedName("targets")
+	 * @Serializer\Groups({"json"})
+	 */
+	public function getTargets()
+	{
+		$criteria = Criteria::create()
+			->where(Criteria::expr()->eq("enabled", true));
+		$boxes = $this->getBoxes()->matching($criteria);
+		if (count($boxes)) {
+			return $boxes;
+		}
+		$products = $this->getProducts()->matching($criteria);
+		if (count($products)) {
+			return $products;
+		}
+	}
 	
 	/**
 	 * @ORM\PrePersist()
