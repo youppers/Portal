@@ -27,6 +27,7 @@ security:
             memory:
                 users:
                     admin: { password: admin, roles: 'ROLE_ADMIN' }
+                    demousername1:  { roles: 'ROLE_USER', password: demopassword1 }
 
     firewalls:
         # Disabling the security for the web debug toolbar, the profiler and Assetic.
@@ -52,6 +53,22 @@ security:
                 #target:         /admin
                 target:         /
             anonymous:    true
+            
+        # https://github.com/authbucket/oauth2-symfony-bundle
+        oauth2_authorize:
+            pattern:                ^/api/v1.0/oauth2/authorize$
+            http_basic:             ~
+            provider:               in_memory              
+        oauth2_token:
+            pattern:                ^/api/v1.0/oauth2/token$
+            oauth2_token:           ~
+        oauth2_debug:
+            pattern:                ^/api/v1.0/oauth2/debug$
+            oauth2_resource:        ~
+        # https://github.com/authbucket/oauth2-symfony-bundle#resource-endpoint
+#        resource:
+#            pattern:                ^/api/v1.0/resource
+#            oauth2_resource:        ~
 
         api:
             pattern:   /api/(.*)
