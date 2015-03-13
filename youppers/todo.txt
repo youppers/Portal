@@ -6,6 +6,10 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+Customer\Item and Customer\History be child admin of Customer\Session  
+
+manage Zone: name unique if profile=null
+
 Add position to Zone
 http://sonata-project.org/bundles/admin/master/doc/cookbook/recipe_sortable_listing.html
 

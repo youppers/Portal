@@ -23,6 +23,7 @@ class ProfileAdmin extends YouppersAdmin
 		$showMapper
 		->add('user', null, array('route' => array('name' => 'show')))
 		->add('sessions', null, array('route' => array('name' => 'show')))
+		->add('name')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -35,6 +36,12 @@ class ProfileAdmin extends YouppersAdmin
 	{
 		$listMapper
 		->add('user', null, array('route' => array('name' => 'show')))
+		->add('name')
+		->add('_action', 'actions', array(
+				'actions' => array(
+						'edit' => array(),
+				)
+		))		
 		;
 	}
 
@@ -45,6 +52,7 @@ class ProfileAdmin extends YouppersAdmin
 	{
 		$datagridMapper
 		->add('user')
+		->add('name')
 		;
 	}
 	
@@ -55,7 +63,9 @@ class ProfileAdmin extends YouppersAdmin
 	{
 		
 		$formMapper
-			->add('user', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
+			->add('user', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+			->add('name')
+		;
 	}
 
 }

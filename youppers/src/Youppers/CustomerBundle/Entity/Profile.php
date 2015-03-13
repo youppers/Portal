@@ -22,11 +22,17 @@ class Profile
 	protected $id;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
 	 * @return User
 	 * @JMS\Groups({"details","update"})
 	 */
 	protected $user;
+
+	/**
+	 * @ORM\Column(type="string")
+	 * @JMS\Groups({"list","details","update"})
+	 */
+	protected $name;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Session", mappedBy="profile")
@@ -48,7 +54,9 @@ class Profile
 			
 	public function __toString()
 	{
-		return $this->getUser() ? 'User: ' . $this->getUser() : 'New';
+		return
+			($this->getName()?:'New') .
+			($this->getUser() ? '@' . $this->getUser() :'@Anonymous');
 	}
 	
 	/**
@@ -68,7 +76,7 @@ class Profile
 		$this->updatedAt = new \DateTime();
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle:Profile
     /**
      * Constructor
      */
@@ -85,6 +93,29 @@ class Profile
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Profile
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

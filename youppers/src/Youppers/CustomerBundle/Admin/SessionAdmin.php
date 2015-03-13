@@ -24,6 +24,7 @@ class SessionAdmin extends YouppersAdmin
 		->add('profile', null, array('route' => array('name' => 'show')))
 		->add('store', null, array('route' => array('name' => 'show')))
 		->add('consultant', null, array('route' => array('name' => 'show')))
+		->add('name')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -38,7 +39,13 @@ class SessionAdmin extends YouppersAdmin
 		->add('profile', null, array('route' => array('name' => 'show')))
 		->add('store', null, array('route' => array('name' => 'show')))
 		->add('consultant', null, array('route' => array('name' => 'show')))
-		->addIdentifier('createdAt', null, array('route' => array('name' => 'show')))
+		->add('name')
+		->add('createdAt')
+		->add('_action', 'actions', array(
+				'actions' => array(
+						'edit' => array(),
+				)
+		))		
 		;
 	}
 
@@ -51,7 +58,7 @@ class SessionAdmin extends YouppersAdmin
 		->add('profile')
 		->add('store')
 		->add('consultant')
-		->add('createdAt')		
+		->add('name')
 		;
 	}
 	
@@ -64,7 +71,9 @@ class SessionAdmin extends YouppersAdmin
 		$formMapper
 			->add('profile', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			->add('store', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-			->add('consultant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
+			->add('consultant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+			->add('name')
+		;
 	}
 
 }

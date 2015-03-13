@@ -40,6 +40,12 @@ class Session
 	 * @JMS\Groups({"list","details","update"})
 	 */
 	protected $consultant;
+
+	/**
+	 * @ORM\Column(type="string")
+	 * @JMS\Groups({"list","details","update"})
+	 */
+	protected $name;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
@@ -85,7 +91,14 @@ class Session
 		$this->updatedAt = new \DateTime();
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle:Session
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->items = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -95,6 +108,29 @@ class Session
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Session
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -210,5 +246,38 @@ class Session
     public function getConsultant()
     {
         return $this->consultant;
+    }
+
+    /**
+     * Add items
+     *
+     * @param \Youppers\CustomerBundle\Entity\Item $items
+     * @return Session
+     */
+    public function addItem(\Youppers\CustomerBundle\Entity\Item $items)
+    {
+        $this->items[] = $items;
+
+        return $this;
+    }
+
+    /**
+     * Remove items
+     *
+     * @param \Youppers\CustomerBundle\Entity\Item $items
+     */
+    public function removeItem(\Youppers\CustomerBundle\Entity\Item $items)
+    {
+        $this->items->removeElement($items);
+    }
+
+    /**
+     * Get items
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getItems()
+    {
+        return $this->items;
     }
 }
