@@ -29,6 +29,9 @@ security:
                     admin: { password: admin, roles: 'ROLE_ADMIN' }
                     demousername1:  { roles: 'ROLE_USER', password: demopassword1 }
 
+        api_key_user_provider:
+            id: youppers_common.api_key_user_provider
+            
     firewalls:
         # Disabling the security for the web debug toolbar, the profiler and Assetic.
         dev:
@@ -78,6 +81,12 @@ security:
 
             stateless: true
 
+        jsonrpc:
+            pattern: ^/jsonrpc
+            stateless: true
+            simple_preauth:
+                authenticator: youppers_common.apikey_authenticator
+                
         # This firewall is used to handle the public login area
         # This part is handled by the FOS User Bundle
         main:

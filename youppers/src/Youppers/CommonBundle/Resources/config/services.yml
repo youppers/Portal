@@ -47,3 +47,12 @@ services:
       tags:
           - { name: sonata.media.provider }
           
+  youppers_common.api_key_user_provider:
+      class: Youppers\CommonBundle\Security\ApiKeyUserProvider          
+
+  youppers_common.apikey_authenticator:
+      class:     Youppers\CommonBundle\Security\ApiKeyAuthenticator
+      arguments: ["@youppers_common.api_key_user_provider", "@logger"]
+      tags:
+        - { name: monolog.logger, channel: youppers }     
+      
