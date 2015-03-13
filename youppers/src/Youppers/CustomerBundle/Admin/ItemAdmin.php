@@ -24,7 +24,12 @@ class ItemAdmin extends YouppersAdmin
 		->add('session', null, array('route' => array('name' => 'show')))
 		->add('variant', null, array('route' => array('name' => 'show')))
 		->add('removed')
-		->addIdentifier('zone', null, array('route' => array('name' => 'show')))
+		->add('zones', null, array('associated_property' => 'name'))
+		->add('_action', 'actions', array(
+				'actions' => array(
+						'show' => array(),
+				)
+		))		
 		;
 	}
 
@@ -35,7 +40,7 @@ class ItemAdmin extends YouppersAdmin
 	{
 		$datagridMapper
 		->add('session')
-		->add('zone')
+		->add('zones')
 		;
 	}
 
@@ -48,7 +53,7 @@ class ItemAdmin extends YouppersAdmin
 		->add('session', null, array('route' => array('name' => 'show')))
 		->add('variant', null, array('route' => array('name' => 'show')))
 		->add('removed')
-		->add('zone')
+		->add('zones')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -64,7 +69,7 @@ class ItemAdmin extends YouppersAdmin
 			->add('session', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			->add('variant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			->add('removed', null, array('required'  => false))
-			->add('zone')
+			->add('zones')
 		;
 	}
 

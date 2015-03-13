@@ -13,6 +13,15 @@
 
         </service>
 
+        <service id="youppers.customer.admin.zone" class="Youppers\CustomerBundle\Admin\ZoneAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Customer" label="Zone" />
+
+            <argument />
+            <argument>Youppers\CustomerBundle\Entity\Zone</argument>
+            <argument />
+
+        </service>
+
         <service id="youppers.customer.admin.session" class="Youppers\CustomerBundle\Admin\SessionAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Customer" label="Session" />
 

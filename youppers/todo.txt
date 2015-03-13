@@ -6,6 +6,9 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+Add position to Zone
+http://sonata-project.org/bundles/admin/master/doc/cookbook/recipe_sortable_listing.html
+
 Inviare a GA i click su elenco prodotti
 
 Gestire voci tabMenu in YouppersAdmin quando ci sono subClasses 

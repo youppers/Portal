@@ -36,10 +36,10 @@ class Item
 	protected $variant;
 	
 	/**
-	 * @ORM\Column(type="string")
-	 * TODO deve essere una choice su una tabella
+	 * @ORM\ManyToMany(targetEntity="Zone")
+	 * @ORM\JoinTable(name="youppers_customer__item_zone")
 	 */
-	protected $zone;
+	protected $zones;	
 		
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
@@ -53,7 +53,7 @@ class Item
 			
 	public function __toString()
 	{
-		return $this->getVariant() ? $this->getVariant() . '@' . $this->getZone() : 'New';
+		return $this->getVariant() ? $this->getVariant() . '@' . implode($this->getZones()->toArray(),',') : 'New';
 	}
 	
 	/**
@@ -74,7 +74,13 @@ class Item
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle:Item
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->zones = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -107,29 +113,6 @@ class Item
     public function getRemoved()
     {
         return $this->removed;
-    }
-
-    /**
-     * Set zone
-     *
-     * @param string $zone
-     * @return Item
-     */
-    public function setZone($zone)
-    {
-        $this->zone = $zone;
-
-        return $this;
-    }
-
-    /**
-     * Get zone
-     *
-     * @return string 
-     */
-    public function getZone()
-    {
-        return $this->zone;
     }
 
     /**
@@ -222,5 +205,38 @@ class Item
     public function getVariant()
     {
         return $this->variant;
+    }
+
+    /**
+     * Add zones
+     *
+     * @param \Youppers\CustomerBundle\Entity\Zone $zones
+     * @return Item
+     */
+    public function addZone(\Youppers\CustomerBundle\Entity\Zone $zones)
+    {
+        $this->zones[] = $zones;
+
+        return $this;
+    }
+
+    /**
+     * Remove zones
+     *
+     * @param \Youppers\CustomerBundle\Entity\Zone $zones
+     */
+    public function removeZone(\Youppers\CustomerBundle\Entity\Zone $zones)
+    {
+        $this->zones->removeElement($zones);
+    }
+
+    /**
+     * Get zones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getZones()
+    {
+        return $this->zones;
     }
 }
