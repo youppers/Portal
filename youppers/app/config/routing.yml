@@ -1,7 +1,3 @@
-authbucketoauth2bundle:
-    prefix:     /
-    resource:   "@AuthBucketOAuth2Bundle/Resources/config/routing.yml"
-
 wa72_json_rpc:
     resource: "@Wa72JsonRpcBundle/Resources/config/routing.yml"
     prefix:   /jsonrpc

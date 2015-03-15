@@ -81,8 +81,6 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
-    serializer:
-        enabled: true
 
 # Twig Configuration
 twig:
@@ -147,16 +145,3 @@ swiftmailer:
 happyr_google_analytics:
     tracking_id: "%google_analytics_tracking_id%"    
     #endpoint: 'https://www.google-analytics.com/debug/collect'
-    
-authbucket_oauth2:
-    driver: orm
-#    user_provider:          fos_user.user_manager
-    user_provider:          security.user.provider.concrete.in_memory
-    model:
-        access_token:       AuthBucket\Bundle\OAuth2Bundle\Entity\AccessToken
-        authorize:          AuthBucket\Bundle\OAuth2Bundle\Entity\Authorize
-        client:             AuthBucket\Bundle\OAuth2Bundle\Entity\Client
-        code:               AuthBucket\Bundle\OAuth2Bundle\Entity\Code
-        refresh_token:      AuthBucket\Bundle\OAuth2Bundle\Entity\RefreshToken
-        scope:              AuthBucket\Bundle\OAuth2Bundle\Entity\Scope
-

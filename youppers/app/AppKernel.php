@@ -128,8 +128,6 @@ class AppKernel extends Kernel
         	new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
         	new Happyr\Google\AnalyticsBundle\HappyrGoogleAnalyticsBundle(),
         	new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
-        		
-        	new AuthBucket\Bundle\OAuth2Bundle\AuthBucketOAuth2Bundle(),
         	new Wa72\JsonRpcBundle\Wa72JsonRpcBundle(),
         );
 
