@@ -6,6 +6,8 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+MopaBootstrapBundle (profile/edit-profile)
+
 Customer\Item and Customer\History be child admin of Customer\Session  
 
 manage Zone: name unique if profile=null
@@ -53,6 +55,12 @@ Fare un nuovo ClientIdprovider che usa l'utente dell'app invece che un random se
 
 Nella navigazione gerarchica (company > brand > product) e (dealer > store < box) visualizzare sulla breadcrumb i vari passaggi
 Vedere per questo: http://sonata-project.org/bundles/admin/master/doc/reference/architecture.html#create-child-admins
+
+DOCS
+
+OAuth2:
+	http://blog.tankist.de/blog/2013/07/17/oauth2-explained-part-2-setting-up-oauth2-with-symfony2-using-fosoauthserverbundle/
+
 
 OPEN ISSUES
 
