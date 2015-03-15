@@ -1,0 +1,12 @@
+fos_oauth_server:
+    db_driver: orm       # Driver availables: orm, mongodb, or propel
+        
+    client_class:        Youppers\CommonBundle\Entity\Client
+    access_token_class:  Youppers\CommonBundle\Entity\AccessToken
+    refresh_token_class: Youppers\CommonBundle\Entity\RefreshToken
+    auth_code_class:     Youppers\CommonBundle\Entity\AuthCode
+        
+    service:
+        user_provider: fos_user.user_manager    
+        options:
+            supported_scopes: jsonrpc    

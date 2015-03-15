@@ -1,3 +1,9 @@
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+    
 wa72_json_rpc:
     resource: "@Wa72JsonRpcBundle/Resources/config/routing.yml"
     prefix:   /jsonrpc

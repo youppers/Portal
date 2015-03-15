@@ -37,6 +37,21 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js|admin/_(wdt|profiler)|api/_(wdt|profiler))/
             security: false
 
+        # Issue authentication token
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        # Interactive user login and explicit client scope authorization (allow/deny)
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth|^/login_check|^/logout
+            context:        user
+            form_login:
+                provider:       fos_userbundle                                
+            logout:
+                path: fos_user_security_logout # /logout
+                invalidate_session: false
+
         # This firewall is used to handle the admin login area
         # This part is handled by the Sonata User Bundle
         admin:
@@ -67,8 +82,9 @@ security:
         jsonrpc:
             pattern: ^/jsonrpc
             stateless: true
-            simple_preauth:
-                authenticator: youppers_common.apikey_authenticator
+            fos_oauth:  true
+#            simple_preauth:
+#                authenticator: youppers_common.apikey_authenticator
                 
         # This firewall is used to handle the public login area
         # This part is handled by the FOS User Bundle
@@ -111,6 +127,9 @@ security:
         - { path: ^/shop/basket/step/, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/shop/user/, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
-
+        
+        # OAuth
+        - { path: ^/jsonrpc, roles: [ ROLE_JSONRPC ] }
+        
     acl:
         connection: default
