@@ -94,7 +94,7 @@ class Qr
 		$this->updatedAt = new \DateTime();
 	}			
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersCommonBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersCommonBundle:Qr
     /**
      * Constructor
      */
