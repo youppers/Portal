@@ -36,6 +36,11 @@ class Qr
 	protected $enabled;
 	
 	/**
+	 * @ORM\Column(type="string", unique=true, nullable=true)
+	 */
+	protected $url;
+	
+	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;

@@ -9,6 +9,7 @@ use Assetic\Exception\Exception;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 
 class QrService extends Controller
 {
@@ -146,7 +147,30 @@ class QrService extends Controller
 		
 	}
 	
-	public function find($id) {
+	/**
+	 * Find a QRCode using arbitray url (3rd part QRCodes) 
+	 * 
+	 * @param string $url
+	 * @param uuid $sessionId
+	 * @return Qr
+	 */
+	public function scan($url, $sessionId = null) {
+		
+		$qr = $this->getManager()
+			->getRepository('YouppersCommonBundle:Qr')
+			->findOneBy(array('url' => $url, 'enabled' => true));
+		
+		return $qr;		
+	}
+	
+	/**
+	 * Find a QRCode using id
+	 * 
+	 * @param string $id
+	 * @param uuid $sessionId
+	 * @return Qr
+	 */
+	public function find($id, $sessionId = null) {
 		$logger = $this->get('logger');
 		
 		$logger->info("Searching qr '$id'");
@@ -158,10 +182,11 @@ class QrService extends Controller
 		if ($qr === null) {
 			$logger->warning("Not found qr '$id'");
 		} else {
+			if (!$qr->getEnabled() && false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+				throw $this->createAccessDeniedException('Disabled QRCode is only allowed to admin',new DisabledException('Disabled QRCode'));
+			}				
 			$logger->info("Found qr '$id': "  . $qr->getTargetType());
 		}
-		//$serializer = $this->get('jms_serializer');
-		//return $serializer->serialize($qr, 'json');
 		
 		return $qr;
 	}
