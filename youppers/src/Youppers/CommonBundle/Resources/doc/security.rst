@@ -18,7 +18,7 @@ php app/console youppers:oauth-server:client:create \
 	--redirect-uri="http://192.168.56.101/login" \
 	--grant-type="authorization_code" \
 	--grant-type="password" \
-	--grant-type="refresh-token" \
+	--grant-type="refresh_token" \
 	--grant-type="token" \
 	--grant-type="client_credentials" \
 	'client name'
@@ -38,9 +38,9 @@ http://192.168.56.101/app_dev.php/oauth/v2/token?client_id=68c23dbc-cb55-11e4-93
 
 php app/console youppers:oauth-server:client:create \
 	--grant-type="password" \
-	--grant-type="refresh-token" \
+	--grant-type="refresh_token" \
 	--grant-type="token" \
 	--grant-type="client_credentials" \
-	'client name'
+	'test app'
 
 	
