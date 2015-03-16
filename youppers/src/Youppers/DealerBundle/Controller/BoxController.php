@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use GuzzleHttp;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 
 class BoxController extends Controller
 {
@@ -22,13 +23,13 @@ class BoxController extends Controller
     	->find($id);
     	
     	if (!$box) {
-    		return new Response('Invalid box code');
+    		throw $this->createNotFoundException('Invalid box code (not found)');
     	}
     	
-    	if (!$box->getEnabled()) {
-    		return new Response('Box not enabled');    		
+    	if (!$box->getEnabled() && false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+    		throw $this->createAccessDeniedException('Disabled Box is only allowed to admin',new DisabledException('Disabled Box'));
     	}
-    	 
+
     	$tracker = $this->get('happyr.google.analytics.tracker');
     	$data=array(
     			't' => 'event',
