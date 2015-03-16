@@ -6,7 +6,15 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
-MopaBootstrapBundle (profile/edit-profile)
+Auto populate history (qr, item, ...)
+
+First column in list should be identifier, followed by code, enabled, parent, ecc.: 
+
+Add GA tracking inside dashboard admin (dev + demo)
+
+Add tracker in qrFind e qrScan
+
+Admin for editing 3rd party qrcode (url field) (see HistoryAdmin)
 
 Customer\Item and Customer\History be child admin of Customer\Session  
 
