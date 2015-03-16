@@ -23,21 +23,21 @@ class Geoid
 		
 	
 	/**
-	 * @ORM\Column(type="string", name="criteria_id", unique=true)
+	 * @ORM\Column(type="string", name="criteria_id", length=10, unique=true)
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $criteriaId;
 	
 	/**
-	 * @ORM\Column(type="string", name="name")
+	 * @ORM\Column(type="string", name="name", length=100)
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $name;
 
 	/**
-	 * @ORM\Column(type="string", name="canonical_name")
+	 * @ORM\Column(type="string", name="canonical_name", length=100)
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json"})
 	 */
@@ -59,14 +59,14 @@ class Geoid
 	protected $countryCode;
 	
 	/**
-	 * @ORM\Column(type="string", name="target_type")
+	 * @ORM\Column(type="string", name="target_type", length=30)
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $targetType;
 		
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", length=30)
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json"})
 	 */
