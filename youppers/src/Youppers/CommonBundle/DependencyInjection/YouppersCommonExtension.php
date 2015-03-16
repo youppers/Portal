@@ -28,7 +28,7 @@ class YouppersCommonExtension extends Extension
         $yloader->load('services.yml');
         
         if (isset($bundles['SonataAdminBundle'])) {
-        	//$loader->load('admin.xml');
+        	$yloader->load('admin.yml');
         }
         
         $this->configureQr($container, $config);

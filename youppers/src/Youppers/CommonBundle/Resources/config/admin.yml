@@ -1,0 +1,7 @@
+services:
+    youppers_common.admin.geoid:
+        class: Youppers\CommonBundle\Admin\GeoidAdmin
+        arguments: [~, Youppers\CommonBundle\Entity\Geoid, ~]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Common, label: 'Geoid'}
+
