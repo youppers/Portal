@@ -25,6 +25,7 @@ class StoreAdmin extends YouppersAdmin
 		->add('dealer', null, array('route' => array('name' => 'show')))
 		->add('code')
 		->add('name')
+		->add('geoid', null, array('route' => array('name' => 'show')))
 		->add('description')
 		->add('consultants', null, array('route' => array('name' => 'show')))
 		->add('boxes', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
@@ -43,6 +44,7 @@ class StoreAdmin extends YouppersAdmin
 		->add('dealer', null, array('route' => array('name' => 'show')))		
 		->addIdentifier('code', null, array('route' => array('name' => 'show')))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->add('geoid')
 		->add('boxes', null, array('associated_property' => 'name'))
 		;
 	}
@@ -78,6 +80,7 @@ class StoreAdmin extends YouppersAdmin
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
+		->add('geoid', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 		->add('enabled', 'checkbox', array('required'  => false))
 		->end();
 		

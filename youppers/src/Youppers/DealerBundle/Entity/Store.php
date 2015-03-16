@@ -39,6 +39,11 @@ class Store
 	protected $name;
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="\Youppers\CommonBundle\Entity\Geoid")
+	 **/
+	protected $geoid;
+	
+	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json"})
@@ -141,13 +146,14 @@ class Store
 		$this->updatedAt = new \DateTime();
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle:Store
 
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->consultants = new \Doctrine\Common\Collections\ArrayCollection();
         $this->boxes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -323,13 +329,26 @@ class Store
     }
 
     /**
-     * Get boxes
+     * Set geoid
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @param \Youppers\CommonBundle\Entity\Geoid $geoid
+     * @return Store
      */
-    public function getBoxes()
+    public function setGeoid(\Youppers\CommonBundle\Entity\Geoid $geoid = null)
     {
-        return $this->boxes;
+        $this->geoid = $geoid;
+
+        return $this;
+    }
+
+    /**
+     * Get geoid
+     *
+     * @return \Youppers\CommonBundle\Entity\Geoid 
+     */
+    public function getGeoid()
+    {
+        return $this->geoid;
     }
 
     /**
@@ -363,5 +382,15 @@ class Store
     public function getConsultants()
     {
         return $this->consultants;
+    }
+
+    /**
+     * Get boxes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBoxes()
+    {
+        return $this->boxes;
     }
 }
