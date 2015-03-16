@@ -16,34 +16,34 @@ class Session
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"list", "details"})
+	 * @JMS\Groups({"list", "details","create"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Profile", inversedBy="sessions")
 	 * @JMS\MaxDepth(1)
-	 * @JMS\Groups({"list","details","update"})
+	 * @JMS\Groups({"list","details","update","create"})
 	 */
 	protected $profile;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Store")
 	 * @JMS\MaxDepth(1) // 4
-	 * @JMS\Groups({"list","details","update"})
+	 * @JMS\Groups({"list","details","update","create"})
 	 */
 	protected $store;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Consultant")
 	 * @JMS\MaxDepth(1) // 4
-	 * @JMS\Groups({"list","details","update"})
+	 * @JMS\Groups({"list","details","update","create"})
 	 */
 	protected $consultant;
 
 	/**
-	 * @ORM\Column(type="string")
-	 * @JMS\Groups({"list","details","update"})
+	 * @ORM\Column(type="string", nullable=true)
+	 * @JMS\Groups({"list","details","update","create"})
 	 */
 	protected $name;
 	
@@ -51,19 +51,19 @@ class Session
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
 	 * @var Item[]
 	 * @JMS\MaxDepth(1) // 6
-	 * @JMS\Groups({"details"})
+	 * @JMS\Groups({"details","json"})
 	 */
 	protected $items;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @JMS\Groups({"details"})
+	 * @JMS\Groups({"details","create"})
 	 */
 	protected $updatedAt;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @JMS\Groups({"list","details"})
+	 * @JMS\Groups({"list","details","create"})
 	 */
 	protected $createdAt;
 			

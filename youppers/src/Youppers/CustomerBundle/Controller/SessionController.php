@@ -62,12 +62,51 @@ class SessionController extends FOSRestController
 	 */
 	public function newSessionAction()
 	{
+		return $this->newSession();
+	}
+	
+	/**
+	 * Create a new session, optionally associated to a store (that must exists)
+	 * @param uuid $storeId
+	 * @return Session
+	 */
+	public function newSession($storeId = null)
+	{
 		$repo = $this->getDoctrine()->getRepository('YouppersCustomerBundle:Session');
 		$sessionClass = $repo->getClassName();
 		$em = $this->getDoctrine()->getManagerForClass($sessionClass);
 		$session = new $sessionClass;
+		if ($storeId) {
+			$store = $em->find('YouppersDealerBundle:Store', $storeId);
+			if (empty($store)) {
+				throw $this->createNotFoundException('Store not found');
+			} else {
+				$session->setStore($store);
+			}
+		}
 		$em->persist($session);
 		$em->flush();
+
+		if ($this->has('youppers_common.analytics.tracker')) {
+			$data = array(
+					't' => 'event',
+					'ds' => 'server',
+					'dt' => 'New Session',
+					'ec' => 'Session',
+					'ea' => 'New Session'
+			);
+			
+			if ($store) {
+				$data['el'] = 'Store: ' . $store;
+				$geoid = $store->getGeoid();
+				if ($geoid) {
+					$data['geoid'] = $geoid->getCriteriaId();
+				}
+			}
+			
+					
+			$this->get('youppers_common.analytics.tracker')->send($data);
+		}
 		
 		return $session;
 	}

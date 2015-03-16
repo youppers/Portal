@@ -1,0 +1,5 @@
+services:
+    youppers_customer.controller.session:
+        class:     Youppers\CustomerBundle\Controller\SessionController
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
