@@ -56,6 +56,7 @@ class GeoidAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+			->add('criteriaId')
 			->add('name')
 			->add('canonicalName')
 			->add('countryCode')
@@ -75,6 +76,7 @@ class GeoidAdmin extends YouppersAdmin
 	{
 		$formMapper
 			->with('Geographical Targeting', array('class' => 'col-md-8'))
+			->add('criteriaId')				
 			->add('name')
 			->add('canonicalName')
 			->add('countryCode')
