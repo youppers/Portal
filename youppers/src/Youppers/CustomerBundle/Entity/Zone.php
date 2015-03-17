@@ -2,7 +2,7 @@
 namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 
 /**
  * @ORM\Entity
@@ -12,6 +12,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * 		}
  * )
  * @ORM\HasLifecycleCallbacks
+ * @Validator\UniqueEntity(
+ * 		fields={"name", "profile"},
+ * 		ignoreNull=false
+ * )
  */
 class Zone
 {
