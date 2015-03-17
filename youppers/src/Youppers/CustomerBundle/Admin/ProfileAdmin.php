@@ -63,7 +63,7 @@ class ProfileAdmin extends YouppersAdmin
 	{
 		
 		$formMapper
-			->add('user', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+			->add('user', 'sonata_type_model_list')
 			->add('name')
 		;
 	}
