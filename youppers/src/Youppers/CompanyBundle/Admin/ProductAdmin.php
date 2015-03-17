@@ -43,8 +43,10 @@ class ProductAdmin extends YouppersAdmin
 		$showMapper
 		->add('enabled')	
 		->add('brand.company', null, array('route' => array('name' => 'show')))
-		->add('brand', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
+		->add('brand', null, array('label' => 'Brand Name', 'associated_property' => 'name', 'route' => array('name' => 'show')))
+		->add('brand.code', null, array('label' => 'Brand Code'))
 		->add('name')
+		->add('gtin')
 		->add('code')
 		->add('description')
 		->add('url')
