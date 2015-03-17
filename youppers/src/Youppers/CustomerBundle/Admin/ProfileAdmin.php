@@ -21,9 +21,9 @@ class ProfileAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('name')
 		->add('user', null, array('route' => array('name' => 'show')))
 		->add('sessions', null, array('route' => array('name' => 'show')))
-		->add('name')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -35,8 +35,8 @@ class ProfileAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
+		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('user', null, array('route' => array('name' => 'show')))
-		->add('name')
 		->add('_action', 'actions', array(
 				'actions' => array(
 						'edit' => array(),

@@ -46,11 +46,12 @@ class PricelistAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('code')
+		->add('currency')
 		->add('enabled')	
 		->add('brand.company', null, array('route' => array('name' => 'show')))
 		->add('brand', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
-		->add('code')
-		->add('currency')
+		->add('brand.code', null, array('label' => 'Brand Code'))
 		->add('validFrom')
 		->add('validTo')
 		->add('createdAt')
@@ -63,14 +64,14 @@ class PricelistAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
+		->addIdentifier('code', null, array('route' => array('name' => 'show')))
+		->add('currency')
 		->add('enabled', null, array('editable' => true))
 		->add('brand', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
              ))
-		->addIdentifier('code', null, array('route' => array('name' => 'show')))
-		->add('currency')
 		->add('validFrom')
 		->add('validTo')
 		;
@@ -82,10 +83,11 @@ class PricelistAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('brand.company')
-		->add('brand')
+		->add('code')
 		->add('currency')		
 		->add('enabled')
+		->add('brand.company')
+		->add('brand')
 		;
 	}
 	
@@ -95,15 +97,15 @@ class PricelistAdmin extends YouppersAdmin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-		->with('Brand', array('class' => 'col-md-6'))
-		->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+		->with('Price List', array('class' => 'col-md-6'))
 		->add('code')
 		->add('currency', 'sonata_currency')		
+		->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 		->end()
-		->with('Validity', array('class' => 'col-md-6'))
+		->with('Details', array('class' => 'col-md-6'))
+		->add('enabled', 'checkbox', array('required'  => false))
 		->add('validFrom', 'sonata_type_datetime_picker',array('dp_side_by_side' => true, 'dp_language'=>$this->getRequest()->getLocale()))
 		->add('validTo', 'sonata_type_datetime_picker',array('dp_side_by_side' => true, 'dp_language'=>$this->getRequest()->getLocale()))
-		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
 		;
 	}

@@ -11,6 +11,7 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductAdmin extends YouppersAdmin
 {
@@ -64,14 +65,15 @@ class ProductAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
+		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->add('code')
+		->add('gtin')
 		->add('enabled', null, array('editable' => true))
 		->add('brand', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
              ))
-		->addIdentifier('code', null, array('route' => array('name' => 'show')))
-		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('qr', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}
@@ -82,12 +84,12 @@ class ProductAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('gtin')
-		->add('code')
 		->add('name')
+		->add('code')
+		->add('gtin')
+		->add('enabled')
 		->add('brand.company')
 		->add('brand')
-		->add('enabled')
 		;
 	}
 	
@@ -97,17 +99,16 @@ class ProductAdmin extends YouppersAdmin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-		->with('Product', array('class' => 'col-md-8'))
-		->add('brand')
-		->add('gtin')
+		->with('Product', array('class' => 'col-md-6'))
 		->add('code')
+		->add('gtin')
 		->add('name')
 		->add('description')
 		->add('url', null, array('required' => false))
 		->end()
-		->with('Details', array('class' => 'col-md-4'))
+		->with('Details', array('class' => 'col-md-6'))
+		->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 		->add('enabled', 'checkbox', array('required'  => false))
-		//->add('qr', null, array('property' => 'id'))
 		->end()
 		->with('Prices', array('class' => 'col-md-12'))
 			->add('productPrices', 'sonata_type_collection', array(

@@ -22,12 +22,12 @@ class CompanyAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-		->add('enabled')
 		->add('name')
 		->add('code')
+		->add('enabled')
 		->add('description')
-		->add('logo', null,array('label' => 'Company Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('url')
+		->add('logo', null,array('label' => 'Company Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('createdAt')
 		->add('updatedAt')
 		->add('brands', null, array(
@@ -45,11 +45,10 @@ class CompanyAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('enabled', null, array('editable' => true))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('code')		
-		//->add('logo', null, array('label' => 'Company Logo', 'template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
-		->addIdentifier('logo', null, array('label' => 'Company Logo', 'route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))
+		->add('enabled', null, array('editable' => true))
+		->add('logo', null, array('label' => 'Company Logo', 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))
 		->add('brands', null, array('associated_property' => 'name'))
 		;
 	}
@@ -60,8 +59,8 @@ class CompanyAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('code')		
 		->add('name')
+		->add('code')		
 		->add('enabled')
 		;
 	}
@@ -85,6 +84,7 @@ class CompanyAdmin extends YouppersAdmin
 		->add('name')
 		->add('code')		
 		->add('description')
+		->add('url', null, array('required' => false))
 		->add('logo', 'sonata_type_model_list', array(
 					'required' => false
 				), array(
@@ -95,7 +95,6 @@ class CompanyAdmin extends YouppersAdmin
 					)
 				)
 			)
-		->add('url', null, array('required' => false))
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))

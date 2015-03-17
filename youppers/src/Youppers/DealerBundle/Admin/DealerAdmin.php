@@ -20,9 +20,9 @@ class DealerAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-		->add('enabled')
 		->add('name')
 		->add('code')
+		->add('enabled')
 		->add('description')
 		->add('createdAt')
 		->add('updatedAt')
@@ -37,9 +37,9 @@ class DealerAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('enabled', null, array('editable' => true))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
 		->add('code')
+		->add('enabled', null, array('editable' => true))
 		->add('stores', null, array('associated_property' => 'name'))
 		;
 	}
@@ -50,8 +50,8 @@ class DealerAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('code')		
 		->add('name')
+		->add('code')		
 		->add('enabled')
 		;
 	}
@@ -79,21 +79,6 @@ class DealerAdmin extends YouppersAdmin
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
-		/*
-		->with('Options', array('class' => 'col-md-6'))
-		->add('engine', 'sonata_type_model_list')
-		->add('color', 'sonata_type_model_list')
-		->end()
-		->with('inspections', array('class' => 'col-md-12'))
-		->add('inspections', 'sonata_type_collection', array(
-				'by_reference'       => false,
-				'cascade_validation' => true,	
-		) , array(
-				'edit' => 'inline',
-				'inline' => 'table'
-		))
-		->end()
-		*/
 		;
 	}
 
@@ -106,13 +91,6 @@ class DealerAdmin extends YouppersAdmin
 		
 		$object->setEnabled(true);
 
-		/*
-		$inspection = new Inspection();
-		$inspection->setDate(new \DateTime());
-		$inspection->setComment("Initial inpection");
-
-		$object->addInspection($inspection);
-		*/
 		return $object;
 	}
 }

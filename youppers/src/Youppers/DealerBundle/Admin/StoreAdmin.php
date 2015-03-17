@@ -21,12 +21,12 @@ class StoreAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-		->add('enabled')
-		->add('dealer', null, array('route' => array('name' => 'show')))
-		->add('code')
 		->add('name')
-		->add('geoid', null, array('route' => array('name' => 'show')))
+		->add('code')
+		->add('enabled')
 		->add('description')
+		->add('geoid', null, array('route' => array('name' => 'show')))
+		->add('dealer', null, array('route' => array('name' => 'show')))
 		->add('consultants', null, array('route' => array('name' => 'show')))
 		->add('boxes', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		->add('createdAt')
@@ -40,12 +40,11 @@ class StoreAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper		
-		->add('enabled', null, array('editable' => true))
-		->add('dealer', null, array('route' => array('name' => 'show')))		
-		->addIdentifier('code', null, array('route' => array('name' => 'show')))
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->add('code')
+		->add('enabled', null, array('editable' => true))
 		->add('geoid')
-		->add('boxes', null, array('associated_property' => 'name'))
+		->add('dealer', null, array('route' => array('name' => 'show')))		
 		;
 	}
 
@@ -55,10 +54,10 @@ class StoreAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('dealer')
 		->add('name')
 		->add('code')
 		->add('enabled')
+		->add('dealer')
 		;
 	}
 
@@ -68,19 +67,20 @@ class StoreAdmin extends YouppersAdmin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-		->with('Store', array('class' => 'col-md-8'));
-		
-		if (!$this->hasParentFieldDescription()) {
-			$formMapper->add('dealer', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
-		}
-		
+		->with('Store', array('class' => 'col-md-6'));
+				
 		$formMapper
 		->add('name')
 		->add('code')
 		->add('description')
 		->end()
-		->with('Details', array('class' => 'col-md-4'))
+		->with('Details', array('class' => 'col-md-6'))
 		->add('geoid', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+		;
+		if (!$this->hasParentFieldDescription()) {
+			$formMapper->add('dealer', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
+		}
+		$formMapper
 		->add('enabled', 'checkbox', array('required'  => false))
 		->end();
 		

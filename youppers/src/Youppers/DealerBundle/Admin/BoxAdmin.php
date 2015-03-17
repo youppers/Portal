@@ -61,16 +61,15 @@ class BoxAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
+		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->add('code')
 		->add('enabled')
-		->add('store.code')		
 		->add('store', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
              ))
-		->addIdentifier('code', null, array('route' => array('name' => 'show')))
-		->addIdentifier('name', null, array('route' => array('name' => 'show')))
-		->add('boxProducts', null, array('associated_property' => 'nameProduct'))
+        ->add('boxProducts', null, array('associated_property' => 'nameProduct'), array('width' => '100px'))
 		->add('qr', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
 	}

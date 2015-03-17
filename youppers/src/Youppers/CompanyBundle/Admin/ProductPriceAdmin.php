@@ -56,35 +56,36 @@ class ProductPriceAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-    	if (!$this->hasParentFieldDescription() && !$this->isChild()) {
-    		$formMapper
-        		->with('Product and Pricelist', array('class' => 'col-md-8'))        
-    			->add('product', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-    		    ->add('pricelist', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-    		    ->end()
-    		    ;    		
-    	} else if (($this->isChild() && $this->getParent() instanceof PricelistAdmin) || $this->getParentFieldDescription()->getAdmin() instanceof PricelistAdmin) {
-    		$formMapper
-        		->with('Product', array('class' => 'col-md-8'))        
-    			->add('product', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-    			->end()
-        		;    		    	
-    	} else if ($this->isChild() || $this->getParentFieldDescription()->getAdmin() instanceof ProductAdmin) {
-    		$formMapper
-    			->with('Pricelist', array('class' => 'col-md-8'))    		
-    		    ->add('pricelist', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-    		    ->end()
-    		    ;
-    	}
-    	 
         $formMapper
-        	->with('Price', array('class' => 'col-md-8'))        
+        	->with('Price', array('class' => 'col-md-6'))        
         	->add('price')
         	->add('uom', 'choice', array('choice_list' => UomChoiceList::create()))        
         	// TODO usare vendor/sonata-project/ecommerce/src/Component/Currency/CurrencyFormType.php
         	// TODO mettere simbolo valuta correttamente
             //->add('price','money')     
             ->end()   
-        	;
+        ;
+
+    	if (!$this->hasParentFieldDescription() && !$this->isChild()) {
+    		$formMapper
+        		->with('Product and Pricelist', array('class' => 'col-md-6'))        
+    			->add('product', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+    		    ->add('pricelist', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+    		    ->end()
+    		    ;    		
+    	} else if (($this->isChild() && $this->getParent() instanceof PricelistAdmin) || $this->getParentFieldDescription()->getAdmin() instanceof PricelistAdmin) {
+    		$formMapper
+        		->with('Product', array('class' => 'col-md-6'))        
+    			->add('product', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+    			->end()
+        		;    		    	
+    	} else if ($this->isChild() || $this->getParentFieldDescription()->getAdmin() instanceof ProductAdmin) {
+    		$formMapper
+    			->with('Pricelist', array('class' => 'col-md-6'))    		
+    		    ->add('pricelist', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+    		    ->end()
+    		    ;
+    	}
+    	 
     }       
 }

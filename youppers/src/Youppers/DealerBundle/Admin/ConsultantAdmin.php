@@ -20,12 +20,14 @@ class ConsultantAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper		
-		->add('enabled', null, array('editable' => true))
-		->addIdentifier('code', null, array('route' => array('name' => 'show')))
 		->addIdentifier('fullname', null, array('route' => array('name' => 'show')))
+		->add('code')
+		->add('enabled', null, array('editable' => true))
+		->add('user', null, array('route' => array('name' => 'show')))		
 		->add('photo', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))		
 		->add('dealer', null, array('route' => array('name' => 'show')))		
-		->add('stores', null, array('associated_property' => 'name'))
+		//->add('stores', null, array('associated_property' => 'name'))
+		->add('stores')
 		;
 	}
 
@@ -35,10 +37,10 @@ class ConsultantAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-		->add('dealer')
-		->add('code')
 		->add('fullname')
+		->add('code')
 		->add('enabled')
+		->add('dealer')
 		;
 	}
 
@@ -48,13 +50,14 @@ class ConsultantAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-		->add('enabled')
-		->add('dealer', null, array('route' => array('name' => 'show')))
-		->add('stores', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
-		->add('code')
 		->add('fullname')
+		->add('code')
+		->add('enabled')
 		->add('description')
 		->add('photo', null, array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
+		->add('user', null, array('route' => array('name' => 'show')))
+		->add('dealer', null, array('route' => array('name' => 'show')))
+		->add('stores')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -67,27 +70,27 @@ class ConsultantAdmin extends YouppersAdmin
 	{
 		$formMapper
 		->with('Consultant', array('class' => 'col-md-6'));
-		
-		if (!$this->hasParentFieldDescription()) {
-			$formMapper->add('dealer', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
-		}
-		
+				
 		$formMapper
-		->add('stores')
+		->add('fullname', null, array('help' => 'Specify Given and Family name'))
 		->add('code')
-		->add('fullname')
 		->add('description')
-		->end()
-		->with('Details', array('class' => 'col-md-4'))
-		->add('enabled', 'checkbox', array('required'  => false))
-		->end()
-		->with('Photo', array('class' => 'col-md-6'))
 		->add('photo', 'sonata_type_model_list', 
 				array('required' => false), 
 				array('link_parameters' => array(
 						'context'  => 'youppers_consultant_photo'
 				))
-			)
+		)
+		->end()
+		->with('Details', array('class' => 'col-md-6'))
+		->add('user', 'sonata_type_model_list')
+		;
+		if (!$this->hasParentFieldDescription()) {
+			$formMapper->add('dealer', 'sonata_type_model_list', array('required' => false));
+		}
+		$formMapper
+		->add('stores')
+		->add('enabled', 'checkbox', array('required'  => false))
 		->end();
 		
 	}
