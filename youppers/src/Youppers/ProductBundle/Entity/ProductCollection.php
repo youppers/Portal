@@ -3,7 +3,7 @@ namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Assetic\Exception\Exception;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 
 /**
  * @ORM\Entity
@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     @ORM\UniqueConstraint(name="brand_product_collection_name_idx", columns={"brand_id", "name"}),
  *   })
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity({"name", "brand"})
+ * @Validator\UniqueEntity({"name", "brand"})
  */
 class ProductCollection
 {

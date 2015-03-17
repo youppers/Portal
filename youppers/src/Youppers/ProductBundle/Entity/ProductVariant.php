@@ -4,6 +4,7 @@ namespace Youppers\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Assetic\Exception\Exception;
 use Doctrine\Common\Collections\Criteria;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 
 /**
  * @ORM\Entity
@@ -12,6 +13,7 @@ use Doctrine\Common\Collections\Criteria;
  *     @ORM\UniqueConstraint(name="collection_name_idx", columns={"product_collection_id", "name"}),
  *   })
  * @ORM\HasLifecycleCallbacks
+ * @Validator\UniqueEntity({"name", "productCollection"})
  */
 class ProductVariant
 {

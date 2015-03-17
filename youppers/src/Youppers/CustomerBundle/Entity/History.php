@@ -2,7 +2,6 @@
 namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Youppers\DealerBundle\Entity\Box;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Doctrine\Common\Util\ClassUtils;

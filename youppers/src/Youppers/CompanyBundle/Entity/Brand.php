@@ -2,7 +2,7 @@
 namespace Youppers\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
@@ -13,8 +13,8 @@ use JMS\Serializer\Annotation as Serializer;
  *     @ORM\UniqueConstraint(name="company_brand_code_idx", columns={"company_id", "code"}),
  *   })
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity({"company", "name"})
- * @UniqueEntity({"company", "code"})
+ * @Validator\UniqueEntity({"name","company"})
+ * @Validator\UniqueEntity({"code","company"})
  * @Serializer\ExclusionPolicy("all") 
  */
 class Brand

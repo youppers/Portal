@@ -2,6 +2,7 @@
 namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 
 /**
  * @ORM\Entity
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="standard_value_idx", columns={"attribute_standard_id", "value"}),
  *   })
  * @ORM\HasLifecycleCallbacks
+ * @Validator\UniqueEntity({"value", "attributeStandard"})
  */
 class AttributeOption
 {

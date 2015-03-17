@@ -2,13 +2,17 @@
 namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use Application\Sonata\UserBundle\Entity\User;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="youppers_customer__profile")
+ * @ORM\Table(name="youppers_customer__profile",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="user_name_idx", columns={"user_id", "name"}),
+ *   })
+ * @Validator\UniqueEntity({"name", "user"})
  * @ORM\HasLifecycleCallbacks
  */
 class Profile

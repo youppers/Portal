@@ -3,14 +3,14 @@ namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="youppers_product__attribute_type")
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity("name")
- * @UniqueEntity("code")
+ * @Validator\UniqueEntity("name")
+ * @Validator\UniqueEntity("code")
  */
 class AttributeType
 {
