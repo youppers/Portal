@@ -6,6 +6,32 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+As soon as released sonata 2.4 use doctrine_orm_model_autocomplete for:
+	ProductAdmin configureDatagridFilters brand
+	StoreAdmin configureDatagridFilters dealer
+
+In BoxAdmin add batch function enable:
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getBatchActions()
+	{
+	
+		$actions = parent::getBatchActions();
+	
+		if ($this->hasRoute('enable') && $this->isGranted('EDIT')) {
+			$actions['enable'] = array(
+					'label'            => $this->trans('Enable', array(), 'SonataAdminBundle'),
+					'ask_confirmation' => true, // by default always true
+			);
+		}
+	
+		return $actions;
+	}
+
+
+Complete Validator\UniqueEntity for unique ORM\constraint
+
 Auto populate history (qr, item, ...)
 
 First column in list should be identifier, followed by code, enabled, parent, ecc.: 
@@ -19,6 +45,7 @@ Admin for editing 3rd party qrcode (url field) (see HistoryAdmin)
 Customer\Item and Customer\History be child admin of Customer\Session  
 
 manage Zone: name unique if profile=null
+	name must be validated for duplicates if already assigned to null profile
 
 Add position to Zone
 http://sonata-project.org/bundles/admin/master/doc/cookbook/recipe_sortable_listing.html
@@ -61,7 +88,7 @@ Attivare https (consigliabile per l'accesso alle api)
 
 Fare un nuovo ClientIdprovider che usa l'utente dell'app invece che un random se non tova il cookie _ga
 
-Nella navigazione gerarchica (company > brand > product) e (dealer > store < box) visualizzare sulla breadcrumb i vari passaggi
+Nella navigazione gerarchica (company > brand > product) e (dealer > store > box) visualizzare sulla breadcrumb i vari passaggi
 Vedere per questo: http://sonata-project.org/bundles/admin/master/doc/reference/architecture.html#create-child-admins
 
 DOCS
