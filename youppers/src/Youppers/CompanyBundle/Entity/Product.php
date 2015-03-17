@@ -2,17 +2,17 @@
 namespace Youppers\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="youppers_company__product",
  *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="brand_product_code_idx", columns={"brand_id", "code"}),
- *     @ORM\UniqueConstraint(name="brand_product_code_name_idx", columns={"brand_id", "code", "name"}),
+ *     @ORM\UniqueConstraint(name="brand_product_code_idx", columns={"brand_id", "code"})
  *   })
  * @ORM\HasLifecycleCallbacks
+ * @Validator\UniqueEntity({"code", "brand"})
  * @Serializer\ExclusionPolicy("all") 
  */
 class Product
