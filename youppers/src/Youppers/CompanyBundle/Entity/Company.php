@@ -107,7 +107,7 @@ class Company
 		
 	public function __toString()
 	{
-		return $this->getName() ?: 'New';
+		return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']': 'New';
 	}
 	
 	/**

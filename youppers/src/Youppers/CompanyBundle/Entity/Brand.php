@@ -91,7 +91,7 @@ class Brand
 	
 	public function __toString()
 	{
-		return $this->getName() ? $this->getCompany() . ' - ' . $this->getName(): 'New';
+		return $this->getName() ? $this->getCompany() . ' - ' . $this->getName() . ' [' . $this->getCode() . ']': 'New';
 	}
 			
 	/**
