@@ -13,8 +13,8 @@ use JMS\Serializer\Annotation as JMS;
  *     @ORM\UniqueConstraint(name="dealer_consultant_code_idx", columns={"dealer_id", "code"}),
  *   })
  * @ORM\HasLifecycleCallbacks
- * @Validator\UniqueEntity({"fullname", "dealer"})
- * @Validator\UniqueEntity({"code", "dealer"})
+ * @Validator\UniqueEntity(fields={"fullname", "dealer"},ignoreNull=false)
+ * @Validator\UniqueEntity(fields={"code", "dealer"},ignoreNull=false)
  * @JMS\ExclusionPolicy("all")
  */
 class Consultant
@@ -27,6 +27,12 @@ class Consultant
 	 */
 	protected $id;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
+	 * @JMS\Groups({"details","update"})
+	 */
+	protected $user;
+	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Dealer", inversedBy="consultants")
 	 * @JMS\MaxDepth(1)
@@ -105,7 +111,7 @@ class Consultant
 		$this->updatedAt = new \DateTime();
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle:Consultant
     /**
      * Constructor
      */
@@ -260,6 +266,29 @@ class Consultant
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Application\Sonata\UserBundle\Entity\User $user
+     * @return Consultant
+     */
+    public function setUser(\Application\Sonata\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Application\Sonata\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
