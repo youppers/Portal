@@ -126,7 +126,7 @@ class Store
 	
 	public function __toString()
 	{
-		return $this->getName() ? $this->getDealer() . ' - ' . $this->getName(): 'New';
+		return $this->getName() ? $this->getDealer() . ' - ' . $this->getName() . ' [' . $this->getCode() . ']': 'New';
 	}
 	
 	/**
