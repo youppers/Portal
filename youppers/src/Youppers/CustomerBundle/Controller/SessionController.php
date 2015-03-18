@@ -83,6 +83,8 @@ class SessionController extends FOSRestController
 			} else {
 				$session->setStore($store);
 			}
+		} else {
+			$store = null;
 		}
 		$em->persist($session);
 		$em->flush();

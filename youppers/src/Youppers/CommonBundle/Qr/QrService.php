@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\HttpFoundation\Request;
 
 class QrService extends Controller
 {
@@ -147,45 +149,60 @@ class QrService extends Controller
 		
 	}
 	
+	public function findById($id) {
+		return $this->getManager()
+		->getRepository('YouppersCommonBundle:Qr')
+		->find($id);
+	}
+	
 	/**
 	 * Find a QRCode using arbitray url (3rd part QRCodes) 
 	 * 
 	 * @param string $url
-	 * @param uuid $sessionId
 	 * @return Qr
 	 */
-	public function scan($url, $sessionId = null) {
+	public function findByUrl($url) {
 		
-		$qr = $this->getManager()
+		return $this->getManager()
 			->getRepository('YouppersCommonBundle:Qr')
-			->findOneBy(array('url' => $url, 'enabled' => true));
-		
-		return $qr;		
+			->findOneBy(array('url' => $url));
 	}
 	
 	/**
-	 * Find a QRCode using id
+	 * Find a QRCode
 	 * 
-	 * @param string $id
+	 * @param string $text QRCode text
 	 * @param uuid $sessionId
 	 * @return Qr
 	 */
-	public function find($id, $sessionId = null) {
+	public function find($text, $sessionId) {
 		$logger = $this->get('logger');
 		
-		$logger->info("Searching qr '$id'");
+		$logger->debug("Searching qr with text '" . $text . "'");
 		
-		$qr = $this->getManager()
-		->getRepository('YouppersCommonBundle:Qr')
-		->find($id);
+		$request = Request::create($text);
+		
+		try {
+			$route = $this->container->get('router')->match($request->getRequestUri());
+			if ($route['_route'] == 'youppers_common_qr_find') {
+				$id = $route['id'];
+				$qr = $this->findById($id);
+			} else {
+				$qr = null;		
+			}
+		} catch (ResourceNotFoundException $e) {
+			$logger->debug("Qr NOT match any route, trying url");
+			$qr = $this->findByUrl($text);
+		}
 
 		if ($qr === null) {
-			$logger->warning("Not found qr '$id'");
+			$logger->warning("Not found qr '$text'");
 		} else {
 			if (!$qr->getEnabled() && false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+				$logger->error("Found a qr not enabled '$text': "  . $qr->getTargetType());
 				throw $this->createAccessDeniedException('Disabled QRCode is only allowed to admin',new DisabledException('Disabled QRCode'));
 			}				
-			$logger->info("Found qr '$id': "  . $qr->getTargetType());
+			$logger->info("Found qr '$text': "  . $qr->getTargetType());
 		}
 		
 		return $qr;

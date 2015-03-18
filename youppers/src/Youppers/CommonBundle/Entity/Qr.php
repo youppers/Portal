@@ -69,14 +69,13 @@ class Qr
 	{
 		$criteria = Criteria::create()
 			->where(Criteria::expr()->eq("enabled", true));
-		$boxes = $this->getBoxes()->matching($criteria);
-		if (count($boxes)) {
-			return $boxes;
+		switch ($this->getTargetType()) {
+			case 'youppers_dealer_box':
+				return $this->getBoxes()->matching($criteria);
+			case 'youppers_company_product':
+				return $this->getProducts()->matching($criteria);
 		}
-		$products = $this->getProducts()->matching($criteria);
-		if (count($products)) {
-			return $products;
-		}
+		return array();
 	}
 	
 	/**

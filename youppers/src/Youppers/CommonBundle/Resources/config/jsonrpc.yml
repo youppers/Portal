@@ -1,5 +1,6 @@
 wa72_json_rpc:
     functions:
+        #deprecated
         qrFind:
             service: "youppers.common.qr"
             method: "find"
@@ -8,6 +9,8 @@ wa72_json_rpc:
                   - json
                 version: "1"
                 max_depth_checks: true
-
+        #deprecated
         newSession: { service: youppers_customer.controller.session, method: newSession, jms_serialization_context: { groups: [json, create], version: '1', max_depth_checks: true } }
-        qrScan: { service: youppers.common.qr, method: scan, jms_serialization_context: { groups: [json], version: '1', max_depth_checks: true } }
+
+        Session.new: { service: youppers_customer.controller.session, method: newSession, jms_serialization_context: { groups: [json, create], version: '1', max_depth_checks: true } }
+        Qr.find: { service: youppers.common.qr, method: find, jms_serialization_context: { groups: [json], version: '1', max_depth_checks: true } }
