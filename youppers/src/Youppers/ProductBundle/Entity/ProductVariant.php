@@ -6,6 +6,7 @@ use Assetic\Exception\Exception;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use Youppers\ProductBundle\Validator\Constraints\ConsistentBrand;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -16,6 +17,7 @@ use Youppers\ProductBundle\Validator\Constraints\ConsistentBrand;
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"name", "productCollection"})
  * @ConsistentBrand()
+ * @Serializer\ExclusionPolicy("all") 
  */
 class ProductVariant
 {
@@ -34,16 +36,20 @@ class ProductVariant
 	/**
 	 * @ORM\ManyToOne(targetEntity="ProductCollection", inversedBy="productVariants")
 	 * @ORM\JoinColumn(name="product_collection_id")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */	
 	protected $productCollection;
 			
 	/**
 	 * @ORM\Column(type="string")
+	 * @deprecated use product name
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=60)
+	 * @deprecated use product name
 	 */
 	protected $code;
 	
@@ -60,6 +66,8 @@ class ProductVariant
 	/**
 	 * @ORM\OneToMany(targetEntity="VariantProperty", mappedBy="productVariant", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 **/
 	private $variantProperties;
 	

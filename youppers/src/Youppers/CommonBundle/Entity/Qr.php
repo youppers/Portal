@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Criteria;
  * @ORM\Table(name="youppers__qr")
  * @ORM\HasLifecycleCallbacks
  * @Serializer\ExclusionPolicy("all") 
+ * @Serializer\AccessorOrder("custom", custom = {"id", "target_type"})
  */
 class Qr
 {
@@ -25,13 +26,14 @@ class Qr
 	/**
 	 * @ORM\Column(type="string", name="target_type")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json"})
+	 * @Serializer\Groups({"list", "details", "json.qr.find"})
 	 */
 	protected $targetType;
 
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
-	 * @Serializer\Groups({"list", "details", "json"})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"list", "details"})
 	 */
 	protected $enabled;
 	
@@ -47,6 +49,8 @@ class Qr
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $createdAt;
 	
@@ -61,9 +65,11 @@ class Qr
 	protected $boxes;
 
 	/**
+	 * Use this for qr instead of direct relations
+	 * 
 	 * @Serializer\VirtualProperty
 	 * @Serializer\SerializedName("targets")
-	 * @Serializer\Groups({"json"})
+	 * @Serializer\Groups({"json.qr.find"})
 	 */
 	public function getTargets()
 	{

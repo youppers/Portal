@@ -4,6 +4,7 @@ namespace Youppers\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Assetic\Exception\Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -13,6 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
  *   })
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"name", "brand"})
+ * @Serializer\ExclusionPolicy("all") 
  */
 class ProductCollection
 {
@@ -30,11 +32,15 @@ class ProductCollection
 			
 	/**
 	 * @ORM\Column(type="string", length=60)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $description;
 	
@@ -56,12 +62,16 @@ class ProductCollection
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */	
 	protected $image;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery")
 	 * @ORM\JoinColumn(name="pdf_gallery_id")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $pdfGallery;
 	

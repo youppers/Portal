@@ -29,21 +29,21 @@ class Box
 	/**
 	 * @ORM\ManyToOne(targetEntity="Store", inversedBy="boxes")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $store;
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $code;
 
@@ -59,13 +59,15 @@ class Box
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $createdAt;
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $description;
 	
@@ -73,7 +75,7 @@ class Box
 	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 **/
 	private $boxProducts;
 		

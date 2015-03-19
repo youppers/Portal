@@ -34,7 +34,7 @@ class Store
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $name;
 
@@ -46,7 +46,7 @@ class Store
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $code;
 

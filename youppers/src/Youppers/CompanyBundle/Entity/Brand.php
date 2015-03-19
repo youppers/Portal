@@ -34,14 +34,14 @@ class Brand
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $code;
 
@@ -53,14 +53,14 @@ class Brand
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $description;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $logo;
 	
@@ -76,6 +76,8 @@ class Brand
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $createdAt;	
 	

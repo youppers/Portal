@@ -30,7 +30,7 @@ class Product
 	/**
 	 * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 * @Serializer\MaxDepth(4)
 	 */
 	protected $brand;
@@ -43,21 +43,21 @@ class Product
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json"})
+	 * @Serializer\Groups({"list", "details", "json.qr.find"})
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\Column(type="string", length=20, unique=true, nullable=true)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json"})
+	 * @Serializer\Groups({"list", "details", "json.qr.find"})
 	 */
 	protected $gtin;
 
 	/**
 	 * @ORM\Column(type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json"})
+	 * @Serializer\Groups({"list", "details", "json.qr.find"})
 	 */
 	protected $code;
 	
@@ -73,6 +73,8 @@ class Product
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="\Youppers\ProductBundle\Entity\ProductVariant", mappedBy="product")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"list", "details", "json.qr.find"})
 	 **/
 	protected $variant;	
 	
@@ -83,6 +85,8 @@ class Product
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $createdAt;
 	
@@ -90,12 +94,14 @@ class Product
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json"})
+	 * @Serializer\Groups({"list", "details", "json.qr.find"})
 	 */
 	protected $description;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Youppers\CommonBundle\Entity\Qr", inversedBy="products")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $qr;
 	

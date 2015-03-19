@@ -23,37 +23,42 @@ class BoxProduct
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $id;
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Box", inversedBy="boxProducts")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $box;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\CompanyBundle\Entity\Product")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 **/
 	protected $product;
 
 	/**
 	 * @ORM\Column(type="integer")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $position;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $enabled;
 	
@@ -64,6 +69,8 @@ class BoxProduct
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $createdAt;
 		
