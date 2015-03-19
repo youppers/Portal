@@ -3,3 +3,8 @@ services:
         class:     Youppers\CustomerBundle\Controller\SessionController
         calls:
             - [ setContainer, [ '@service_container' ] ]
+
+    youppers_customer.session:
+        class:     Youppers\CustomerBundle\Service\SessionService
+        arguments: ['@doctrine', '@logger']
+            

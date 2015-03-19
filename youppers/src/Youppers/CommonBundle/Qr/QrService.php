@@ -208,8 +208,13 @@ class QrService extends Controller
 				throw $this->createAccessDeniedException('Disabled QRCode is only allowed to admin',new DisabledException('Disabled QRCode'));
 			}				
 			$logger->info("Found qr '$text': "  . $qr->getTargetType());
+			
+			if ($qr->getTargetType() == 'youppers_dealer_box') {
+				$box = $qr->getTargets()->first();
+				$this->get('youppers_customer.session')->setSessionStoreUsingBox($sessionId,$box);
+			}				
 		}
-		
+						
 		return $qr;
 	}
 }
