@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Assetic\Exception\Exception;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
+use Youppers\ProductBundle\Validator\Constraints\ConsistentBrand;
 
 /**
  * @ORM\Entity
@@ -14,6 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
  *   })
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"name", "productCollection"})
+ * @ConsistentBrand()
  */
 class ProductVariant
 {
@@ -60,6 +62,11 @@ class ProductVariant
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 **/
 	private $variantProperties;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="\Youppers\CompanyBundle\Entity\Product", inversedBy="variant")
+	 **/
+	protected $product;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
@@ -145,7 +152,7 @@ class ProductVariant
 		$this->variantProperties->removeElement($variantProperty);
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle:ProductVariant
     /**
      * Constructor
      */
@@ -333,5 +340,28 @@ class ProductVariant
     public function getVariantProperties()
     {
         return $this->variantProperties;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \Youppers\CompanyBundle\Entity\Product $product
+     * @return ProductVariant
+     */
+    public function setProduct(\Youppers\CompanyBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \Youppers\CompanyBundle\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

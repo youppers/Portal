@@ -41,6 +41,7 @@ class ProductVariantAdmin extends YouppersAdmin
             ->add('productCollection')
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('code')
+            ->add('product', null, array('route' => array('name' => 'show')))
             ->add('variantProperties', null, array('associated_property' => 'attributeOption'))
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -60,7 +61,8 @@ class ProductVariantAdmin extends YouppersAdmin
         $formMapper
         	->with('Product Variant', array('class' => 'col-md-8'))
             ->add('productCollection', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-        	->add('name')
+            ->add('product', 'sonata_type_model_list', array('required' => false))
+            ->add('name')
             ->add('code')
             //->add('description')
             ->end()
@@ -91,6 +93,7 @@ class ProductVariantAdmin extends YouppersAdmin
             ->add('productCollection', null, array('route' => array('name' => 'show')))
         	->add('name')
             ->add('code')
+            ->add('product', null, array('route' => array('name' => 'show')))            
             ->add('enabled')
             ->add('variantProperties', null, array('associated_property' => 'attributeOption'))            
             ->add('updatedAt')

@@ -4,6 +4,8 @@ namespace Youppers\CompanyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Exception\InvalidArgumentException;
+use Youppers\ProductBundle\Validator\Constraints\ConsistentBrand;
 
 /**
  * @ORM\Entity
@@ -14,6 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"code", "brand"})
  * @Serializer\ExclusionPolicy("all") 
+ * @ConsistentBrand()
  */
 class Product
 {
@@ -67,6 +70,11 @@ class Product
 	 * @ORM\Column(type="string", nullable=true )
 	 */
 	protected $url;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="\Youppers\ProductBundle\Entity\ProductVariant", mappedBy="product")
+	 **/
+	protected $variant;	
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
@@ -153,7 +161,26 @@ class Product
 		$this->updatedAt = new \DateTime();
 	}	
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+	/**
+	 * Set variant
+	 *
+	 * @param \Youppers\ProductBundle\Entity\ProductVariant $variant
+	 * @return Product
+	 */
+	public function setVariant(\Youppers\ProductBundle\Entity\ProductVariant $variant = null)
+	{
+		if (null !== $this->variant) {
+			$this->variant->setProduct(null);
+		}
+		$this->variant = $variant;
+		if (null !== $variant && $variant->getProduct() != $this) {
+			$variant->setProduct($this);
+		}
+	
+		return $this;
+	}
+	
+	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle:Product
     /**
      * Constructor
      */
@@ -400,5 +427,15 @@ class Product
     public function getQr()
     {
         return $this->qr;
+    }
+
+    /**
+     * Get variant
+     *
+     * @return \Youppers\ProductBundle\Entity\ProductVariant 
+     */
+    public function getVariant()
+    {
+        return $this->variant;
     }
 }
