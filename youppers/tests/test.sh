@@ -1,15 +1,27 @@
 #!/bin/bash
 
+#  php app/console youppers:oauth-server:client:create --grant-type="password" --grant-type="refresh_token" --grant-type="token" --grant-type="client_credentials" test
+
 client_id=25a39ff1-cd63-11e4-a2aa-080027980c59_4wkty9e55jms840w488k0wgs0ss0sgs0so0gg80kwso8kggok0
 client_secret=iklbvfyfexkcgs48o4oks80gsc8skg4g8k4ckcwo40wk8kkks
 host=127.0.0.1
 
 authendpoint=http://$host/oauth/v2/token
 jsonendpoint=http://$host/app_dev.php/jsonrpc/
+
 qrtextid=http://$host/qr/5eeed2c7-abb2-11e4-b4aa-0cc47a127a14?p1=a
 qrtextwrong=htxxxtp:///qr1/5eeed2c7-abb2-11e4-b4aa-0cc47a127a14?p1=a
 qrtexturl="http://m.marazzi.it/qr_code/BLEND?pid=592&merch=0000V4EE"
 qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
+
+conf=$(dirname $0)/config
+
+if [ -f $conf ]; then 
+	source $conf
+else
+	echo Add your configuration in $conf
+	exit
+fi
 
 echo client_id=$client_id
 echo client_secret=$client_secret
