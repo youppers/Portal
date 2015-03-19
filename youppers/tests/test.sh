@@ -31,13 +31,13 @@ echo Request auth_token to $authendpoint:
 response=$(curl "$authendpoint?client_id=$client_id&client_secret=$client_secret&grant_type=client_credentials")
 echo response=$response
 
-access_token=$(echo $response|sed -n -e 's/{"access_token":"\([a-ZA-Z0-9]*\)",.*/\1/p')
+access_token=$(echo $response|sed -n -e 's/{"access_token":"\([a-zA-Z0-9]*\)",.*/\1/p')
 echo access_token=$access_token
 
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.new"}')
 echo response=$response
 
-session_id=$(echo $response|sed -n -e 's/.*{"id":"\([a-ZA-Z0-9\-]*\)",.*/\1/p')
+session_id=$(echo $response|sed -n -e 's/.*{"id":"\([a-zA-Z0-9\-]*\)",.*/\1/p')
 echo session_id=$session_id
 
 qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
