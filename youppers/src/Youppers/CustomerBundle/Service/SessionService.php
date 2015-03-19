@@ -35,8 +35,8 @@ class SessionService
 				$store = $this->managerRegistry->getRepository('YouppersDealerBundle:Store')->find($store);
 			}
 			if ($store !== null) {
+				$this->logger->info(sprintf("Updating session '%s' store '%s'",$session,$store));
 				$session->setStore($store);
-				$this->logger->info("Updated session store");
 				$this->managerRegistry->getManagerForClass('YouppersCustomerBundle:Session')->flush();
 			}
 		}		
@@ -55,6 +55,34 @@ class SessionService
 		if ($box !== null) {
 			$this->setSessionStore($session, $box->getStore());
 		}
+	}
+	
+	/**
+	 * Check to identifiy box that are not in the correct store
+	 * 
+	 * @param id|Session $session
+	 * @param id|Box $box
+	 * @return boolean true if the box store match session store, false if don't match, null if don't know
+	 */
+	public function isBoxInStoreOfSession($session,$box) {
+		if (!is_object($box)) {
+			$box = $this->managerRegistry->getRepository('YouppersDealerBundle:Box')->find($box);
+		}
+		if (!is_object($session)) {
+			$session = $this->managerRegistry->getRepository('YouppersCustomerBundle:Session')->find($session);
+		}
+		if ($box !== null && $session !== null 
+				&& $session->getStore() !== null
+				&& $box->getStore() !== null) {
+			if ($session->getStore() === $box->getStore()) {
+				return true;
+			} else {
+				$this->logger->warning(sprintf("Box '%s' is in store '%s' but the session '%s' is in store '%s'",
+						$box, $box->getStore(),$session,$session->getStore()
+						));
+				return false;
+			}
+		}		
 	}
 	
 }
