@@ -3,6 +3,7 @@ namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -12,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
  *   })
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"value", "attributeStandard"})
+ * @Serializer\ExclusionPolicy("all") 
  */
 class AttributeOption
 {
@@ -58,32 +60,43 @@ class AttributeOption
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
 	 */
 	protected $id;
 			
 	/**
 	 * @ORM\Column(type="string")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $value;
 
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $enabled;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $image;
 	
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $position;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="AttributeStandard", inversedBy="attributeOptions")
 	 * @ORM\JoinColumn(name="attribute_standard_id")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $attributeStandard;
 	
@@ -105,6 +118,7 @@ class AttributeOption
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Serializer\Expose()
 	 */
 	protected $createdAt;
 			

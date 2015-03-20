@@ -2,11 +2,13 @@
 namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="youppers_product__attribute_standard")
  * @ORM\HasLifecycleCallbacks
+ * @Serializer\ExclusionPolicy("all") 
  */
 class AttributeStandard
 {
@@ -19,38 +21,51 @@ class AttributeStandard
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
 	 */
 	protected $id;
 			
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(type="string", length=60, nullable=true )
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $symbol;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $enabled;
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $description;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="AttributeType", inversedBy="attributeStandards")
 	 * @ORM\JoinColumn(name="attribute_type_id")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $attributeType;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="AttributeOption", mappedBy="attributeStandard", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $attributeOptions;
 	

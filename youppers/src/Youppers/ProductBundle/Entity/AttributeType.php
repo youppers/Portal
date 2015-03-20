@@ -4,6 +4,7 @@ namespace Youppers\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -23,26 +24,35 @@ class AttributeType
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
 	 */
 	protected $id;
 			
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=60, unique=true)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $code;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $enabled;
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $description;
 	
@@ -64,6 +74,7 @@ class AttributeType
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Serializer\Expose()
 	 */
 	protected $createdAt;
 			

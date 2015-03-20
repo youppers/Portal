@@ -2,11 +2,13 @@
 namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="youppers_product__variant_property")
  * @ORM\HasLifecycleCallbacks
+ * @Serializer\ExclusionPolicy("all") 
  */
 class VariantProperty
 {
@@ -24,6 +26,7 @@ class VariantProperty
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
 	 */
 	protected $id;
 			
@@ -35,12 +38,16 @@ class VariantProperty
 	
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $position;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="AttributeOption")
 	 * @ORM\JoinColumn(name="attribute_option_id")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $attributeOption;
 	
@@ -51,6 +58,7 @@ class VariantProperty
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @Serializer\Expose()
 	 */
 	protected $createdAt;
 			

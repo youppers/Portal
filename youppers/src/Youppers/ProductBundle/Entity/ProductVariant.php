@@ -25,6 +25,7 @@ class ProductVariant
 	/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
+	 * @Serializer\Expose()
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 */
 	protected $id;
@@ -51,11 +52,13 @@ class ProductVariant
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @Serializer\Expose()
 	 */
 	protected $enabled;
 		
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Serializer\Expose()
 	 */
 	protected $position;
 	
@@ -80,7 +83,7 @@ class ProductVariant
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json.qr.find"})
 	 **/
-	private $variantProperties;
+	protected $variantProperties;
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="\Youppers\CompanyBundle\Entity\Product", inversedBy="variant")
