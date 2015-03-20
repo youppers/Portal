@@ -1,6 +1,6 @@
 wa72_json_rpc:
     functions:
-        #deprecated
+        #deprecated use Qr.find
         qrFind:
             service: "youppers.common.qr"
             method: "find"
@@ -10,8 +10,37 @@ wa72_json_rpc:
                   - json.qr.find
                 version: "1"
                 max_depth_checks: true
-        #deprecated
+        #deprecated use Session.create
         newSession: { service: youppers_customer.controller.session, method: newSession, jms_serialization_context: { groups: [json, create], version: '1', max_depth_checks: true } }
 
-        Session.new: { service: youppers_customer.controller.session, method: newSession, jms_serialization_context: { groups: [json, create], version: '1', max_depth_checks: true } }
-        Qr.find: { service: youppers.common.qr, method: find, jms_serialization_context: { groups: [json.qr.find], version: '1', max_depth_checks: true } }
+        #deprecated use Session.create 
+        Session.new: { service: youppers.customer.session, method: newSession, jms_serialization_context: { groups: [json, create], version: '1', max_depth_checks: true } }
+
+        Qr.find: { service: youppers.common.qr, method: find, jms_serialization_context: { groups: [json.qr.find, json.variant.list], version: '1', max_depth_checks: true } }
+
+        Session.list: { service: youppers.customer.session, method: list, jms_serialization_context: { groups: [json.session.list], version: '1', max_depth_checks: true } }
+        Session.create: { service: youppers.customer.session, method: create, jms_serialization_context: { groups: [json.session.read], version: '1', max_depth_checks: true } }
+        Session.update: { service: youppers.customer.session, method: update, jms_serialization_context: { groups: [json.session.read], version: '1', max_depth_checks: true } }
+        
+        Consultant.list: { service: youppers.dealer.consultant, method: list, jms_serialization_context: { groups: [json.consultant.list], version: '1', max_depth_checks: true } }
+         
+        Product.search: { service: youppers.product.variant, method: search, jms_serialization_context: { groups: [json.variant.list], version: '1', max_depth_checks: true } }
+        Variant.read: { service: youppers.product.variant, method: read, jms_serialization_context: { groups: [json.variant.read], version: '1', max_depth_checks: true } }
+        Collection.read: { service: youppers.product.collection, method: read, jms_serialization_context: { groups: [json.collection.read], version: '1', max_depth_checks: true } }
+        Attributes.read: { service: youppers.product.attribute, method: read, jms_serialization_context: { groups: [json.attribute.read], version: '1', max_depth_checks: true } }
+
+        Zone.list: { service: youppers.customer.zone, method: list, jms_serialization_context: { groups: [json.zone.list], version: '1', max_depth_checks: true } }
+        Zone.create: { service: youppers.customer.zone, method: create, jms_serialization_context: { groups: [json.zone.read], version: '1', max_depth_checks: true } }
+
+        Item.list: { service: youppers.customer.item, method: list, jms_serialization_context: { groups: [json.item.list], version: '1', max_depth_checks: true } }
+        Item.create: { service: youppers.customer.item, method: create, jms_serialization_context: { groups: [json.item.read], version: '1', max_depth_checks: true } }
+        Item.delete: { service: youppers.customer.item, method: create, jms_serialization_context: { groups: [json.item.read], version: '1', max_depth_checks: true } }
+
+        Profile.list: { service: youppers.customer.profile, method: list, jms_serialization_context: { groups: [json.profile.list], version: '1', max_depth_checks: true } }
+        Profile.create: { service: youppers.customer.profile, method: create, jms_serialization_context: { groups: [json.profile.read], version: '1', max_depth_checks: true } }
+        Profile.read: { service: youppers.customer.profile, method: read, jms_serialization_context: { groups: [json.profile.read], version: '1', max_depth_checks: true } }
+        Profile.update: { service: youppers.customer.profile, method: read, jms_serialization_context: { groups: [json.profile.read], version: '1', max_depth_checks: true } }
+        Profile.delete: { service: youppers.customer.profile, method: read, jms_serialization_context: { groups: [json.profile.read], version: '1', max_depth_checks: true } }
+
+        Store.list: { service: youppers.dealer.store, method: list, jms_serialization_context: { groups: [json.store.list], version: '1', max_depth_checks: true } }
+        
