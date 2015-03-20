@@ -64,6 +64,21 @@ class ProductVariant
 	protected $position;
 	
 	/**
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
+	 */
+	protected $image;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery")
+	 * @ORM\JoinColumn(name="pdf_gallery_id")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
+	 */
+	protected $pdfGallery;
+	
+	/**
 	 * @ORM\OneToMany(targetEntity="VariantProperty", mappedBy="productVariant", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 * @Serializer\Expose()
@@ -371,5 +386,51 @@ class ProductVariant
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $image
+     * @return ProductVariant
+     */
+    public function setImage(\Application\Sonata\MediaBundle\Entity\Media $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set pdfGallery
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Gallery $pdfGallery
+     * @return ProductVariant
+     */
+    public function setPdfGallery(\Application\Sonata\MediaBundle\Entity\Gallery $pdfGallery = null)
+    {
+        $this->pdfGallery = $pdfGallery;
+
+        return $this;
+    }
+
+    /**
+     * Get pdfGallery
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Gallery 
+     */
+    public function getPdfGallery()
+    {
+        return $this->pdfGallery;
     }
 }
