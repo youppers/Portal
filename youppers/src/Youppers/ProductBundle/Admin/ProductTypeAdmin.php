@@ -29,17 +29,10 @@ class ProductTypeAdmin extends YouppersAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('enabled', null, array('editable' => true))
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('code')
+            ->add('enabled', null, array('editable' => true))
             ->add('productAttributes', null, array('associated_property' => 'description'))
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    //'show' => array(),
-                    'edit' => array(),
-                    //'delete' => array(),
-                )
-            ))
         ;
     }
 

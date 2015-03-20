@@ -53,11 +53,11 @@ class ProductCollectionAdmin extends YouppersAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('name', null, array('route' => array('name' => 'show')))
+        	->add('image', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
             ->add('enabled', null, array('editable' => true))
         	->add('brand', null, array('route' => array('name' => 'show')))
         	->add('productType', null, array('route' => array('name' => 'show')))
-        	->addIdentifier('image', null, array('route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
-            ->addIdentifier('name', null, array('route' => array('name' => 'show')))
         	->add('pdfGallery', null, array('associated_property' => 'name', 'route' => array('name' => 'edit', 'parameters' => array('context' => 'pdf'))))        
             ;
     }
@@ -73,21 +73,11 @@ class ProductCollectionAdmin extends YouppersAdmin
         	->add('productType', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
         	->add('name')
         	->add('description')
-        	->add('enabled', null, array('required'  => false))
 	        ->end()
-	        ->with('Image', array('class' => 'col-md-6'))
-            ->add('image', 'sonata_type_model_list', 
-	        	array(
-	        		'required' => false
-	        	), array(
-	        		'link_parameters' => array(
-	        				'context'  => 'youppers_product',
-	        				'filter'   => array('context' => array('value' => 'youppers_product'))
-	        		)
-	        	)
-	        )	        
+            ->with('Options', array('class' => 'col-md-6'))
+            ->add('enabled', null, array('required'  => false))
             ->end()
-            ->with('Attachments', array('class' => 'col-md-12'))
+            ->with('Media', array('class' => 'col-md-6'))
             ->add('pdfGallery', 'sonata_type_model_list', 
 	        	array(
 	        		'required' => false
@@ -98,8 +88,18 @@ class ProductCollectionAdmin extends YouppersAdmin
 	        		)
 	        	)
 	        )	        
-            ->end()
-            /*
+            ->add('image', 'sonata_type_model_list', 
+	        	array(
+	        		'required' => false
+	        	), array(
+	        		'link_parameters' => array(
+	        				'context'  => 'youppers_product',
+	        				'filter'   => array('context' => array('value' => 'youppers_product'))
+	        		)
+	        	)
+	        )	        
+	        ->end()
+                        /*
             ->with('Variants', array('class' => 'col-md-12'))
             ->add('productVariants', 'sonata_type_collection', 
             		array('by_reference' => false),

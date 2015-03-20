@@ -17,10 +17,11 @@ class AttributeStandardAdmin extends YouppersAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('attributeType')
+
         	->add('name')
             ->add('symbol')
             ->add('enabled')
+            ->add('attributeType')
         ;
     }
 
@@ -30,17 +31,10 @@ class AttributeStandardAdmin extends YouppersAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('enabled', null, array('editable' => true))
-            ->add('attributeType', null, array('route' => array('name' => 'show')))
             ->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('symbol')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    //'show' => array(),
-                    'edit' => array(),
-                    //'delete' => array(),
-                )
-            ))
+            ->add('enabled', null, array('editable' => true))
+            ->add('attributeType', null, array('route' => array('name' => 'show')))
         ;
     }
 

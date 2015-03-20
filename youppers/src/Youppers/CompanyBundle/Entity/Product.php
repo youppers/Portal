@@ -145,9 +145,13 @@ class Product
 		$this->productPrices->removeElement($price);
 	}	
 	
+	public function getNameCode() {
+		return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']' : 'null';		
+	}
+	
 	public function __toString()
 	{
-		return $this->getName() ? $this->getBrand() . ' - ' . $this->getName() . ' [' . $this->getCode() . ']' : 'New';
+		return $this->getName() ? $this->getBrand() . ' - ' . $this->getNameCode() : 'New';
 	}
 	
 	/**

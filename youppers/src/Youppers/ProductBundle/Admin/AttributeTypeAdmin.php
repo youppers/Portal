@@ -29,17 +29,10 @@ class AttributeTypeAdmin extends YouppersAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('enabled', null, array('editable' => true))
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('code')
+        	->add('enabled', null, array('editable' => true))
             ->add('attributeStandards')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    //'show' => array(),
-                    'edit' => array(),
-                    //'delete' => array(),
-                )
-            ))
         ;
     }
 

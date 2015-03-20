@@ -37,12 +37,6 @@ class ProductVariantAdmin extends YouppersAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('enabled', null, array('editable' => true))
-            ->add('productCollection')
-        	->addIdentifier('name', null, array('route' => array('name' => 'show')))
-            ->add('code')
-            ->add('product', null, array('route' => array('name' => 'show')))
-            ->add('variantProperties', null, array('associated_property' => 'attributeOption'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     //'show' => array(),
@@ -50,6 +44,17 @@ class ProductVariantAdmin extends YouppersAdmin
                     //'delete' => array(),
                 )
             ))
+        	->addIdentifier('image', null, array('route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
+            ->add('enabled', null, array('editable' => true));
+       	if (!($this->isChild() && $this->getParentAssociationMapping() === 'productCollection')) {
+        	$listMapper
+       		->add('productCollection');
+       	}
+       	$listMapper
+	       	//->addIdentifier('name', null, array('route' => array('name' => 'show')))
+            //->add('code')
+            ->add('product', null, array('associated_property' => 'nameCode', 'route' => array('name' => 'show')))
+            ->add('variantProperties', null, array('associated_property' => 'attributeOption'))
         ;
     }
 
@@ -59,18 +64,40 @@ class ProductVariantAdmin extends YouppersAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-        	->with('Product Variant', array('class' => 'col-md-8'))
+        	->with('Product Variant', array('class' => 'col-md-6'))
             ->add('productCollection', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-            ->add('product', 'sonata_type_model_list', array('required' => false))
-            ->add('name')
-            ->add('code')
+            ->add('product', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+            //->add('product.name')
+            //->add('product.code')
             //->add('description')
-            ->end()
-            ->with('Options', array('class' => 'col-md-4'))
+        	->end()
+            ->with('Options', array('class' => 'col-md-6'))
             ->add('enabled', null, array('required'  => false))
-			->add('position','hidden',array('attr'=>array("hidden" => true)))			
+            ->add('position','hidden',array('attr'=>array("hidden" => true)))			
             //->add('className')
             ->end()
+            ->with('Media', array('class' => 'col-md-6'))
+            ->add('pdfGallery', 'sonata_type_model_list', 
+	        	array(
+	        		'required' => false
+	        	), array(
+	        		'link_parameters' => array(
+	        				'context'  => 'pdf',
+	        				'filter'   => array('context' => array('value' => 'pdf'))
+	        		)
+	        	)
+	        )	        
+            ->add('image', 'sonata_type_model_list', 
+	        	array(
+	        		'required' => false
+	        	), array(
+	        		'link_parameters' => array(
+	        				'context'  => 'youppers_product',
+	        				'filter'   => array('context' => array('value' => 'youppers_product'))
+	        		)
+	        	)
+	        )	        
+	        ->end()
             ->with('Properties', array('class' => 'col-md-12'))
             ->add('variantProperties', 'sonata_type_collection', 
             		array('by_reference' => false),
@@ -91,11 +118,15 @@ class ProductVariantAdmin extends YouppersAdmin
     {
         $showMapper
             ->add('productCollection', null, array('route' => array('name' => 'show')))
-        	->add('name')
-            ->add('code')
-            ->add('product', null, array('route' => array('name' => 'show')))            
-            ->add('enabled')
-            ->add('variantProperties', null, array('associated_property' => 'attributeOption'))            
+        	->add('product', null, array('route' => array('name' => 'show')))            
+            ->add('name')
+        	->add('product.name')
+        	->add('code')
+        	->add('product.code')
+            ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
+        	->add('enabled')
+            ->add('pdfGallery')
+        	->add('variantProperties', null, array('associated_property' => 'attributeOption'))            
             ->add('updatedAt')
             ->add('createdAt')
         ;
