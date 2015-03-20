@@ -10,12 +10,8 @@ use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="youppers_product__product_variant",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="collection_name_idx", columns={"product_collection_id", "name"}),
- *   })
+ * @ORM\Table(name="youppers_product__product_variant")
  * @ORM\HasLifecycleCallbacks
- * @Validator\UniqueEntity({"name", "productCollection"})
  * @ConsistentBrand()
  * @Serializer\ExclusionPolicy("all") 
  */
@@ -23,7 +19,7 @@ class ProductVariant
 {
 	public function __toString()
 	{
-		return $this->getName() ?: 'New';
+		return $this->getProduct() ? '' . $this->getProduct() : 'New';
 	}
 	
 	/**
@@ -49,7 +45,7 @@ class ProductVariant
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=60)
-	 * @deprecated use product name
+	 * @deprecated use product code
 	 */
 	protected $code;
 	
