@@ -4,6 +4,7 @@ namespace Youppers\CommonBundle\EventListener;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Application\Sonata\MediaBundle\Document\Media;
 
 /**
  * Add data after serialization
@@ -25,14 +26,15 @@ class SerializationListener extends ContainerAware implements EventSubscriberInt
 
 	public function onPostSerialize(ObjectEvent $event)
 	{
-		$imageProvider = $this->container->get('sonata.media.provider.image');
-		$image = $event->getObject();
-		$formats = $imageProvider->getFormats();
-		if (array_key_exists($image->getContext() . '_' . $this->defaultFormat,$formats)) {
-			$format = $imageProvider->getFormatName($image, $this->defaultFormat);
+		$media = $event->getObject();
+		$mediaProvider = $this->container->get($media->getProviderName());
+		$formats = $mediaProvider->getFormats();
+		if (array_key_exists($media->getContext() . '_' . $this->defaultFormat,$formats)) {
+			$format = $mediaProvider->getFormatName($media, $this->defaultFormat);
 		} else {
 			$format = 'reference';
 		}
-		$event->getVisitor()->addData('url',$imageProvider->generatePublicUrl($image, $format));
+		$event->getVisitor()->addData('url',$mediaProvider->generatePublicUrl($media, $format));
+		$event->getVisitor()->addData('admin',$mediaProvider->generatePublicUrl($media, 'admin'));
 	}
 }
