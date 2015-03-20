@@ -213,7 +213,7 @@ class QrService extends Controller
 				$box = $qr->getTargets()->first();
 				$this->get('youppers.customer.session')->setSessionStoreUsingBox($sessionId,$box);
 				
-				if (false === $this->get('youppers_customer.session')->isBoxInStoreOfSession($sessionId,$box)) {
+				if (false === $this->get('youppers.customer.session')->isBoxInStoreOfSession($sessionId,$box)) {
 					return null;
 				}
 			}				

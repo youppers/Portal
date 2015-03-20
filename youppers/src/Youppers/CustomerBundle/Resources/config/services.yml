@@ -7,4 +7,7 @@ services:
     youppers.customer.session:
         class:     Youppers\CustomerBundle\Service\SessionService
         arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+        
             

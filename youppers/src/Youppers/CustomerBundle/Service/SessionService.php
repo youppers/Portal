@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 
-class SessionService
+class SessionService extends ContainerAware
 {
 	private $managerRegistry;
 	private $logger;
@@ -26,9 +26,9 @@ class SessionService
 	 */
 	public function newSession($storeId = null)
 	{
-		$repo = $this->getDoctrine()->getRepository('YouppersCustomerBundle:Session');
+		$repo = $this->managerRegistry->getRepository('YouppersCustomerBundle:Session');
 		$sessionClass = $repo->getClassName();
-		$em = $this->getDoctrine()->getManagerForClass($sessionClass);
+		$em = $this->managerRegistry->getManagerForClass($sessionClass);
 		$session = new $sessionClass;
 		if ($storeId) {
 			$store = $em->find('YouppersDealerBundle:Store', $storeId);
@@ -43,7 +43,7 @@ class SessionService
 		$em->persist($session);
 		$em->flush();
 	
-		if ($this->has('youppers_common.analytics.tracker')) {
+		if ($this->container->has('youppers_common.analytics.tracker')) {
 			$data = array(
 					't' => 'event',
 					'ds' => 'server',
@@ -61,7 +61,7 @@ class SessionService
 			}
 				
 				
-			$this->get('youppers_common.analytics.tracker')->send($data);
+			$this->container->get('youppers_common.analytics.tracker')->send($data);
 		}
 	
 		return $session;
