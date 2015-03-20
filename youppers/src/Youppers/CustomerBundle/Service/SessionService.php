@@ -20,6 +20,54 @@ class SessionService
 	}	
 	
 	/**
+	 * Create a new session, optionally associated to a store (that must exists)
+	 * @param uuid $storeId
+	 * @return Session
+	 */
+	public function newSession($storeId = null)
+	{
+		$repo = $this->getDoctrine()->getRepository('YouppersCustomerBundle:Session');
+		$sessionClass = $repo->getClassName();
+		$em = $this->getDoctrine()->getManagerForClass($sessionClass);
+		$session = new $sessionClass;
+		if ($storeId) {
+			$store = $em->find('YouppersDealerBundle:Store', $storeId);
+			if (empty($store)) {
+				throw $this->createNotFoundException('Store not found');
+			} else {
+				$session->setStore($store);
+			}
+		} else {
+			$store = null;
+		}
+		$em->persist($session);
+		$em->flush();
+	
+		if ($this->has('youppers_common.analytics.tracker')) {
+			$data = array(
+					't' => 'event',
+					'ds' => 'server',
+					'dt' => 'New Session',
+					'ec' => 'Session',
+					'ea' => 'New Session'
+			);
+				
+			if ($store) {
+				$data['el'] = 'Store: ' . $store;
+				$geoid = $store->getGeoid();
+				if ($geoid) {
+					$data['geoid'] = $geoid->getCriteriaId();
+				}
+			}
+				
+				
+			$this->get('youppers_common.analytics.tracker')->send($data);
+		}
+	
+		return $session;
+	}
+		
+	/**
 	 * set the store of the session if not set
 	 * 
 	 * @param id|Session $session
@@ -27,6 +75,9 @@ class SessionService
 	 * @param string $force Update also if already set
 	 */
 	public function setSessionStore($session, $store, $force = false) {
+		if ($session === null || $store === null) {
+			return;
+		}		
 		if (!is_object($session)) {
 			$session = $this->managerRegistry->getRepository('YouppersCustomerBundle:Session')->find($session);
 		}
@@ -49,6 +100,9 @@ class SessionService
 	 * @param id|Box $box
 	 */
 	public function setSessionStoreUsingBox($session, $box) {
+		if ($session === null || $box === null) {
+			return;
+		}		
 		if (!is_object($box)) {
 			$box = $this->managerRegistry->getRepository('YouppersDealerBundle:Box')->find($box);
 		}
@@ -65,6 +119,9 @@ class SessionService
 	 * @return boolean true if the box store match session store, false if don't match, null if don't know
 	 */
 	public function isBoxInStoreOfSession($session,$box) {
+		if ($session === null || $box === null) {
+			return;
+		}
 		if (!is_object($box)) {
 			$box = $this->managerRegistry->getRepository('YouppersDealerBundle:Box')->find($box);
 		}
