@@ -43,13 +43,16 @@ echo session_id=$session_id
 qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
 
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Qr.find","params":{"sessionId":"'$session_id'","text":"'$qrtextwrong'"}}')
-echo qr=$qrtextwrong response=$response
+echo qr=$qrtextwrong Response:
+echo $response | python -m json.tool
 
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Qr.find","params":{"sessionId":"'$session_id'","text":"'$qrtexturl'"}}')
-echo qr=$qrtexturl response=$response
+echo qr=$qrtexturl Response:
+echo $response | python -m json.tool
 
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Qr.find","params":{"sessionId":"'$session_id'","text":"'$qrtextid'"}}')
-echo qr=$qrtextid response=$response
+echo qr=$qrtextid Response:
+echo $response | python -m json.tool
 
 echo
 echo End.
