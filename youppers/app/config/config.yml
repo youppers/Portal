@@ -60,7 +60,13 @@ imports:
 
     # Audit
     #- { resource: audit.yml }
-
+    
+jms_serializer:
+  metadata:
+    directories: 
+      Common:
+        path: "@YouppersCommonBundle/Resources/config/serializer"
+            
 framework:
     #esi:             ~
     translator:      { fallback: "%locale%" }

@@ -1,0 +1,13 @@
+Sonata\MediaBundle\Model\GalleryHasMedia:
+  exclusion_policy: all
+  properties:
+    enabled:
+      expose: true
+      groups: ['json.qr.find']
+    position:
+      expose: true
+      groups: ['json.qr.find']
+    media:
+      expose: true
+      groups: ['json.qr.find']
+      

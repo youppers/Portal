@@ -1,0 +1,12 @@
+Sonata\MediaBundle\Model\Media:
+  exclusion_policy: all
+  properties:
+    enabled:
+      expose: true
+      groups: ['json.qr.find']
+    name:
+      expose: true
+      groups: ['json.qr.find']
+    contentType:
+      expose: true
+      groups: ['json.qr.find']
