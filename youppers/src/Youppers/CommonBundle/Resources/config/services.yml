@@ -41,6 +41,8 @@ services:
 
   youppers.common.serialization_listener:
       class: Youppers\CommonBundle\EventListener\SerializationListener
+      calls:
+        - [ setContainer, [ '@service_container' ] ]
       tags:
           - { name: jms_serializer.event_subscriber }
 

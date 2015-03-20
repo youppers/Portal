@@ -3,12 +3,13 @@ namespace Youppers\CommonBundle\EventListener;
 
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**
  * Add data after serialization
  *
  */
-class SerializationListener implements EventSubscriberInterface
+class SerializationListener extends ContainerAware implements EventSubscriberInterface
 {
 	private $defaultFormat = 'list'; // TODO da rendere configurabile
 
@@ -24,8 +25,7 @@ class SerializationListener implements EventSubscriberInterface
 
 	public function onPostSerialize(ObjectEvent $event)
 	{
-		global $kernel;
-		$imageProvider = $kernel->getContainer()->get('sonata.media.provider.image');
+		$imageProvider = $this->container->get('sonata.media.provider.image');
 		$image = $event->getObject();
 		$formats = $imageProvider->getFormats();
 		if (array_key_exists($image->getContext() . '_' . $this->defaultFormat,$formats)) {
