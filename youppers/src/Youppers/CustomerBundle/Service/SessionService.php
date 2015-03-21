@@ -7,6 +7,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
+use Sonata\CoreBundle\Form\FormHelper;
+use Symfony\Component\HttpFoundation\Request;
 
 class SessionService extends ContainerAware
 {
@@ -140,6 +142,52 @@ class SessionService extends ContainerAware
 				return false;
 			}
 		}		
+	}
+
+	/**
+	 * 
+	 * @param guid $id sessionId
+	 * @param array $data form data eg 
+	 */
+	public function update($id, $data) {
+		$request = new Request(array(),$data,array());		
+		return $this->handleWriteTag($request,$id);
+	}
+	
+	/**
+	 * 
+	 * @param guid $id sessionId
+	 * @param Request $request
+	 * @return unknown
+	 */
+	protected function handleWriteTag($id,Request $request)
+	{
+		$session = $id ? $this->getSession($id) : null;
+	
+		$form = $this->formFactory->createNamed(null, 'youppers_customer_session_form', $session, array(
+				'csrf_protection' => false
+		));
+		
+		FormHelper::removeFields($request->request->all(), $form);
+	
+		$form->bind($request);
+	
+		if ($form->isValid()) {
+			$session = $form->getData();
+			$this->tagManager->save($session);
+	
+			/*
+			$view = \FOS\RestBundle\View\View::create($session);
+			$serializationContext = SerializationContext::create();
+			$serializationContext->setGroups(array('sonlata_api_read'));
+			$serializationContext->enableMaxDepthChecks();
+			$view->setSerializationContext($serializationContext);
+			*/
+			
+			return $session;
+		} else {
+			return $form;
+		}
 	}
 	
 }
