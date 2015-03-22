@@ -24,7 +24,7 @@ wa72_json_rpc:
         # Read session with details about store, consultant, store and profile
         Session.read: { service: youppers.customer.session, method: read, jms_serialization_context: { groups: [json.session.read], version: '1', max_depth_checks: true } }
 
-		# Update session (use Form)
+        # Update session (use Form)
         Session.update: { service: youppers.customer.session, method: update, jms_serialization_context: { groups: [json.session.read], version: '1', max_depth_checks: true } }
         
         Consultant.list: { service: youppers.dealer.consultant, method: list, jms_serialization_context: { groups: [json.consultant.list], version: '1', max_depth_checks: true } }

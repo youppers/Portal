@@ -55,8 +55,8 @@ imports:
     #- { resource: "@YouppersProductBundle/Resources/config/services.yml" }
     #- { resource: "@YouppersDealerBundle/Resources/config/admin.xml" }
 
-    - { resource: "@YouppersCommonBundle/Resources/config/jsonrpc.yml" }
-    - { resource: "@YouppersCommonBundle/Resources/config/oauth2.yml" }
+    - { resource: "jsonrpc.yml" }
+    - { resource: "oauth2.yml" }
 
     # Audit
     #- { resource: audit.yml }
