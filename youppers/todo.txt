@@ -56,16 +56,11 @@ Gestire voci tabMenu in YouppersAdmin quando ci sono subClasses
 
 usare servizio sonata.intl.templating.helper.datetime per formattare createdAt
 
-Url delle immagini nelle API:
-http://stackoverflow.com/questions/18956983/fosrestbundle-jms-serializer-and-sonatamediabundle-return-public-url-for-image
-
 Add Brand as child admin of Company
 
 Add Products as child admin of Brand
 
 AttributeOptionAdmin deve essere child di AttributeStandardAdmin
-
-Load geoid for GA from https://developers.google.com/analytics/devguides/collection/protocol/v1/geoid
 
 Usare doctrine cache + "&qt=" per gli hit di analytics
 
@@ -73,7 +68,7 @@ Usare "enabled" degli elementi quando viene mostrato un box
 
 Usare "enabled" del box 
 
-Usare "scarper" per inserire nel DB la classificazione di ICS
+Usare "scraper" per inserire nel DB la classificazione di ICS
   http://www.iso.org/iso/home/store/catalogue_ics.htm
 
 Usare scraper per caricare "media" di prodotto
