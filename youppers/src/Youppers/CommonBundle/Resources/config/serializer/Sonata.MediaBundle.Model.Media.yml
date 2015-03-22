@@ -3,10 +3,10 @@ Sonata\MediaBundle\Model\Media:
   properties:
     enabled:
       expose: true
-      groups: ['json.qr.find']
+      groups: ['list','details','json.qr.find','json.session.read']
     name:
       expose: true
-      groups: ['json.qr.find']
+      groups: ['list','details','json.qr.find','json.session.read']
     contentType:
       expose: true
-      groups: ['json.qr.find']
+      groups: ['list','details','json.qr.find','json.session.read']
