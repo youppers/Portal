@@ -176,7 +176,7 @@ class SessionService extends ContainerAware
 	 * @param guid $sessionId
 	 * @return Session
 	 */
-	private function getSession($sessionId) 
+	public function getSession($sessionId) 
 	{
 		return $this->managerRegistry->getRepository('YouppersCustomerBundle:Session')->find($sessionId);
 	}

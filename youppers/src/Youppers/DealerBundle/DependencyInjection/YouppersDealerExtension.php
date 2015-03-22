@@ -24,7 +24,8 @@ class YouppersDealerExtension extends Extension
         $bundles = $container->getParameter('kernel.bundles');
         
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $yloader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $yloader->load('services.yml');
         
         if (isset($bundles['SonataAdminBundle'])) {
         	$loader->load('admin.xml');
