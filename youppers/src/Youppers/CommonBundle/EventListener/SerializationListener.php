@@ -35,6 +35,6 @@ class SerializationListener extends ContainerAware implements EventSubscriberInt
 			$format = 'reference';
 		}
 		$event->getVisitor()->addData('url',$mediaProvider->generatePublicUrl($media, $format));
-		$event->getVisitor()->addData('admin',$mediaProvider->generatePublicUrl($media, 'admin'));
+		$event->getVisitor()->addData('url.admin',$mediaProvider->generatePublicUrl($media, 'admin'));
 	}
 }
