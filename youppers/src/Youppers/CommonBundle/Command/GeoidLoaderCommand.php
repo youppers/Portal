@@ -11,7 +11,6 @@ use Application\Sonata\ClassificationBundle\Entity\Category;
 
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Link;
-use Doctrine\Common\Collections\Criteria;
 
 use Ddeboer\DataImport\Reader\CsvReader;
 use Youppers\CompanyBundle\Entity\Product;
