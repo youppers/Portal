@@ -141,7 +141,7 @@ class QrService extends Controller
 		$object->setEnabled(true);
 		$this->session->getFlashBag()->add('sonata_flash_info','enabled ' . $object);
 		
-		if (!empty($object->getUrl())) {
+		if (method_exists($object,'getUrl') && !empty($object->getUrl())) {
 			$qr->setUrl($object->getUrl());
 			$this->session->getFlashBag()->add('sonata_flash_info','enabled QRCode url ' . $object->getUrl());
 		}
