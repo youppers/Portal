@@ -1,0 +1,7 @@
+services:
+    youppers.dealer.consultant:
+        class:     Youppers\DealerBundle\Service\ConsultantService
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+    
