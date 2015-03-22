@@ -27,6 +27,7 @@ class ProductVariant
 	 * @ORM\Id
 	 * @Serializer\Expose()
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $id;
 	
@@ -39,13 +40,13 @@ class ProductVariant
 	protected $productCollection;
 			
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 * @deprecated use product name
 	 */
 	protected $name;
 
 	/**
-	 * @ORM\Column(name="code", type="string", length=60)
+	 * @ORM\Column(name="code", type="string", length=60, nullable=true)
 	 * @deprecated use product code
 	 */
 	protected $code;

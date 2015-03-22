@@ -27,6 +27,7 @@ class VariantProperty
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $id;
 			
@@ -39,7 +40,7 @@ class VariantProperty
 	/**
 	 * @ORM\Column(type="integer")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $position;
 	

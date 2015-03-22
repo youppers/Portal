@@ -23,11 +23,15 @@ class Brand
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Company", inversedBy="brands")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $company;
 
@@ -41,7 +45,7 @@ class Brand
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $code;
 
@@ -53,7 +57,7 @@ class Brand
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $description;
 	

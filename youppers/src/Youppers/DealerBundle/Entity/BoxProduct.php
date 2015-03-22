@@ -51,7 +51,7 @@ class BoxProduct
 	/**
 	 * @ORM\Column(type="integer")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $position;
 	

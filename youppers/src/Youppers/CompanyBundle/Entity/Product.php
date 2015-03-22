@@ -94,7 +94,7 @@ class Product
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $description;
 	

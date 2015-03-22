@@ -61,6 +61,7 @@ class AttributeOption
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $id;
 			
@@ -74,21 +75,21 @@ class AttributeOption
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $enabled;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $image;
 	
 	/**
 	 * @ORM\Column(type="integer")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $position;
 	

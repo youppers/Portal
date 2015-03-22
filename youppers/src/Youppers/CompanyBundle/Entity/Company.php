@@ -3,6 +3,7 @@ namespace Youppers\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -10,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("name")
  * @UniqueEntity("code")
+ * @Serializer\ExclusionPolicy("all")  
  */
 class Company
 {
@@ -17,11 +19,14 @@ class Company
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $id;
 			
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $name;
 
@@ -42,6 +47,8 @@ class Company
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */	
 	protected $logo;
 	

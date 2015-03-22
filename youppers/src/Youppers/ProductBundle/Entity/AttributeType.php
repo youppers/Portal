@@ -38,21 +38,21 @@ class AttributeType
 	/**
 	 * @ORM\Column(name="code", type="string", length=60, unique=true)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $code;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $enabled;
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details"})
 	 */
 	protected $description;
 	

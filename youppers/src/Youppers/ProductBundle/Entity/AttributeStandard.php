@@ -28,28 +28,28 @@ class AttributeStandard
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.collection.read"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(type="string", length=60, nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.collection.read"})
 	 */
 	protected $symbol;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.collection.read"})
 	 */
 	protected $enabled;
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.collection.read"})
 	 */
 	protected $description;
 	
@@ -65,7 +65,7 @@ class AttributeStandard
 	 * @ORM\OneToMany(targetEntity="AttributeOption", mappedBy="attributeStandard", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.collection.read"})
 	 */
 	protected $attributeOptions;
 	
