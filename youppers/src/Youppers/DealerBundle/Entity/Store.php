@@ -23,18 +23,22 @@ class Store
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.session.read"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Dealer", inversedBy="stores")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.session.read"})
 	 */
 	protected $dealer;
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @Serializer\Groups({"details", "json.session.read"})
 	 */
 	protected $name;
 
@@ -46,12 +50,14 @@ class Store
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @Serializer\Groups({"details", "json.session.read"})
 	 */
 	protected $code;
 
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.session.read"})
 	 */
 	protected $enabled;
 	

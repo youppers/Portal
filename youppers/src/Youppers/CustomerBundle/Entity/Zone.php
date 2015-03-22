@@ -4,6 +4,7 @@ namespace Youppers\CustomerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -24,17 +25,20 @@ class Zone
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list"})
 	 */
 	protected $id;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Profile")
 	 * @var Profile
+	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list"})
 	 */
 	protected $profile;
 	
 	/**
 	 * @ORM\Column(type="string")
+	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list","json.item.read"})
 	 */
 	protected $name;
 		
@@ -45,6 +49,7 @@ class Zone
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @JMS\Groups({"list", "details","create","json.zone.read"})
 	 */
 	protected $createdAt;
 			

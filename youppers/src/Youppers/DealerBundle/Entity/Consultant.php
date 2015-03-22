@@ -24,6 +24,7 @@ class Consultant
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 * @JMS\Expose()
+	 * @JMS\Groups({"list","details","update","create","json.consultant.list", "json.session.read"})
 	 */
 	protected $id;
 
@@ -51,31 +52,35 @@ class Consultant
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @JMS\Expose()
+	 * @JMS\Groups({"list","details","update","create","json.consultant.list", "json.session.read"})
 	 */
 	protected $enabled;
 	
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @JMS\Expose()
+	 * @JMS\Groups({"list","details","update","create","json.consultant.list", "json.session.read"})
 	 */
 	protected $code;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 * @JMS\Expose()
+	 * @JMS\Groups({"list","details","update","create","json.consultant.list", "json.session.read"})
 	 */
 	protected $fullname;
 
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @JMS\Expose()
+	 * @JMS\Groups({"list","details","update","create","json.consultant.list", "json.session.read"})
 	 */
 	protected $description;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
-	 * @JMS\MaxDepth(1)
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"}, fetch="LAZY")
 	 * @JMS\Expose()
+	 * @JMS\Groups({"list","details","update","create","json.consultant.list", "json.session.read"})
 	 */
 	protected $photo;	
 	
@@ -86,6 +91,8 @@ class Consultant
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details","update","create"})
 	 */
 	protected $createdAt;
 

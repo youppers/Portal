@@ -4,6 +4,7 @@ namespace Youppers\CustomerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * @ORM\Entity
@@ -16,54 +17,50 @@ class Session
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"list", "details","create"})
+	 * @JMS\Groups({"list", "details","create","json.session.read"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Profile", inversedBy="sessions")
-	 * @JMS\MaxDepth(1)
-	 * @JMS\Groups({"list","details","update","create"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read"})
 	 */
 	protected $profile;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Store")
-	 * @JMS\MaxDepth(1) // 4
-	 * @JMS\Groups({"list","details","update","create"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read"})
 	 */
 	protected $store;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Consultant")
-	 * @JMS\MaxDepth(1) // 4
-	 * @JMS\Groups({"list","details","update","create"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read"})
 	 */
 	protected $consultant;
 
 	/**
 	 * @ORM\Column(type="string", nullable=true)
-	 * @JMS\Groups({"list","details","update","create"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read"})
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
 	 * @var Item[]
-	 * @JMS\MaxDepth(1) // 6
-	 * @JMS\Groups({"details","json"})
+	 * @JMS\Groups({"details"})
 	 */
 	protected $items;
-	
+		
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @JMS\Groups({"details","create"})
+	 * @JMS\Groups({"details"})
 	 */
 	protected $updatedAt;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @JMS\Groups({"list","details","create"})
+	 * @JMS\Groups({"list","details","create","json.session.read"})
 	 */
 	protected $createdAt;
 			

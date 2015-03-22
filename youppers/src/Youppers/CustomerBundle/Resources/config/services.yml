@@ -12,7 +12,7 @@ services:
     
     youppers.customer.session.form:    
         class: 'Sonata\CoreBundle\Form\Type\DoctrineORMSerializationType'
-        tag:
-           - { form.type: youppers_customer_session_form }
-        arguments: ['@jms_serializer.metadata_factory', '@doctrine', 'youppers_customer_session_form', 'Youppers\Customer\Entity\Session']
+        arguments: ['@jms_serializer.metadata_factory', '@doctrine', 'youppers_customer_session_form', 'Youppers\CustomerBundle\Entity\Session','details']
+        tags:
+           - { name: form.type, alias: youppers_customer_session_form }
     

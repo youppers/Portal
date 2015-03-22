@@ -66,7 +66,7 @@ class SessionController extends FOSRestController
 	}
 	
 	/**
-	 * @deprecated
+	 * @deprecated use youppers.customer.session->newSession
 	 * @return \Youppers\CustomerBundle\Entity\Session
 	 */
 	public function newSession()

@@ -1,0 +1,6 @@
+FOS\UserBundle\Model\User:
+  properties:
+    username:
+      groups: ['json.session.read']
+    email:
+      groups: ['json.session.read']

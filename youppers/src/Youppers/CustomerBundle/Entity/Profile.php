@@ -21,20 +21,20 @@ class Profile
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"details","update"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
 	 * @return User
-	 * @JMS\Groups({"details","update"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read"})
 	 */
 	protected $user;
 
 	/**
 	 * @ORM\Column(type="string")
-	 * @JMS\Groups({"list","details","update"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read"})
 	 */
 	protected $name;
 	
@@ -46,7 +46,7 @@ class Profile
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @JMS\Groups({"details","update"})
+	 * @JMS\Groups({"details"})
 	 */
 	protected $updatedAt;
 	

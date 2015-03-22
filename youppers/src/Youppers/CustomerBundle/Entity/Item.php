@@ -2,6 +2,7 @@
 namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -14,6 +15,7 @@ class Item
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @JMS\Groups({"list", "details","create","json.item.list","json.item.read"})
 	 */
 	protected $id;
 	
@@ -31,12 +33,14 @@ class Item
 	/**
 	 * @ORM\ManyToOne(targetEntity="Youppers\ProductBundle\Entity\ProductVariant")
 	 * @return ProductVariant
+	 * @JMS\Groups({"list", "details","create","json.item.list", "json.item.read"})
 	 */
 	protected $variant;
 	
 	/**
 	 * @ORM\ManyToMany(targetEntity="Zone")
 	 * @ORM\JoinTable(name="youppers_customer__item_zone")
+	 * @JMS\Groups({"list", "details","create","json.item.list", "json.item.read"})
 	 */
 	protected $zones;	
 		
@@ -47,6 +51,7 @@ class Item
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
+	 * @JMS\Groups({"list", "details","create", "json.item.list", "json.item.read"})
 	 */
 	protected $createdAt;
 			

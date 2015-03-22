@@ -9,6 +9,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Sonata\CoreBundle\Form\FormHelper;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Symfony\Component\Form\Form;
 
 class SessionService extends ContainerAware
 {
@@ -101,7 +103,8 @@ class SessionService extends ContainerAware
 	 * @param id|Session $session
 	 * @param id|Box $box
 	 */
-	public function setSessionStoreUsingBox($session, $box) {
+	public function setSessionStoreUsingBox($session, $box)
+	{
 		if ($session === null || $box === null) {
 			return;
 		}		
@@ -120,7 +123,8 @@ class SessionService extends ContainerAware
 	 * @param id|Box $box
 	 * @return boolean true if the box store match session store, false if don't match, null if don't know
 	 */
-	public function isBoxInStoreOfSession($session,$box) {
+	public function isBoxInStoreOfSession($session,$box) 
+	{
 		if ($session === null || $box === null) {
 			return;
 		}
@@ -146,46 +150,68 @@ class SessionService extends ContainerAware
 
 	/**
 	 * 
-	 * @param guid $id sessionId
+	 * @param guid $sessionId
 	 * @param array $data form data eg 
 	 */
-	public function update($id, $data) {
-		$request = new Request(array(),$data,array());		
-		return $this->handleWriteTag($request,$id);
+	public function read($sessionId)
+	{
+		return $this->getSession($sessionId);	
+	}
+	
+	/**
+	 * Update a session
+	 * 
+	 * @param guid $sessionId
+	 * @param array $data
+	 * @return Ambigous <\Youppers\CustomerBundle\Service\Entity, \Symfony\Component\Form\Form>
+	 */
+	public function update($sessionId, $data)
+	{
+		return $this->handleWrite($sessionId,$data);
+	}
+	
+	/**
+	 * Find a session by Id
+	 * 
+	 * @param guid $sessionId
+	 * @return Session
+	 */
+	private function getSession($sessionId) 
+	{
+		return $this->managerRegistry->getRepository('YouppersCustomerBundle:Session')->find($sessionId);
 	}
 	
 	/**
 	 * 
 	 * @param guid $id sessionId
-	 * @param Request $request
-	 * @return unknown
+	 * @param array $data
+	 * @return Entity|Form
 	 */
-	protected function handleWriteTag($id,Request $request)
+	protected function handleWrite($sessionId,$data)
 	{
-		$session = $id ? $this->getSession($id) : null;
-	
-		$form = $this->formFactory->createNamed(null, 'youppers_customer_session_form', $session, array(
+		if ($sessionId) {
+			$session = $this->getSession($sessionId);
+			if ($session === null) {
+				$this->logger->error(sprintf("Session '%s' not found",$sessionId));
+				throw new NotFoundResourceException("Session not found");
+			}
+		}
+		
+		$form = $this->container->get('form.factory')->createNamed(null, 'youppers_customer_session_form', $session, array(
 				'csrf_protection' => false
 		));
 		
-		FormHelper::removeFields($request->request->all(), $form);
-	
-		$form->bind($request);
-	
+		$form->submit($data,false);		
+
 		if ($form->isValid()) {
 			$session = $form->getData();
-			$this->tagManager->save($session);
-	
-			/*
-			$view = \FOS\RestBundle\View\View::create($session);
-			$serializationContext = SerializationContext::create();
-			$serializationContext->setGroups(array('sonlata_api_read'));
-			$serializationContext->enableMaxDepthChecks();
-			$view->setSerializationContext($serializationContext);
-			*/
-			
+			$om = $this->managerRegistry->getManagerForClass('YouppersCustomerBundle:Session');
+			$om->persist($session);
+			$om->flush();
+			$this->logger->debug("Update session");
 			return $session;
 		} else {
+			$this->logger->warn("Invalid session: " . $form->getErrors());
 			return $form;
 		}
 	}

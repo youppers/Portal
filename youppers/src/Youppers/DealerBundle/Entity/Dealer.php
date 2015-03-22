@@ -3,6 +3,7 @@ namespace Youppers\DealerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -17,16 +18,19 @@ class Dealer
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @JMS\Groups({"list", "details","create"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=20, unique=true)
+	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read"})
 	 */
 	protected $code;
 
@@ -47,6 +51,7 @@ class Dealer
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
+	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read"})
 	 */
 	protected $description;
 	

@@ -54,5 +54,14 @@ response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrp
 echo qr=$qrtextid Response:
 echo $response | python -m json.tool
 
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.update","params":{"sessionId":"'$session_id'","data":{"consultant":"'$consultant_id'"}}}')
+echo consultant_id=$consultant_id
+echo $response | python -m json.tool
+
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.read","params":{"sessionId":"'$force_session_id'"}}')
+echo session_id=$force_session_id
+echo $response | python -m json.tool
+
+
 echo
 echo End.
