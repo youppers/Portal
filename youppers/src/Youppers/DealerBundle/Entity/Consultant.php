@@ -52,9 +52,16 @@ class Consultant
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @JMS\Expose()
-	 * @JMS\Groups({"list","details","update","create","json.consultant.list", "json.session.read"})
+	 * @JMS\Groups({"list","details","update","create", "json.session.read"})
 	 */
 	protected $enabled;
+	
+	/**
+	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"list","details","update","create","json.consultant.list", "json.session.read"})
+	 */
+	protected $available;
 	
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
@@ -375,5 +382,28 @@ class Consultant
     public function getPhoto()
     {
         return $this->photo;
+    }
+
+    /**
+     * Set available
+     *
+     * @param boolean $available
+     * @return Consultant
+     */
+    public function setAvailable($available)
+    {
+        $this->available = $available;
+
+        return $this;
+    }
+
+    /**
+     * Get available
+     *
+     * @return boolean 
+     */
+    public function getAvailable()
+    {
+        return $this->available;
     }
 }

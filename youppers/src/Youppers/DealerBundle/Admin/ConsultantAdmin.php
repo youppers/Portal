@@ -22,7 +22,8 @@ class ConsultantAdmin extends YouppersAdmin
 		$listMapper		
 		->addIdentifier('fullname', null, array('route' => array('name' => 'show')))
 		->add('code')
-		->add('enabled', null, array('editable' => true))
+		->add('enabled')
+		->add('available', null, array('editable' => true))
 		->add('user', null, array('route' => array('name' => 'show')))		
 		->add('photo', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))		
 		->add('dealer', null, array('route' => array('name' => 'show')))		
@@ -40,6 +41,7 @@ class ConsultantAdmin extends YouppersAdmin
 		->add('fullname')
 		->add('code')
 		->add('enabled')
+		->add('available')
 		->add('dealer')
 		;
 	}
@@ -53,6 +55,7 @@ class ConsultantAdmin extends YouppersAdmin
 		->add('fullname')
 		->add('code')
 		->add('enabled')
+		->add('available')
 		->add('description')
 		->add('photo', null, array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('user', null, array('route' => array('name' => 'show')))
@@ -91,6 +94,7 @@ class ConsultantAdmin extends YouppersAdmin
 		$formMapper
 		->add('stores')
 		->add('enabled', 'checkbox', array('required'  => false))
+		->add('available', null, array('required'  => false))
 		->end();
 		
 	}
