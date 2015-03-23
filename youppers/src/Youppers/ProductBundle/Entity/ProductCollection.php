@@ -71,7 +71,7 @@ class ProductCollection
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery")
 	 * @ORM\JoinColumn(name="pdf_gallery_id")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.collection.show"})
 	 */
 	protected $pdfGallery;
 	
