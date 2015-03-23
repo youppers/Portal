@@ -69,9 +69,9 @@ class SessionAdmin extends YouppersAdmin
 	{
 		
 		$formMapper
-			->add('profile', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-			->add('store', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-			->add('consultant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+			->add('profile', 'sonata_type_model_list', array('required' => false))
+			->add('store', 'sonata_type_model_list', array('required' => false))
+			->add('consultant', 'sonata_type_model_list', array('required' => false))
 			->add('name')
 		;
 	}
