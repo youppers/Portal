@@ -15,6 +15,7 @@ qrtexturl="http://m.marazzi.it/qr_code/BLEND?pid=592&merch=0000V4EE"
 qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
 
 conf=$(dirname $0)/config
+format=$(dirname $0)/format.php
 
 if [ -f $conf ]; then 
 	source $conf
@@ -37,7 +38,7 @@ echo access_token=$access_token
 echo -------------- Call Session.new  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.new"}')
 echo Response:
-echo $response | python -m json.tool
+echo $response | php -f $format
 
 session_id=$(echo $response|sed -n -e 's/.*{"id":"\([a-zA-Z0-9\-]*\)",.*/\1/p')
 echo session_id=$session_id
@@ -46,37 +47,37 @@ qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
 
 echo -------------- Try to show list of consultants before store selection -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Consultant.list","params":{"sessionId":"'$session_id'"}}')
-echo $response | python -m json.tool
+echo $response | php -f $format 
 
 echo -------------- Search a QR: should fail, dont exists  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Qr.find","params":{"sessionId":"'$session_id'","text":"'$qrtextwrong'"}}')
 echo qr=$qrtextwrong Response:
-echo $response | python -m json.tool
+echo $response | php -f $format 
 
 echo -------------- Search a QR with link url, should be OK  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Qr.find","params":{"sessionId":"'$session_id'","text":"'$qrtexturl'"}}')
 echo qr=$qrtexturl Response:
-echo $response | python -m json.tool
+echo $response | php -f $format 
 
 echo -------------- Search a QR with link id, should be OK  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Qr.find","params":{"sessionId":"'$session_id'","text":"'$qrtextid'"}}')
 echo qr=$qrtextid Response:
-echo $response | python -m json.tool
+echo $response | php -f $format
 
 echo -------------- Show list of consultants selectables for the session -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Consultant.list","params":{"sessionId":"'$session_id'"}}')
 #echo consultant_id=$consultant_id
-echo $response | python -m json.tool
+echo $response | php -f $format
 
 echo -------------- Set the consultant for the session -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.update","params":{"sessionId":"'$session_id'","data":{"consultant":"'$consultant_id'"}}}')
 echo consultant_id=$consultant_id
-echo $response | python -m json.tool
+echo $response | php -f $format
 
 echo -------------- Show a specific session ------------- 
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.read","params":{"sessionId":"'$force_session_id'"}}')
 echo session_id=$force_session_id
-echo $response | python -m json.tool
+echo $response | php -f $format
 
 echo
 echo End.
