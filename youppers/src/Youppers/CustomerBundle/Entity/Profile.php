@@ -34,7 +34,7 @@ class Profile
 
 	/**
 	 * @ORM\Column(type="string")
-	 * @JMS\Groups({"list","details","update","create","json.session.read"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read","json.zone.list"})
 	 */
 	protected $name;
 	

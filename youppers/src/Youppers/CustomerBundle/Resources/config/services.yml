@@ -15,4 +15,11 @@ services:
         arguments: ['@jms_serializer.metadata_factory', '@doctrine', 'youppers_customer_session_form', 'Youppers\CustomerBundle\Entity\Session','details']
         tags:
            - { name: form.type, alias: youppers_customer_session_form }
+
+    youppers.customer.zone:
+        class:     Youppers\CustomerBundle\Service\ZoneService
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+    
     

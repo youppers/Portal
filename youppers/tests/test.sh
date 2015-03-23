@@ -45,6 +45,10 @@ echo session_id=$session_id
 
 qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
 
+echo -------------- Show list of zones -------------
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Zone.list","params":{"sessionId":"'$session_id'"}}')
+echo $response | php -f $format 
+
 echo -------------- Try to show list of consultants before store selection -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Consultant.list","params":{"sessionId":"'$session_id'"}}')
 echo $response | php -f $format 
