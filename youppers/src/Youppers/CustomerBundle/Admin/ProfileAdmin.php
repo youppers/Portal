@@ -11,10 +11,24 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ProfileAdmin extends YouppersAdmin
 {
-
+	
+	private $tokenStorage = null;
+	
+	/**
+	 * Used to set user as current authenticated user
+	 * 
+	 * @param TokenStorageInterface $tokenStorage
+	 */
+	public function setTokenStorage(TokenStorageInterface $tokenStorage)
+	{
+		$this->tokenStorage = $tokenStorage;
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -68,4 +82,21 @@ class ProfileAdmin extends YouppersAdmin
 		;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getNewInstance()
+	{
+		$object = parent::getNewInstance();
+		
+		if ($this->tokenStorage) {
+			$user = $this->tokenStorage->getToken()->getUser();
+			if ($user) {
+				$object->setUser($user);
+			}
+		}
+	
+		return $object;
+	}
+	
 }

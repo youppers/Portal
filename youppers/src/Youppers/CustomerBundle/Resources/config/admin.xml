@@ -11,6 +11,10 @@
             <argument>Youppers\CustomerBundle\Entity\Profile</argument>
             <argument />
 
+            <call method="setTokenStorage">
+                <argument type="service" id="security.token_storage" />
+            </call>
+
         </service>
 
         <service id="youppers.customer.admin.zone" class="Youppers\CustomerBundle\Admin\ZoneAdmin">
