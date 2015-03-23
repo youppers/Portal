@@ -15,9 +15,9 @@ class ZoneListCommand extends ContainerAwareCommand
     {
         $this
             ->setName('youppers:customer:zone:list')
-            ->setDescription('Search QR and dump content')
+            ->setDescription('List zones')
             ->addArgument('sessionId', InputArgument::REQUIRED, 'Session id', null)
-			->addArgument('group', InputArgument::OPTIONAL, 'seialization group')
+			->addArgument('group', InputArgument::OPTIONAL, 'seialization group','json.zone.list')
 			;
     }
 

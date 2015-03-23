@@ -10,7 +10,7 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Doctrine\ORM\QueryBuilder;
 
 class ZoneService extends ContainerAware
-{
+{	
 	private $managerRegistry;
 	private $logger;
 	
