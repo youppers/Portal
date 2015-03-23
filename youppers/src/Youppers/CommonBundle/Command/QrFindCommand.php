@@ -17,7 +17,7 @@ class QrFindCommand extends ContainerAwareCommand
             ->setName('youppers:common:qr:find')
             ->setDescription('Search QR and dump content')
 			->addArgument('text', InputArgument::REQUIRED, 'QR id')
-			->addArgument('group', InputArgument::OPTIONAL, 'group')
+			->addArgument('group', InputArgument::OPTIONAL, 'seialization group')
 			;
     }
 
