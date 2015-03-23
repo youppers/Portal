@@ -40,18 +40,6 @@ class ProductVariant
 	protected $productCollection;
 			
 	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 * @deprecated use product name
-	 */
-	protected $name;
-
-	/**
-	 * @ORM\Column(name="code", type="string", length=60, nullable=true)
-	 * @deprecated use product code
-	 */
-	protected $code;
-	
-	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @Serializer\Expose()
 	 */
@@ -195,52 +183,6 @@ class ProductVariant
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return ProductVariant
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return ProductVariant
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string 
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
      * Set enabled
      *
      * @param boolean $enabled
@@ -356,39 +298,6 @@ class ProductVariant
     }
 
     /**
-     * Get variantProperties
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getVariantProperties()
-    {
-        return $this->variantProperties;
-    }
-
-    /**
-     * Set product
-     *
-     * @param \Youppers\CompanyBundle\Entity\Product $product
-     * @return ProductVariant
-     */
-    public function setProduct(\Youppers\CompanyBundle\Entity\Product $product = null)
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Get product
-     *
-     * @return \Youppers\CompanyBundle\Entity\Product 
-     */
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
-    /**
      * Set image
      *
      * @param \Application\Sonata\MediaBundle\Entity\Media $image
@@ -432,5 +341,38 @@ class ProductVariant
     public function getPdfGallery()
     {
         return $this->pdfGallery;
+    }
+
+    /**
+     * Get variantProperties
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVariantProperties()
+    {
+        return $this->variantProperties;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \Youppers\CompanyBundle\Entity\Product $product
+     * @return ProductVariant
+     */
+    public function setProduct(\Youppers\CompanyBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \Youppers\CompanyBundle\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

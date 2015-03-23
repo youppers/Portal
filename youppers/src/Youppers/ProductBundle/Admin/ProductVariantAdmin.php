@@ -128,14 +128,12 @@ class ProductVariantAdmin extends YouppersAdmin
         $showMapper
             ->add('productCollection', null, array('route' => array('name' => 'show')))
         	->add('product', null, array('route' => array('name' => 'show')))            
-            ->add('name')
         	->add('product.name')
-        	->add('code')
         	->add('product.code')
-            ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
         	->add('enabled')
             ->add('pdfGallery')
-        	->add('variantProperties', null, array('associated_property' => 'attributeOption'))            
+            ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
+            ->add('variantProperties', null, array('associated_property' => 'attributeOption'))            
             ->add('updatedAt')
             ->add('createdAt')
         ;
