@@ -23,10 +23,17 @@ class ProductVariantAdmin extends YouppersAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+    	if (!($this->isChild() && $this->getParentAssociationMapping() === 'productCollection')) {    	 
+        	$datagridMapper
+            ->add('productCollection.brand.company.name')
+            ->add('productCollection.brand.company.code')
+        	->add('productCollection.brand.name')
+            ->add('productCollection.brand.code')
+            ->add('productCollection.name');
+    	}
         $datagridMapper
-        	//->add('productCollection')
-            ->add('name')
-            ->add('code')
+    		->add('product.name')
+            ->add('product.code')
             ->add('enabled')
         ;
     }
@@ -66,7 +73,9 @@ class ProductVariantAdmin extends YouppersAdmin
         $formMapper
         	->with('Product Variant', array('class' => 'col-md-6'))
             ->add('productCollection', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-            ->add('product', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+            ->add('product', 'sonata_type_model_list', array(
+            		'btn_add'       => false,
+            		'required' => false, 'constraints' => new Assert\NotNull()))
             //->add('product.name')
             //->add('product.code')
             //->add('description')
