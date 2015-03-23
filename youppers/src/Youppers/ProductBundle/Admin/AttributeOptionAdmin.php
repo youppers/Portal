@@ -7,7 +7,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Symfony\Component\Validator\Constraints as Assert;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 class AttributeOptionAdmin extends Admin
@@ -23,6 +22,7 @@ class AttributeOptionAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
+		->add('value')
 		->add('attributeStandard.attributeType')
 		->add('attributeStandard')
 		;
@@ -37,7 +37,7 @@ class AttributeOptionAdmin extends Admin
 		->addIdentifier('valueWithEquivalences')
 		->add('image', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))		
 		->add('enabled', null, array('editable' => true))
-		->add('attributeStandard.attributeType', null, array('route' => array('name' => 'show')))
+		->add('attributeStandard.attributeType', null, array('label' => 'Attribute Type', 'route' => array('name' => 'show')))
 		->add('attributeStandard', null, array('route' => array('name' => 'show')))
 		;
 	}

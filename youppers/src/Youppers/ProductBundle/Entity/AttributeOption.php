@@ -4,6 +4,7 @@ namespace Youppers\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -98,6 +99,7 @@ class AttributeOption
 	 * @ORM\JoinColumn(name="attribute_standard_id")
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Assert\NotNull
 	 */
 	protected $attributeStandard;
 	

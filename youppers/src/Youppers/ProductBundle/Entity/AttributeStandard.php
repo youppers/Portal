@@ -14,7 +14,7 @@ class AttributeStandard
 {
 	public function __toString()
 	{
-		return $this->getName() ?: 'New';
+		return $this->getName() ? $this->getAttributeType() . ' > ' . $this->getName() : 'New';
 	}
 	
 	/**
