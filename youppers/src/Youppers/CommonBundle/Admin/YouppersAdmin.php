@@ -5,6 +5,7 @@ namespace Youppers\CommonBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 /**
  * Common behaviors of admin:
@@ -28,6 +29,20 @@ abstract class YouppersAdmin extends Admin
 			if ($action != 'edit') $menu->addChild($this->trans('link_action_list', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('list')));
 		}
 	
+	}
+	
+	/**
+	 * If fieldDescription > options > disabled == true disable the link to the field admin
+	 * {@inheritdoc}
+	 */
+	public function attachAdminClass(FieldDescriptionInterface $fieldDescription)
+	{
+		dump($fieldDescription);
+		if (array_key_exists('disabled',$fieldDescription->getOption('route')) && $fieldDescription->getOption('route')['disabled']) {
+			return;
+		} else {
+			return parent::attachAdminClass($fieldDescription);
+		}
 	}
 	
 	/**
