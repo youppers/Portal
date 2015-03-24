@@ -17,7 +17,7 @@ class ProductVariantAdmin extends YouppersAdmin
 	{
 		return 'productCollection';
 	}
-			
+		
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -58,10 +58,8 @@ class ProductVariantAdmin extends YouppersAdmin
        		->add('productCollection');
        	}
        	$listMapper
-	       	//->addIdentifier('name', null, array('route' => array('name' => 'show')))
-            //->add('code')
-            ->add('product', null, array('associated_property' => 'nameCode', 'route' => array('disabled' => true)))
-       		//->add('product', null, array('associated_property' => 'nameCode', 'admin_code' => false))
+            ->add('product.name')
+            ->add('product.code')
             ->add('variantProperties', null, array('associated_property' => 'attributeOption'))
         ;
     }
