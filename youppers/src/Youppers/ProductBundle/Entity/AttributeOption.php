@@ -20,10 +20,10 @@ class AttributeOption
 {
 	public function __toString()
 	{
-		return $this->getAttributeStandard() ? $this->getAttributeStandard()->getAttributeType() . ": " . $this->getValueWithStandard() : "New";
+		return $this->getAttributeStandard() ? $this->getAttributeStandard() . ": " . $this->getValueWithSymbol() : "New";
 	}
 	
-	public function getValueWithStandard() {
+	public function getValueWithSymbol() {
 		return (null === $this->getValue() ? 'New' : $this->getValue()) . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getSymbol():''); 
 	}
 	
@@ -31,9 +31,9 @@ class AttributeOption
 	{
 		$equivalent = $this->getEquivalentOption();
 		if ($equivalent === null) {
-			return $this->getValueWithStandard();
+			return $this->getValueWithSymbol();
 		} else {
-			return $this->getValueWithStandard() . ' ~ ' . $equivalent->getValueWithStandard();
+			return $this->getValueWithSymbol() . ' ~ ' . $equivalent->getValueWithSymbol();
 		}		 
 	}
 
@@ -43,9 +43,9 @@ class AttributeOption
 		if ($equivalents === null) {
 			return $this->getValueWithEquivalence();
 		} else {
-			$res = $this->getValueWithStandard();
+			$res = $this->getValueWithSymbol();
 			foreach ($equivalents as $equivalent) {
-				$res .= ' ~ ' . $equivalent->getValueWithStandard();
+				$res .= ' ~ ' . $equivalent->getValueWithSymbol();
 			}
 			return $res;
 		}
