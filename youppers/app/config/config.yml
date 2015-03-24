@@ -4,10 +4,10 @@ imports:
     - { resource: services.yml }
 
     # Mopa Bootstrap
-    #- { resource: mopa/mopa_bootstrap.yml }
+    - { resource: mopa/mopa_bootstrap.yml }
 
     # Knp Paginator
-    #- { resource: knp/knp_paginator.yml }
+    - { resource: knp/knp_paginator.yml }
 
     # FriendOfSymfony Bundles
 #    - { resource: fos/fos_comment.yml }
