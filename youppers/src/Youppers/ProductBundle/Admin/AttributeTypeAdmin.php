@@ -32,7 +32,7 @@ class AttributeTypeAdmin extends YouppersAdmin
         	->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('code')
         	->add('enabled', null, array('editable' => true))
-            ->add('attributeStandards')
+            ->add('attributeStandards', null, array('associated_property' => 'name'))
         ;
     }
 
@@ -42,7 +42,7 @@ class AttributeTypeAdmin extends YouppersAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-        	->with('Atribute Type', array('class' => 'col-md-8'))
+        	->with('Attribute Type', array('class' => 'col-md-8'))
             ->add('name')
             ->add('code')
             ->add('description')
@@ -63,7 +63,7 @@ class AttributeTypeAdmin extends YouppersAdmin
             ->add('code')
             ->add('enabled')
             ->add('description')
-            ->add('attributeStandards', null, array('route' => array('name' => 'show')))
+            ->add('attributeStandards', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
             ->add('updatedAt')
             ->add('createdAt')
         ;
