@@ -37,7 +37,6 @@ abstract class YouppersAdmin extends Admin
 	 */
 	public function attachAdminClass(FieldDescriptionInterface $fieldDescription)
 	{
-		dump($fieldDescription);
 		if (array_key_exists('disabled',$fieldDescription->getOption('route')) && $fieldDescription->getOption('route')['disabled']) {
 			return;
 		} else {
