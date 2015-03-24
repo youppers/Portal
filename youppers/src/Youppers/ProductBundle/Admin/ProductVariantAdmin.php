@@ -64,6 +64,20 @@ class ProductVariantAdmin extends YouppersAdmin
         ;
     }
 
+    private function getVariantPropertiesHelp()
+    {
+    	$collection = $this->getSubject()->getProductCollection();
+    	if ($collection) {
+    		$attributes = array();
+    		foreach($collection->getProductType()->getProductAttributes() as $attribute) {
+				$attributes[] = '' . $attribute->getDescription();
+    		}
+    		return 'Variant must have these attributes: ' . implode(', ',$attributes);
+    	} else {
+    		return false;
+    	}    	 
+    }
+    
     /**
      * @param FormMapper $formMapper
      */
@@ -106,7 +120,7 @@ class ProductVariantAdmin extends YouppersAdmin
 	        	)
 	        )	        
 	        ->end()
-            ->with('Properties', array('class' => 'col-md-12'))
+            ->with('Properties', array('class' => 'col-md-12', 'description' => $this->getVariantPropertiesHelp()))
             ->add('variantProperties', 'sonata_type_collection', 
             		array('by_reference' => false),
             		array(
