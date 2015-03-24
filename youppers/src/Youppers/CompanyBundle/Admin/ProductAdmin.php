@@ -109,7 +109,6 @@ class ProductAdmin extends YouppersAdmin
 		->end()
 		->with('Details', array('class' => 'col-md-6'))
 		->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-		->add('variant', 'sonata_type_model_list', array('required' => false))
 		->add('enabled', 'checkbox', array('required'  => false))
 		->end()
 		->with('Prices', array('class' => 'col-md-12'))
