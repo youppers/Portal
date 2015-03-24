@@ -3,6 +3,7 @@ namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -34,6 +35,7 @@ class VariantProperty
 	/**
 	 * @ORM\ManyToOne(targetEntity="ProductVariant", inversedBy="variantProperties")
 	 * @ORM\JoinColumn(name="product_variant_id")
+	 * @Assert\NotNull
 	 */	
 	protected $productVariant;
 	
@@ -49,6 +51,7 @@ class VariantProperty
 	 * @ORM\JoinColumn(name="attribute_option_id")
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Assert\NotNull
 	 */
 	protected $attributeOption;
 	
