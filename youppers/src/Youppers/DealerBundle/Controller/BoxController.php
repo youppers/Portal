@@ -12,7 +12,27 @@ use Symfony\Component\Security\Core\Exception\DisabledException;
 
 class BoxController extends Controller
 {
-    /**
+	/**
+	 * @Route("/box/list")
+	 * @Template()
+	 */
+	public function listAction()
+	{
+		$criteria = array('enabled' => true); 
+		if ($storeId=$this->getRequest()->get("store")) {
+			$store = $this->getDoctrine()
+				->getRepository('YouppersDealerBundle:Store')
+				->find($storeId);
+			if ($store) {
+				$criteria['store'] = $store;
+			}
+		}
+		return $this->getDoctrine()
+		->getRepository('YouppersDealerBundle:Box')
+		->findBy($criteria,array('name' => 'ASC'),20);
+	}
+	
+	/**
      * @Route("/box/{id}")
      * @Template()
      */
@@ -153,6 +173,5 @@ class BoxController extends Controller
     	 
     	return array('boxProduct' => $boxProduct, 'scraping' => $this->get('youppers.scraper')->products($product->getBrand()->getCode(),$product->getCode()));
     }
-    
     
 }
