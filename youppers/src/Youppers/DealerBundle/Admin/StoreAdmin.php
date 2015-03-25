@@ -31,7 +31,7 @@ class StoreAdmin extends YouppersAdmin
 		->add('id', 'url', array('route' => array(
 						'name' => 'youppers_dealer_box_list',
 						'absolute' => true,
-						'identifier_parameter_name' => 'request'
+						'identifier_parameter_name' => 'store'
 						),
 						'label' => 'Preview')
 				)
