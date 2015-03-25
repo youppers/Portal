@@ -49,13 +49,13 @@ class ProfileAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->addIdentifier('name', null, array('route' => array('name' => 'show')))
-		->add('user', null, array('route' => array('name' => 'show')))
 		->add('_action', 'actions', array(
 				'actions' => array(
 						'edit' => array(),
 				)
 		))		
+		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->add('user', null, array('route' => array('name' => 'show')))
 		;
 	}
 

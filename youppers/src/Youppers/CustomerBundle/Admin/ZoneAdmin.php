@@ -45,6 +45,15 @@ class ZoneAdmin extends YouppersAdmin
 	}
 
 	/**
+	 * Default Datagrid values
+	 *
+	 * @var array
+	 */
+	protected $datagridValues = array(
+			'_sort_by' => 'name'
+	);
+	
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
