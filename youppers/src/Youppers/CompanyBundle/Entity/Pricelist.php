@@ -19,9 +19,10 @@ class Pricelist
 	protected $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Brand", inversedBy="pricelists")
+	 * @ORM\ManyToOne(targetEntity="Company", inversedBy="pricelists")
+	 * @Assert\Collection\Required
 	 */
-	protected $brand;
+	protected $company;
 	
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
@@ -38,6 +39,11 @@ class Pricelist
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
 	protected $enabled;
+	
+	/**
+	 * @ORM\Column(type="json")
+	 */
+	protected $mapping;
 
 	/**
 	 * @ORM\Column(type="datetime", name="valid_from")
@@ -66,7 +72,7 @@ class Pricelist
 	
 	public function getDescription()
 	{
-		return ($this->getBrand() ? $this->getBrand() . ' - ' : '') . ($this->getCode() ?:'');
+		return ($this->getCompany() ? $this->getCompany() . ' - ' : '') . ($this->getCode() ?:'');
 	} 
 	
 	/**
@@ -86,7 +92,7 @@ class Pricelist
 		$this->updatedAt = new \DateTime();
 	}	
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle:Pricelist
 
     /**
      * Get id
@@ -165,6 +171,29 @@ class Pricelist
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set mapping
+     *
+     * @param json $mapping
+     * @return Pricelist
+     */
+    public function setMapping($mapping)
+    {
+        $this->mapping = $mapping;
+
+        return $this;
+    }
+
+    /**
+     * Get mapping
+     *
+     * @return json 
+     */
+    public function getMapping()
+    {
+        return $this->mapping;
     }
 
     /**
@@ -260,25 +289,25 @@ class Pricelist
     }
 
     /**
-     * Set brand
+     * Set company
      *
-     * @param \Youppers\CompanyBundle\Entity\Brand $brand
+     * @param \Youppers\CompanyBundle\Entity\Company $company
      * @return Pricelist
      */
-    public function setBrand(\Youppers\CompanyBundle\Entity\Brand $brand = null)
+    public function setCompany(\Youppers\CompanyBundle\Entity\Company $company = null)
     {
-        $this->brand = $brand;
+        $this->company = $company;
 
         return $this;
     }
 
     /**
-     * Get brand
+     * Get company
      *
-     * @return \Youppers\CompanyBundle\Entity\Brand 
+     * @return \Youppers\CompanyBundle\Entity\Company 
      */
-    public function getBrand()
+    public function getCompany()
     {
-        return $this->brand;
+        return $this->company;
     }
 }

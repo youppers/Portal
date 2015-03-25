@@ -49,9 +49,8 @@ class PricelistAdmin extends YouppersAdmin
 		->add('code')
 		->add('currency')
 		->add('enabled')	
-		->add('brand.company', null, array('route' => array('name' => 'show')))
-		->add('brand', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
-		->add('brand.code', null, array('label' => 'Brand Code'))
+		->add('company', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
+		->add('company.code', null, array('label' => 'Company Code'))
 		->add('validFrom')
 		->add('validTo')
 		->add('createdAt')
@@ -67,7 +66,7 @@ class PricelistAdmin extends YouppersAdmin
 		->addIdentifier('code', null, array('route' => array('name' => 'show')))
 		->add('currency')
 		->add('enabled', null, array('editable' => true))
-		->add('brand', null, array(
+		->add('company', null, array(
                  'route' => array(
                      'name' => 'show'
                  )
@@ -86,8 +85,7 @@ class PricelistAdmin extends YouppersAdmin
 		->add('code')
 		->add('currency')		
 		->add('enabled')
-		->add('brand.company')
-		->add('brand')
+		->add('company')
 		;
 	}
 	
@@ -100,7 +98,8 @@ class PricelistAdmin extends YouppersAdmin
 		->with('Price List', array('class' => 'col-md-6'))
 		->add('code')
 		->add('currency', 'sonata_currency')		
-		->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+		->add('company', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+		->add('mapping')
 		->end()
 		->with('Details', array('class' => 'col-md-6'))
 		->add('enabled', 'checkbox', array('required'  => false))
@@ -119,9 +118,9 @@ class PricelistAdmin extends YouppersAdmin
 		
 		$filterParameters = $this->getFilterParameters();
 		
-		if (isset($filterParameters['brand'])) {
-			$brand = $this->getModelManager()->find('Youppers\CompanyBundle\Entity\Brand',$filterParameters['brand']['value']);
-			$object->setBrand($brand);		
+		if (isset($filterParameters['company'])) {
+			$company = $this->getModelManager()->find('Youppers\CompanyBundle\Entity\Company',$filterParameters['company']['value']);
+			$object->setCompany($company);		
 		}
 		
 		$object->setCurrency('EUR'); //TODO configurabile

@@ -161,6 +161,9 @@ class Product
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
+		if (empty($this->enabled)) {
+			$this->enabled = false;
+		}
 	}
 
 	/**

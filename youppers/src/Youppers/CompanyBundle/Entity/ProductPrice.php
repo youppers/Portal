@@ -38,6 +38,11 @@ class ProductPrice
 	protected $uom;	
 	
 	/**
+	 * @ORM\Column(type="json")
+	 */
+	protected $info;
+
+	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -73,8 +78,7 @@ class ProductPrice
 		return ($this->getProduct()?:'?') . ' : ' . ($this->getPricelist()?:'?') . ' = ' . $this->getPrice() . ' / ' . $this->getUom();
 	}	
 		
-	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle 
-
+	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle:ProductPrice
 
     /**
      * Get id
@@ -130,6 +134,29 @@ class ProductPrice
     public function getUom()
     {
         return $this->uom;
+    }
+
+    /**
+     * Set info
+     *
+     * @param json $info
+     * @return ProductPrice
+     */
+    public function setInfo($info)
+    {
+        $this->info = $info;
+
+        return $this;
+    }
+
+    /**
+     * Get info
+     *
+     * @return json 
+     */
+    public function getInfo()
+    {
+        return $this->info;
     }
 
     /**

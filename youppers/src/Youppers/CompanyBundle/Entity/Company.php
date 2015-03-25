@@ -58,6 +58,11 @@ class Company
 	protected $url;
 	
 	/**
+	 * @ORM\OneToMany(targetEntity="Pricelist", mappedBy="company")
+	 **/
+	protected $pricelists;
+		
+	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -135,12 +140,12 @@ class Company
 	}	
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
-
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->pricelists = new \Doctrine\Common\Collections\ArrayCollection();
         $this->brands = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -336,5 +341,38 @@ class Company
     public function getLogo()
     {
         return $this->logo;
+    }
+
+    /**
+     * Add pricelists
+     *
+     * @param \Youppers\CompanyBundle\Entity\Pricelist $pricelists
+     * @return Company
+     */
+    public function addPricelist(\Youppers\CompanyBundle\Entity\Pricelist $pricelists)
+    {
+        $this->pricelists[] = $pricelists;
+
+        return $this;
+    }
+
+    /**
+     * Remove pricelists
+     *
+     * @param \Youppers\CompanyBundle\Entity\Pricelist $pricelists
+     */
+    public function removePricelist(\Youppers\CompanyBundle\Entity\Pricelist $pricelists)
+    {
+        $this->pricelists->removeElement($pricelists);
+    }
+
+    /**
+     * Get pricelists
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPricelists()
+    {
+        return $this->pricelists;
     }
 }

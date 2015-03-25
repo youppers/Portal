@@ -90,11 +90,6 @@ class Brand
 	 **/
 	private $products;
 	
-	/**
-	 * @ORM\OneToMany(targetEntity="Pricelist", mappedBy="brand")
-	 **/
-	private $pricelists;
-	
 	public function __toString()
 	{
 		return $this->getName() ? $this->getCompany() . ' - ' . $this->getName() . ' [' . $this->getCode() . ']': 'New';
@@ -233,6 +228,29 @@ class Brand
     }
 
     /**
+     * Set url
+     *
+     * @param string $url
+     * @return Brand
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
@@ -355,61 +373,5 @@ class Brand
     public function getProducts()
     {
         return $this->products;
-    }
-
-    /**
-     * Set url
-     *
-     * @param string $url
-     * @return Brand
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string 
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * Add pricelists
-     *
-     * @param \Youppers\CompanyBundle\Entity\Pricelist $pricelists
-     * @return Brand
-     */
-    public function addPricelist(\Youppers\CompanyBundle\Entity\Pricelist $pricelists)
-    {
-        $this->pricelists[] = $pricelists;
-
-        return $this;
-    }
-
-    /**
-     * Remove pricelists
-     *
-     * @param \Youppers\CompanyBundle\Entity\Pricelist $pricelists
-     */
-    public function removePricelist(\Youppers\CompanyBundle\Entity\Pricelist $pricelists)
-    {
-        $this->pricelists->removeElement($pricelists);
-    }
-
-    /**
-     * Get pricelists
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPricelists()
-    {
-        return $this->pricelists;
     }
 }

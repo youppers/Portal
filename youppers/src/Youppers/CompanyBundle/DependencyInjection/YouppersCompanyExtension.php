@@ -25,7 +25,7 @@ class YouppersCompanyExtension extends Extension
         
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $yloader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));        
-        $loader->load('services.xml');
+        $yloader->load('services.yml');
         $yloader->load('products.yml');
         
         //$loader->load('orm.xml');

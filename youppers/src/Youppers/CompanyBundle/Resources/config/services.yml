@@ -1,0 +1,8 @@
+services:
+    youppers.company.pricelist.loader:
+        class:     Youppers\CompanyBundle\Service\PricelistLoaderService
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+    
+    
