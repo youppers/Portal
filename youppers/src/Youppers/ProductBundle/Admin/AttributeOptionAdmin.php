@@ -24,9 +24,20 @@ class AttributeOptionAdmin extends Admin
 		$datagridMapper
 		->add('value')
 		->add('attributeStandard')
+		->add('enabled')
 		;
 	}
 	
+	/**
+	 * Default Datagrid values
+	 *
+	 * @var array
+	 */
+	protected $datagridValues = array(
+			'_sort_by' => 'position',
+			'enabled' => array('value' => true)
+	);
+		
 	/**
 	 * @param ListMapper $listMapper
 	 */
