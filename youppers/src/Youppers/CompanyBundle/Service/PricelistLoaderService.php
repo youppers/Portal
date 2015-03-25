@@ -157,12 +157,15 @@ class PricelistLoaderService extends ContainerAware
 		return $this->managerRegistry->getRepository('YouppersCompanyBundle:ProductPrice');
 	}
 	
-	public function load($filename,$skip)
+	public function load($filename,$skip,$enable)
 	{
 		if (empty($this->pricelist)) {
 			throw new \Exception("Pricelist MUST be set before loading prices.");			
 		}
 		$this->logger->info(sprintf("Loading pricelist from '%s'.",$filename));
+		if ($enable) {
+			$this->logger->info("And enable products");
+		}
 		
 		$file = new \SplFileObject($filename);
 		
@@ -237,6 +240,9 @@ class PricelistLoaderService extends ContainerAware
 				$product->setCode($productCode);
 			}
 
+			if ($enable) {
+				$product->setEnabled(true);
+			}
 			$name = $mapper->remove('name');			
 			$product->setName($name);
 			
@@ -261,6 +267,7 @@ class PricelistLoaderService extends ContainerAware
 			} catch (Exception $e) {
 				$this->logger->critical(sprintf("At row %d",$numRows),$e);
 			}
+			$this->em->persist($price);
 			
 			if ($numRows % 500 == 0) {
 				$this->logger->debug(sprintf("Read %d rows",$numRows));
