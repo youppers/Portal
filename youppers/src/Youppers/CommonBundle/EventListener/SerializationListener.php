@@ -32,9 +32,9 @@ class SerializationListener extends ContainerAware implements EventSubscriberInt
 		if (array_key_exists($media->getContext() . '_' . $this->defaultFormat,$formats)) {
 			$format = $mediaProvider->getFormatName($media, $this->defaultFormat);
 		} else {
-			$format = 'reference';
+			$format = 'admin';
 		}
 		$event->getVisitor()->addData('url',$mediaProvider->generatePublicUrl($media, $format));
-		$event->getVisitor()->addData('url.admin',$mediaProvider->generatePublicUrl($media, 'admin'));
+		$event->getVisitor()->addData('url.reference',$mediaProvider->generatePublicUrl($media, 'reference'));
 	}
 }
