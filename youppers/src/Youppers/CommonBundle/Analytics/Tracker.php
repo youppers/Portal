@@ -23,10 +23,8 @@ class Tracker
 	 */
 	public function send($data,Session $session = null)
 	{
-		$data = array(
-			't' => 'event',  // type
-			'ds' => 'server',  // Data Source
-		);
+		$data['t'] = 'event';  // type
+		$data['ds'] = 'server';  // Data Source
 		
 		if (!array_key_exists('geoid',$data)) {
 			$data['geoid'] = 2380; // Italy	IT Country
