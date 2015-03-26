@@ -7,7 +7,3 @@ youppers_common:
     youppers_company_product:
       entity: 'Youppers\CompanyBundle\Entity\Product'
       route: youppers_company_product_show
-      
-    youppers_product_variation:
-      entity: 'Youppers\ProductBundle\Entity\Variation'
-      route: youppers_product_variation_show
