@@ -15,6 +15,26 @@ class MediaListCommand extends ContainerAwareCommand
         $this
             ->setName('application:media:list')
             ->setDescription('List the reference url of all the media that are in Media repository')
+            ->setHelp(
+                <<<EOT
+On the server:
+
+1) generate the list with this command
+2) copy the list to the clipboard (or pipe output to a file)
+
+On the client:
+
+3) copy the list to a file (media.txt) or scp/ftp from the server
+4) in the root of the project, execute:
+   
+   wget -nv -nc -x -nH -P web -i media.txt
+
+5) update the database from the server (phpmyadmin or zcat xxx.gz | mysql -u -p youppers)
+6) update the thumbnails:
+
+   php app/console sonata:media:sync-thumbnails
+EOT
+            );
             ;
     }
 
