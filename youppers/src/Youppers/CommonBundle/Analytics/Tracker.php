@@ -65,6 +65,7 @@ class Tracker
    			'dt' => 'New Session', // Document Title
    			'ec' => 'Session',  // Specifies the event category. Must not be empty.
    			'ea' => 'New Session',  // Specifies the event action. Must not be empty.
+   			'sc' => 'start', // Session Control
     	);
     	
     	if ($store = $session->getStore()) {
@@ -73,6 +74,8 @@ class Tracker
     		if ($geoid) {
     			$data['geoid'] = $geoid->getCriteriaId();
     		}
+    	} else {
+    		$data['el'] = 'Store: unknow';  // Event Label
     	}
     	
     	$this->send($data,$session);    		 
@@ -89,11 +92,10 @@ class Tracker
     		'dt'=>'Show Box: ' . $box,
     		'ec' => 'QrFind',
     		'ea' => 'Show Box',
-    		'el' => '' . $box
+    		'el' => 'Box: ' . $box
     	);
 
     	$store = $box->getStore();
-    	$data['el'] = 'Store: ' . $store;
     	$geoid = $store->getGeoid();
     	if ($geoid) {
     		$data['geoid'] = $geoid->getCriteriaId();
@@ -137,7 +139,7 @@ class Tracker
     		'dt' => 'Show Product: ' . $product,
     		'ec' => 'QrFind',
     		'ea' => 'Show Product',
-    		'el' => '' . $product,
+    		'el' => 'Product: ' . $product,
     	);
     	
     	// Product Action
