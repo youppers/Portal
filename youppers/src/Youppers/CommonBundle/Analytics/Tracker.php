@@ -98,6 +98,9 @@ class Tracker
     	if ($geoid) {
     		$data['geoid'] = $geoid->getCriteriaId();
     	}
+    	$data['dimension3'] = $store->getDealer()->getName();
+    	$data['dimension4'] = $store->getName();
+    	 
     	 
     	// Product Impression List Name
     	$data['il1nm']= 'Box ' . $box;
@@ -110,6 +113,8 @@ class Tracker
     			$productIndex++;
     			$data['il1pi' . $productIndex . 'ps'] = $product->getPosition();
     			if ($product = $product->getProduct()) {
+    				$data['dimension1'] = $product->getBrand()->getCompany()->getName();
+    				$data['dimension2'] = $product->getBrand()->getName();
     				$data['il1pi' . $productIndex . 'id'] = $product->getId();
     				$data['il1pi' . $productIndex . 'nm'] = $product->getName();
     				if ($brand = $product->getBrand()) {
@@ -140,6 +145,9 @@ class Tracker
     		'el' => 'Product: ' . $product,
     	);
     	
+    	$data['dimension1'] = $product->getBrand()->getCompany()->getName();
+    	$data['dimension2'] = $product->getBrand()->getName();
+    	 
     	// Product Action
     	$data['pa']= 'detail';
     	 
