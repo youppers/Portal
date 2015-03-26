@@ -67,6 +67,7 @@ class Tracker
     	);
     	
     	if ($store = $session->getStore()) {
+   			$data['ea'] = 'New Session in Store';  // Specifies the event action. Must not be empty.
     		$data['el'] = 'Store: ' . $store;  // Event Label
     		$geoid = $store->getGeoid();
     		if ($geoid) {

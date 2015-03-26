@@ -74,6 +74,7 @@ class SessionService extends ContainerAware
 				$this->logger->info(sprintf("Updating session '%s' store '%s'",$session,$store));
 				$session->setStore($store);
 				$this->managerRegistry->getManagerForClass('YouppersCustomerBundle:Session')->flush();
+				$this->container->get('youppers_common.analytics.tracker')->sendNewSession($session);				
 			}
 		}		
 	}
