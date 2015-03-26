@@ -38,6 +38,13 @@ class ProductCollection
 	protected $name;
 	
 	/**
+	 * @ORM\Column(name="code", type="string", length=20)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details"})
+	 */
+	protected $code;
+	
+	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json.qr.find"})
@@ -128,7 +135,7 @@ class ProductCollection
 		$this->productVariants->removeElement($productVariant);
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle:ProductCollection
     /**
      * Constructor
      */
@@ -168,6 +175,29 @@ class ProductCollection
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return ProductCollection
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**

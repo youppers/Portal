@@ -42,7 +42,12 @@ class ProductCollectionAdmin extends YouppersAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('brand.company.name')
+        	->add('brand.company.code')
+        	->add('brand.name')
+        	->add('brand.code')
             ->add('name')
+            ->add('code')
             ->add('enabled')
         ;
     }
@@ -54,8 +59,9 @@ class ProductCollectionAdmin extends YouppersAdmin
     {
         $listMapper
             ->addIdentifier('name', null, array('route' => array('name' => 'show')))
-        	->add('image', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
-            ->add('enabled', null, array('editable' => true))
+            ->add('code')
+            ->add('image', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
+        	->add('enabled', null, array('editable' => true))
         	->add('brand', null, array('route' => array('name' => 'show')))
         	->add('productType', null, array('route' => array('name' => 'show')))
         	->add('pdfGallery', null, array('associated_property' => 'name', 'route' => array('name' => 'edit', 'parameters' => array('context' => 'pdf'))))        
@@ -69,9 +75,10 @@ class ProductCollectionAdmin extends YouppersAdmin
     {
         $formMapper
         	->with('Product Collection', array('class' => 'col-md-6'))
-			->add('brand', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-        	->add('productType', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+			->add('brand', 'sonata_type_model_list', array('btn_add' => false, 'required' => false, 'constraints' => new Assert\NotNull()))
+        	->add('productType', 'sonata_type_model_list', array('btn_add' => false, 'required' => false, 'constraints' => new Assert\NotNull()))
         	->add('name')
+            ->add('code')
         	->add('description')
 	        ->end()
             ->with('Options', array('class' => 'col-md-6'))
@@ -124,7 +131,8 @@ class ProductCollectionAdmin extends YouppersAdmin
             ->add('brand')
             ->add('productType')
         	->add('name')
-            ->add('description')
+            ->add('code')
+        	->add('description')
         	->add('enabled')
             ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
             //->add('productVariants', null, array('route' => array('name' => 'show')))
