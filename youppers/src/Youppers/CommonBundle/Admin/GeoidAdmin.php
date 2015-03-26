@@ -11,6 +11,7 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Symfony\Component\Validator\Constraints as Assert;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * 
@@ -19,7 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class GeoidAdmin extends YouppersAdmin
 {
-
+	
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->clearExcept(array('list','show'));
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -32,6 +38,7 @@ class GeoidAdmin extends YouppersAdmin
 		->add('countryCode')
 		->add('parent', null, array('route' => array('name' => 'show')))
 		->add('targetType')
+		->add('status')
 		;
 	}
 	
