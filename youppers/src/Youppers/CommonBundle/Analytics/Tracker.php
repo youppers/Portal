@@ -23,6 +23,11 @@ class Tracker
 	 */
 	public function send($data,Session $session = null)
 	{
+		$data = array(
+			't' => 'event',  // type
+			'ds' => 'server',  // Data Source
+		);
+		
 		if (!array_key_exists('geoid',$data)) {
 			$data['geoid'] = 2380; // Italy	IT Country
 		}
@@ -57,15 +62,13 @@ class Tracker
     public function sendNewSession(Session $session)
     {
     	$data = array(
-   			't' => 'event',
-   			'ds' => 'server',
-   			'dt' => 'New Session',
-   			'ec' => 'Session',
-   			'ea' => 'New Session'
+   			'dt' => 'New Session', // Document Title
+   			'ec' => 'Session',  // Specifies the event category. Must not be empty.
+   			'ea' => 'New Session',  // Specifies the event action. Must not be empty.
     	);
     	
     	if ($store = $session->getStore()) {
-    		$data['el'] = 'Store: ' . $store;
+    		$data['el'] = 'Store: ' . $store;  // Event Label
     		$geoid = $store->getGeoid();
     		if ($geoid) {
     			$data['geoid'] = $geoid->getCriteriaId();
@@ -83,12 +86,9 @@ class Tracker
     public function sendQrFindBox(Box $box, Session $session = null)
     {
     	$data=array(
-    		't' => 'event',
-    		//'dp' => $this->getRequest()->getPathInfo(),
-    		'ds' => 'server',
     		'dt'=>'Show Box: ' . $box,
-    		'ec' => 'Server',
-    		'ea' => 'Box Show',
+    		'ec' => 'QrFind',
+    		'ea' => 'Show Box',
     		'el' => '' . $box
     	);
 
@@ -134,12 +134,9 @@ class Tracker
     public function sendQrFindProduct(Product $product, Session $session = null)
     {
     	$data=array(
-    		't' => 'event',
-    		//'dp' => $this->getRequest()->getPathInfo(),
-    		'ds' => 'server',
     		'dt' => 'Show Product: ' . $product,
-    		'ec' => 'Server',
-    		'ea' => 'Product',
+    		'ec' => 'QrFind',
+    		'ea' => 'Show Product',
     		'el' => '' . $product,
     	);
     	
