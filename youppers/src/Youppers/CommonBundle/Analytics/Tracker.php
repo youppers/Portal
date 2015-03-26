@@ -21,7 +21,7 @@ class Tracker
 	 * Send data to Google Analytics
 	 * @param array $data
 	 */
-	public function send($data)
+	public function send($data,Session $session = null)
 	{
 		if (!array_key_exists('geoid',$data)) {
 			$data['geoid'] = 2380; // Italy	IT Country
@@ -31,7 +31,13 @@ class Tracker
 			$data['z'] = rand();
 		}
 
-		// TODO add user id
+		if ($session) {
+			if ($profile = $session->getProfile()) {
+				$data['cid'] = $profile->getUser()->getId();
+			} else {
+				$data['cid'] = $session->getId();
+			}
+		}
 		
     	$stopwatch = new Stopwatch();
     	$stopwatch->start('GoogleAnalytics');
@@ -66,7 +72,7 @@ class Tracker
     		}
     	}
     	
-    	$this->send($data);    		 
+    	$this->send($data,$session);    		 
     }
 
     /**
@@ -117,7 +123,7 @@ class Tracker
     		}
     	}
     	
-    	$this->send($data);
+    	$this->send($data,$session);
     }
 
     /**
@@ -162,7 +168,7 @@ class Tracker
     		$data['geoid']=$store->getGeoid();
     	}
 
-    	$this->send($data);
+    	$this->send($data,$session);
     }
     
 
