@@ -178,26 +178,31 @@ class QrService extends Controller
 	 * 
 	 * @param string $text QRCode text
 	 * @param uuid $sessionId
+	 * @param uuid $id QRCode Id if supplied have precence over text
 	 * @return Qr
 	 */
-	public function find($text, $sessionId) {
+	public function find($text, $sessionId, $id = null) {
 		$logger = $this->get('logger');
 		
 		$logger->debug("Searching qr with text '" . $text . "'");
 		
 		$request = Request::create($text);
 		
-		try {
-			$route = $this->container->get('router')->match($request->getRequestUri());
-			if ($route['_route'] == 'youppers_common_qr_find') {
-				$id = $route['id'];
-				$qr = $this->findById($id);
-			} else {
-				$qr = null;		
+		if (empty($id)) {
+			try {
+				$route = $this->container->get('router')->match($request->getRequestUri());
+				if ($route['_route'] == 'youppers_common_qr_find') {
+					$id = $route['id'];
+					$qr = $this->findById($id);
+				} else {
+					$qr = null;		
+				}
+			} catch (ResourceNotFoundException $e) {
+				$logger->debug("Qr NOT match any route, trying url");
+				$qr = $this->findByUrl($text);
 			}
-		} catch (ResourceNotFoundException $e) {
-			$logger->debug("Qr NOT match any route, trying url");
-			$qr = $this->findByUrl($text);
+		} else {
+			$qr = $this->findById($id);
 		}
 
 		if ($qr === null) {
@@ -208,16 +213,27 @@ class QrService extends Controller
 				throw $this->createAccessDeniedException('Disabled QRCode is only allowed to admin',new DisabledException('Disabled QRCode'));
 			}				
 			$logger->info("Found qr '$text': "  . $qr->getTargetType());
-			
+
+			if (empty($sessionId)) {
+				$session = null;
+			} else {
+				$session = $this->getManager()->getRepository('YouppersCustomerBundle:Session')->find($sessionId);
+			}
+
 			if ($qr->getTargetType() == 'youppers_dealer_box') {
 				$box = $qr->getTargets()->first();
-				$this->get('youppers.customer.session')->setSessionStoreUsingBox($sessionId,$box);
+				$this->get('youppers.customer.session')->setSessionStoreUsingBox($session,$box);
 				
-				if (false === $this->get('youppers.customer.session')->isBoxInStoreOfSession($sessionId,$box)) {
+				if (false === $this->get('youppers.customer.session')->isBoxInStoreOfSession($session,$box)) {
 					return null;
 				}
+				$this->container->get('youppers_common.analytics.tracker')->sendQrFindBox($box,$session);				
 			}				
-			
+
+			if ($qr->getTargetType() == 'youppers_company_product') {
+				$product = $qr->getTargets()->first();
+				$this->container->get('youppers_common.analytics.tracker')->sendQrFindProduct($product,$session);
+			}
 			
 		}
 						

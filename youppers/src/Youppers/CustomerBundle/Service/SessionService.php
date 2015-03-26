@@ -47,26 +47,7 @@ class SessionService extends ContainerAware
 		$em->persist($session);
 		$em->flush();
 	
-		if ($this->container->has('youppers_common.analytics.tracker')) {
-			$data = array(
-					't' => 'event',
-					'ds' => 'server',
-					'dt' => 'New Session',
-					'ec' => 'Session',
-					'ea' => 'New Session'
-			);
-				
-			if ($store) {
-				$data['el'] = 'Store: ' . $store;
-				$geoid = $store->getGeoid();
-				if ($geoid) {
-					$data['geoid'] = $geoid->getCriteriaId();
-				}
-			}
-				
-				
-			$this->container->get('youppers_common.analytics.tracker')->send($data);
-		}
+		$this->container->get('youppers_common.analytics.tracker')->sendNewSession($session);
 	
 		return $session;
 	}
