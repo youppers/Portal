@@ -13,6 +13,8 @@ qrtextid=http://$host/qr/5eeed2c7-abb2-11e4-b4aa-0cc47a127a14?p1=a
 qrtextwrong=htxxxtp:///qr1/5eeed2c7-abb2-11e4-b4aa-0cc47a127a14?p1=a
 qrtexturl="http://m.marazzi.it/qr_code/BLEND?pid=592&merch=0000V4EE"
 qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
+query1=testo non trovato
+query2=73800
 
 conf=$(dirname $0)/config
 format=$(dirname $0)/format.php
@@ -81,6 +83,16 @@ echo $response | php -f $format
 echo -------------- Show a specific session ------------- 
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.read","params":{"sessionId":"'$force_session_id'"}}')
 echo session_id=$force_session_id
+echo $response | php -f $format
+
+echo -------------- Search a product, return list  -------------
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Product.search","params":{"sessionId":"'$session_id'","query":"'$query1'"}}')
+echo qr=$query1 Response:
+echo $response | php -f $format
+
+echo -------------- Search a product, return list  -------------
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Product.search","params":{"sessionId":"'$session_id'","query":"'$query2'","limit":"2"}}')
+echo qr=$query2 Response:
 echo $response | php -f $format
 
 echo

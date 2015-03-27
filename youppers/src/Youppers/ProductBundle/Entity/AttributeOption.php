@@ -3,7 +3,7 @@ namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
-use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   })
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"value", "attributeStandard"})
- * @Serializer\ExclusionPolicy("all") 
+ * @JMS\ExclusionPolicy("all") 
  */
 class AttributeOption
 {
@@ -23,8 +23,17 @@ class AttributeOption
 		return $this->getAttributeStandard() ? $this->getAttributeStandard() . ": " . $this->getValueWithSymbol() : "New";
 	}
 	
+	/**
+	 * @JMS\VirtualProperty()
+	 * @JMS\Groups({"json"})
+	 */
+	public function getName()
+	{
+		return $this->getAttributeStandard()->getAttributeType()->getName();
+	}
+	
 	public function getValueWithSymbol() {
-		return (null === $this->getValue() ? 'New' : $this->getValue()) . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getSymbol():''); 
+		return trim((null === $this->getValue() ? 'New' : $this->getValue()) . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getSymbol():'')); 
 	}
 	
 	public function getValueWithEquivalence()
@@ -61,44 +70,45 @@ class AttributeOption
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $id;
 			
 	/**
 	 * @ORM\Column(type="string")
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json"})
+	 * @JMS\Accessor(getter="getValueWithSymbol")
 	 */
 	protected $value;
-
+	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $enabled;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $image;
 	
 	/**
 	 * @ORM\Column(type="integer")
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $position;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="AttributeStandard", inversedBy="attributeOptions")
 	 * @ORM\JoinColumn(name="attribute_standard_id")
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json.qr.find"})
 	 * @Assert\NotNull
 	 */
 	protected $attributeStandard;
@@ -121,7 +131,7 @@ class AttributeOption
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Serializer\Expose()
+	 * @JMS\Expose()
 	 */
 	protected $createdAt;
 			

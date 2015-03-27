@@ -15,6 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"name", "brand"})
  * @Serializer\ExclusionPolicy("all") 
+ * @Serializer\AccessorOrder("custom", custom = {"id","name", "code"})  
  */
 class ProductCollection
 {
@@ -33,26 +34,28 @@ class ProductCollection
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $code;
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.collection.read"})
 	 */
 	protected $description;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Youppers\CompanyBundle\Entity\Brand")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"json.variant.list"})
 	 */
 	protected $brand;
 		
@@ -70,7 +73,7 @@ class ProductCollection
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json"})
 	 */	
 	protected $image;
 	

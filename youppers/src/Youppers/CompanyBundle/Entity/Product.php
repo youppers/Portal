@@ -16,6 +16,7 @@ use Youppers\ProductBundle\Validator\Constraints\ConsistentBrand;
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"code", "brand"})
  * @Serializer\ExclusionPolicy("all") 
+ * @Serializer\AccessorOrder("custom", custom = {"id","name", "code"})  
  * @ConsistentBrand()
  */
 class Product
@@ -30,7 +31,7 @@ class Product
 	/**
 	 * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.product.list"})
 	 * @Serializer\MaxDepth(4)
 	 */
 	protected $brand;
@@ -43,21 +44,21 @@ class Product
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json.qr.find"})
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\Column(type="string", length=20, unique=true, nullable=true)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json.qr.find"})
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $gtin;
 
 	/**
 	 * @ORM\Column(type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json.qr.find"})
+	 * @Serializer\Groups({"list", "details", "json"})
 	 */
 	protected $code;
 	
@@ -74,7 +75,7 @@ class Product
 	/**
 	 * @ORM\OneToOne(targetEntity="\Youppers\ProductBundle\Entity\ProductVariant", mappedBy="product")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"list", "details", "json.qr.find"})
+	 * @Serializer\Groups({"list", "details", "json.qr.find", "json.product.list"})
 	 **/
 	protected $variant;	
 	

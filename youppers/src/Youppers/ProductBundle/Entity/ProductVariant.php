@@ -27,7 +27,7 @@ class ProductVariant
 	 * @ORM\Id
 	 * @Serializer\Expose()
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $id;
 	
@@ -35,7 +35,7 @@ class ProductVariant
 	 * @ORM\ManyToOne(targetEntity="ProductCollection", inversedBy="productVariants")
 	 * @ORM\JoinColumn(name="product_collection_id")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.list", "json.product.list"})
 	 */	
 	protected $productCollection;
 			
@@ -54,7 +54,7 @@ class ProductVariant
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $image;
 	
@@ -62,7 +62,7 @@ class ProductVariant
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery")
 	 * @ORM\JoinColumn(name="pdf_gallery_id")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.variant.show"})
+	 * @Serializer\Groups({"details", "json.variant.read"})
 	 */
 	protected $pdfGallery;
 	
@@ -70,12 +70,14 @@ class ProductVariant
 	 * @ORM\OneToMany(targetEntity="VariantProperty", mappedBy="productVariant", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"json.qr.find", "json.variant.list", "json.product.list"})
 	 **/
 	protected $variantProperties;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="\Youppers\CompanyBundle\Entity\Product", inversedBy="variant")
+	 * @ORM\OneToOne(targetEntity="Youppers\CompanyBundle\Entity\Product", inversedBy="variant")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"json.variant.list"})
 	 **/
 	protected $product;
 	

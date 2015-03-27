@@ -11,7 +11,8 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("name")
  * @UniqueEntity("code")
- * @Serializer\ExclusionPolicy("all")  
+ * @Serializer\ExclusionPolicy("all")
+ * @Serializer\AccessorOrder("custom", custom = {"id","name", "code"})  
  */
 class Company
 {
@@ -26,12 +27,14 @@ class Company
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=20, unique=true)
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $code;
 	
@@ -48,7 +51,7 @@ class Company
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json"})
 	 */	
 	protected $logo;
 	

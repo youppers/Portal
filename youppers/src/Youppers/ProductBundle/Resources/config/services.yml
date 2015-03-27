@@ -1,0 +1,6 @@
+services:
+    youppers.product.service.product:
+        class:     Youppers\ProductBundle\Service\ProductService
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]

@@ -15,7 +15,7 @@ wa72_json_rpc:
 
         Session.new: { service: youppers.customer.session, method: newSession, jms_serialization_context: { groups: [json, create], version: '1', max_depth_checks: true } }
 
-        Qr.find: { service: youppers.common.qr, method: find, jms_serialization_context: { groups: [json, json.qr.find, json.variant.list], version: '1', max_depth_checks: true } }
+        Qr.find: { service: youppers.common.qr, method: find, jms_serialization_context: { groups: [json, json.qr.find], version: '1', max_depth_checks: true } }
 
         Session.list: { service: youppers.customer.session, method: listForProfile, jms_serialization_context: { groups: [json, json.session.list], version: '1', max_depth_checks: true } }
         Session.create: { service: youppers.customer.session, method: create, jms_serialization_context: { groups: [json, json.session.read], version: '1', max_depth_checks: true } }
@@ -29,10 +29,11 @@ wa72_json_rpc:
         # List consultant available for the session (Store must be already set in the Session)
         Consultant.list: { service: youppers.dealer.consultant, method: listForSession, jms_serialization_context: { groups: [json, json.consultant.list], version: '1', max_depth_checks: true } }
          
-        Product.search: { service: youppers.product.variant, method: search, jms_serialization_context: { groups: [json, json.variant.list], version: '1', max_depth_checks: true } }
-        Variant.read: { service: youppers.product.variant, method: read, jms_serialization_context: { groups: [json, json.variant.read], version: '1', max_depth_checks: true } }
-        Collection.read: { service: youppers.product.collection, method: read, jms_serialization_context: { groups: [json, json.collection.read], version: '1', max_depth_checks: true } }
-        Attributes.read: { service: youppers.product.attribute, method: read, jms_serialization_context: { groups: [json, json.attribute.read], version: '1', max_depth_checks: true } }
+        Product.search: { service: youppers.product.service.product, method: searchProducts, jms_serialization_context: { groups: [json, json.product.list], version: '1', max_depth_checks: true } }
+        Variant.list: { service: youppers.product.service.product, method: listVariants, jms_serialization_context: { groups: [json, json.variant.list], version: '1', max_depth_checks: true } }
+        Variant.read: { service: youppers.product.service.product, method: readVariant, jms_serialization_context: { groups: [json, json.variant.read], version: '1', max_depth_checks: true } }
+        Collection.read: { service: youppers.product.service.product, method: readCollection, jms_serialization_context: { groups: [json, json.collection.read], version: '1', max_depth_checks: true } }
+        Attributes.read: { service: youppers.product.service.product, method: readAttributes, jms_serialization_context: { groups: [json, json.attribute.read], version: '1', max_depth_checks: true } }
 
         Zone.list: { service: youppers.customer.zone, method: listForSession, jms_serialization_context: { groups: [json, json.zone.list], version: '1', max_depth_checks: true } }
         Zone.create: { service: youppers.customer.zone, method: create, jms_serialization_context: { groups: [json, json.zone.read], version: '1', max_depth_checks: true } }

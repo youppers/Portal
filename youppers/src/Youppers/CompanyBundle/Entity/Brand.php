@@ -16,6 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @Validator\UniqueEntity({"name","company"})
  * @Validator\UniqueEntity({"code","company"})
  * @Serializer\ExclusionPolicy("all") 
+ * @Serializer\AccessorOrder("custom", custom = {"id","name", "code"})  
  */
 class Brand
 {
@@ -31,21 +32,21 @@ class Brand
 	/**
 	 * @ORM\ManyToOne(targetEntity="Company", inversedBy="brands")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.product.list"})
 	 */
 	protected $company;
 
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $code;
 
@@ -64,7 +65,7 @@ class Brand
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $logo;
 	

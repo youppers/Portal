@@ -25,13 +25,7 @@ class YouppersProductExtension extends Extension
         
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $yloader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        //$yloader->load('services.yml');
-        
-        //$loader->load('orm.xml');
-        //$loader->load('form.xml');
-       	//$loader->load('serializer/Session.xml');
-        //$loader->load('api_controllers.xml');
-        //$loader->load('api_form.xml');
+        $yloader->load('services.yml');
         
         if (isset($bundles['SonataAdminBundle'])) {
         	$yloader->load('admin.yml');
