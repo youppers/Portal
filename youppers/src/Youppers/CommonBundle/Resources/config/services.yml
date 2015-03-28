@@ -19,6 +19,8 @@ services:
     arguments:
       - '@happyr.google.analytics.tracker'
       - '@logger'
+    calls:
+      - [setRequest, ['@?request=']]
 
   youppers.common.locale_listener:
       class: Youppers\CommonBundle\EventListener\LocaleListener

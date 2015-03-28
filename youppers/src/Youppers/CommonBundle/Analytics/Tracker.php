@@ -8,13 +8,29 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Youppers\CustomerBundle\Entity\Session;
 use Youppers\DealerBundle\Entity\Box;
 use Youppers\CompanyBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\Request;
 
 class Tracker
 {
+	private $tracker;
+	private $logger;
 
 	function __construct(GoogleTracker $tracker, LoggerInterface $logger) {
 		$this->tracker = $tracker;
 		$this->logger = $logger;
+	}
+	
+	/**
+	 *
+	 * @var Request request
+	 */
+	private $request;
+	
+	/**
+	 * @param \Symfony\Component\HttpFoundation\Request request
+	 */
+	public function setRequest($request) {
+		$this->request = $request;
 	}
 	
 	/**
@@ -40,6 +56,10 @@ class Tracker
 			} else {
 				$data['cid'] = $session->getId();
 			}
+		}
+		
+		if ($this->request) {
+			$data['uip'] = $this->request->getClientIp(); // IP Override
 		}
 		
     	$stopwatch = new Stopwatch();
