@@ -113,6 +113,7 @@ class Tracker
     		foreach ($products as $product) {
     			$productIndex++;
     			$data['il1pi' . $productIndex . 'ps'] = $product->getPosition();
+    			$data['il1pi' . $productIndex . 'nm'] = $product->getName();
     			if ($product = $product->getProduct()) {
     				$data['dimension1'] = $product->getBrand()->getCompany()->getName();
     				$data['dimension2'] = $product->getBrand()->getName();
@@ -123,8 +124,6 @@ class Tracker
     				}
     				// add category
     				// add variant
-    			} else {
-    				$data['il1pi' . $productIndex . 'nm'] = $product->getName();
     			}
     		}
     	}
