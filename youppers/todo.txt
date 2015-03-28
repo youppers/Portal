@@ -4,6 +4,11 @@ da verificare: quando si cancella una categoria cerca di cancellare anche la cat
 
 Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su setEquivalentOption ?) 
 
+FIXME
+
+Per le varianti bisogna verificare l'univocità, cioè il fatto che gli attributi la identifichino univocamente
+  fare un Validator che usa ProductService->findVariants()
+
 TODO
 
 Per test da riga di comando usare menu interattivi per selezione dei dati
