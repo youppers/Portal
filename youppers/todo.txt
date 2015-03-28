@@ -6,6 +6,11 @@ Far funzionare bene la relazione di equivalenza fra AttributeOption (lavorare su
 
 TODO
 
+Per test da riga di comando usare menu interattivi per selezione dei dati
+
+Per la selezione dei valori delle opzioni:
+	http://stackoverflow.com/questions/10118868/how-to-use-ajax-within-sonata-admin-forms
+
 As soon as released sonata 2.4 use doctrine_orm_model_autocomplete for:
 	ProductAdmin configureDatagridFilters brand
 	StoreAdmin configureDatagridFilters dealer
