@@ -18,6 +18,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 class ProductService extends ContainerAware
 {
@@ -35,30 +36,6 @@ class ProductService extends ContainerAware
 	{
 		parent::setContainer($container);
 		$this->debug = $this->container->getParameter('kernel.environment') == 'dev';
-	}
-	
-	/**
-	 * 
-	 * @param string $query
-	 * @return multitype:
-	 * @deprecated
-	 */
-	public function listVariants($query,$limit = 100,$sessionId=null)
-	{
-		if (empty($query)) {
-			return;
-		}
-		$repo = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant');		
-		$query = $repo
-			->createQueryBuilder('v')
-			->join('YouppersCompanyBundle:Product','p', Expr\Join::WITH,'v.product = p')
-			->where('p.name LIKE :query')
-			->setParameter('query', '%' . $query . '%')
-			->orderBy('p.name', 'ASC')
-			->setMaxResults($limit)
-			->getQuery();
-		
-		return $query->getResult();
 	}
 
 	/**
@@ -102,61 +79,80 @@ class ProductService extends ContainerAware
 	 * @param string $sessionId Used to track activities
 	 * @return null|ProductVariant
 	 */
-	public function readVariant($variantId, $options = array(), $sessionId =  null)
+	public function readVariant($variantId, $sessionId =  null)
 	{
-		$variant = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')->find($variantId);
-		
-		if (count($options) == 0) {
-			if ($this->debug) $this->logger->info(sprintf("No options, return current: %s",$variant));
-			return $variant;
+		return $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')->find($variantId);
+	}
+	
+	/**
+	 * list variants matching options
+	 *    
+	 * @param uuid $collectionId The collection where to search
+	 * @param array $options Ids of the selected options
+	 * @param string $sessionId
+	 * @throws NotFoundHttpException if one option is invalid 
+	 * @return array of ProductVariant (eventually empty)
+	 */
+	public function listVariants($collectionId, $options, $sessionId =  null)
+	{
+		$collection = $this->managerRegistry->getRepository('YouppersProductBundle:ProductCollection')->find($collectionId);
+		if (empty($collection)) {
+			throw new NotFoundHttpException("Invalid collection id");
 		}
-		
-		$collection = $variant->getProductCollection();
+
+		if (count($options) == 0) {
+			return $this->listCollectionVariants($collection);
+		}		
 		
 		$optionsRepo = $this->managerRegistry->getRepository('YouppersProductBundle:AttributeOption');
-
+		
 		$optionsEntities = array();
 		foreach ($options as $option) {
-			$optionEntity = $optionsRepo->find(trim($option));
+			$option = trim($option);
+			if (empty($option)) {
+				continue;
+			}
+			$optionEntity = $optionsRepo->find($option);
 			if ($optionEntity) {
 				$optionsEntities[] = $optionEntity;
 			} else {
 				$this->logger->error("Invalid option id=".$option);
-				throw new NotFoundHttpException("Invalid option");				
+				throw new NotFoundHttpException("Invalid option");
 			}
 		}
 		
-		$variants =  $this->findVariants($collection, $optionsEntities);
-		
-		if (count($variants) == 0) {
-			$this->logger->info("No variants found.");
-			return null;
-		} elseif (count($variants) == 1) {
-			$newVariant = array_shift($variants);
-			$this->logger->info(sprintf("Exactly one variant found: %s",$newVariant));
-		} else {
-			$this->logger->info(sprintf("Found %d variants",count($variants)));
-			foreach ($variants as $newVariant) {
-				if ($this->debug) $this->logger->info(sprintf(sprintf("Variant: '%s'",$newVariant)));
-				if ($newVariant->getId() == $variantId) {
-					$this->logger->info("Variant not changed.");
-					return $variant;
-				}
-			}
-			$this->logger->info("New variant is the first of the list.");
-			$newVariant= array_shift($variants);
+		if (count($optionsEntities) == 0) {
+			return $this->listCollectionVariants($collection);
 		}
-
-		return $newVariant;
+		
+		return $this->findVariants($collection, $optionsEntities);		
 	}
 		
+	
+	/**
+	 * List all the variants of the collection
+	 * @param ProductCollection $collection
+	 */
+	protected function listCollectionVariants(ProductCollection $collection)
+	{
+		return $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')
+			->createQueryBuilder('v')
+			->where('v.productCollection = :collection')
+			->setParameter('collection', $collection)
+			->getQuery()->getResult();
+	}
+	
 	/**
 	 * 
 	 * @param ProductCollection $collection
 	 * @param array of AttributeOption $options
+	 * TODO use mongodb to search entities
 	 */
-	public function findVariants(ProductCollection $collection, $options)
+	protected function findVariants(ProductCollection $collection, $options)
 	{
+		$stopwatch = new Stopwatch();
+		$stopwatch->start('findVariants');
+		
 		$this->logger->info(sprintf("Collection: %s",$collection));		
 		$qb = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')
 			->createQueryBuilder('v');
@@ -168,13 +164,16 @@ class ProductService extends ContainerAware
 			->andWhere('p.attributeOption = :option');
 
 		$variantsId = null;
+		$numVariants = 0;
 		foreach ($options as $option) {
 			if ($this->debug) $this->logger->info(sprintf("Option: %s",$option));
 							
 			$optionVariantsEntities = $qb->setParameter('option',$option)->getQuery()->getResult();
-						
+
+			$numVariants += count($optionVariantsEntities);
+			
 			if (count($optionVariantsEntities) == 0) {
-				$this->logger->warning("No variant found, invalid option " . $option);
+				$this->logger->warning("No variant found with option: " . $option);
 				return null;
 			}
 			$optionVariantsId = array();
@@ -187,15 +186,24 @@ class ProductService extends ContainerAware
 			} else {
 				$variantsId = array_intersect($variantsId,$optionVariantsId);
 				if (count($variantsId) == 0) {
-					return array();
+					break;
 				}
 			}
 		}
+
+		if (count($variantsId) > 0) {
+			$qb = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')
+				->createQueryBuilder('v');
+			$qb->where($qb->expr()->in('v.id', $variantsId));
+			$variants = $qb->getQuery()->getResult();
+		} else {
+			$variants = array();
+		}
+				
+		$event = $stopwatch->stop('findVariants');
+		$this->logger->info(sprintf("findVariants done, found %d match from %d variants using %d options in %d mS",count($variants),$numVariants, count($options), $event->getDuration()));
 		
-		$qb = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')
-			->createQueryBuilder('v');
-		$qb->where($qb->expr()->in('v.id', $variantsId));
-		return $qb->getQuery()->getResult();				
+		return $variants;		
 	}
 
 	/**
@@ -212,7 +220,7 @@ class ProductService extends ContainerAware
 	 * @param uuid $collectionId
 	 * @return Collection AttributeOption List of options of all the variants of the collection
 	 */
-	public function readCollectionAttributes($collectionId)
+	public function readCollectionAttributes($collectionId, $sessionId = null)
 	{
 		$collection = $this->readCollection($collectionId);
 		

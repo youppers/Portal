@@ -35,7 +35,7 @@ class AttributeOption
 	
 	/**
 	 * @JMS\VirtualProperty()
-	 * @JMS\Groups({"json"})
+	 * @JMS\Groups({"json.variant.read", "json.attributes.read"})
 	 */
 	public function getAttributeTypeId()
 	{

@@ -18,20 +18,32 @@ class VariantListCommand extends ContainerAwareCommand
             ->setName('youppers:product:variant:list')
             ->setDescription('List product variants')
             ->addOption('sessionId', 'i', InputOption::VALUE_OPTIONAL, 'Session id', null)
-			->addOption('group', 'g', InputOption::VALUE_OPTIONAL, 'serialization group','json.variant.list')
-			->addArgument('query',InputArgument::IS_ARRAY,'Query string')
+			->addOption('group', 'g', InputOption::VALUE_OPTIONAL, 'serialization group','json, json.variant.list')
+			->addArgument('collectionId',InputArgument::REQUIRED,'Current Collection Id')
+			->addArgument('options',InputArgument::IS_ARRAY,'Selected options')
 			;
     }
 
+    /**
+     *
+     * @param unknown $result
+     * @param string $groups comma separated list
+     * @return json
+     */
+    protected function serialize($result,$groups)
+    {
+    	$serializer = $this->getContainer()->get('serializer');
+    	$serializationContext = SerializationContext::create();
+    	$serializationContext->setGroups(array_map('trim',explode(',',$groups)));
+    	$serializationContext->enableMaxDepthChecks();
+    	return $serializer->serialize($result,'json',$serializationContext);
+    }
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $productService = $this->getContainer()->get('youppers.product.service.product');
-        $products = $productService->listVariants(implode(' ',$input->getArgument('query')));
-		
-        $serializer = $this->getContainer()->get('serializer');        
-        $serializationContext = SerializationContext::create();
-        $serializationContext->setGroups(array($input->getOption('group')));        	 
-        $serializationContext->enableMaxDepthChecks();
-        $output->writeln($serializer->serialize($products,'json',$serializationContext));        
-    }
+    	$productService = $this->getContainer()->get('youppers.product.service.product');
+    	$variants = $productService->listVariants($input->getArgument('collectionId'), $input->getArgument('options'), $input->getOption('sessionId'));
+    	
+    	$output->writeln($this->serialize($variants, $input->getOption('group')));
+   	}
 }

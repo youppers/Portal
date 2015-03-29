@@ -21,7 +21,6 @@ class VariantReadCommand extends ContainerAwareCommand
             ->addOption('sessionId', 'i', InputOption::VALUE_OPTIONAL, 'Session id', null)
 			->addOption('group', 'g', InputOption::VALUE_OPTIONAL, 'serialization group','json, json.variant.read')
 			->addArgument('variantId',InputArgument::REQUIRED,'Current Variant Id')
-			->addArgument('options',InputArgument::IS_ARRAY,'Selected options')
 			;
     }
 
@@ -29,6 +28,7 @@ class VariantReadCommand extends ContainerAwareCommand
      *
      * @param unknown $result
      * @param string $groups comma separated list
+     * @return json
      */
     protected function serialize($result,$groups)
     {
@@ -42,18 +42,8 @@ class VariantReadCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $productService = $this->getContainer()->get('youppers.product.service.product');
-        /*        
-        $variant = $productService->readVariant($input->getArgument('variantId'));
-        if (empty($variant)) {
-        	throw  new \Exception("Variant not found");
-        }
-        */
         
-        $options = $input->getArgument('options');
-                
-        // TODO parse arguments and ask interactively parameters
-        
-        $variant = $productService->readVariant($input->getArgument('variantId'), $options, $input->getOption('sessionId'));
+        $variant = $productService->readVariant($input->getArgument('variantId'), $input->getOption('sessionId'));
         
         $output->writeln($this->serialize($variant, $input->getOption('group')));        
     }

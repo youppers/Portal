@@ -16,6 +16,10 @@ qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
 query1=testo non trovato
 query2=73800
 
+option1=
+option2=
+option3=
+
 conf=$(dirname $0)/config
 format=$(dirname $0)/format.php
 
@@ -94,6 +98,35 @@ echo -------------- Search a product, return list  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Product.search","params":{"sessionId":"'$session_id'","query":"'$query2'","limit":"2"}}')
 echo qr=$query2 Response:
 echo $response | php -f $format
+
+echo -------------- Show a variant  -------------
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Variant.read","params":{"sessionId":"'$session_id'","variantId":"'$variant_id'"}}')
+echo variant_id=$variant_id Response:
+echo $response | php -f $format
+
+collection_id=$(echo $response|sed -n -e 's/.*"product_collection":{"id":"\([a-zA-Z0-9\-]*\)",.*/\1/p')
+echo collection_id=$collection_id
+
+echo -------------- Show a collection  -------------
+echo '{"id":"1","jsonrpc":"2.0","method":"Collection.read","params":{"sessionId":"'$session_id'","collectionId":"'$collection_id'"}}'
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Collection.read","params":{"sessionId":"'$session_id'","collectionId":"'$collection_id'"}}')
+echo collection_id=$collection_id Response:
+echo $response | php -f $format
+
+echo -------------- Show attributes of a collection  -------------
+echo '{"id":"1","jsonrpc":"2.0","method":"Attributes.read","params":{"sessionId":"'$session_id'","collectionId":"'$collection_id'"}}'
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Attributes.read","params":{"sessionId":"'$session_id'","collectionId":"'$collection_id'"}}')
+echo collection_id=$collection_id Response:
+echo $response | php -f $format
+
+echo -------------- List of variants with options  -------------
+echo Request: "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Variant.list","params":{"sessionId":"'$session_id'","collectionId":"'$collection_id'","options":["'$option1'","'$option2'","'$option3'"]}}' 
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Variant.list","params":{"sessionId":"'$session_id'","collectionId":"'$collection_id'","options":["'$option1'","'$option2'","'$option3'"]}}')
+echo collection_id=$collection_id Response:
+echo $response | php -f $format
+
+product=$(echo $response|sed -n -e 's/.*"product":{"name":"\([^"]*\)",.*/\1/p')
+echo product=$product
 
 echo
 echo End.
