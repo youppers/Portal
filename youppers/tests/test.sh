@@ -66,7 +66,72 @@ response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrp
 echo session_id=$force_session_id
 echo $response | php -f $format
 
-source $pwd/test_zones.sh
+# source $pwd/test_zones.sh
+
+variant_id1=05149cca-cccf-11e4-b4aa-0cc47a127a14
+variant_id2=6149a4ba-d3aa-11e4-b4aa-0cc47a127a14
+zone_id1=b50715bc-c98c-11e4-b4aa-0cc47a127a14
+zone_id2=c6f6f8e4-c98c-11e4-b4aa-0cc47a127a14
+
+echo -------------- Add a variant to 1 zone -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.create","params":{"sessionId":"'$session_id'","items":[{"variantId":"'$variant_id1'","zoneId":"'$zone_id1'"}]}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+echo -------------- Add a variant to 1 zone duplicated -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.create","params":{"sessionId":"'$session_id'","items":[{"variantId":"'$variant_id1'","zoneId":"'$zone_id1'"}]}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+echo -------------- Add a variant to 2 zones -------------
+variant_id=6149a4ba-d3aa-11e4-b4aa-0cc47a127a14
+zone_id1=b50715bc-c98c-11e4-b4aa-0cc47a127a14
+zone_id2=c6f6f8e4-c98c-11e4-b4aa-0cc47a127a14
+request='{"id":"1","jsonrpc":"2.0","method":"Item.create","params":{"sessionId":"'$session_id'","items":[{"variantId":"'$variant_id2'","zoneId":"'$zone_id1'"},{"variantId":"'$variant_id2'","zoneId":"'$zone_id2'"}]}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+echo -------------- List all items -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.list","params":{"sessionId":"'$session_id'"}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+item_id=$(echo $response|sed -n -e 's/.*"result":\[{"id":"\([a-zA-Z0-9\-]*\)",.*/\1/p')
+echo item_id=$item_id
+
+echo -------------- List all items of variant 1 -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.list","params":{"sessionId":"'$session_id'","variantId":"'$variant_id1'"}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+echo -------------- List all items of variant 2 -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.list","params":{"sessionId":"'$session_id'","variantId":"'$variant_id2'"}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+echo -------------- Remove the first item -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.remove","params":{"sessionId":"'$session_id'","itemId":"'$item_id'"}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+echo -------------- Try to remove a wrong item -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.remove","params":{"sessionId":"'$session_id'","itemId":"'x-$item_id'"}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+echo -------------- List all items after remove -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.list","params":{"sessionId":"'$session_id'"}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
 
 echo -------------- Try to show list of consultants before store selection -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Consultant.list","params":{"sessionId":"'$session_id'"}}')

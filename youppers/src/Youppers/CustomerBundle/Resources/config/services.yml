@@ -23,4 +23,8 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
     
-    
+    youppers.customer.service.item:
+        class:     Youppers\CustomerBundle\Service\ItemService
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]    

@@ -50,7 +50,7 @@ class Item
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @JMS\Groups({"list", "details","create", "json.item.list", "json.item.read"})
+	 * @JMS\Groups({"list", "details","create"})
 	 */
 	protected $createdAt;
 			
@@ -64,6 +64,9 @@ class Item
 	 */	
 	public function prePersist()
 	{
+		if (empty($this->getRemoved())) {
+			$this->setRemoved(false);
+		}			
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}

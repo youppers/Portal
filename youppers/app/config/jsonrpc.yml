@@ -38,15 +38,15 @@ wa72_json_rpc:
         Zone.list: { service: youppers.customer.zone, method: listForSession, jms_serialization_context: { groups: [json, json.zone.list], version: '1', max_depth_checks: true } }
         Zone.create: { service: youppers.customer.zone, method: createForSession, jms_serialization_context: { groups: [json, json.zone.read], version: '1', max_depth_checks: true } }
 
-        Item.list: { service: youppers.customer.item, method: listForSession, jms_serialization_context: { groups: [json, json.item.list], version: '1', max_depth_checks: true } }
-        Item.create: { service: youppers.customer.item, method: create, jms_serialization_context: { groups: [json, json.item.read], version: '1', max_depth_checks: true } }
-        Item.delete: { service: youppers.customer.item, method: create, jms_serialization_context: { groups: [json, json.item.read], version: '1', max_depth_checks: true } }
+        Item.list: { service: youppers.customer.service.item, method: listForSession, jms_serialization_context: { groups: [json, json.item.list], version: '1', max_depth_checks: true } }
+        Item.create: { service: youppers.customer.service.item, method: createMultiple, jms_serialization_context: { groups: [json, json.item.read], version: '1', max_depth_checks: true } }
+        Item.remove: { service: youppers.customer.service.item, method: remove, jms_serialization_context: { groups: [json, json.item.read], version: '1', max_depth_checks: true } }
 
         Profile.list: { service: youppers.customer.profile, method: listForUser, jms_serialization_context: { groups: [json, json.profile.list], version: '1', max_depth_checks: true } }
         Profile.create: { service: youppers.customer.profile, method: create, jms_serialization_context: { groups: [json, json.profile.read], version: '1', max_depth_checks: true } }
         Profile.read: { service: youppers.customer.profile, method: read, jms_serialization_context: { groups: [json, json.profile.read], version: '1', max_depth_checks: true } }
-        Profile.update: { service: youppers.customer.profile, method: read, jms_serialization_context: { groups: [json, json.profile.read], version: '1', max_depth_checks: true } }
-        Profile.delete: { service: youppers.customer.profile, method: read, jms_serialization_context: { groups: [json, json.profile.read], version: '1', max_depth_checks: true } }
+        Profile.update: { service: youppers.customer.profile, method: update, jms_serialization_context: { groups: [json, json.profile.read], version: '1', max_depth_checks: true } }
+        Profile.delete: { service: youppers.customer.profile, method: delete, jms_serialization_context: { groups: [json, json.profile.read], version: '1', max_depth_checks: true } }
 
         Store.list: { service: youppers.dealer.store, method: listForUser, jms_serialization_context: { groups: [json, json.store.list], version: '1', max_depth_checks: true } }
         

@@ -25,20 +25,20 @@ class Zone
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list"})
+	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list", "json.item.list", "json.item.read"})
 	 */
 	protected $id;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Profile")
 	 * @var Profile
-	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list"})
+	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list", "json.item.list", "json.item.read"})
 	 */
 	protected $profile;
 	
 	/**
 	 * @ORM\Column(type="string")
-	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list","json.item.read"})
+	 * @JMS\Groups({"list", "details","create","json"})
 	 */
 	protected $name;
 		
