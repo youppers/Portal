@@ -59,6 +59,14 @@ class ZoneService extends ContainerAware
 		return $qb->getQuery()->getResult();
 	}
 	
+	/**
+	 * Create a zone associated to the profile of the current session
+	 * @param unknown $sessionId
+	 * @param unknown $zoneName
+	 * @throws NotFoundResourceException
+	 * @throws \Exception
+	 * @return unknown
+	 */
 	public function createForSession($sessionId,$zoneName)
 	{
 		$session = $this->container->get('youppers.customer.session')->getSession($sessionId);
@@ -72,7 +80,19 @@ class ZoneService extends ContainerAware
 			$this->logger->critical(sprintf("Session dont have a profile associated: '%s'",$session));
 			throw new \Exception("Please login");			
 		}
-				
+		
+		return $this->createForProfile($profile, $zoneName);
+	}
+		
+	/**
+	 * Create a zone associated to the profile
+	 * @param unknown $profile
+	 * @param unknown $zoneName
+	 * @throws \Exception
+	 * @return unknown
+	 */
+	private function createForProfile($profile,$zoneName)
+	{			
 		$repo = $this->getRepository();
 		if (count($repo->findBy(array('name' => $zoneName, 'profile' => null))) > 0 ||
 			count($repo->findBy(array('name' => $zoneName, 'profile' => $profile))) > 0) {
