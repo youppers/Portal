@@ -59,4 +59,35 @@ class ZoneService extends ContainerAware
 		return $qb->getQuery()->getResult();
 	}
 	
+	public function createForSession($sessionId,$zoneName)
+	{
+		$session = $this->container->get('youppers.customer.session')->getSession($sessionId);
+
+		if ($session === null) {
+			$this->logger->critical(sprintf("Session not found: '%s'",$sessionId));
+			throw new NotFoundResourceException(sprintf("Session with id='%s' not found",$sessionId));
+		}
+		
+		if (($profile = $session->getProfile()) === null) {
+			$this->logger->critical(sprintf("Session dont have a profile associated: '%s'",$session));
+			throw new \Exception("Please login");			
+		}
+				
+		$repo = $this->getRepository();
+		if (count($repo->findBy(array('name' => $zoneName, 'profile' => null))) > 0 ||
+			count($repo->findBy(array('name' => $zoneName, 'profile' => $profile))) > 0) {
+			throw new \Exception(sprintf("Duplicated zone name '%s'",$zoneName));
+		}
+		$zoneClass = $repo->getClassName();
+		$em = $this->managerRegistry->getManagerForClass($zoneClass);
+		$zone = new $zoneClass;
+		$zone->setProfile($profile);
+		$zone->setName($zoneName);
+		
+		$em->persist($zone);
+		$em->flush();
+		
+		return $zone;		
+	}
+	
 }

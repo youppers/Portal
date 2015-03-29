@@ -36,6 +36,8 @@ class ProfileAdmin extends YouppersAdmin
 	{
 		$showMapper
 		->add('name')
+		->add('enabled')
+		->add('isDefault')
 		->add('user', null, array('route' => array('name' => 'show')))
 		->add('sessions', null, array('route' => array('name' => 'show')))
 		->add('createdAt')
@@ -55,6 +57,8 @@ class ProfileAdmin extends YouppersAdmin
 				)
 		))		
 		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->add('enabled')
+		->add('isDefault')
 		->add('user', null, array('route' => array('name' => 'show')))
 		;
 	}
@@ -67,6 +71,8 @@ class ProfileAdmin extends YouppersAdmin
 		$datagridMapper
 		->add('user')
 		->add('name')
+		->add('enabled')
+		->add('isDefault')
 		;
 	}
 	
@@ -78,7 +84,9 @@ class ProfileAdmin extends YouppersAdmin
 		
 		$formMapper
 			->add('user', 'sonata_type_model_list')
-			->add('name')
+			->add('name', null, array('required'  => false))
+			->add('enabled', null, array('required'  => false))
+			->add('isDefault', null, array('required'  => false))
 		;
 	}
 
@@ -88,6 +96,8 @@ class ProfileAdmin extends YouppersAdmin
 	public function getNewInstance()
 	{
 		$object = parent::getNewInstance();
+		
+		$object->setEnabled(true);
 		
 		if ($this->tokenStorage) {
 			$user = $this->tokenStorage->getToken()->getUser();

@@ -9,7 +9,8 @@ services:
         arguments: ['@doctrine', '@logger']
         calls:
             - [ setContainer, [ '@service_container' ] ]
-    
+            - [ setTokenStorage, [ '@security.token_storage' ] ]
+
     youppers.customer.session.form:    
         class: 'Sonata\CoreBundle\Form\Type\DoctrineORMSerializationType'
         arguments: ['@jms_serializer.metadata_factory', '@doctrine', 'youppers_customer_session_form', 'Youppers\CustomerBundle\Entity\Session','details']

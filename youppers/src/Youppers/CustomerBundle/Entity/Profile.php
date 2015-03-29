@@ -21,7 +21,7 @@ class Profile
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"list","details","update","create","json.session.read"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read","json.zone.read"})
 	 */
 	protected $id;
 
@@ -34,9 +34,19 @@ class Profile
 
 	/**
 	 * @ORM\Column(type="string")
-	 * @JMS\Groups({"list","details","update","create","json.session.read","json.zone.list"})
+	 * @JMS\Groups({"list","details","update","create","json"})
 	 */
 	protected $name;
+	
+	/**
+	 * @ORM\Column(type="boolean", options={"default":true})
+	 */
+	protected $enabled;
+
+	/**
+	 * @ORM\Column(type="boolean", name="is_default")
+	 */
+	protected $isDefault;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Session", mappedBy="profile")
@@ -59,6 +69,7 @@ class Profile
 	public function __toString()
 	{
 		return
+			($this->getIsDefault() ? '[default] ':'') .
 			($this->getName()?:'New') .
 			($this->getUser() ? '@' . $this->getUser() :'@Anonymous');
 	}
@@ -68,6 +79,12 @@ class Profile
 	 */	
 	public function prePersist()
 	{
+		if (empty($this->getEnabled())) {
+			$this->setEnabled(false);
+		}
+		if (empty($this->getIsDefault())) {
+			$this->setIsDefault(false);
+		}
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
@@ -120,6 +137,52 @@ class Profile
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return Profile
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean 
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set isDefault
+     *
+     * @param boolean $isDefault
+     * @return Profile
+     */
+    public function setIsDefault($isDefault)
+    {
+        $this->isDefault = $isDefault;
+
+        return $this;
+    }
+
+    /**
+     * Get isDefault
+     *
+     * @return boolean 
+     */
+    public function getIsDefault()
+    {
+        return $this->isDefault;
     }
 
     /**

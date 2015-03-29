@@ -11,17 +11,31 @@ use Sonata\CoreBundle\Form\FormHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use FOS\UserBundle\Model\User;
+use Youppers\CustomerBundle\Entity\Profile;
 
 class SessionService extends ContainerAware
 {
 	private $managerRegistry;
 	private $logger;
+	private $tokenStorage = null;
 	
 	public function __construct(ManagerRegistry $managerRegistry, LoggerInterface $logger)
 	{
 		$this->managerRegistry = $managerRegistry;
 		$this->logger = $logger;
 	}	
+	
+	/**
+	 * Used to set user as current authenticated user
+	 *
+	 * @param TokenStorageInterface $tokenStorage
+	 */
+	public function setTokenStorage(TokenStorageInterface $tokenStorage)
+	{
+		$this->tokenStorage = $tokenStorage;
+	}
 	
 	/**
 	 * Create a new session, optionally associated to a store (that must exists)
@@ -44,6 +58,15 @@ class SessionService extends ContainerAware
 		} else {
 			$store = null;
 		}
+		
+		if ($this->tokenStorage) {
+			$user = $this->tokenStorage->getToken()->getUser();
+			if ($user) {
+				$profile = $this->getDefaultProfile($user);
+				$session->setProfile($profile);
+			}
+		}
+		
 		$em->persist($session);
 		$em->flush();
 	
@@ -52,6 +75,34 @@ class SessionService extends ContainerAware
 		return $session;
 	}
 		
+	private function getDefaultProfile(User $user)
+	{
+		$repo = $this->managerRegistry->getRepository('YouppersCustomerBundle:Profile');
+		
+		$profile = $repo->findOneBy(array('user' => $user, 'isDefault' => true));
+		
+		if (empty($profile)) {
+			$profile = $this->newDefaultProfile($user);
+		}
+		
+		return $profile;
+	}
+
+	private function newDefaultProfile(User $user)
+	{
+		$repo = $this->managerRegistry->getRepository('YouppersCustomerBundle:Profile');
+		$profileClass = $repo->getClassName();
+		$em = $this->managerRegistry->getManagerForClass($profileClass);
+		$profile = new $profileClass;
+		$profile->setUser($user);
+		$profile->setIsDefault(true);
+		$profile->setName('');
+		$em->persist($profile);
+		$em->flush();
+		return $profile;
+	}
+	
+	
 	/**
 	 * set the store of the session if not set
 	 * 
@@ -137,7 +188,17 @@ class SessionService extends ContainerAware
 	 */
 	public function read($sessionId)
 	{
-		return $this->getSession($sessionId);	
+		$session = $this->getSession($sessionId);
+		
+		if ($this->tokenStorage) {
+			$user = $this->tokenStorage->getToken()->getUser();
+			if ($user && empty($session->getProfile())) {
+				$profile = $this->getDefaultProfile($user);
+				$session->setProfile($profile);
+				$this->managerRegistry->getManagerForClass(get_class($session))->flush();
+			}
+		}
+		return $session;		
 	}
 	
 	/**

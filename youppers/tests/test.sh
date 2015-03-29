@@ -6,6 +6,9 @@ client_id=25a39ff1-cd63-11e4-a2aa-080027980c59_4wkty9e55jms840w488k0wgs0ss0sgs0s
 client_secret=iklbvfyfexkcgs48o4oks80gsc8skg4g8k4ckcwo40wk8kkks
 host=127.0.0.1
 
+username=signoramaria
+password=signoramaria
+
 authendpoint=http://$host/oauth/v2/token
 jsonendpoint=http://$host/app_dev.php/jsonrpc/
 
@@ -20,8 +23,9 @@ option1=
 option2=
 option3=
 
-conf=$(dirname $0)/config
-format=$(dirname $0)/format.php
+pwd=$(dirname $0)
+conf=$pwd/config
+format=$pwd/format.php
 
 if [ -f $conf ]; then 
 	source $conf
@@ -46,14 +50,23 @@ response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrp
 echo Response:
 echo $response | php -f $format
 
-session_id=$(echo $response|sed -n -e 's/.*{"id":"\([a-zA-Z0-9\-]*\)",.*/\1/p')
+session_id=$(echo $response|sed -n -e 's/.*"result":{"id":"\([a-zA-Z0-9\-]*\)",.*/\1/p')
 echo session_id=$session_id
 
-qrid=5eeed2c7-abb2-11e4-b4aa-0cc47a127a14
+echo -------------- Request auth_token with username to $authendpoint: -------------- 
 
-echo -------------- Show list of zones -------------
-response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Zone.list","params":{"sessionId":"'$session_id'"}}')
-echo $response | php -f $format 
+response=$(curl "$authendpoint?client_id=$client_id&client_secret=$client_secret&grant_type=password&username=$username&password=$password")
+echo response=$response
+
+access_token=$(echo $response|sed -n -e 's/{"access_token":"\([a-zA-Z0-9]*\)",.*/\1/p')
+echo access_token=$access_token
+
+echo -------------- Show the session after authentication ------------- 
+response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.read","params":{"sessionId":"'$session_id'"}}')
+echo session_id=$force_session_id
+echo $response | php -f $format
+
+source $pwd/test_zones.sh
 
 echo -------------- Try to show list of consultants before store selection -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Consultant.list","params":{"sessionId":"'$session_id'"}}')
