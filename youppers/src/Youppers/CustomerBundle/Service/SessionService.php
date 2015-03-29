@@ -210,7 +210,15 @@ class SessionService extends ContainerAware
 	 */
 	public function update($sessionId, $data)
 	{
-		return $this->handleWrite($sessionId,$data);
+		if ($sessionId) {
+			$session = $this->getSession($sessionId);
+			if ($session === null) {
+				$this->logger->error(sprintf("Session '%s' not found",$sessionId));
+				throw new NotFoundResourceException("Session not found");
+			}
+		}
+				
+		return $this->handleWrite($session,$data);
 	}
 	
 	/**
@@ -230,16 +238,8 @@ class SessionService extends ContainerAware
 	 * @param array $data
 	 * @return Entity|Form
 	 */
-	protected function handleWrite($sessionId,$data)
+	protected function handleWrite($session,$data)
 	{
-		if ($sessionId) {
-			$session = $this->getSession($sessionId);
-			if ($session === null) {
-				$this->logger->error(sprintf("Session '%s' not found",$sessionId));
-				throw new NotFoundResourceException("Session not found");
-			}
-		}
-		
 		$form = $this->container->get('form.factory')->createNamed(null, 'youppers_customer_session_form', $session, array(
 				'csrf_protection' => false
 		));
