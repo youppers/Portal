@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use Youppers\ProductBundle\Validator\Constraints\ConsistentBrand;
 use JMS\Serializer\Annotation as Serializer;
+use Youppers\ProductBundle\Entity\ProductCollection;
 
 /**
  * @ORM\Entity
@@ -25,8 +26,8 @@ class ProductVariant
 	/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
-	 * @Serializer\Expose()
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $id;
@@ -35,7 +36,7 @@ class ProductVariant
 	 * @ORM\ManyToOne(targetEntity="ProductCollection", inversedBy="productVariants")
 	 * @ORM\JoinColumn(name="product_collection_id")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.list", "json.product.list"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.list", "json.variant.read", "json.product.list"})
 	 */	
 	protected $productCollection;
 			
@@ -70,14 +71,14 @@ class ProductVariant
 	 * @ORM\OneToMany(targetEntity="VariantProperty", mappedBy="productVariant", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"json.qr.find", "json.variant.list", "json.product.list"})
+	 * @Serializer\Groups({"json.qr.find", "json.variant.list", "json.variant.read", "json.product.list"})
 	 **/
 	protected $variantProperties;
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="Youppers\CompanyBundle\Entity\Product", inversedBy="variant")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"json.variant.list"})
+	 * @Serializer\Groups({"json.variant.list", "json.variant.read"})
 	 **/
 	protected $product;
 	

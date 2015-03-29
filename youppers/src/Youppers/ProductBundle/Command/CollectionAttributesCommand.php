@@ -9,22 +9,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 use JMS\Serializer\Serializer;
 use Youppers\CommonBundle\Entity\Qr;
 use JMS\Serializer\SerializationContext;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class ProductSearchCommand extends ContainerAwareCommand
+class CollectionAttributesCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('youppers:product:search')
-            ->setDescription('List products')
+            ->setName('youppers:product:collection:attributes')
+            ->setDescription('List all attributes of a Product Collection')
             ->addOption('sessionId', 'i', InputOption::VALUE_OPTIONAL, 'Session id', null)
-			->addOption('group', 'g', InputOption::VALUE_OPTIONAL, 'serialization group','json, json.product.list')
-			->addArgument('query',InputArgument::IS_ARRAY,'Query string')
+			->addOption('group', 'g', InputOption::VALUE_OPTIONAL, 'serialization group','json, json.attributes.read')
+			->addArgument('collectionId',InputArgument::REQUIRED,'Product Collection Id')
 			;
     }
 
     /**
-     * 
+     *
      * @param unknown $result
      * @param string $groups comma separated list
      */
@@ -34,14 +35,13 @@ class ProductSearchCommand extends ContainerAwareCommand
     	$serializationContext = SerializationContext::create();
     	$serializationContext->setGroups(array_map('trim',explode(',',$groups)));
     	$serializationContext->enableMaxDepthChecks();
-    	return $serializer->serialize($result,'json',$serializationContext);    	 
+    	return $serializer->serialize($result,'json',$serializationContext);
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $productService = $this->getContainer()->get('youppers.product.service.product');
-        $products = $productService->searchProducts(implode(' ',$input->getArgument('query')), $input->getOption('sessionId'));
-		
-        $output->writeln($this->serialize($products, $input->getOption('group')));
+        $productService = $this->getContainer()->get('youppers.product.service.product');        
+        $attributes = $productService->readCollectionAttributes($input->getArgument('collectionId'));
+        $output->writeln($this->serialize($attributes, $input->getOption('group')));        
     }
 }

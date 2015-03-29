@@ -28,6 +28,8 @@ class ProductCollection
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $id;
 			
@@ -55,18 +57,22 @@ class ProductCollection
 	/**
 	 * @ORM\ManyToOne(targetEntity="Youppers\CompanyBundle\Entity\Brand")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"json.variant.list"})
+	 * @Serializer\Groups({"json.collection.read"})
 	 */
 	protected $brand;
 		
 	/**
 	 * @ORM\ManyToOne(targetEntity="ProductType")
 	 * @ORM\JoinColumn(name="product_type_id")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"json.collection.read"})
 	 */
 	protected $productType;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"json.collection.read"})
 	 */
 	protected $enabled;
 
@@ -81,7 +87,7 @@ class ProductCollection
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Gallery")
 	 * @ORM\JoinColumn(name="pdf_gallery_id")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.collection.show"})
+	 * @Serializer\Groups({"details", "json.collection.read"})
 	 */
 	protected $pdfGallery;
 	

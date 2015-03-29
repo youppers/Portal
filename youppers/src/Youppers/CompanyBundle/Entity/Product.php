@@ -31,7 +31,7 @@ class Product
 	/**
 	 * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.product.list"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.product.list", "json.variant.list", "json.variant.read"})
 	 * @Serializer\MaxDepth(4)
 	 */
 	protected $brand;

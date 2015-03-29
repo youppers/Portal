@@ -32,7 +32,7 @@ class Brand
 	/**
 	 * @ORM\ManyToOne(targetEntity="Company", inversedBy="brands")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.product.list"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.product.list", "json.variant.read", "json.collection.read"})
 	 */
 	protected $company;
 

@@ -4,7 +4,7 @@ namespace Youppers\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
-use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -12,6 +12,8 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity("name")
  * @Validator\UniqueEntity("code")
+ * @JMS\ExclusionPolicy("all") 
+ * @JMS\AccessorOrder("custom", custom = {"id","name", "code"})  
  */
 class AttributeType
 {
@@ -24,35 +26,36 @@ class AttributeType
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @Serializer\Expose()
+	 * @JMS\Expose()
+	 * @JMS\Groups({"json.collection.read"})
 	 */
 	protected $id;
 			
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=60, unique=true)
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details","json"})
 	 */
 	protected $code;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $enabled;
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $description;
 	
@@ -74,7 +77,7 @@ class AttributeType
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Serializer\Expose()
+	 * @JMS\Expose()
 	 */
 	protected $createdAt;
 			

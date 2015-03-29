@@ -3,11 +3,11 @@ Sonata\MediaBundle\Model\Gallery:
   properties:
     enabled:
       expose: true
-      groups: ['json.qr.find']
+      groups: ['json']
     name:
       expose: true
-      groups: ['json.qr.find']
+      groups: ['json']
     galleryHasMedias:
       expose: true
-      groups: ['json.qr.find']
+      groups: ['json']
       

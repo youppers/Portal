@@ -3,11 +3,14 @@ namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Assetic\Exception\Exception;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="youppers_product__product_type")
  * @ORM\HasLifecycleCallbacks
+ * @JMS\ExclusionPolicy("all") 
+ * @JMS\AccessorOrder("custom", custom = {"id","name", "code"})  
  */
 class ProductType
 {
@@ -25,11 +28,15 @@ class ProductType
 			
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=60, unique=true)
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json"})
 	 */
 	protected $code;
 	
@@ -51,6 +58,8 @@ class ProductType
 	/**
 	 * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="productType", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json.collection.read"})
 	 **/
 	private $productAttributes;
 	

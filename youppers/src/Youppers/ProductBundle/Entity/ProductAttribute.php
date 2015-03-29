@@ -2,11 +2,14 @@
 namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="youppers_product__product_attribute")
  * @ORM\HasLifecycleCallbacks
+ * @JMS\ExclusionPolicy("all") 
+ * @JMS\AccessorOrder("custom", custom = {"id","name", "code"})  
  */
 class ProductAttribute
 {
@@ -30,6 +33,8 @@ class ProductAttribute
 	 * @ORM\ManyToOne(targetEntity="AttributeType", inversedBy="productAttributes")
 	 * @ORM\Id
 	 * @ORM\JoinColumn(name="attribute_type_id")
+	 * @JMS\Expose()
+	 * @JMS\Groups({"json.collection.read"})
 	 */
 	protected $attributeType;
 	
@@ -40,11 +45,15 @@ class ProductAttribute
 
 	/**
 	 * @ORM\Column(type="boolean", options={"default":false})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"json"})
 	 */
 	protected $variant;
 	
 	/**
 	 * @ORM\Column(type="integer")
+	 * @JMS\Expose()
+	 * @JMS\Groups({"json"})
 	 */
 	protected $position;	
 	

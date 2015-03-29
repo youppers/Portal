@@ -9,6 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="youppers_product__attribute_standard")
  * @ORM\HasLifecycleCallbacks
  * @Serializer\ExclusionPolicy("all") 
+ * @Serializer\AccessorOrder("custom", custom = {"id","name", "code"})  
  */
 class AttributeStandard
 {
@@ -28,28 +29,28 @@ class AttributeStandard
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.collection.read"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(type="string", length=60, nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.collection.read"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $symbol;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.collection.read"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $enabled;
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.collection.read"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $description;
 	
@@ -57,7 +58,7 @@ class AttributeStandard
 	 * @ORM\ManyToOne(targetEntity="AttributeType", inversedBy="attributeStandards")
 	 * @ORM\JoinColumn(name="attribute_type_id")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.attributes.read"})
 	 */
 	protected $attributeType;
 	

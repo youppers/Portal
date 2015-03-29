@@ -9,22 +9,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 use JMS\Serializer\Serializer;
 use Youppers\CommonBundle\Entity\Qr;
 use JMS\Serializer\SerializationContext;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class ProductSearchCommand extends ContainerAwareCommand
+class VariantReadCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('youppers:product:search')
-            ->setDescription('List products')
+            ->setName('youppers:product:variant:read')
+            ->setDescription('Show a variant and search for alternatives')
             ->addOption('sessionId', 'i', InputOption::VALUE_OPTIONAL, 'Session id', null)
-			->addOption('group', 'g', InputOption::VALUE_OPTIONAL, 'serialization group','json, json.product.list')
-			->addArgument('query',InputArgument::IS_ARRAY,'Query string')
+			->addOption('group', 'g', InputOption::VALUE_OPTIONAL, 'serialization group','json, json.variant.read')
+			->addArgument('variantId',InputArgument::REQUIRED,'Current Variant Id')
+			->addArgument('options',InputArgument::IS_ARRAY,'Selected options')
 			;
     }
 
     /**
-     * 
+     *
      * @param unknown $result
      * @param string $groups comma separated list
      */
@@ -34,14 +36,25 @@ class ProductSearchCommand extends ContainerAwareCommand
     	$serializationContext = SerializationContext::create();
     	$serializationContext->setGroups(array_map('trim',explode(',',$groups)));
     	$serializationContext->enableMaxDepthChecks();
-    	return $serializer->serialize($result,'json',$serializationContext);    	 
+    	return $serializer->serialize($result,'json',$serializationContext);
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $productService = $this->getContainer()->get('youppers.product.service.product');
-        $products = $productService->searchProducts(implode(' ',$input->getArgument('query')), $input->getOption('sessionId'));
-		
-        $output->writeln($this->serialize($products, $input->getOption('group')));
+        /*        
+        $variant = $productService->readVariant($input->getArgument('variantId'));
+        if (empty($variant)) {
+        	throw  new \Exception("Variant not found");
+        }
+        */
+        
+        $options = $input->getArgument('options');
+                
+        // TODO parse arguments and ask interactively parameters
+        
+        $variant = $productService->readVariant($input->getArgument('variantId'), $options, $input->getOption('sessionId'));
+        
+        $output->writeln($this->serialize($variant, $input->getOption('group')));        
     }
 }

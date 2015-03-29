@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  * @Validator\UniqueEntity({"value", "attributeStandard"})
  * @JMS\ExclusionPolicy("all") 
+ * @JMS\AccessorOrder("custom", custom = {"id","name", "value"})
  */
 class AttributeOption
 {
@@ -32,6 +33,15 @@ class AttributeOption
 		return $this->getAttributeStandard()->getAttributeType()->getName();
 	}
 	
+	/**
+	 * @JMS\VirtualProperty()
+	 * @JMS\Groups({"json"})
+	 */
+	public function getAttributeTypeId()
+	{
+		return $this->getAttributeStandard()->getAttributeType()->getId();
+	}
+		
 	public function getValueWithSymbol() {
 		return trim((null === $this->getValue() ? 'New' : $this->getValue()) . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getSymbol():'')); 
 	}
@@ -71,7 +81,7 @@ class AttributeOption
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 * @JMS\Expose()
-	 * @JMS\Groups({"details"})
+	 * @JMS\Groups({"details","json.variant.read", "json.attributes.read"})
 	 */
 	protected $id;
 			
@@ -93,14 +103,14 @@ class AttributeOption
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @JMS\Expose()
-	 * @JMS\Groups({"details"})
+	 * @JMS\Groups({"details", "json.attributes.read"})
 	 */
 	protected $image;
 	
 	/**
 	 * @ORM\Column(type="integer")
 	 * @JMS\Expose()
-	 * @JMS\Groups({"details"})
+	 * @JMS\Groups({"details", "json.attributes.read"})
 	 */
 	protected $position;
 	
@@ -123,7 +133,7 @@ class AttributeOption
 	 * @ORM\JoinColumn(name="equivalent_option_id", referencedColumnName="id")
 	 */
 	protected $equivalentOption;
-	
+			
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
@@ -152,7 +162,7 @@ class AttributeOption
 		$this->updatedAt = new \DateTime();
 	}	
 		
-	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle:AttributeOption
     /**
      * Constructor
      */
@@ -287,6 +297,29 @@ class AttributeOption
     }
 
     /**
+     * Set image
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $image
+     * @return AttributeOption
+     */
+    public function setImage(\Application\Sonata\MediaBundle\Entity\Media $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
      * Set attributeStandard
      *
      * @param \Youppers\ProductBundle\Entity\AttributeStandard $attributeStandard
@@ -363,28 +396,5 @@ class AttributeOption
     public function getEquivalentOption()
     {
         return $this->equivalentOption;
-    }
-
-    /**
-     * Set image
-     *
-     * @param \Application\Sonata\MediaBundle\Entity\Media $image
-     * @return AttributeOption
-     */
-    public function setImage(\Application\Sonata\MediaBundle\Entity\Media $image = null)
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * Get image
-     *
-     * @return \Application\Sonata\MediaBundle\Entity\Media 
-     */
-    public function getImage()
-    {
-        return $this->image;
     }
 }
