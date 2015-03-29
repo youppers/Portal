@@ -38,11 +38,10 @@ class Item
 	protected $variant;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="Zone")
-	 * @ORM\JoinTable(name="youppers_customer__item_zone")
+	 * @ORM\ManyToOne(targetEntity="Zone")
 	 * @JMS\Groups({"list", "details","create","json.item.list", "json.item.read"})
 	 */
-	protected $zones;	
+	protected $zone;	
 		
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
@@ -57,7 +56,7 @@ class Item
 			
 	public function __toString()
 	{
-		return $this->getVariant() ? $this->getVariant() . '@' . implode($this->getZones()->toArray(),',') : 'New';
+		return $this->getVariant() ? $this->getVariant() . '@' . $this->getZone() : 'New';
 	}
 	
 	/**
@@ -78,13 +77,6 @@ class Item
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle:Item
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->zones = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
@@ -212,35 +204,25 @@ class Item
     }
 
     /**
-     * Add zones
+     * Set zone
      *
-     * @param \Youppers\CustomerBundle\Entity\Zone $zones
+     * @param \Youppers\CustomerBundle\Entity\Zone $zone
      * @return Item
      */
-    public function addZone(\Youppers\CustomerBundle\Entity\Zone $zones)
+    public function setZone(\Youppers\CustomerBundle\Entity\Zone $zone = null)
     {
-        $this->zones[] = $zones;
+        $this->zone = $zone;
 
         return $this;
     }
 
     /**
-     * Remove zones
+     * Get zone
      *
-     * @param \Youppers\CustomerBundle\Entity\Zone $zones
+     * @return \Youppers\CustomerBundle\Entity\Zone 
      */
-    public function removeZone(\Youppers\CustomerBundle\Entity\Zone $zones)
+    public function getZone()
     {
-        $this->zones->removeElement($zones);
-    }
-
-    /**
-     * Get zones
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getZones()
-    {
-        return $this->zones;
+        return $this->zone;
     }
 }

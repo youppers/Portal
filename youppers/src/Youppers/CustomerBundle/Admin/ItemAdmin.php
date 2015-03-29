@@ -21,15 +21,15 @@ class ItemAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
+		->add('_action', 'actions', array(
+				'actions' => array(
+						'edit' => array(),
+				)
+		))		
 		->add('session', null, array('route' => array('name' => 'show')))
 		->add('variant', null, array('route' => array('name' => 'show')))
 		->add('removed')
-		->add('zones', null, array('associated_property' => 'name'))
-		->add('_action', 'actions', array(
-				'actions' => array(
-						'show' => array(),
-				)
-		))		
+		->add('zone', null, array('associated_property' => 'name'))
 		;
 	}
 
@@ -40,7 +40,7 @@ class ItemAdmin extends YouppersAdmin
 	{
 		$datagridMapper
 		->add('session')
-		->add('zones')
+		->add('zone')
 		;
 	}
 
@@ -53,7 +53,7 @@ class ItemAdmin extends YouppersAdmin
 		->add('session', null, array('route' => array('name' => 'show')))
 		->add('variant', null, array('route' => array('name' => 'show')))
 		->add('removed')
-		->add('zones')
+		->add('zone')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -69,7 +69,7 @@ class ItemAdmin extends YouppersAdmin
 			->add('session', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			->add('variant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			->add('removed', null, array('required'  => false))
-			->add('zones')
+			->add('zone')
 		;
 	}
 
