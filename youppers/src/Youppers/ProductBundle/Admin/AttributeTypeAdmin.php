@@ -86,7 +86,6 @@ class AttributeTypeAdmin extends YouppersAdmin
             ->add('code')
             ->add('enabled')
             ->add('description')
-            ->add('attributeStandards', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
             ->add('updatedAt')
             ->add('createdAt')
         ;
