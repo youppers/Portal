@@ -1,7 +1,7 @@
 services:
     youppers_product.admin.product_type:
         class: Youppers\ProductBundle\Admin\ProductTypeAdmin
-        arguments: [~, Youppers\ProductBundle\Entity\ProductType, 'YouppersProductBundle:ProductTypeAdmin']
+        arguments: [~, Youppers\ProductBundle\Entity\ProductType,  ~ ]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Type'}
 
@@ -13,13 +13,15 @@ services:
 
     youppers_product.admin.attribute_type:
         class: Youppers\ProductBundle\Admin\AttributeTypeAdmin
-        arguments: [~, Youppers\ProductBundle\Entity\AttributeType, 'YouppersProductBundle:AttributeTypeAdmin']
+        arguments: [~, Youppers\ProductBundle\Entity\AttributeType,  ~ ]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Product, label: 'Attribute Type'}
+        calls:
+            - [addChild, ['@youppers_product.admin.attribute_standard']]
 
     youppers_product.admin.attribute_standard:
         class: Youppers\ProductBundle\Admin\AttributeStandardAdmin
-        arguments: [~, Youppers\ProductBundle\Entity\AttributeStandard, 'YouppersProductBundle:AttributeStandardAdmin']
+        arguments: [~, Youppers\ProductBundle\Entity\AttributeStandard, ~ ]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Product, label: 'Attribute Standard'}
 

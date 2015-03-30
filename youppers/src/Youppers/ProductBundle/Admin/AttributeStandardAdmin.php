@@ -11,6 +11,11 @@ use Youppers\CommonBundle\Admin\YouppersAdmin;
 
 class AttributeStandardAdmin extends YouppersAdmin
 {
+	public function getParentAssociationMapping()
+	{
+		return 'attributeType';
+	}
+	
     /**
      * @param DatagridMapper $datagridMapper
      */
