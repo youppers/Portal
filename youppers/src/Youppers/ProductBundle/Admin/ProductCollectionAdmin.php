@@ -151,12 +151,17 @@ class ProductCollectionAdmin extends YouppersAdmin
     	$object = parent::getNewInstance();
     
     	$filterParameters = $this->getFilterParameters();
-    
-    	if (isset($filterParameters['brand'])) {
-    		$brand = $this->getModelManager()->find('Youppers\CompanyBundle\Entity\Brand',$filterParameters['brand']['value']);
+
+    	if (isset($filterParameters['brand__code'])) {
+    		$brand = $this->getModelManager()->findOneBy('Youppers\CompanyBundle\Entity\Brand',array('code' => $filterParameters['brand__code']['value']));
     		$object->setBrand($brand);
     	}
-    
+
+    	if (!isset($brand) && isset($filterParameters['brand__name'])) {
+    		$brand = $this->getModelManager()->findOneBy('Youppers\CompanyBundle\Entity\Brand',array('name' => $filterParameters['brand__name']['value']));
+    		$object->setBrand($brand);
+    	}
+
     	$object->setEnabled(true);
     
     	return $object;

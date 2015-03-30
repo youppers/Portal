@@ -85,4 +85,24 @@ class AttributeStandardAdmin extends YouppersAdmin
             ->add('createdAt')
         ;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getNewInstance()
+    {
+    	$object = parent::getNewInstance();
+    
+    	$filterParameters = $this->getFilterParameters();
+    
+    	if (isset($filterParameters['attributeType'])) {
+    		$attributeType = $this->getModelManager()->find('Youppers\ProductBundle\Entity\AttributeType',$filterParameters['attributeType']['value']);
+    		$object->setAttributeType($attributeType);
+    	}
+    
+    	$object->setEnabled(true);
+    
+    	return $object;
+    }
+    
 }
