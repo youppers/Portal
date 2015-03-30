@@ -28,3 +28,10 @@ services:
         arguments: ['@doctrine', '@logger']
         calls:
             - [ setContainer, [ '@service_container' ] ]    
+            
+    youppers.customer.service.history:
+        class:     Youppers\CustomerBundle\Service\HistoryService
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+                          

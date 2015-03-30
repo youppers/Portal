@@ -228,6 +228,7 @@ class QrService extends Controller
 					return null;
 				}
 				$this->container->get('youppers_common.analytics.tracker')->sendQrFindBox($box,$session);				
+				$this->container->get('youppers.customer.service.history')->newHistoryQrBox($box,$session);				
 			}				
 
 			if ($qr->getTargetType() == 'youppers_company_product') {

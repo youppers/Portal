@@ -2,8 +2,8 @@
 
 #  php app/console youppers:oauth-server:client:create --grant-type="password" --grant-type="refresh_token" --grant-type="token" --grant-type="client_credentials" test
 
-client_id=25a39ff1-cd63-11e4-a2aa-080027980c59_4wkty9e55jms840w488k0wgs0ss0sgs0so0gg80kwso8kggok0
-client_secret=iklbvfyfexkcgs48o4oks80gsc8skg4g8k4ckcwo40wk8kkks
+client_id=4181e57a-cb6c-11e4-b4aa-0cc47a127a14_3jej301vyjy8s0ccwc4w4soo8wc4w4ko0wg00wos8kk4cwgs88
+client_secret=2zxj9pzrsu4gsg4okcswg84c04gwg4g0oko48wog8c0ocoko8o
 host=127.0.0.1
 
 username=signoramaria
@@ -151,6 +151,8 @@ echo -------------- Search a QR with link id, should be OK  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Qr.find","params":{"sessionId":"'$session_id'","text":"'$qrtextid'"}}')
 echo qr=$qrtextid Response:
 echo $response | php -f $format
+
+exit
 
 echo -------------- Show list of consultants selectables for the session -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Consultant.list","params":{"sessionId":"'$session_id'"}}')
