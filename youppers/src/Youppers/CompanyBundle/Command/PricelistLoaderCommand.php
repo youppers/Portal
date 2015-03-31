@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Criteria;
 
 use Ddeboer\DataImport\Reader\CsvReader;
 use Youppers\CompanyBundle\Entity\Product;
+use Youppers\CompanyBundle\Loader\ISPricelistLoader;
 
 class PricelistLoaderCommand extends ContainerAwareCommand
 {	
@@ -34,19 +35,20 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{	
+		//new ISPricelistLoader();
+		
 		$input->validate();
 
-		$loader = $this->getContainer()->get('youppers.company.pricelist.loader');
+		$loader = $this->getContainer()->get('youppers.company.pricelist.loader_factory')->create($input->getArgument("pricelist"));
 		
 		$loader->setFs($input->getOption('fieldseparator'));
-		$loader->setPricelistByCode($input->getArgument("pricelist"));
 
 		$brand = $input->getOption('brand');
 		
 		if ($brand === null) {
-			$output->writeln("Brand code not supllied (multi brand pricelist)");
+			$output->writeln("Brand code not supplied (multi brand pricelist)");
 		} else {				
-			$loader->setBrand($brand);
+			$loader->setBrandByCode($brand);
 		}
 		
 		$loader->load($input->getArgument('filename'),$input->getOption('skip'),$input->getOption('enable')); 

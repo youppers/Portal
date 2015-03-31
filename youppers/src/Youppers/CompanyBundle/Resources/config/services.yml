@@ -1,8 +1,14 @@
 services:
-    youppers.company.pricelist.loader:
-        class:     Youppers\CompanyBundle\Service\PricelistLoaderService
+    youppers.company.pricelist.loader_factory:
+        class:     Youppers\CompanyBundle\Loader\PricelistLoaderFactory
         arguments: ['@doctrine', '@logger']
         calls:
             - [ setContainer, [ '@service_container' ] ]
+
+#    youppers.company.pricelist.loader.IS:
+#        class:     Youppers\CompanyBundle\Service\BasePricelistLoader
+#        arguments: ['@doctrine', '@logger']
+#        calls:
+#            - [ setContainer, [ '@service_container' ] ]
     
     
