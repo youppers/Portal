@@ -330,7 +330,7 @@ class SessionService extends ContainerAware
 		$message->setSubject(sprintf("Visita %s al negozio %s",$profile->getName(),$session->getStore()));
 		$body = "Gentile $toName,
 
-allegata a questa email le inviamo l'elenco dei materiali selezionati ed i relativi allegati.
+con questa email le inviamo l'elenco dei materiali selezionati ed i relativi allegati.
 
 Cordiali saluti
   $fromName";
