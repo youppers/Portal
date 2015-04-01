@@ -30,7 +30,7 @@ class ListClientCommand extends ContainerAwareCommand
         $clients = $clientRepository->findAll();
         
         $table = new Table($output);        
-        $table->setHeaders(array_merge($clientFields,array('publicId')));
+        $table->setHeaders(array_merge(array('publicId'),$clientFields));
         
         foreach ($clients as $client) {
         	$row = array('publicId' => $client->getPublicId());

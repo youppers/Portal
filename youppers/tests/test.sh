@@ -23,6 +23,12 @@ option1=
 option2=
 option3=
 
+variant_id=05149cca-cccf-11e4-b4aa-0cc47a127a14
+variant_id1=05149cca-cccf-11e4-b4aa-0cc47a127a14
+variant_id2=05149cca-cccf-11e4-b4aa-0cc47a127a14
+zone_id1=b50715bc-c98c-11e4-b4aa-0cc47a127a14
+zone_id2=c6f6f8e4-c98c-11e4-b4aa-0cc47a127a14
+
 pwd=$(dirname $0)
 conf=$pwd/config
 format=$pwd/format.php
@@ -44,6 +50,17 @@ echo response=$response
 
 access_token=$(echo $response|sed -n -e 's/{"access_token":"\([a-zA-Z0-9]*\)",.*/\1/p')
 echo access_token=$access_token
+
+
+echo -------------- Send the session  -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Session.send","params":{"sessionId":"e554f0aa-d8a0-11e4-946b-0800273000da"}}' 
+echo Request: $request  
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
+
+exit
+
+
 
 echo -------------- Call Session.new  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.new"}')
@@ -68,11 +85,6 @@ echo $response | php -f $format
 
 # source $pwd/test_zones.sh
 
-variant_id1=05149cca-cccf-11e4-b4aa-0cc47a127a14
-variant_id2=6149a4ba-d3aa-11e4-b4aa-0cc47a127a14
-zone_id1=b50715bc-c98c-11e4-b4aa-0cc47a127a14
-zone_id2=c6f6f8e4-c98c-11e4-b4aa-0cc47a127a14
-
 echo -------------- Add a variant to 1 zone -------------
 request='{"id":"1","jsonrpc":"2.0","method":"Item.create","params":{"sessionId":"'$session_id'","items":[{"variantId":"'$variant_id1'","zoneId":"'$zone_id1'"}]}}'
 echo Request=$request
@@ -86,9 +98,6 @@ response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
 echo $response | php -f $format
 
 echo -------------- Add a variant to 2 zones -------------
-variant_id=6149a4ba-d3aa-11e4-b4aa-0cc47a127a14
-zone_id1=b50715bc-c98c-11e4-b4aa-0cc47a127a14
-zone_id2=c6f6f8e4-c98c-11e4-b4aa-0cc47a127a14
 request='{"id":"1","jsonrpc":"2.0","method":"Item.create","params":{"sessionId":"'$session_id'","items":[{"variantId":"'$variant_id2'","zoneId":"'$zone_id1'"},{"variantId":"'$variant_id2'","zoneId":"'$zone_id2'"}]}}'
 echo Request=$request
 response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
@@ -152,8 +161,6 @@ response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrp
 echo qr=$qrtextid Response:
 echo $response | php -f $format
 
-exit
-
 echo -------------- Show list of consultants selectables for the session -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Consultant.list","params":{"sessionId":"'$session_id'"}}')
 #echo consultant_id=$consultant_id
@@ -207,6 +214,12 @@ echo $response | php -f $format
 
 product=$(echo $response|sed -n -e 's/.*"product":{"name":"\([^"]*\)",.*/\1/p')
 echo product=$product
+
+echo -------------- Send the session  -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Session.send","params":{"sessionId":"'$session_id'"}}' 
+echo Request: $request  
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
 
 echo
 echo End.

@@ -9,7 +9,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Sonata\CoreBundle\Form\FormHelper;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use FOS\UserBundle\Model\User;
@@ -51,7 +50,7 @@ class SessionService extends ContainerAware
 		if ($storeId) {
 			$store = $em->find('YouppersDealerBundle:Store', $storeId);
 			if (empty($store)) {
-				throw $this->createNotFoundException('Store not found');
+				throw new \Exception('Store not found');
 			} else {
 				$session->setStore($store);
 			}
@@ -190,6 +189,10 @@ class SessionService extends ContainerAware
 	{
 		$session = $this->getSession($sessionId);
 		
+		if (empty($session)) {
+			throw new \Exception("Invalid sessioId ".$sessionId);
+		}
+		
 		if ($this->tokenStorage) {
 			$user = $this->tokenStorage->getToken()->getUser();
 			if ($user && empty($session->getProfile())) {
@@ -214,7 +217,7 @@ class SessionService extends ContainerAware
 			$session = $this->getSession($sessionId);
 			if ($session === null) {
 				$this->logger->error(sprintf("Session '%s' not found",$sessionId));
-				throw new NotFoundResourceException("Session not found");
+				throw new \Exception("Session not found");
 			}
 		}
 				
@@ -259,4 +262,124 @@ class SessionService extends ContainerAware
 		}
 	}
 	
+	/**
+	 * Send the session via email
+	 * @param unknown $sessionId
+	 * @throws \Exception
+	 * @return Ambigous <object, mixed>
+	 */
+	public function send($sessionId)
+	{
+		$session = $this->getSession($sessionId);
+		
+		$profile = $session->getProfile();
+		$store = $session->getStore();
+		
+		if (empty($profile)) {
+			throw new \Exception("Profile not selected for session");
+		}
+
+		if (empty($store)) {
+			throw new \Exception("Store not selected for session");
+		}
+		
+		$fromAddress = null;
+		$fromName = null;
+		
+		if ($consultant = $session->getConsultant()) {
+			if ($consultant->getUser()) {
+				$fromAddress = $consultant->getUser()->getEmail();
+			}
+			$fromName = $consultant->getFullname();
+		}
+		if (empty($fromAddress)) {
+			$fromAddress = $store->getEmail();
+		}
+		if (empty($fromName)) {
+			$fromName = $store->getName();
+		}			 
+		if (empty($fromAddress)) {
+			$fromAddress = $store->getDealer()->getEmail();
+		}
+
+		$toAddress = null;
+		$toName = null;
+		
+		$toAddress = $profile->getUser()->getEmail();
+		$toName = trim($profile->getUser()->getFullname());
+		if (empty($toAddress)) {
+			$toAddress = $fromAddress;
+		}		
+		if (empty($toName)) {
+			$toName = $session->getName();
+		}
+		if (empty($toName)) {
+			$toName = "Cliente";
+		}
+				
+		$this->logger->info(sprintf("Sending Session via email to '%s'",$toAddress));
+		
+		$mailer = $this->container->get('mailer');		
+
+		$message = $mailer->createMessage();		
+		
+		$message->setFrom($fromAddress, $fromName);
+		$message->setTo($toAddress,$toName);
+		$message->setCc($fromAddress,$fromName);
+		
+		$message->setSubject(sprintf("Visita %s al negozio %s",$profile->getName(),$session->getStore()));
+		$body = "Gentile $toName,
+
+allegata a questa email le inviamo l'elenco dei materiali selezionati ed i relativi allegati.
+
+Cordiali saluti
+  $fromName";
+   		
+		$items = $session->getItems();
+		
+		foreach ($items as $item) {
+			if ($item->getRemoved()) {
+				continue;
+			}
+			$variant = $item->getVariant();
+			
+			$media = $variant->getImage();
+						
+			$mediaProvider = $this->container->get($media->getProviderName());
+			$url = $mediaProvider->generatePublicUrl($media,'reference');
+			$this->logger->debug("Attach: ".$url);
+			$body .= sprintf("\n\nZona: %s\n",$item->getZone());
+			$body .= sprintf("  Prodotto: %s\n",$variant->getProduct());
+			foreach ($variant->getVariantProperties() as $property) {
+				$body .= sprintf("    %s\n",$property->getAttributeOption());
+			}
+			$body .= sprintf("    Immagine: %s\n",$url);			
+			//$message->attach(\Swift_Attachment::fromPath($path));						
+			
+			$gallery = $variant->getPdfGallery();
+			if ($gallery) {
+				foreach ($gallery->getGalleryHasMedias() as $galleryMedia) {
+					$media = $galleryMedia->getMedia();
+					$mediaProvider = $this->container->get($media->getProviderName());
+					$url = $mediaProvider->generatePublicUrl($media, 'reference');
+					$body .= sprintf("    Allegato: %s\n",$url);			
+					//$message->attach(\Swift_Attachment::fromPath($path));						
+				}
+			}
+		}
+
+		$message->setBody($body);
+				
+		$failed = array();
+		$mailer->send($message,$failed);
+		
+		if (empty($failed)) {
+			$this->logger->info("Sent email " . $message);		
+			return $message->toString();
+		} else {
+			$this->logger->error("Failed sending to  " . implode(', ',$failed) . " of " . $message);		
+			throw new \Exception("Send failed to: " . implode(', ',$failed));		
+		}
+	}
+
 }
