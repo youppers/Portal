@@ -23,6 +23,7 @@ class StoreAdmin extends YouppersAdmin
 		$showMapper
 		->add('name')
 		->add('code')
+		->add('email')
 		->add('enabled')
 		->add('description')
 		->add('geoid', null, array('route' => array('name' => 'show')))
@@ -79,6 +80,7 @@ class StoreAdmin extends YouppersAdmin
 		$formMapper
 		->add('name')
 		->add('code')
+		->add('email')
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-6'))

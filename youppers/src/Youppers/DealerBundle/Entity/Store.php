@@ -4,6 +4,7 @@ namespace Youppers\DealerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -54,6 +55,13 @@ class Store
 	 */
 	protected $code;
 
+	/**
+	 * @ORM\Column(type="string")
+	 * @Assert\Email
+	 * @var string
+	 */
+	protected $email;
+	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @Serializer\Expose()
@@ -398,5 +406,28 @@ class Store
     public function getBoxes()
     {
         return $this->boxes;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Store
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

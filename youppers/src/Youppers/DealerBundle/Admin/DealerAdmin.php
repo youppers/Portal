@@ -22,6 +22,7 @@ class DealerAdmin extends YouppersAdmin
 		$showMapper
 		->add('name')
 		->add('code')
+		->add('email')
 		->add('enabled')
 		->add('description')
 		->add('createdAt')
@@ -74,6 +75,7 @@ class DealerAdmin extends YouppersAdmin
 		->with('Dealer', array('class' => 'col-md-8'))
 		->add('name')
 		->add('code')
+		->add('email')
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))

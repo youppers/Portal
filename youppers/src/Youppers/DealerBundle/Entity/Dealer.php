@@ -4,6 +4,7 @@ namespace Youppers\DealerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -33,6 +34,13 @@ class Dealer
 	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read"})
 	 */
 	protected $code;
+		
+	/**
+     * @ORM\Column(type="string")
+     * @Assert\Email
+     * @var string
+	 */
+	protected $email;
 
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
@@ -310,5 +318,28 @@ class Dealer
     public function getConsultants()
     {
         return $this->consultants;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Dealer
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }
