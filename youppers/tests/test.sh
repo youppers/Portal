@@ -53,7 +53,7 @@ echo access_token=$access_token
 
 
 echo -------------- Send the session  -------------
-request='{"id":"1","jsonrpc":"2.0","method":"Session.send","params":{"sessionId":"e554f0aa-d8a0-11e4-946b-0800273000da"}}' 
+request='{"id":"1","jsonrpc":"2.0","method":"Session.remove","params":{"sessionId":"e554f0aa-d8a0-11e4-946b-0800273000da"}}' 
 echo Request: $request  
 response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
 echo $response | php -f $format

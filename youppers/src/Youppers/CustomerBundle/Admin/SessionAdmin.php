@@ -25,6 +25,7 @@ class SessionAdmin extends YouppersAdmin
 		->add('store', null, array('route' => array('name' => 'show')))
 		->add('consultant', null, array('route' => array('name' => 'show')))
 		->add('name')
+		->add('removed')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -40,6 +41,7 @@ class SessionAdmin extends YouppersAdmin
 		->add('store', null, array('route' => array('name' => 'show')))
 		->add('consultant', null, array('route' => array('name' => 'show')))
 		->add('name')
+		->add('removed')
 		->add('createdAt')
 		->add('_action', 'actions', array(
 				'actions' => array(
@@ -73,6 +75,7 @@ class SessionAdmin extends YouppersAdmin
 		->add('store.code')
 		->add('consultant.fullname')
 		->add('name')
+		->add('removed')
 		;
 	}
 	
@@ -87,6 +90,7 @@ class SessionAdmin extends YouppersAdmin
 			->add('store', 'sonata_type_model_list', array('required' => false))
 			->add('consultant', 'sonata_type_model_list', array('required' => false))
 			->add('name')
+			->add('removed', null, array('required'  => false))
 		;
 	}
 

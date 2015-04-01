@@ -382,4 +382,13 @@ Cordiali saluti
 		}
 	}
 
+	public function remove($sessionId)
+	{
+		$session = $this->getSession($sessionId);
+		$session->setRemoved(true);
+		$em = $this->managerRegistry->getManagerForClass(get_class($session));
+		$em->flush();
+		return $session;
+	}
+	
 }

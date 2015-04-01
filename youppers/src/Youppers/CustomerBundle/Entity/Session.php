@@ -46,6 +46,12 @@ class Session
 	protected $name;
 	
 	/**
+	 * @ORM\Column(type="boolean")
+	 * @JMS\Groups({"list","details","update","create","json.session.read"})
+	 */
+	protected $removed;
+	
+	/**
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
 	 * @var Item[]
 	 * @JMS\Groups({"details"})
@@ -76,6 +82,9 @@ class Session
 	 */	
 	public function prePersist()
 	{
+		if (null === $this->getRemoved()) {
+			$this->setRemoved(false);
+		}
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
@@ -276,5 +285,28 @@ class Session
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * Set removed
+     *
+     * @param boolean $removed
+     * @return Session
+     */
+    public function setRemoved($removed)
+    {
+        $this->removed = $removed;
+
+        return $this;
+    }
+
+    /**
+     * Get removed
+     *
+     * @return boolean 
+     */
+    public function getRemoved()
+    {
+        return $this->removed;
     }
 }
