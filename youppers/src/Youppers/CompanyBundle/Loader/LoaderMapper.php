@@ -37,7 +37,6 @@ class LoaderMapper
 		}
 		if (is_object($key) && ($key instanceof \Closure)) {
 			$res = $key->__invoke($this->data);
-			dump($res);
 			return $res;
 		}
 		if (array_key_exists($key,$this->data)) {
