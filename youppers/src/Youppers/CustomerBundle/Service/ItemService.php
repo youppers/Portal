@@ -145,7 +145,7 @@ class ItemService extends ContainerAware
 		}			
 	}
 	
-	public function remove($itemId,$sessiodId=null) 
+	public function remove($itemId,$sessionId=null) 
 	{
 		$item = $this->getItem($itemId);
 		$em = $this->managerRegistry->getManagerForClass(get_class($item));
