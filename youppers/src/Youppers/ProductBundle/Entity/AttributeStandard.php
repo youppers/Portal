@@ -3,13 +3,18 @@ namespace Youppers\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="youppers_product__attribute_standard")
+ * @ORM\Table(name="youppers_product__attribute_standard",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="type_name_idx", columns={"attribute_type_id", "name"}),
+ *   })
  * @ORM\HasLifecycleCallbacks
  * @Serializer\ExclusionPolicy("all") 
  * @Serializer\AccessorOrder("custom", custom = {"id","name", "code"})  
+ * @Validator\UniqueEntity({"name","attributeType"})
  */
 class AttributeStandard
 {
@@ -27,7 +32,7 @@ class AttributeStandard
 	protected $id;
 			
 	/**
-	 * @ORM\Column(type="string", length=60, unique=true)
+	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json"})
 	 */
