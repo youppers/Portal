@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="Profile">
+                <source>Profile</source>
+                <target>Profilo</target>
+            </trans-unit>                        
+            <trans-unit id="Profile List">
+                <source>Profile List</source>
+                <target>Elenco Profili</target>
+            </trans-unit>                        
+            <trans-unit id="Zone">
+                <source>Zone</source>
+                <target>Zona</target>
+            </trans-unit>                        
+            <trans-unit id="Zone List">
+                <source>Zone List</source>
+                <target>Elenco Zone</target>
+            </trans-unit>                        
+            <trans-unit id="Session">
+                <source>Session</source>
+                <target>Sessione</target>
+            </trans-unit>                        
+            <trans-unit id="Session List">
+                <source>Session List</source>
+                <target>Elenco Sessioni</target>
+            </trans-unit>                        
+            <trans-unit id="Item">
+                <source>Item</source>
+                <target>Materiale</target>
+            </trans-unit>                        
+            <trans-unit id="Item List">
+                <source>Item</source>
+                <target>Lista Materiali</target>
+            </trans-unit>                        
+            <trans-unit id="History">
+                <source>History</source>
+                <target>Cronologia</target>
+            </trans-unit>                        
+            <trans-unit id="History List">
+                <source>History List</source>
+                <target>Elenco Cronologia</target>
+            </trans-unit>                        
+            <trans-unit id="Removed">
+                <source>Removed</source>
+                <target>Rimosso</target>
+            </trans-unit>                        
+        </body>
+    </file>
+</xliff>

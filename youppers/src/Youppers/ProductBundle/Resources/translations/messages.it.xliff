@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="Product Type">
+                <source>Product Type</source>
+                <target>Tipo Prodotto</target>
+            </trans-unit>
+            <trans-unit id="Product Type List">
+                <source>Product Type List</source>
+                <target>Elenco Tipi Prodotto</target>
+            </trans-unit>
+            <trans-unit id="Attribute Type">
+                <source>Attribute Type</source>
+                <target>Tipo Attributo</target>
+            </trans-unit>
+            <trans-unit id="Attribute Type List">
+                <source>Attribute Type List</source>
+                <target>Elenco Tipi Attributo</target>
+            </trans-unit>
+            <trans-unit id="Attribute Standards">
+                <source>Attribute Standards</source>
+                <target>Codifica Attributo</target>
+            </trans-unit>
+            <trans-unit id="Attribute Standards List">
+                <source>Attribute Standards List</source>
+                <target>Elenco Codifiche Attributo</target>
+            </trans-unit>
+            <trans-unit id="Product Collection">
+                <source>Product Collection</source>
+                <target>Collezione Prodotto</target>
+            </trans-unit>
+            <trans-unit id="Product Collection List">
+                <source>Product Collection List</source>
+                <target>Elenco Collezioni Prodotto</target>
+            </trans-unit>
+            <trans-unit id="Product Variant">
+                <source>Product Variant</source>
+                <target>Variante Prodotto</target>
+            </trans-unit>
+            <trans-unit id="Variant">
+                <source>Variant</source>
+                <target>Variante</target>
+            </trans-unit>
+            <trans-unit id="Product Variant List">
+                <source>Product Variant List</source>
+                <target>Elenco Varianti Prodotto</target>
+            </trans-unit>
+            <trans-unit id="Product Code">
+                <source>Product Code</source>
+                <target>Codice Prodotto</target>
+            </trans-unit>            
+            <trans-unit id="Product Name">
+                <source>Product Name</source>
+                <target>Nome Prodotto</target>
+            </trans-unit>
+            <trans-unit id="Variant Properties">
+                <source>Variant Properties</source>
+                <target>Proprietà Variante</target>
+            </trans-unit>
+            <trans-unit id="Product Collection Name">
+                <source>Product Collection Name</source>
+                <target>Nome Collezione</target>
+            </trans-unit>                        
+            <trans-unit id="Product Collection Brand Code">
+                <source>Product Collection Brand Code</source>
+                <target>Codice Marchio</target>
+            </trans-unit>            
+            <trans-unit id="Product Collection Brand Name">
+                <source>Product Collection Brand Name</source>
+                <target>Nome Marchio</target>
+            </trans-unit>
+            <trans-unit id="Product Collection Brand Company Code">
+                <source>Product Collection Brand Company Code</source>
+                <target>Codice Produttore</target>
+            </trans-unit>
+            <trans-unit id="Product Collection Brand Company Name">
+                <source>Product Collection Brand Company Name</source>
+                <target>Nome Produttore</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
+
+
+

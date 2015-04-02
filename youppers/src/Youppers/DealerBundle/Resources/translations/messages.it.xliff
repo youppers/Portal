@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="Dealer">
+                <source>Dealer</source>
+                <target>Rivenditore</target>
+            </trans-unit>
+            <trans-unit id="Dealer List">
+                <source>Dealer List</source>
+                <target>Elenco Rivenditori</target>
+            </trans-unit>
+            <trans-unit id="Store">
+                <source>Store</source>
+                <target>Negozio</target>
+            </trans-unit>
+            <trans-unit id="Store List">
+                <source>Store List</source>
+                <target>Elenco Negozi</target>
+            </trans-unit>
+            <trans-unit id="Consultant">
+                <source>Consultant</source>
+                <target>Consulente</target>
+            </trans-unit>
+            <trans-unit id="Consultant List">
+                <source>Consultant List</source>
+                <target>Elenco Consulenti</target>
+            </trans-unit>
+            <trans-unit id="Box">
+                <source>Box</source>
+                <target>Allestimenti</target>
+            </trans-unit>
+            <trans-unit id="Box List">
+                <source>Box List</source>
+                <target>Elenco Allestimenti</target>
+            </trans-unit>
+            <trans-unit id="Box Products">
+                <source>Box Products</source>
+                <target>Prodotti Allestimento</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
+
+
+
