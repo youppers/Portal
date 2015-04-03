@@ -14,7 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ItemAdmin extends YouppersAdmin
 {
-
+	public function getParentAssociationMapping()
+	{
+		return 'session';
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -41,8 +45,18 @@ class ItemAdmin extends YouppersAdmin
 		$datagridMapper
 		->add('session')
 		->add('zone')
+		->add('removed')
 		;
 	}
+
+	/**
+	 * Default Datagrid values
+	 *
+	 * @var array
+	 */
+	protected $datagridValues = array(
+		'removed' => array('value' => 2)
+	);
 
 	/**
 	 * {@inheritdoc}

@@ -1,0 +1,7 @@
+
+{% if admin.isGranted('VIEW', object) and admin.hasRoute('items') %}
+    <a href="{{ admin.generateObjectUrl('items', object) }}" class="btn btn-sm btn-default view_link" title="{{ 'Items'|trans({}, 'messages') }}">
+        <i class="glyphicon glyphicon-zoom-in"></i>
+        {{ 'Items'|trans({}, 'messages') }}
+    </a>
+{% endif %}

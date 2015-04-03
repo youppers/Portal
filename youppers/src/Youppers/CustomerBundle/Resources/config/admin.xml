@@ -31,7 +31,10 @@
 
             <argument />
             <argument>Youppers\CustomerBundle\Entity\Session</argument>
-            <argument />
+            <argument>YouppersCustomerBundle:SessionCRUD</argument>
+            <call method="addChild">
+                <argument type="service" id="youppers.customer.admin.item" />
+            </call>
 
         </service>
 

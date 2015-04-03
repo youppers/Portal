@@ -11,10 +11,16 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Symfony\Component\Validator\Constraints as Assert;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class SessionAdmin extends YouppersAdmin
 {
 
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->add('items', $this->getRouterIdParameter().'/item/list');
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -46,6 +52,8 @@ class SessionAdmin extends YouppersAdmin
 		->add('_action', 'actions', array(
 				'actions' => array(
 						'edit' => array(),
+						//'items' => array('route' => array('name' => 'admin_youppers_customer_session_item_list'))
+						'items' => array('template' => 'YouppersCustomerBundle:CRUD:list__action_items.html.twig'),
 				)
 		))		
 		;
@@ -57,6 +65,7 @@ class SessionAdmin extends YouppersAdmin
 	 * @var array
 	 */
 	protected $datagridValues = array(
+			'removed' => array('value' => 2),
 			'_page' => 1,            // display the first page (default = 1)
 			'_sort_order' => 'DESC', // reverse order (default = 'ASC')
 			'_sort_by' => 'createdAt'  // name of the ordered field
@@ -64,7 +73,8 @@ class SessionAdmin extends YouppersAdmin
 	
 			// the '_sort_by' key can be of the form 'mySubModel.mySubSubModel.myField'.
 	);
-		
+
+	
 	/**
 	 * {@inheritdoc}
 	 */
