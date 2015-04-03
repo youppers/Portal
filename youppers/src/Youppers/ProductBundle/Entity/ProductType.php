@@ -100,16 +100,6 @@ class ProductType
 		$this->productAttributes->add($productAttribute);
 	}
 	
-	/**
-	 * @param ProductAttribute $productAttribute
-	 * @return void
-	 */
-	public function removeProductAttribute(ProductAttribute $productAttribute)
-	{
-		$productAttribute->setProductType(null);
-		$this->productAttributes->removeElement($productAttribute);
-	}
-	
 	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle
     /**
      * Constructor
@@ -298,5 +288,15 @@ class ProductType
     public function getProductAttributes()
     {
         return $this->productAttributes;
+    }
+
+    /**
+     * Remove productAttributes
+     *
+     * @param \Youppers\ProductBundle\Entity\ProductAttribute $productAttributes
+     */
+    public function removeProductAttribute(\Youppers\ProductBundle\Entity\ProductAttribute $productAttributes)
+    {
+        $this->productAttributes->removeElement($productAttributes);
     }
 }
