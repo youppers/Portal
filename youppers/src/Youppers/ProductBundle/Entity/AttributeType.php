@@ -27,7 +27,7 @@ class AttributeType
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 * @JMS\Expose()
-	 * @JMS\Groups({"json.collection.read"})
+	 * @JMS\Groups({"json.collection.read","json.variant.read"})
 	 */
 	protected $id;
 			
