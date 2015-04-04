@@ -232,7 +232,12 @@ class SessionService extends ContainerAware
 	 */
 	public function getSession($sessionId) 
 	{
-		return $this->managerRegistry->getRepository('YouppersCustomerBundle:Session')->find($sessionId);
+		return $this->getRepository()->find($sessionId);
+	}
+	
+	public function getRepository()
+	{
+		return $this->managerRegistry->getRepository('YouppersCustomerBundle:Session');
 	}
 	
 	/**
@@ -392,6 +397,34 @@ Cordiali saluti
 		$em = $this->managerRegistry->getManagerForClass(get_class($session));
 		$em->flush();
 		return $session;
+	}
+
+	public function clean($delete = false)
+	{
+		$qb = $this->getRepository()->createQueryBuilder('s');
+		$qb
+			->leftJoin('YouppersCustomerBundle:History', 'h', 'WITH', 'h.session = s')
+			->leftJoin('YouppersCustomerBundle:Item', 'i', 'WITH', 's = i.session')
+			->leftJoin('YouppersCustomerBundle:Profile', 'p', 'WITH', 's.profile = p')
+			->leftJoin('YouppersDealerBundle:Store', 't', 'WITH', 's.store = t')
+			->where('s.updatedAt < :when')
+			->andWhere('h IS NULL')
+			->andWhere('i IS NULL')
+			->andWhere('p IS NULL')
+			->andWhere('t IS NULL')
+			->setParameter('when', (new \DateTime())->sub(new \DateInterval('P1D')))
+			;
+		$sessions = $qb->getQuery()->execute();
+
+		if ($delete) {
+			$em = $this->managerRegistry->getManagerForClass('YouppersCustomerBundle:Session');
+			foreach ($sessions as $session) {
+				$em->remove($session);
+			}
+			$em->flush();
+		}
+		
+		return count($sessions);
 	}
 	
 }
