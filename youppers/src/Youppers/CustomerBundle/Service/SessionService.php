@@ -290,7 +290,10 @@ class SessionService extends ContainerAware
 			if ($consultant->getUser()) {
 				$fromAddress = $consultant->getUser()->getEmail();
 			}
-			$fromName = $consultant->getFullname();
+			$fromName = trim($consultant->getFullname());
+			if (empty($fromName)) {
+				$fromName = trim($consultant->getUser()->getFullname());
+			}
 		}
 		if (empty($fromAddress)) {
 			$fromAddress = $store->getEmail();
