@@ -14,6 +14,17 @@ class HistoryAdd extends History
 	 * @return Item
 	 */
 	protected $item;
+	
+	public function getDescription()
+	{
+		return "Add " . $this->getItem()->getDescription();
+	}
+
+	public function getType()
+	{
+		return 'item_add';
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle
     /**
      * Get id

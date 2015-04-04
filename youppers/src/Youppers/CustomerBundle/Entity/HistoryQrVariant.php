@@ -15,6 +15,17 @@ class HistoryQrVariant extends History
 	 * @return ProductVariant
 	 */
 	protected $variant;
+	
+	public function getDescription()
+	{
+		return "QrVariant " . $this->getVariant();
+	}
+	
+	public function getType()
+	{
+		return 'qr_variant';
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle
 
     /**

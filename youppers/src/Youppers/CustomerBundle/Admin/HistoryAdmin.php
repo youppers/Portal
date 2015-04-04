@@ -53,9 +53,9 @@ class HistoryAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->add('session', null, array('route' => array('name' => 'show')))
 		->addIdentifier('type', 'text', array('route' => array('name' => 'show')))
 		->addIdentifier('createdAt', null, array('route' => array('name' => 'show')))
+		->add('session', null, array('route' => array('name' => 'show')))
 		->add('box', null, array('route' => array('name' => 'show')))
 		->add('variant', null, array('route' => array('name' => 'show')))
 		->add('item', null, array('route' => array('name' => 'show')))

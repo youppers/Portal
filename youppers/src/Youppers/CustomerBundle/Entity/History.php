@@ -30,7 +30,7 @@ abstract class History
 	protected $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Session")
+	 * @ORM\ManyToOne(targetEntity="Session", inversedBy="history")
      * @var \Youppers\CustomerBundle\Entity\Session
 	 */
 	protected $session;
@@ -47,17 +47,13 @@ abstract class History
 	 */
 	protected $createdAt;
 	
-	//public $type;
-				
 	public function __toString()
 	{
 		return $this->getCreatedAt() ? $this->getType() . '@' . $this->getCreatedAt()->format('c') : 'New';
 	}
 		
-	public function getType()
-	{
-		return ClassUtils::getClass($this);
-	}
+	public abstract function getType();
+	
 	/**
 	 * @ORM\PrePersist()
 	 */	
@@ -74,6 +70,8 @@ abstract class History
 	{	
 		$this->updatedAt = new \DateTime();
 	}
+	
+	public abstract function getDescription();
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle
 

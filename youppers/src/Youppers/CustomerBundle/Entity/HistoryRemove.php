@@ -14,6 +14,17 @@ class HistoryRemove extends History
 	 * @return Item
 	 */
 	protected $item;
+	
+	public function getDescription()
+	{
+		return "Remove " . $this->getItem()->getDescription();
+	}
+	
+	public function getType()
+	{
+		return 'item_remove';
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle
 
     /**

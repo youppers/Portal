@@ -32,6 +32,8 @@ class SessionAdmin extends YouppersAdmin
 		->add('consultant', null, array('route' => array('name' => 'show')))
 		->add('name')
 		->add('removed')
+		->add('items', null, array('associated_property' => 'description'))
+		->add('history', null, array('associated_property' => 'description'))
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -51,9 +53,8 @@ class SessionAdmin extends YouppersAdmin
 		->add('createdAt')
 		->add('_action', 'actions', array(
 				'actions' => array(
-						'edit' => array(),
-						//'items' => array('route' => array('name' => 'admin_youppers_customer_session_item_list'))
-						'items' => array('template' => 'YouppersCustomerBundle:CRUD:list__action_items.html.twig'),
+						'show' => array(),
+						'items' => array('template' => 'YouppersCustomerBundle:CRUD:list__action_items.html.twig'),						
 				)
 		))		
 		;

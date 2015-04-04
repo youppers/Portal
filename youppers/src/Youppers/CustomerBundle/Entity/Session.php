@@ -57,7 +57,14 @@ class Session
 	 * @JMS\Groups({"details"})
 	 */
 	protected $items;
-		
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="History", mappedBy="session")
+	 * @var History[]
+	 * @JMS\Groups({"details"})
+	 */
+	protected $history;
+	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 * @JMS\Groups({"details"})
@@ -308,5 +315,38 @@ class Session
     public function getRemoved()
     {
         return $this->removed;
+    }
+
+    /**
+     * Add history
+     *
+     * @param \Youppers\CustomerBundle\Entity\History $history
+     * @return Session
+     */
+    public function addHistory(\Youppers\CustomerBundle\Entity\History $history)
+    {
+        $this->history[] = $history;
+
+        return $this;
+    }
+
+    /**
+     * Remove history
+     *
+     * @param \Youppers\CustomerBundle\Entity\History $history
+     */
+    public function removeHistory(\Youppers\CustomerBundle\Entity\History $history)
+    {
+        $this->history->removeElement($history);
+    }
+
+    /**
+     * Get history
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getHistory()
+    {
+        return $this->history;
     }
 }

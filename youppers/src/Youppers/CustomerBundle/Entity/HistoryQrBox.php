@@ -16,6 +16,16 @@ class HistoryQrBox extends History
 	 */
 	protected $box;
 		
+	public function getDescription()
+	{
+		return "QrBox " . $this->getBox();
+	}
+	
+	public function getType()
+	{
+		return 'qr_box';
+	}
+	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle
 
     /**

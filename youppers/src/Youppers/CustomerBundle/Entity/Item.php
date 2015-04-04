@@ -56,7 +56,7 @@ class Item
 			
 	public function __toString()
 	{
-		return $this->getVariant() ? $this->getVariant() . '@' . $this->getZone() : 'New';
+		return $this->getVariant() ? $this->getVariant() . ' #' . $this->getZone() : 'New';
 	}
 	
 	/**
@@ -77,6 +77,12 @@ class Item
 	public function preUpdate()
 	{	
 		$this->updatedAt = new \DateTime();
+	}
+	
+	public function getDescription()
+	{
+		return ($this->getRemoved() ? '[Removed] ':'') . 
+			$this->getVariant() . '@' . $this->getZone();
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle:Item
