@@ -45,10 +45,12 @@
 		"doctrine/migrations" : "1.0.x-dev",
 		"ddeboer/data-import-bundle" : "0.1.*",
 		"sonata-project/ecommerce" : "@dev",
-		"wa72/jsonrpc-bundle": "0.5.*",
-		"friendsofsymfony/oauth-server-bundle": "~1.4",
-		"mopa/bootstrap-bundle": "~2.3",
-		"knplabs/knp-paginator-bundle": "~2.4"
+		"wa72/jsonrpc-bundle" : "0.5.*",
+		"friendsofsymfony/oauth-server-bundle" : "~1.4",
+		"mopa/bootstrap-bundle" : "~2.3",
+		"knplabs/knp-paginator-bundle" : "~2.4",
+		"tecnick.com/tcpdf" : "~6",
+		"whiteoctober/tcpdf-bundle" : "~1"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~2.5"

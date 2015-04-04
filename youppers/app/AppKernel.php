@@ -130,6 +130,7 @@ class AppKernel extends Kernel
         	new Happyr\Google\AnalyticsBundle\HappyrGoogleAnalyticsBundle(),
         	new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
         	new Wa72\JsonRpcBundle\Wa72JsonRpcBundle(),
+        	new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -4,7 +4,7 @@ namespace Youppers\DealerBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sonata\AdminBundle\Controller\CRUDController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 class BoxCRUDController extends CRUDController
 {
@@ -53,5 +53,14 @@ class BoxCRUDController extends CRUDController
         $this->get('youppers.common.qr')->assign($object);
         
         return $this->redirect('show');         
+    }
+    
+    public function batchActionPrint(ProxyQueryInterface $selectedModelQuery)
+    {
+    	$selectedBoxes = $selectedModelQuery->execute();
+
+    	// TODO use TCPDF
+    	
+        return $this->listAction();
     }
 }

@@ -14,6 +14,20 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class BoxAdmin extends Admin
 {
+	public function getBatchActions()
+	{
+		$actions = parent::getBatchActions();
+		
+		if ($this->hasRoute('list') && $this->isGranted('SHOW')) {			
+			$actions['print'] = array(
+					'label'            => $this->trans('action_print', array(), 'messages'),
+					'ask_confirmation' => false, // by default always true
+			);
+		}
+		
+		return $actions;
+	    
+	}
 	
 	protected function configureRoutes(RouteCollection $collection)
 	{
@@ -53,7 +67,7 @@ class BoxAdmin extends Admin
 		->add('qr', null, array('label' => 'QRCode', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
 		->add('qr.boxes', null, array('route' => array('name' => 'show'), 'associated_property' => 'name'))
 		;
-	}
+	}	
 
 	/**
 	 * {@inheritdoc}
