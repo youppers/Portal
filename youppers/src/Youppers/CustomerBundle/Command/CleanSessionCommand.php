@@ -26,7 +26,7 @@ class CleanSessionCommand extends ContainerAwareCommand
         $this
             ->setName('youppers:customer:session:clean')
             ->setDescription('Clean useless sessions')
-            ->addOption('delete','y', InputOption::VALUE_OPTIONAL,'Delete sessions', true)
+            ->addOption('delete','y', null,'Delete sessions')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command will remove old and useless sessions.
 
