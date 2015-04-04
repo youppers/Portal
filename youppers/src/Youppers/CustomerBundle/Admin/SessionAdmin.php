@@ -32,8 +32,8 @@ class SessionAdmin extends YouppersAdmin
 		->add('consultant', null, array('route' => array('name' => 'show')))
 		->add('name')
 		->add('removed')
-		->add('items', null, array('associated_property' => 'description'))
-		->add('history', null, array('associated_property' => 'description'))
+		->add('items', null, array('route' => array('name' => 'show'), 'associated_property' => 'description'))
+		->add('history', null, array('route' => array('name' => 'show'), 'associated_property' => 'description'))
 		->add('createdAt')
 		->add('updatedAt')
 		;
