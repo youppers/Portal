@@ -15,6 +15,15 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use FOS\UserBundle\Model\User;
 use Youppers\CustomerBundle\Entity\Profile;
 use Youppers\CustomerBundle\Entity\HistoryQrBox;
+use Youppers\CustomerBundle\Entity\HistoryQrVariant;
+use Youppers\CustomerBundle\Entity\HistoryShow;
+use Youppers\CustomerBundle\Entity\HistoryAdd;
+use Youppers\CustomerBundle\Entity\HistoryRemove;
+use Youppers\ProductBundle\Entity\ProductVariant;
+use Youppers\DealerBundle\Entity\Box;
+use Youppers\CustomerBundle\Entity\Item;
+use Youppers\CustomerBundle\Entity\History;
+
 
 class HistoryService extends ContainerAware
 {
@@ -37,14 +46,82 @@ class HistoryService extends ContainerAware
 	{
 		$this->tokenStorage = $tokenStorage;
 	}
-
-	public function newHistoryQrBox($box,$session)
+	
+	
+	/**
+	 * Save History Event Record
+	 * @param History $history
+	 */
+	protected function save(History $history)
 	{
-		$history = new HistoryQrBox();
-		$history->setSession($session);
-		$history->setBox($box);
 		$em = $this->managerRegistry->getManagerForClass(get_class($history));
 		$em->persist($history);
 		$em->flush();
 	}
+	
+	/**
+	 * Record History Event
+	 * @param Box $box
+	 * @param Session $session
+	 */
+	public function newHistoryQrBox(Box $box,Session $session)
+	{
+		$history = new HistoryQrBox();
+		$history->setSession($session);
+		$history->setBox($box);
+		$this->save($history);
+	}
+
+	/**
+	 * Record History Event
+	 * @param ProductVariant $variant
+	 * @param Session $session
+	 */
+	public function newHistoryQrVariant(ProductVariant $variant,Session $session)
+	{
+		$history = new HistoryQrVariant();
+		$history->setSession($session);
+		$history->setVariant($variant);
+		$this->save($history);
+	}
+
+	/**
+	 * Record History Event
+	 * @param ProductVariant $variant
+	 * @param Session $session
+	 */
+	public function newHistoryShow(ProductVariant $variant,Session $session)
+	{
+		$history = new HistoryShow();
+		$history->setSession($session);
+		$history->setVariant($variant);
+		$this->save($history);
+	}
+		
+	/**
+	 * Record History Event
+	 * @param Item $item
+	 * @param Session $session
+	 */
+	public function newHistoryItemAdd(Item $item,Session $session)
+	{
+		$history = new HistoryAdd();
+		$history->setSession($session);
+		$history->setItem($item);
+		$this->save($history);
+	}
+
+	/**
+	 * Record History Event
+	 * @param Item $item
+	 * @param Session $session
+	 */
+	public function newHistoryItemRemove(Item $item,Session $session)
+	{
+		$history = new HistoryRemove();
+		$history->setSession($session);
+		$history->setItem($item);
+		$this->save($history);
+	}
+
 }

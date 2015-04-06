@@ -234,6 +234,9 @@ class QrService extends Controller
 			if ($qr->getTargetType() == 'youppers_company_product') {
 				$product = $qr->getTargets()->first();
 				$this->container->get('youppers_common.analytics.tracker')->sendQrFindProduct($product,$session);
+				if ($variant = $product->getVariant()) {
+					$this->container->get('youppers.customer.service.history')->newHistoryQrVariant($variant,$session);						
+				}
 			}
 			
 		}

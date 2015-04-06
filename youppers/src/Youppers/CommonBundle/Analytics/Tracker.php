@@ -9,6 +9,7 @@ use Youppers\CustomerBundle\Entity\Session;
 use Youppers\DealerBundle\Entity\Box;
 use Youppers\CompanyBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
+use Youppers\CustomerBundle\Entity\Item;
 
 class Tracker
 {
@@ -196,5 +197,68 @@ class Tracker
     	$this->send($data,$session);
     }
     
+    public function sendItemAdd(Item $item,Session $session)
+    {
+    	$product = $item->getVariant()->getProduct();
+    	$zone = $item->getZone();
+    	$data=array(
+    			'dt' => 'Add Product: ' . $product,
+    			'ec' => 'ItemAdd',
+    			'ea' => 'Add Item in Zome ' . $zone,
+    			'el' => 'Product: ' . $product,
+    	);
+    	 
+    	$data['dimension1'] = $product->getBrand()->getCompany()->getName();
+    	$data['dimension2'] = $product->getBrand()->getName();
+    	
+    	// Product Action
+    	$data['pa']= 'add';
+    	
+    	$data['pr1id'] = $product->getId();
+    	$data['pr1nm'] = $product->getName();
+    	// add category
+    	// add variant
+    	if ($brand = $product->getBrand()) {
+    		$data['pr1br'] = $brand->getName();
+    	}
+    	
+    	if ($session && $store = $session->getStore()) {
+    		$data['geoid']=$store->getGeoid();
+    	}
+    	
+    	$this->send($data,$session);    	 
+    }
 
+    public function sendItemRemove(Item $item,Session $session)
+    {
+    	$product = $item->getVariant()->getProduct();
+    	$zone = $item->getZone();
+    	$data=array(
+    			'dt' => 'Remove Product: ' . $product,
+    			'ec' => 'ItemRemove',
+    			'ea' => 'Remove Item from Zome ' . $zone,
+    			'el' => 'Product: ' . $product,
+    	);
+    	
+    	$data['dimension1'] = $product->getBrand()->getCompany()->getName();
+    	$data['dimension2'] = $product->getBrand()->getName();
+    	 
+    	// Product Action
+    	$data['pa']= 'remove';
+    	 
+    	$data['pr1id'] = $product->getId();
+    	$data['pr1nm'] = $product->getName();
+    	// add category
+    	// add variant
+    	if ($brand = $product->getBrand()) {
+    		$data['pr1br'] = $brand->getName();
+    	}
+    	 
+    	if ($session && $store = $session->getStore()) {
+    		$data['geoid']=$store->getGeoid();
+    	}
+    	 
+    	$this->send($data,$session);    	 
+    }
+    
 }

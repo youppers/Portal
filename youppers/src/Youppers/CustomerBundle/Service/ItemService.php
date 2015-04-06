@@ -102,6 +102,8 @@ class ItemService extends ContainerAware
 				$this->logger->error(sprintf("Session '%s' not found",$sessionId));
 				throw new NotFoundResourceException("Session not found");
 			}
+		} else {
+			throw new NotFoundResourceException("Session not specified");
 		}
 		
 		$repo = $this->getRepository();
@@ -119,6 +121,8 @@ class ItemService extends ContainerAware
 				$item->setVariant($variant);
 				$item->setZone($zone);
 				$em->persist($item);
+				$this->container->get('youppers_common.analytics.tracker')->sendItemAdd($item,$session);				
+				$this->container->get('youppers.customer.service.history')->newHistoryItemAdd($item,$session);
 			}				
 			$item->setRemoved(false);
 			$newItems[] = $item;			
@@ -151,6 +155,11 @@ class ItemService extends ContainerAware
 		$em = $this->managerRegistry->getManagerForClass(get_class($item));
 		$item->setRemoved(true);
 		$em->flush();
+		$session = $this->getSession($sessionId);
+		if ($session) {
+			$this->container->get('youppers_common.analytics.tracker')->sendItemRemove($item,$session);				
+			$this->container->get('youppers.customer.service.history')->newHistoryItemRemove($item,$session);
+		}		
 		return $item;
 	}
 }
