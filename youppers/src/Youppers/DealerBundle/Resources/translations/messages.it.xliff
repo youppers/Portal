@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="Box">
                 <source>Box</source>
-                <target>Allestimenti</target>
+                <target>Allestimento</target>
             </trans-unit>
             <trans-unit id="Box List">
                 <source>Box List</source>

@@ -30,8 +30,12 @@
                 <source>Item</source>
                 <target>Materiale</target>
             </trans-unit>                        
+            <trans-unit id="Items">
+                <source>Items</source>
+                <target>Materiali</target>
+            </trans-unit>                        
             <trans-unit id="Item List">
-                <source>Item</source>
+                <source>Item List</source>
                 <target>Lista Materiali</target>
             </trans-unit>                        
             <trans-unit id="History">
