@@ -53,7 +53,8 @@ class Tracker
 		}
 
 		if (!array_key_exists('dp',$data)) {
-			$data['dp'] = Slugify::create()->slugify($data['ec'] . '/' . $data['ea'] . '/' . $data['el']); // Document Path
+			$slugifier = Slugify::create();
+			$data['dp'] = $slugifier->slugify($data['ec']) . '/' . $slugifier->slugify($data['ea']) . '/' . $slugifier->slugify($data['el']); // Document Path
 		}
 		
 		if ($session) {
