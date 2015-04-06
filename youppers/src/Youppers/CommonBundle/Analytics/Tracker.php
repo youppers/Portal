@@ -10,6 +10,7 @@ use Youppers\DealerBundle\Entity\Box;
 use Youppers\CompanyBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Youppers\CustomerBundle\Entity\Item;
+use Cocur\Slugify\Slugify;
 
 class Tracker
 {
@@ -51,6 +52,10 @@ class Tracker
 			$data['z'] = rand();
 		}
 
+		if (!array_key_exists('dp',$data)) {
+			$data['dp'] = Slugify::create()->slugify($data['ec'] . '/' . $data['ea'] . '/' . $data['el']); // Document Path
+		}
+		
 		if ($session) {
 			if ($profile = $session->getProfile()) {
 				$data['cid'] = $profile->getUser()->getId();
