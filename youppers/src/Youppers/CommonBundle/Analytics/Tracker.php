@@ -191,7 +191,7 @@ class Tracker
     		// add variant
 
     	if ($session && $store = $session->getStore()) {
-    		$data['geoid']=$store->getGeoid();
+    		$data['geoid']=$store->getGeoid()->getCriteriaId();
     	}
 
     	$this->send($data,$session);
@@ -223,7 +223,7 @@ class Tracker
     	}
     	
     	if ($session && $store = $session->getStore()) {
-    		$data['geoid']=$store->getGeoid();
+    		$data['geoid']=$store->getGeoid()->getCriteriaId();
     	}
     	
     	$this->send($data,$session);    	 
@@ -255,7 +255,7 @@ class Tracker
     	}
     	 
     	if ($session && $store = $session->getStore()) {
-    		$data['geoid']=$store->getGeoid();
+    		$data['geoid']=$store->getGeoid()->getCriteriaId();
     	}
     	 
     	$this->send($data,$session);    	 
