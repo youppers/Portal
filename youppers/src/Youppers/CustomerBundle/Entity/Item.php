@@ -81,8 +81,9 @@ class Item
 	
 	public function getDescription()
 	{
-		return ($this->getRemoved() ? '[Removed] ':'') . 
-			$this->getVariant() . '@' . $this->getZone();
+		return $this->getVariant() . '@' . $this->getZone()
+			. ($this->getRemoved() ? ' [Removed]':'')
+		;
 	}
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersCustomerBundle:Item
