@@ -56,12 +56,19 @@ class Tracker
 			$slugifier = Slugify::create();
 			$data['dp'] = $slugifier->slugify($data['ec']) . '/' . $slugifier->slugify($data['ea']) . '/' . $slugifier->slugify($data['el']); // Document Path
 		}
+
+		if ($clientId = $this->request->get('client_id')) {
+			$data['cid'] = $clientId;  // Client ID FIXME Must identify the device
+		}
 		
 		if ($session) {
+			if (!array_key_exists('cid',$data)) {
+				$data['cid'] = $session->getId();  // Client ID FIXME Must identify the device
+			}			
 			if ($profile = $session->getProfile()) {
-				$data['cid'] = $profile->getUser()->getId();
+				$data['uid'] = $profile->getUser()->getId();  // User ID
 			} else {
-				$data['cid'] = $session->getId();
+				$data['uid'] = $session->getId();
 			}
 		}
 		
