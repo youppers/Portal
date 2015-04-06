@@ -67,13 +67,15 @@ class Tracker
 			}			
 			if ($profile = $session->getProfile()) {
 				$data['uid'] = $profile->getUser()->getId();  // User ID
-			} else {
-				$data['uid'] = $session->getId();
 			}
 		}
 		
 		if ($this->request) {
 			$data['uip'] = $this->request->getClientIp(); // IP Override
+		}
+
+		if (!array_key_exists('cid',$data)) {
+			$data['cid'] = '41221fc7-d979-11e4-9cb6-0800273000da';  // Client ID is required FIXME Must identify the device
 		}
 		
     	$stopwatch = new Stopwatch();
