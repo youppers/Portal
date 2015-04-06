@@ -15,6 +15,7 @@ use Doctrine\Common\Util\ClassUtils;
  * @ORM\DiscriminatorMap({
  * 		"qr_box" = "HistoryQrBox",
  * 		"qr_variant" = "HistoryQrVariant",
+ * 		"variant_show" = "HistoryShow",
  * 		"item_add" = "HistoryAdd",
  * 		"item_remove" = "HistoryRemove",
  * 	})

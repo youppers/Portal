@@ -55,10 +55,11 @@
             <argument />
             <call method="setSubClasses">
                 <argument type="collection">
-                    <argument key="QrBox">Youppers\CustomerBundle\Entity\HistoryQrBox</argument>
-                    <argument key="QrVariant">Youppers\CustomerBundle\Entity\HistoryQrVariant</argument>
-                    <argument key="ItemAdd">Youppers\CustomerBundle\Entity\HistoryAdd</argument>
-                    <argument key="ItemRemove">Youppers\CustomerBundle\Entity\HistoryRemove</argument>
+                    <argument key="Qr Box">Youppers\CustomerBundle\Entity\HistoryQrBox</argument>
+                    <argument key="Qr Variant">Youppers\CustomerBundle\Entity\HistoryQrVariant</argument>
+                    <argument key="Variant Show">Youppers\CustomerBundle\Entity\HistoryShow</argument>
+                    <argument key="Item Add">Youppers\CustomerBundle\Entity\HistoryAdd</argument>
+                    <argument key="Item Remove">Youppers\CustomerBundle\Entity\HistoryRemove</argument>
                 </argument>
             </call>
 

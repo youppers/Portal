@@ -24,19 +24,19 @@ class HistoryAdmin extends Admin
 			->add('session', null, array('route' => array('name' => 'show')))
 			->add('type', 'text')
 			;
-		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryQrBox") {
+		if ($this->subject->getType() == 'qr_box') {
 			$showMapper
 			->add('box', null, array('route' => array('name' => 'show')))
 			;
 		}
 		
-		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryQrVariant") {
+		if ($this->subject->getType() == 'qr_variant' || $this->subject->getType() == 'variant_show') {
 			$showMapper
 			->add('variant', null, array('route' => array('name' => 'show')))
 			;
 		}
-		
-		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryAdd" || $this->getClass() == "Youppers\CustomerBundle\Entity\HistoryRemove") {
+
+		if ($this->subject->getType() == 'item_add' || $this->subject->getType() == 'item_remove') {
 			$showMapper
 			->add('item', null, array('route' => array('name' => 'show')))
 			;
@@ -83,19 +83,19 @@ class HistoryAdmin extends Admin
 			->add('session', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 		;
 		
-		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryQrBox") {
+		if ($this->subject->getType() == 'qr_box') {		
 			$formMapper
 				->add('box', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			;				
 		}
 		
-		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryQrVariant") {
+		if ($this->subject->getType() == 'qr_variant' || $this->subject->getType() == 'variant_show') {
 			$formMapper
 			->add('variant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			;
 		}
 
-		if ($this->getClass() == "Youppers\CustomerBundle\Entity\HistoryAdd" || $this->getClass() == "Youppers\CustomerBundle\Entity\HistoryRemove") {
+		if ($this->subject->getType() == 'item_add' || $this->subject->getType() == 'item_remove') {		
 			$formMapper
 			->add('item', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			;
