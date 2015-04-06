@@ -53,6 +53,7 @@ class Session
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
+	 * @ORM\OrderBy({"createdAt" = "DESC"})
 	 * @var Item[]
 	 * @JMS\Groups({"details"})
 	 */
@@ -60,6 +61,7 @@ class Session
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="History", mappedBy="session")
+	 * @ORM\OrderBy({"createdAt" = "DESC"})
 	 * @var History[]
 	 * @JMS\Groups({"details"})
 	 */
