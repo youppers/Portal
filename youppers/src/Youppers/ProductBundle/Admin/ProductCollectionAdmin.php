@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductCollectionAdmin extends YouppersAdmin
 {
@@ -60,6 +61,7 @@ class ProductCollectionAdmin extends YouppersAdmin
         $listMapper
             ->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('code')
+        	->add('countProductVariants', 'url', array('label'=> 'Variants', 'route' => array('identifier_parameter_name' => 'id','name' => 'admin_youppers_product_productcollection_productvariant_list')))
             ->add('image', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
         	->add('enabled', null, array('editable' => true))
         	->add('brand', null, array('route' => array('name' => 'show')))
@@ -142,7 +144,9 @@ class ProductCollectionAdmin extends YouppersAdmin
             ->add('createdAt')
         ;
     }
-
+    
+    private $justSavedObject;
+    
     /**
      * {@inheritdoc}
      */
@@ -162,10 +166,28 @@ class ProductCollectionAdmin extends YouppersAdmin
     		$object->setBrand($brand);
     	}
 
+    	/*
+    	$session = $this->get('session');
+    	if ($session->has('newProductCollectionInstance')) {
+    		$data = $session->get('newProductCollectionInstance');
+    		if (!isset($brand)) {
+    			$object->setBrand($data['brand']);
+    		}
+    		$object->setType($data['type']);
+    	}
+    	*/
+    	 
     	$object->setEnabled(true);
     
     	return $object;
     }
     
+    /*
+    public function postPersist($object)
+    {    	
+    	$session = $this->get('session');
+    	$session->set('newProductCollectionInstance', array('brand' => $object->getBrand(), 'type' => $object->getType()));
+    }
+    */
 
 }

@@ -41,7 +41,7 @@ class ProductCollection
 	protected $name;
 	
 	/**
-	 * @ORM\Column(name="code", type="string", length=20)
+	 * @ORM\Column(name="code", type="string", length=60)
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json"})
 	 */
@@ -96,6 +96,11 @@ class ProductCollection
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 **/
 	protected $productVariants;
+	
+	public function getCountProductVariants()
+	{
+		return count($this->getProductVariants());
+	}
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
