@@ -28,8 +28,9 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->addArgument('filename', InputArgument::REQUIRED, 'File name to load from' )
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
+		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
 		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable product')
-		->addOption('fieldseparator', 'f', InputOption::VALUE_OPTIONAL, 'Field separator',",")
+		->addOption('fieldseparator', 'fs', InputOption::VALUE_OPTIONAL, 'Field separator',",")
 		;
 	}
 
@@ -50,8 +51,10 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		} else {				
 			$loader->setBrandByCode($brand);
 		}
+		$loader->setForce($input->getOption('force'));
+		$loader->setEnable($input->getOption('enable'));
 		
-		$loader->load($input->getArgument('filename'),$input->getOption('skip'),$input->getOption('enable')); 
+		$loader->load($input->getArgument('filename'),$input->getOption('skip')); 
 		
 	}
 	

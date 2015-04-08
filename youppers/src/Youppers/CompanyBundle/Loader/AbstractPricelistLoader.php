@@ -5,10 +5,21 @@ namespace Youppers\CompanyBundle\Loader;
 use Ddeboer\DataImport\Reader\CsvReader;
 use Ddeboer\DataImport\Reader\Factory\CsvReaderFactory;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Youppers\CompanyBundle\Entity\Brand;
+use Youppers\CompanyBundle\Entity\Product;
+use Youppers\CompanyBundle\Entity\ProductPrice;
 
 abstract class AbstractPricelistLoader extends AbstractLoader
 {
 	protected $pricelist;
+	
+	private $disabledBrands = array();
+	
+	protected $mapper;
+	
+	protected $numRows;
+	
+	private $skip;
 	
 	public function setPricelist($pricelist)
 	{
@@ -17,40 +28,46 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$this->company = $pricelist->getCompany();
 	}
 	
-	public function load($filename,$skip,$enable)
+	public function load($filename,$skip=0)
 	{
+		$this->skip = $skip;
+		
 		if (empty($this->pricelist)) {
 			throw new \Exception("Pricelist MUST be set before loading prices.");
 		}
 	
 		$this->logger->info(sprintf("Loading pricelist from '%s'.",$filename));
-		if ($enable) {
+		if ($this->enable) {
 			$this->logger->info("And enable products");
 		}
 	
 		$reader = $this->createReader($filename);
 	
-		$numRows = 0;
+		$this->numRows = 0;
 	
 		$reader->setHeaderRowNumber(0);
 	
-		$serializer = $this->container->get('serializer');
+		$this->serializer = $this->container->get('serializer');
 	
-		$mapper = $this->createMapper();
+		$this->mapper = $this->createMapper();
 	
-		$this->logger->info("Using mapper: " . $mapper);
-	
+		$this->logger->info("Using mapper: " . $this->mapper);
+		
 		if ($skip>0) {
 			$this->logger->info(sprintf("Skip '%d' rows",$skip));
 		} else {
 			$query = $this->em->createQuery('DELETE Youppers\CompanyBundle\Entity\ProductPrice p WHERE p.pricelist = :pricelist');
 			$query->setParameter('pricelist', $this->pricelist);
-			$numDeleted = $query->execute();
-			if ($numDeleted > 0) {
-				$this->logger->info(sprintf("Deleted '%d' rows before reloading pricelist.",$numDeleted));
+			if ($this->force) {
+				$numDeleted = $query->execute();
+				if ($numDeleted > 0) {
+					$this->logger->info(sprintf("Deleted '%d' rows before reloading pricelist.",$numDeleted));
+				}
+			} else {
+				$this->logger->info("SQL: " . $query->getSql());
 			}
 		}
-	
+			
 		// speed up
 		$this->em->getConnection()->getConfiguration()->setSQLLogger(null);
 	
@@ -58,91 +75,153 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$stopwatch->start('load');
 		foreach ($reader as $row) {
 	
-			$numRows++;
-			if ($numRows <= $skip) {
+			$this->numRows++;
+			if ($this->numRows <= $skip) {
 				continue;
 			}
-				
-			$mapper->setData($row);
-				
-			$brandCode = $mapper->remove('brand');
-			if (null !== $brandCode) {
-				$this->setBrandByCode($brandCode);
-			}
-	
-			if (empty($this->brand)) {
-				if (empty($brandCode)) {
-					throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually",$mapper->key('brand')));
-				}
-				$brand = $this->getBrandRepository()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
-				if (empty($brand)) {
-					throw new \Exception(sprintf("At row '%d': Brand '%s' not found for Company '%s'",$numRows,$brandCode,$this->company));
-				}
-			} else {
-				$brand = $this->brand;
-			}
-				
-			$productCode = $mapper->remove('code');
-				
-			if (empty($productCode)) {
-				throw new \Exception(sprintf("Code column MUST be in the column '%s'",$mapper->key('code')));
-			}
-	
-			$this->product = $this->getProductRepository()
-			->findOneBy(array('brand' => $brand, 'code' => $productCode));
-	
-			if (empty($this->product)) {
-				$className = $this->getProductRepository()->getClassName();
-				$this->product = new $className;
-				$this->product->setBrand($brand);
-				$this->product->setCode($productCode);
-			}
-	
-			if ($enable) {
-				$this->product->setEnabled(true);
-			}
-			$name = $mapper->remove('name');
-			$this->product->setName($name);
 			
-			$productGtin = $mapper->remove('gtin');
-			if (!empty($productGtin)) {
-				$this->product->setGtin($productGtin);
-			}
+			$this->hanldleRow($row);
 				
-			if (empty($this->product->getId())) {
-				$this->em->persist($this->product);
-			}
-	
-			$price = $this->getProductPriceRepository()
-			->findOneBy(array('product' => $this->product, 'pricelist' => $this->pricelist));
-			if (!empty($price)) {
-				throw new \Exception(sprintf("Duplicated price at row %d: %s",$numRows,implode(',',$row)));
-			}
-				
-			$className = $this->getProductPriceRepository()->getClassName();
-			$price = new $className;
-			$price->setPriceList($this->pricelist);
-			$price->setProduct($this->product);
-			$price->setPrice($mapper->remove('price'));
-			$price->setUom($mapper->remove('uom'));
-			try {
-				$price->setInfo($serializer->serialize($mapper, 'json'));
-			} catch (Exception $e) {
-				$this->logger->critical(sprintf("At row %d",$numRows),$e);
-			}
-			$this->em->persist($price);
-				
-			if ($numRows % 500 == 0) {
-				$this->logger->info(sprintf("Read %d rows",$numRows));
-				$this->em->flush();
-				$this->em->clear(get_class($price));
+			if ($this->numRows % 500 == 0) {
+				$this->logger->info(sprintf("Read %d rows",$this->numRows));
+				if ($this->force) {
+					$this->em->flush();
+				} else {
+					//
+				}
+				$this->em->clear($this->getProductPriceRepository()->getClassName());
 			}
 		}
 		$event = $stopwatch->stop('load');
-		$this->logger->info(sprintf("Load done, read %d rows in %d mS",$numRows,$event->getDuration()));
+		$this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
 	
 		$this->em->flush();
 	
 	}
+		
+	protected function handleBrand()
+	{
+		$brandCode = $this->mapper->remove('brand');
+		if (null !== $brandCode) {
+			$this->setBrandByCode($brandCode);
+		}
+		
+		if (empty($this->brand)) {
+			if (empty($brandCode)) {
+				throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually",$this->mapper->key('brand')));
+			}
+			$brand = $this->getBrandRepository()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
+			if (empty($brand)) {
+				throw new \Exception(sprintf("At row '%d': Brand '%s' not found for Company '%s'",$this->numRows,$brandCode,$this->company));
+			}
+		} else {
+			$brand = $this->brand;
+		}
+			
+		if ($this->skip == 0 && $this->force && $this->enable && !array_key_exists($brand->getId(),$this->disabledBrands)) {
+			$query = $this->em->createQuery('UPDATE Youppers\CompanyBundle\Entity\ProducT p SET p.enabled = false WHERE p.brand = :brand');
+			$query->setParameter('brand', $brand);
+			$query->execute();
+			$this->disabledBrands[$brand->getId()] = $brand;
+			$this->logger->info(sprintf("Disabled all products of brand '%s'",$brand));
+		}		
+		return $brand;
+	}
+	
+	/**
+	 * 
+	 * @param Brand $brand
+	 * @throws \Exception
+	 * @return Product
+	 */
+	protected function handleProduct(Brand $brand)
+	{
+		$productCode = $this->mapper->remove('code');
+		
+		if (empty($productCode)) {
+			throw new \Exception(sprintf("Product code not found in the column '%s'",$this->mapper->key('code')));
+		}
+		
+		$product = $this->getProductRepository()
+		->findOneBy(array('brand' => $brand, 'code' => $productCode));
+		
+		if (empty($product)) {
+			$className = $this->getProductRepository()->getClassName();
+			$product = new $className;
+			$product->setBrand($brand);
+			$product->setCode($productCode);
+		} elseif (!$this->force) {
+			$this->em->detach($product);
+		}
+		
+		if ($this->enable) {
+			$product->setEnabled(true);
+		}
+		$name = $this->mapper->remove('name');
+		$product->setName($name);
+			
+		$productGtin = $this->mapper->remove('gtin');
+		if (!empty($productGtin)) {
+			$product->setGtin($productGtin);
+		}
+		
+		if (empty($product->getId())) {
+			if ($this->force) {
+				$this->em->persist($product);
+			} else {
+				$this->logger->info("New: " . $product);
+			}
+		} elseif (!$this->force) {
+			$this->logger->debug("Updated: " . $product);
+		}		
+		
+		return $product;
+	}
+	
+	/**
+	 * 
+	 * @param Product $product
+	 * @throws \Exception
+	 * @return ProductPrice
+	 */
+	protected function handlePrice(Product $product)
+	{
+		$price = $this->getProductPriceRepository()
+		->findOneBy(array('product' => $product, 'pricelist' => $this->pricelist));
+		if ($this->force && !empty($price)) {
+			throw new \Exception(sprintf("Duplicated price at row %d: %s",$this->numRows,implode(',',$row)));
+		}
+		
+		$className = $this->getProductPriceRepository()->getClassName();
+		$price = new $className;
+		$price->setPriceList($this->pricelist);
+		$price->setProduct($product);
+		$price->setPrice($this->mapper->remove('price'));
+		$price->setUom($this->mapper->remove('uom'));
+		try {
+			$price->setInfo($this->serializer->serialize($this->mapper, 'json'));
+		} catch (Exception $e) {
+			$this->logger->critical(sprintf("At row %d",$this->numRows),$e);
+		}
+		if ($this->force) {
+			$this->em->persist($price);
+		}
+		return $price;
+	}
+
+	public function hanldleRow($row) {
+		
+		//parent::hanldleRow($row);
+		
+		$this->mapper->setData($row);
+		
+		$brand = $this->handleBrand();
+
+		$product = $this->handleProduct($brand);
+		
+		$price = $this->handlePrice($product);
+		
+	}
+	
 	
 }

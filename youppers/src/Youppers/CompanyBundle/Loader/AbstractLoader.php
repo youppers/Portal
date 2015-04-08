@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Youppers\CompanyBundle\YouppersCompanyBundle;
 use Monolog\Logger;
+use Youppers\CompanyBundle\Entity\ProductPrice;
 
 abstract class AbstractLoader extends ContainerAware
 {
@@ -29,11 +30,13 @@ abstract class AbstractLoader extends ContainerAware
 	
 	private $productRepository;
 	protected $product;
-
+	
 	private $productPriceRepository;
 	
 	protected $fs;
-	 	
+	protected $enable;
+	protected $force;
+	
 	public function setManagerRegistry(ManagerRegistry $managerRegistry)
 	{
 		$this->managerRegistry = $managerRegistry;
@@ -48,6 +51,14 @@ abstract class AbstractLoader extends ContainerAware
 	public function setFs($fs)
 	{
 		$this->fs = $fs;
+	}
+	
+	public function setEnable($enable) {
+		$this->enable = $enable;
+	}
+	
+	public function setForce($force) {
+		$this->force = $force;
 	}
 
 	/**
@@ -84,7 +95,7 @@ abstract class AbstractLoader extends ContainerAware
 	}
 	
 	/**
-	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Pricelist
+	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:ProductPrice
 	 */
 	protected function getProductPriceRepository()
 	{
@@ -153,8 +164,9 @@ abstract class AbstractLoader extends ContainerAware
 	 * 
 	 * @param string $filename Where to read
 	 * @param int $skip How many rows skip
+	 * @param boolean $force Write data on database
 	 * @param boolean $enable Enable product
 	 */
-	public abstract function load($filename,$skip,$enable);
+	public abstract function load($filename,$skip);	
 
 }

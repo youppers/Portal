@@ -3,6 +3,7 @@
 namespace Youppers\CompanyBundle\Loader;
 
 use JMS\Serializer\Annotation as JMS;
+use Application\Sonata\ProductBundle\Entity\Package;
 
 class LoaderMapper
 {
@@ -26,7 +27,7 @@ class LoaderMapper
 		$this->data=$data;
 	}
 
-	public function get($what)
+	public function get($what,$returnKey=false,$remove=false)
 	{
 		if (array_key_exists($what,$this->mapping)) {
 			$key = $this->mapping[$what];
@@ -36,11 +37,39 @@ class LoaderMapper
 			return null;
 		}
 		if (is_object($key) && ($key instanceof \Closure)) {
-			$res = $key->__invoke($this->data);
-			return $res;
+			if ($returnKey) {
+				return 'Closure';
+			} else {
+				return $key->__invoke($this->data);
+			}
+		}
+		if ($returnKey) {
+			if (is_array($key)) {
+				return print_r($key,true);
+			}
+			return $key;
+		}
+		if ($key === false) {
+			return null; 
+		}
+		if (is_array($key)) {
+			$res = array();
+			foreach ($key as $what1 => $key1) {
+				if (array_key_exists($key1,$this->data)) {
+					$res[$what1] = trim($this->data[$key1]);
+					if ($remove) {
+						unset($this->data[$key1]);						
+					}
+				}
+			}
+			return $res;			
 		}
 		if (array_key_exists($key,$this->data)) {
-			return $this->data[$key];
+			$value = trim($this->data[$key]);
+			if ($remove) {
+				unset($this->data[$key]);
+			}
+			return $value;
 		} else {
 			return null;
 		}
@@ -53,38 +82,12 @@ class LoaderMapper
 	 */
 	public function remove($what)
 	{
-		if (array_key_exists($what,$this->mapping)) {
-			$key = $this->mapping[$what];
-		} elseif (array_key_exists($what,$this->data)) {
-			$key = $what;
-		} else {
-			return null;
-		}
-		if (is_object($key) && ($key instanceof \Closure)) {
-			return $key->__invoke($this->data);
-		}
-		if (array_key_exists($key,$this->data)) {
-			$value = $this->data[$key];
-			unset($this->data[$key]);
-			return $value;
-		} else {
-			return null;
-		}
+		return $this->get($what,false,true);		
 	}
 
 	public function key($what)
 	{
-		if (array_key_exists($what,$this->mapping)) {
-			$key = $this->mapping[$what];
-		} elseif (array_key_exists($what,$this->data)) {
-			$key = $what;
-		} else {
-			return null;
-		}
-		if (is_object($key) && ($key instanceof \Closure)) {
-			return 'Closure';
-		}
-		return $key;		
+		return $this->get($what,true);
 	}
 
 	public function __toString()
