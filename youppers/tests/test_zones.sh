@@ -11,13 +11,11 @@ echo $zonename
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Zone.create","params":{"sessionId":"'$session_id'","zoneName":"'$zonename'"}}')
 echo $response | php -f $format 
 
-exit
-
-echo "-------------- Try to add a zone dupicated (profile) -------------"
+echo "-------------- Try to add a zone duplicated (profile) -------------"
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Zone.create","params":{"sessionId":"'$session_id'","zoneName":"'$zonename'"}}')
 echo $response | php -f $format 
 
-echo "-------------- Try to add a zone dupicated (common) -------------"
+echo "-------------- Try to add a zone duplicated (common) -------------"
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Zone.create","params":{"sessionId":"'$session_id'","zoneName":"Camera1"}}')
 echo $response | php -f $format 
 

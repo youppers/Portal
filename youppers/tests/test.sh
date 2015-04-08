@@ -52,15 +52,6 @@ access_token=$(echo $response|sed -n -e 's/{"access_token":"\([a-zA-Z0-9]*\)",.*
 echo access_token=$access_token
 
 
-echo -------------- Send the session  -------------
-request='{"id":"1","jsonrpc":"2.0","method":"Session.remove","params":{"sessionId":"e554f0aa-d8a0-11e4-946b-0800273000da"}}' 
-echo Request: $request  
-response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
-echo $response | php -f $format
-
-exit
-
-
 
 echo -------------- Call Session.new  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.new"}')
@@ -83,7 +74,7 @@ response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrp
 echo session_id=$force_session_id
 echo $response | php -f $format
 
-# source $pwd/test_zones.sh
+source $pwd/test_zones.sh
 
 echo -------------- Add a variant to 1 zone -------------
 request='{"id":"1","jsonrpc":"2.0","method":"Item.create","params":{"sessionId":"'$session_id'","items":[{"variantId":"'$variant_id1'","zoneId":"'$zone_id1'"}]}}'
@@ -111,6 +102,12 @@ echo $response | php -f $format
 
 item_id=$(echo $response|sed -n -e 's/.*"result":\[{"id":"\([a-zA-Z0-9\-]*\)",.*/\1/p')
 echo item_id=$item_id
+
+echo -------------- List all items with details -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Item.list.details","params":{"sessionId":"'$session_id'"}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo $response | php -f $format
 
 echo -------------- List all items of variant 1 -------------
 request='{"id":"1","jsonrpc":"2.0","method":"Item.list","params":{"sessionId":"'$session_id'","variantId":"'$variant_id1'"}}'
