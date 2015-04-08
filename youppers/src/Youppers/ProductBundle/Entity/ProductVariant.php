@@ -21,7 +21,9 @@ class ProductVariant
 {
 	public function __toString()
 	{
-		return $this->getProduct() ? '' . $this->getProduct() : 'New';
+		return $this->getProduct() ?  ''  . $this->getProduct()->getBrand() .
+			' - ' . $this->getProductCollection()->getName() . 
+			' - ' . $this->getProduct()->getNameCode() : 'New';
 	}
 	
 	/**
@@ -56,7 +58,7 @@ class ProductVariant
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.list", "json.variant.read", "json.product.list"})
 	 */
 	protected $image;
 	

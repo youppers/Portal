@@ -42,6 +42,7 @@ wa72_json_rpc:
         Zone.create: { service: youppers.customer.zone, method: createForSession, jms_serialization_context: { groups: [json, json.zone.read], version: '1', max_depth_checks: true } }
 
         Item.list: { service: youppers.customer.service.item, method: listForSession, jms_serialization_context: { groups: [json, json.item.list], version: '1', max_depth_checks: true } }
+        Item.list.details: { service: youppers.customer.service.item, method: listForSession, jms_serialization_context: { groups: [json, json.item.list, json.variant.list], version: '1', max_depth_checks: true } }
         Item.create: { service: youppers.customer.service.item, method: createMultiple, jms_serialization_context: { groups: [json, json.item.read], version: '1', max_depth_checks: true } }
         Item.remove: { service: youppers.customer.service.item, method: remove, jms_serialization_context: { groups: [json, json.item.read], version: '1', max_depth_checks: true } }
 
