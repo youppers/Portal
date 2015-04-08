@@ -11,17 +11,23 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="youppers_product__product_collection",
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(name="brand_product_collection_name_idx", columns={"brand_id", "name"}),
+ *     @ORM\UniqueConstraint(name="brand_product_collection_code_idx", columns={"brand_id", "code"}),
  *   })
  * @ORM\HasLifecycleCallbacks
- * @Validator\UniqueEntity({"name", "brand"})
+ * @Validator\UniqueEntity({"name","brand"})
+ * @Validator\UniqueEntity({"code","brand"})
  * @Serializer\ExclusionPolicy("all") 
  * @Serializer\AccessorOrder("custom", custom = {"id","name", "code"})  
  */
 class ProductCollection
 {
+	public function getNameCode() {
+		return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']' : 'null';
+	}	
+	
 	public function __toString()
 	{
-		return $this->getName() ? $this->getBrand() . ' - ' . $this->getName() : 'New';
+		return $this->getName() ? $this->getBrand() . ' - ' . $this->getNameCode() : 'New';
 	}
 	
 	/**
