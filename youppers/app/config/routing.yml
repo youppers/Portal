@@ -6,6 +6,10 @@ fos_oauth_server_authorize:
     
 wa72_json_rpc:
     resource: "@Wa72JsonRpcBundle/Resources/config/routing.yml"
+    prefix:   /wa72jsonrpc
+
+youppers_json_rpc:
+    resource: "@YouppersCommonBundle/Resources/config/routing_jsonrpc.yml"
     prefix:   /jsonrpc
         
 _front:
