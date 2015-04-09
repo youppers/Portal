@@ -1,4 +1,8 @@
-youppers_common:
-    resource: "@YouppersCommonBundle/Controller/"
+youppers_common_qr:
+    resource: "@YouppersCommonBundle/Controller/QrController.php"
     type:     annotation
     prefix:   /
+
+youppers_common_json_rpc:
+    pattern: /jsonrpc/
+    defaults: { _controller: "youppers_common.jsonrpccontroller:execute" }
