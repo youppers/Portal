@@ -212,7 +212,7 @@ class Tracker
     	$this->send($data,$session);
     }
     
-    public function sendItemAdd(Item $item,Session $session)
+    public function sendItemAdd(Item $item)
     {
     	$product = $item->getVariant()->getProduct();
     	$zone = $item->getZone();
@@ -237,6 +237,7 @@ class Tracker
     		$data['pr1br'] = $brand->getName();
     	}
     	
+    	$session = $item->getSession();
     	if ($session && $store = $session->getStore()) {
     		$data['geoid']=$store->getGeoid()->getCriteriaId();
     	}
@@ -244,7 +245,7 @@ class Tracker
     	$this->send($data,$session);    	 
     }
 
-    public function sendItemRemove(Item $item,Session $session)
+    public function sendItemRemove(Item $item)
     {
     	$product = $item->getVariant()->getProduct();
     	$zone = $item->getZone();
@@ -269,6 +270,7 @@ class Tracker
     		$data['pr1br'] = $brand->getName();
     	}
     	 
+    	$session = $item->getSession();    	 
     	if ($session && $store = $session->getStore()) {
     		$data['geoid']=$store->getGeoid()->getCriteriaId();
     	}

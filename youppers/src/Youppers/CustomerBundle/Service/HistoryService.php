@@ -64,7 +64,7 @@ class HistoryService extends ContainerAware
 	 * @param Box $box
 	 * @param Session $session
 	 */
-	public function newHistoryQrBox(Box $box,Session $session)
+	public function newHistoryQrBox(Box $box,Session $session = null)
 	{
 		$history = new HistoryQrBox();
 		$history->setSession($session);
@@ -77,7 +77,7 @@ class HistoryService extends ContainerAware
 	 * @param ProductVariant $variant
 	 * @param Session $session
 	 */
-	public function newHistoryQrVariant(ProductVariant $variant,Session $session)
+	public function newHistoryQrVariant(ProductVariant $variant,Session $session = null)
 	{
 		$history = new HistoryQrVariant();
 		$history->setSession($session);
@@ -90,7 +90,7 @@ class HistoryService extends ContainerAware
 	 * @param ProductVariant $variant
 	 * @param Session $session
 	 */
-	public function newHistoryShow(ProductVariant $variant,Session $session)
+	public function newHistoryShow(ProductVariant $variant,Session $session = null)
 	{
 		$history = new HistoryShow();
 		$history->setSession($session);
@@ -103,10 +103,10 @@ class HistoryService extends ContainerAware
 	 * @param Item $item
 	 * @param Session $session
 	 */
-	public function newHistoryItemAdd(Item $item,Session $session)
+	public function newHistoryItemAdd(Item $item)
 	{
 		$history = new HistoryAdd();
-		$history->setSession($session);
+		$history->setSession($item->getSession());
 		$history->setItem($item);
 		$this->save($history);
 	}
@@ -116,10 +116,10 @@ class HistoryService extends ContainerAware
 	 * @param Item $item
 	 * @param Session $session
 	 */
-	public function newHistoryItemRemove(Item $item,Session $session)
+	public function newHistoryItemRemove(Item $item)
 	{
 		$history = new HistoryRemove();
-		$history->setSession($session);
+		$history->setSession($item->getSession());
 		$history->setItem($item);
 		$this->save($history);
 	}

@@ -121,8 +121,8 @@ class ItemService extends ContainerAware
 				$item->setVariant($variant);
 				$item->setZone($zone);
 				$em->persist($item);
-				$this->container->get('youppers_common.analytics.tracker')->sendItemAdd($item,$session);				
-				$this->container->get('youppers.customer.service.history')->newHistoryItemAdd($item,$session);
+				$this->container->get('youppers_common.analytics.tracker')->sendItemAdd($item);				
+				$this->container->get('youppers.customer.service.history')->newHistoryItemAdd($item);
 			}				
 			$item->setRemoved(false);
 			$newItems[] = $item;			
@@ -157,8 +157,8 @@ class ItemService extends ContainerAware
 		$em->flush();
 		$session = $this->getSession($sessionId);
 		if ($session) {
-			$this->container->get('youppers_common.analytics.tracker')->sendItemRemove($item,$session);				
-			$this->container->get('youppers.customer.service.history')->newHistoryItemRemove($item,$session);
+			$this->container->get('youppers_common.analytics.tracker')->sendItemRemove($item);				
+			$this->container->get('youppers.customer.service.history')->newHistoryItemRemove($item);
 		}		
 		return $item;
 	}
