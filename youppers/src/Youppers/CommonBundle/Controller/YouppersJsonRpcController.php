@@ -15,6 +15,8 @@ class YouppersJsonRpcController extends JsonRpcController
 	{
 		$logger = $this->container->get('logger');
 		
+		$logger->info(sprintf("JSON-RPC Client IP: %s",$httprequest->getClientIp()));
+		$logger->info(sprintf("JSON-RPC Query String: %s",$httprequest->getQueryString()));
 		$logger->info(sprintf("JSON-RPC Request: %s",$httprequest->getContent()));
 		
 		$response = parent::execute($httprequest);
