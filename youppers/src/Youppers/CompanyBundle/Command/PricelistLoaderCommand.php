@@ -29,7 +29,10 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
-		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable product')
+		->addOption('create-product',null, InputOption::VALUE_NONE, 'Create product if dont exists')
+		->addOption('create-collection',null, InputOption::VALUE_NONE, 'Create product collection if dont exists')
+		->addOption('create-variant',null, InputOption::VALUE_NONE, 'Create product variant if dont exists')
+		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable created entity')
 		->addOption('fieldseparator', 'fs', InputOption::VALUE_OPTIONAL, 'Field separator',",")
 		;
 	}
@@ -53,6 +56,16 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		}
 		$loader->setForce($input->getOption('force'));
 		$loader->setEnable($input->getOption('enable'));
+		
+		if (method_exists($loader,'setCreateProduct')) {
+			$loader->setCreateProduct($input->getOption('create-product'));
+		}
+		if (method_exists($loader,'setCreateCollection')) {
+			$loader->setCreateCollection($input->getOption('create-collection'));
+		}
+		if (method_exists($loader,'setCreateVariant')) {		
+			$loader->setCreateVariant($input->getOption('create-variant'));
+		}
 		
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
 			$loader->setDebug(true);

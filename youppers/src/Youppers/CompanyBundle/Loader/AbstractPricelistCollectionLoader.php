@@ -24,11 +24,60 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 	}
 
 	protected abstract function getNewCollectionProductType(Brand $brand, $code);
-	 
+
+	private $brands = array();
+	
+	private $createCollection = false;
+	
+	public function setCreateCollection($createCollection)
+	{
+		$this->createCollection = $createCollection;
+	} 
+
+	private $createVariant = false;
+	
+	public function setCreateVariant($createVariant)
+	{
+		$this->createVariant = $createVariant;
+	}
+	
 	protected function getCollectionByCode(Brand $brand,$code)
 	{
-		return $this->getProductCollectionRepository()
-			->findOneBy(array('brand' => $brand, 'code' => $code));
+		$brandCode = trim($brand->getCode());
+		$code = trim($code);
+		if (!array_key_exists($brandCode,$this->brands)) {
+			$collections = $this->getProductCollectionRepository()
+				->findBy(array('brand' => $brand));
+			$brandCollections = array();
+			foreach ($collections as $collection) {
+				$collectionAlias = explode(',',$collection->getAlias());
+				$collectionCode = trim($collection->getCode());
+				foreach ($collectionAlias as $alias) {					
+					$alias = trim($alias);
+					if (!empty($alias)) {
+						if (array_key_exists($alias,$brandCollections)) {
+							dump($brandCollections);
+							throw new \Exception(sprintf("Duplicated alias '%s' in collection '%s",$alias,$collection));	
+						}
+						$brandCollections[$alias] = $collection;
+					}				
+				}
+				if (!array_key_exists($collectionCode,$brandCollections)) {
+					$brandCollections[$collectionCode] = $collection;
+				}
+			}
+			$this->brands[$brandCode] = $brandCollections;
+			$this->logger->info(sprintf("Cached collections for brand '%s'",$brand));
+			if ($this->debug) {
+				dump($brandCollections);
+			}
+		}
+		if (array_key_exists($code,$this->brands[$brandCode])) {
+			return $this->brands[$brandCode][$code];
+		} else {
+			unset($this->brands[$brandCode]); // invalidate
+			return null;
+		}
 	}
 	
 	private $productTypeRepository;
@@ -66,11 +115,12 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 		$collectionCode = $this->mapper->get('collection');
 		if ($collectionCode !== null) {
 			$collection = $this->getCollectionByCode($brand, $collectionCode);
-			if (empty($collection) && $this->force) {
+			if (empty($collection) && $this->force && $this->createCollection) {
 				$collection = new ProductCollection();
 				$collection->setBrand($brand);
 				$collection->setName($collectionCode);
 				$collection->setCode($collectionCode);
+				$collection->setAlias('');
 				$collection->setEnabled(false);
 				$collection->setProductType($this->getNewCollectionProductType($brand,$collectionCode));
 				$this->em->persist($collection);
@@ -100,7 +150,7 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 				throw new \Exception(sprintf("Product '%s' in collection '%s' instead of '%s'",$product,$variant->getProductCollection(),$collection));
 			}
 		}
-		if (empty($variant) && $this->force) {
+		if (empty($variant) && $this->force && $this->createVariant) {
 			$variant = new ProductVariant();
 			$collection->addProductVariant($variant);
 			$variant->setProduct($product);

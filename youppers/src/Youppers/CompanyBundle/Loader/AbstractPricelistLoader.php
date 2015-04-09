@@ -28,6 +28,13 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$this->company = $pricelist->getCompany();
 	}
 	
+	private $createProduct = false;
+	
+	public function setCreateProduct($createProduct)
+	{
+		$this->createProduct = $createProduct;
+	}
+	
 	public function load($filename,$skip=0)
 	{
 		$this->skip = $skip;
@@ -168,7 +175,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		}
 		
 		if (empty($product->getId())) {
-			if ($this->force) {
+			if ($this->force && $this->createProduct) {
 				$this->em->persist($product);
 			} else {
 				$this->logger->info("New: " . $product);
