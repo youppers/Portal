@@ -8,10 +8,6 @@ wa72_json_rpc:
     resource: "@Wa72JsonRpcBundle/Resources/config/routing.yml"
     prefix:   /wa72jsonrpc
 
-youppers_json_rpc:
-    resource: "@YouppersCommonBundle/Resources/config/routing_jsonrpc.yml"
-    prefix:   /jsonrpc
-        
 _front:
     resource: routing_front.yml
 #    prefix: /{_locale}

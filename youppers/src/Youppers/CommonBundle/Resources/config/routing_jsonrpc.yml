@@ -1,3 +1,0 @@
-youppers_common_json_rpc:
-    pattern: /
-    defaults: { _controller: "youppers_common.jsonrpccontroller:execute" }
