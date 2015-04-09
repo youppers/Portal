@@ -83,9 +83,7 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 			//$this->logger->info("Collection: " . $collection);				
 		}
 		
-		if ($this->force) {
-			$this->handleVariant($collection, $product);
-		}
+		$this->handleVariant($collection, $product);
 		
 		return $product;
 	}
