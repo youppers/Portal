@@ -17,7 +17,6 @@ class FLPricelistLoader extends AbstractPricelistCollectionLoader
 			'name' => 'descrizione materiale',
 			'gtin' => false,
 			'price' => 'Listino',
-			'priceGroup' => 'Gruppo Prezzi',
 			'uom' => 'UM'
 		);
 		$mapper = new LoaderMapper($mapping);

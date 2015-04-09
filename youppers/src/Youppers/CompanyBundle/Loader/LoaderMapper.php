@@ -5,6 +5,11 @@ namespace Youppers\CompanyBundle\Loader;
 use JMS\Serializer\Annotation as JMS;
 use Application\Sonata\ProductBundle\Entity\Package;
 
+/**
+ * 
+ * @author sergio
+ * @JMS\ExclusionPolicy("all")
+ */
 class LoaderMapper
 {
 
@@ -14,6 +19,7 @@ class LoaderMapper
 
 	/**
 	 * @JMS\Type("array<string, string>")
+	 * @JMS\Expose()
 	*/
 	protected $data;
 

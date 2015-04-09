@@ -47,8 +47,24 @@ class ProductPriceAdmin extends Admin
 	{
 		$listMapper
 		->add('product', null, array('route' => array('name' => 'show')))
-		->add('price')
+		->addIdentifier('price', null, array('route' => array('name' => 'show')))
 		->add('uom')
+		;
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function configureShowFields(ShowMapper $showMapper)
+	{
+		$showMapper
+    	->add('pricelist', null, array('route' => array('name' => 'show')))
+		->add('product', null, array('route' => array('name' => 'show')))
+		->add('price')
+        ->add('uom')        
+		->add('info','text')
+		->add('createdAt')
+		->add('updatedAt')
 		;
 	}
 	
