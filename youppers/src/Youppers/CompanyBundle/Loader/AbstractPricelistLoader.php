@@ -69,7 +69,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		}
 			
 		// speed up
-		$this->em->getConnection()->getConfiguration()->setSQLLogger(null);
+		if (!$this->debug) {
+			$this->em->getConnection()->getConfiguration()->setSQLLogger(null);
+		}
 	
 		$stopwatch = new Stopwatch();
 		$stopwatch->start('load');
@@ -92,11 +94,11 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 				$this->em->clear($this->getProductPriceRepository()->getClassName());
 			}
 		}
+		
+		$this->em->flush();
+		
 		$event = $stopwatch->stop('load');
 		$this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
-	
-		$this->em->flush();
-	
 	}
 		
 	protected function handleBrand()
@@ -143,7 +145,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		}
 		
 		$product = $this->getProductRepository()
-		->findOneBy(array('brand' => $brand, 'code' => $productCode));
+			->findOneBy(array('brand' => $brand, 'code' => $productCode));
 		
 		if (empty($product)) {
 			$className = $this->getProductRepository()->getClassName();
@@ -151,7 +153,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			$product->setBrand($brand);
 			$product->setCode($productCode);
 		} elseif (!$this->force) {
-			$this->em->detach($product);
+			$product = clone $product;
 		}
 		
 		if ($this->enable) {
@@ -196,7 +198,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$price = new $className;
 		$price->setPriceList($this->pricelist);
 		$price->setProduct($product);
-		$price->setPrice($this->mapper->remove('price'));
+		$price->setPrice(strtr($this->mapper->remove('price'),array(" " => "", "€" => "","." => "","," => ".")));
 		$price->setUom($this->mapper->remove('uom'));
 		try {
 			$price->setInfo($this->serializer->serialize($this->mapper, 'json'));

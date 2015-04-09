@@ -61,6 +61,13 @@ abstract class AbstractLoader extends ContainerAware
 		$this->force = $force;
 	}
 
+	protected $debug = false;
+	
+	public function setDebug($debug)
+	{
+		$this->debug = $debug;
+	}
+		
 	/**
 	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Company
 	 */

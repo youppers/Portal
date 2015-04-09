@@ -54,6 +54,10 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		$loader->setForce($input->getOption('force'));
 		$loader->setEnable($input->getOption('enable'));
 		
+		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
+			$loader->setDebug(true);
+		}
+		
 		$loader->load($input->getArgument('filename'),$input->getOption('skip')); 
 		
 	}
