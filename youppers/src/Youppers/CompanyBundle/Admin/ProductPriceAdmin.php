@@ -36,6 +36,7 @@ class ProductPriceAdmin extends Admin
 	{
 		$datagridMapper
 		->add('product.name')
+		->add('product.code')
 		;
 	}
 	
