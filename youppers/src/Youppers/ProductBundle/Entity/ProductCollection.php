@@ -54,6 +54,11 @@ class ProductCollection
 	protected $code;
 	
 	/**
+	 * @ORM\Column(name="alias", type="string", nullable=true)
+	 */
+	protected $alias;
+
+	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json.collection.read"})
@@ -98,7 +103,7 @@ class ProductCollection
 	protected $pdfGallery;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="ProductVariant", mappedBy="productCollection", cascade={"all"}, orphanRemoval=true)
+	 * @ORM\OneToMany(targetEntity="ProductVariant", mappedBy="productCollection")
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 **/
 	protected $productVariants;
@@ -412,5 +417,29 @@ class ProductCollection
     public function getProductVariants()
     {
         return $this->productVariants;
+    }
+
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     *
+     * @return ProductCollection
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 }
