@@ -1,5 +1,7 @@
 <?php
 
+namespace Youppers\CommonBundle\Controller;
+
 use Wa72\JsonRpcBundle\Controller\JsonRpcController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
