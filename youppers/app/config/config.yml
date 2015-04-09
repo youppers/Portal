@@ -145,10 +145,12 @@ doctrine:
 swiftmailer:
     transport: "%mailer_transport%"
     host:      "%mailer_host%"
+    port:      "%mailer_port%" # 465
+    encryption: "%mailer_encryption%" # ssl
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-    sender_address: crm@youppers.com
+    sender_address: "%mailer_user%"
 
 happyr_google_analytics:
     tracking_id: "%google_analytics_tracking_id%"    

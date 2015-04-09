@@ -45,4 +45,4 @@ assetic:
     use_controller: true
 
 swiftmailer:
-#    delivery_address: sergio.strampelli@gmail.com
+    delivery_address: sergio.strampelli@gmail.com
