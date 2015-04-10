@@ -15,7 +15,7 @@ use Youppers\ProductBundle\Entity\ProductCollection;
  * @ORM\HasLifecycleCallbacks
  * @ConsistentBrand()
  * @Serializer\ExclusionPolicy("all") 
- * @Validator\UniqueEntity({"product","productCollection"})
+ * @Validator\UniqueEntity({"product"})
  */
 class ProductVariant
 {
