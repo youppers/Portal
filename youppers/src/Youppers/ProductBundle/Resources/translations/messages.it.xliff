@@ -32,7 +32,7 @@
             </trans-unit>
             <trans-unit id="Product Collection List">
                 <source>Product Collection List</source>
-                <target>Elenco Collezioni Prodotto</target>
+                <target>Collezioni Prodotto</target>
             </trans-unit>
             <trans-unit id="Product Variant">
                 <source>Product Variant</source>
@@ -44,7 +44,7 @@
             </trans-unit>
             <trans-unit id="Product Variant List">
                 <source>Product Variant List</source>
-                <target>Elenco Varianti Prodotto</target>
+                <target> Varianti Prodotto</target>
             </trans-unit>
             <trans-unit id="Product Code">
                 <source>Product Code</source>

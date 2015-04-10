@@ -17,7 +17,19 @@ class ProductVariantAdmin extends YouppersAdmin
 	{
 		return 'productCollection';
 	}
-		
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function toString($object)
+	{
+		if (is_object($object) && $object === $this->subject && method_exists($object, 'getProduct') && null !== $object->getProduct()) {
+			return $object->getProduct()->getNameCode();
+		}
+	
+		return parent::toString($object);
+	}
+	
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -87,11 +99,14 @@ class ProductVariantAdmin extends YouppersAdmin
         	->with('Product Variant', array('class' => 'col-md-6'));
     	if (!$this->isChild()) {    	 
         	$formMapper
-            ->add('productCollection', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
+            ->add('productCollection', 'sonata_type_model_list', array(
+            		'btn_delete'       => false,
+            		'required' => false, 'constraints' => new Assert\NotNull()));
 		}
        	$formMapper
             ->add('product', 'sonata_type_model_list', array(
             		'btn_add'       => false,
+            		'btn_delete'       => false,
             		'required' => false, 'constraints' => new Assert\NotNull()))
             //->add('product.name')
             //->add('product.code')

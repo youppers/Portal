@@ -46,6 +46,18 @@ abstract class YouppersAdmin extends Admin
 	
 	/**
 	 * {@inheritdoc}
+	 */
+	public function toString($object)
+	{
+ 		if (is_object($object) && $object === $this->subject && method_exists($object, 'getName') && null !== $object->getName()) {
+ 			return $object->getName();
+ 		}
+	
+		return parent::toString($object);
+	}
+	
+	/**
+	 * {@inheritdoc}
 	 * getSubject in Admin is Buggy
 	 * see: https://github.com/sonata-project/SonataAdminBundle/pull/2697 
 	 */
