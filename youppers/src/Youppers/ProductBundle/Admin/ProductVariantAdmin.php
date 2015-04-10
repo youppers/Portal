@@ -84,8 +84,12 @@ class ProductVariantAdmin extends YouppersAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-        	->with('Product Variant', array('class' => 'col-md-6'))
-            ->add('productCollection', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
+        	->with('Product Variant', array('class' => 'col-md-6'));
+    	if (!$this->isChild()) {    	 
+        	$formMapper
+            ->add('productCollection', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
+		}
+       	$formMapper
             ->add('product', 'sonata_type_model_list', array(
             		'btn_add'       => false,
             		'required' => false, 'constraints' => new Assert\NotNull()))
