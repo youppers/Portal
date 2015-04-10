@@ -75,7 +75,6 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 		if (array_key_exists($code,$this->brands[$brandCode])) {
 			return $this->brands[$brandCode][$code];
 		} else {
-			unset($this->brands[$brandCode]); // invalidate
 			return null;
 		}
 	}
@@ -126,14 +125,22 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 				$this->em->persist($collection);
 				$this->em->flush();
 				$this->logger->info(sprintf("Created collection with code '%s' for Brand '%s'",$collectionCode,$brand));
-			}				
-			if (empty($collection)) {
-				throw new \Exception(sprintf("Collection with code '%s' of Brand '%s' not found",$collectionCode,$brand));
-			}	
+				$this->brands[$brand->getCode()][$collectionCode] = $collection;
+			}
+			if ($collection === false) {
+				// cached and not created
+			} elseif (empty($collection)) {
+				if ($this->force) {
+					throw new \Exception(sprintf("Collection with code '%s' of Brand '%s' not found",$collectionCode,$brand));
+				} else {
+					$this->brands[$brand->getCode()][$collectionCode] = false; // warn only once
+				}
+				$this->logger->warning(sprintf("Collection with code '%s' of Brand '%s' not found",$collectionCode,$brand));
+			} else {
+				$this->handleVariant($collection, $product);
+			}
 			//$this->logger->info("Collection: " . $collection);				
 		}
-		
-		$this->handleVariant($collection, $product);
 		
 		return $product;
 	}
@@ -150,14 +157,19 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 				throw new \Exception(sprintf("Product '%s' in collection '%s' instead of '%s'",$product,$variant->getProductCollection(),$collection));
 			}
 		}
-		if (empty($variant) && $this->force && $this->createVariant) {
-			$variant = new ProductVariant();
-			$collection->addProductVariant($variant);
-			$variant->setProduct($product);
-			$variant->setEnabled(false);
-			$variant->setPosition($this->numRows);
-			$this->em->persist($variant);
-			$this->logger->info(sprintf("Created variant '%s'",$variant));
+		if (empty($variant)) {
+			if ($this->force && $this->createVariant) {
+				$variant = new ProductVariant();
+				$variant->setProduct($product);
+				$variant->setEnabled(false);
+				$variant->setPosition($this->numRows);
+				$collection->addProductVariant($variant);
+				$this->em->persist($variant);
+				$this->logger->info(sprintf("Created variant '%s'",$variant));
+			} else {
+				$this->logger->info(sprintf("New variant '%s' - '%s'",$collection,$product->getNameCode()));
+			}
 		}
+		return $variant;
 	}
 }

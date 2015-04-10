@@ -226,9 +226,12 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		
 		$brand = $this->handleBrand();
 
-		$product = $this->handleProduct($brand);
-		
-		$price = $this->handlePrice($product);
+		if ($brand) {
+			$product = $this->handleProduct($brand);
+			if ($product) {
+				$price = $this->handlePrice($product);
+			}
+		}
 		
 	}
 	
