@@ -4,3 +4,9 @@ services:
         arguments: ['@doctrine', '@logger']
         calls:
             - [ setContainer, [ '@service_container' ] ]
+            
+    youppers.product.variant.guesser_factory:
+        class:     Youppers\ProductBundle\Guesser\GuesserLoaderFactory
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
