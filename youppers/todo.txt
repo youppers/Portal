@@ -11,6 +11,8 @@ Per le varianti bisogna verificare l'univocità, cioè il fatto che gli attribut
 
 TODO
 
+In Mostra Prodotto la variante non è un link
+
 Per test da riga di comando usare menu interattivi per selezione dei dati
 
 Per la selezione dei valori delle opzioni:
@@ -42,25 +44,13 @@ In BoxAdmin add batch function enable:
 
 Complete Validator\UniqueEntity for unique ORM\constraint
 
-Auto populate history (qr, item, ...)
-
-First column in list should be identifier, followed by code, enabled, parent, ecc.: 
-
 Add GA tracking inside dashboard admin (dev + demo)
-
-Add tracker in qrFind e qrScan
-
-Admin for editing 3rd party qrcode (url field) (see HistoryAdmin)
-
-Customer\Item and Customer\History be child admin of Customer\Session  
 
 manage Zone: name unique if profile=null
 	name must be validated for duplicates if already assigned to null profile
 
 Add position to Zone
 http://sonata-project.org/bundles/admin/master/doc/cookbook/recipe_sortable_listing.html
-
-Inviare a GA i click su elenco prodotti
 
 Gestire voci tabMenu in YouppersAdmin quando ci sono subClasses 
 
