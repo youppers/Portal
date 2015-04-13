@@ -8,18 +8,6 @@ wa72_json_rpc:
     resource: "@Wa72JsonRpcBundle/Resources/config/routing.yml"
     prefix:   /wa72jsonrpc
 
-_front:
-    resource: routing_front.yml
-#    prefix: /{_locale}
-
-# redirect routes for the non-locale routes
-#front_without_locale:
-#    pattern: /
-#    defaults:
-#        _controller: FrameworkBundle:Redirect:redirect
-#        route: root
-#        permanent: true # this for 301
-
 _admin:
     resource: routing_admin.yml
 #    prefix:   /{_locale}/admin
@@ -36,4 +24,17 @@ _admin:
 _api:
     resource: routing_api.yml
     prefix:   /api
+
+_front:
+    resource: routing_front.yml
+#    prefix: /{_locale}
+
+# redirect routes for the non-locale routes
+#front_without_locale:
+#    pattern: /
+#    defaults:
+#        _controller: FrameworkBundle:Redirect:redirect
+#        route: root
+#        permanent: true # this for 301
+
     
