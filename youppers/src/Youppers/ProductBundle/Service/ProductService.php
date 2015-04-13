@@ -166,7 +166,7 @@ class ProductService extends ContainerAware
 		$variantsId = null;
 		$numVariants = 0;
 		foreach ($options as $option) {
-			if ($this->debug) $this->logger->info(sprintf("Option: %s",$option));
+			$this->logger->info(sprintf("Option: %s",$option));
 							
 			$optionVariantsEntities = $qb->setParameter('option',$option)->getQuery()->getResult();
 
