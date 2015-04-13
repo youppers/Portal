@@ -403,15 +403,15 @@ Cordiali saluti
 	{
 		$qb = $this->getRepository()->createQueryBuilder('s');
 		$qb
-			->leftJoin('YouppersCustomerBundle:History', 'h', 'WITH', 'h.session = s')
-			->leftJoin('YouppersCustomerBundle:Item', 'i', 'WITH', 's = i.session')
-			->leftJoin('YouppersCustomerBundle:Profile', 'p', 'WITH', 's.profile = p')
-			->leftJoin('YouppersDealerBundle:Store', 't', 'WITH', 's.store = t')
+			->addSelect('h')
+			->leftJoin('s.history', 'h')
+			->addSelect('i')
+			->leftJoin('s.items', 'i')			
 			->where('s.updatedAt < :when')
-			->andWhere('h IS NULL')
-			->andWhere('i IS NULL')
-			->andWhere('p IS NULL')
-			->andWhere('t IS NULL')
+			->andWhere('h.session IS NULL')
+			->andWhere('i.session IS NULL')
+			->andWhere('s.profile IS NULL')
+			->andWhere('s.store IS NULL')
 			->setParameter('when', (new \DateTime())->sub(new \DateInterval('P1D')))
 			;
 		$sessions = $qb->getQuery()->execute();
