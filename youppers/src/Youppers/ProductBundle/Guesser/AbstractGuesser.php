@@ -17,6 +17,12 @@ use Youppers\ProductBundle\Entity\ProductCollection;
 
 abstract class AbstractGuesser extends ContainerAware
 {
+	
+	const TYPE_DIMENSION = 'DIM';
+	const COMMA = ',';
+	const DOT = '.';
+	const PER = 'x';
+	
 	protected $managerRegistry;
 	protected $em;
 
@@ -97,17 +103,19 @@ abstract class AbstractGuesser extends ContainerAware
 	 * 
 	 */
 	public function guessCollection(ProductCollection $collection)
-	{
+	{		
 		$variants = $this
 			->managerRegistry
 			->getRepository('YouppersProductBundle:ProductVariant')
 			->findBy(array('productCollection' => $collection));
-		$this->logger->info(sprintf("Guessing %d vaiants for collection '%s'",count($variants),$collection));
+		$this->logger->info(sprintf("Guessing %d variants for collection '%s'",count($variants),$collection));
 		foreach ($variants as $variant) {
 			$this->guessVariant($variant);
 		}
 	}	
 
 	protected abstract function guessVariant(ProductVariant $variant);
+
+	public abstract function getTodos();
 	
 }
