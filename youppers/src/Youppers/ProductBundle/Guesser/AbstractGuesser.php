@@ -23,6 +23,20 @@ abstract class AbstractGuesser extends ContainerAware
 	const DOT = '.';
 	const PER = 'x';
 	
+	private $todos = array();
+	
+	public function getTodos()
+	{
+		return $this->todos;
+	}
+	
+	protected function addTodo($todo)
+	{
+		if (!in_array($todo,$this->todos)) {
+			$this->todos[] = $todo;
+		}
+	}
+			
 	protected $managerRegistry;
 	protected $em;
 
@@ -116,6 +130,4 @@ abstract class AbstractGuesser extends ContainerAware
 
 	protected abstract function guessVariant(ProductVariant $variant);
 
-	public abstract function getTodos();
-	
 }

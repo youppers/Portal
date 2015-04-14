@@ -10,24 +10,13 @@ class BaseVariantGuesser extends AbstractGuesser
 
 	private $options = null;
 	
-	private $todos = array();
-	
-	public function getTodos()
-	{
-		return $this->todos;
-	}
-	
-	protected function addTodo($todo)
-	{
-		$this->todos[] = $todo;
-	}
-			
-	protected function searchOptions($typeCode,$value)
+	protected function searchOptions($typeCode,$value,$multivalues=null)
 	{
 		if (is_array($value)) {
 			$results = array();
+			$multivalues = implode('/',$value);
 			foreach ($value as $v1) {
-				$res = $this->searchOptions($typeCode, $v1);
+				$res = $this->searchOptions($typeCode, $v1,$multivalues);
 				if ($res !== null) {
 					$results[] = $res;
 				}  	
@@ -72,7 +61,11 @@ class BaseVariantGuesser extends AbstractGuesser
 		} else {
 			$this->logger->debug(sprintf("Attribute option with value '%s' not found (searching type '%s')",$value,$typeCode));
 			$this->options[$value][$typeCode] = null;
-			$this->addTodo(sprintf("Add option: %s : %s",$typeCode,$value));
+			if ($multivalues) {
+				$this->addTodo(sprintf("Add option of Attribute Type with code=%s : only one of %s",$typeCode,$multivalues));				
+			} else {
+				$this->addTodo(sprintf("Add option of Attribute Type with code=%s : %s",$typeCode,$value));				
+			}
 			return null;
 		}	
 	}
@@ -141,8 +134,8 @@ class BaseVariantGuesser extends AbstractGuesser
 			
 			if (count($options) == 1) {
 				if (count($options[0]) > 1) {
-					dump($options); die;
 					$this->logger->error(sprintf("More standars found with values '%s'",implode('/',$values)));						
+					dump($options); die;
 				}
 				return array_pop($options[0]);
 			} elseif (count($options) > 1) {
@@ -175,7 +168,7 @@ class BaseVariantGuesser extends AbstractGuesser
 		$newDimension = $this->guessDimension($variant);
 		if ($newDimension) {
 			if (empty($actualDimension)) {
-				$this->logger->info(sprintf("Variant '%s' new dimension '%s'",$variant,$newDimension));
+				$this->logger->info(sprintf("Variant '%s' new guessed dimension '%s'",$variant,$newDimension));
 				$variantProperty = new VariantProperty();
 				$variantProperty->setProductVariant($variant);
 				$variantProperty->setAttributeOption($newDimension);
@@ -185,15 +178,17 @@ class BaseVariantGuesser extends AbstractGuesser
 				$em->persist($variantProperty);
 				$em->flush();				
 			} elseif ($actualDimension == $newDimension) {
-				$this->logger->debug(sprintf("Variant '%s' dimension already set and found '%s'",$variant,$newDimension));
+				$this->logger->debug(sprintf("Variant '%s' actual dimension matches guessed '%s'",$variant,$newDimension));
 			} else {
-				$this->logger->error(sprintf("Variant '%s' actual dimension '%s' not matching with new '%s'",$variant,$actualDimension,$newDimension));
+				$msg = sprintf("Variant '%s' actual dimension '%s' not matching with guessed '%s'",$variant,$actualDimension,$newDimension);
+				$this->logger->error($msg);
+				$this->addTodo("Error: " . $msg);
 				//dump($newDimension); dump($actualDimension); die;
 			}
 		} elseif (empty($actualDimension)) {
 			$this->logger->warning(sprintf("Dimension not found for '%s'",$variant));				
 		} else {
-			$this->logger->debug(sprintf("Variant '%s' new dimension not found, but already set '%s'",$variant,$actualDimension));				
+			$this->logger->debug(sprintf("Variant '%s' dimension not guessed, but already set '%s'",$variant,$actualDimension));				
 		}
 	}
 
