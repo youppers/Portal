@@ -11,6 +11,10 @@ Per le varianti bisogna verificare l'univocità, cioè il fatto che gli attribut
 
 TODO
 
+Upload drag'ndrop
+http://www.jesuisundev.fr/upload-drag-drop-via-dropzonejs-symfony2-on-cloud-amazon-s3/
+http://www.dropzonejs.com/
+
 In Mostra Prodotto la variante non è un link
 
 Per test da riga di comando usare menu interattivi per selezione dei dati
