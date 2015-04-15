@@ -53,7 +53,7 @@ class Session
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
-	 * @ORM\OrderBy({"createdAt" = "DESC"})
+	 * @ORM\OrderBy({"zone" = "ASC"})
 	 * @var Item[]
 	 * @JMS\Groups({"details"})
 	 */
