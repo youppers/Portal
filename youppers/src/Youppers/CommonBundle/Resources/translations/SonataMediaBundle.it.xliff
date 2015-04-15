@@ -8,23 +8,27 @@
             </trans-unit>
             <trans-unit id="youppers_company_logo">
                 <source>youppers_company_logo</source>
-                <target>Logo Aziende</target>
+                <target>Aziende</target>
             </trans-unit>
             <trans-unit id="youppers_brand_logo">
                 <source>youppers_brand_logo</source>
-                <target>Logo Marchi</target>
+                <target> Marchi</target>
             </trans-unit>
             <trans-unit id="youppers_product">
                 <source>youppers_product</source>
-                <target>Immagini Prodotto</target>
+                <target>Prodotti</target>
             </trans-unit>
             <trans-unit id="youppers_attribute">
                 <source>youppers_attribute</source>
-                <target>Immagini Attributo</target>
+                <target>Attributi</target>
             </trans-unit>
             <trans-unit id="youppers_consultant_photo">
                 <source>youppers_consultant_photo</source>
-                <target>Foto Consulente</target>
+                <target>Consulenti</target>
+            </trans-unit>
+            <trans-unit id="youppers_box">
+                <source>youppers_box</source>
+                <target>Allestimenti</target>
             </trans-unit>
             <trans-unit id="label.protected_download_url">
                 <source>label.protected_download_url</source>

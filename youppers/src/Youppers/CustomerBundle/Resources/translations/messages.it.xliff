@@ -8,7 +8,7 @@
             </trans-unit>                        
             <trans-unit id="Profile List">
                 <source>Profile List</source>
-                <target>Elenco Profili</target>
+                <target>Profili</target>
             </trans-unit>                        
             <trans-unit id="Zone">
                 <source>Zone</source>
@@ -16,7 +16,7 @@
             </trans-unit>                        
             <trans-unit id="Zone List">
                 <source>Zone List</source>
-                <target>Elenco Zone</target>
+                <target>Zone</target>
             </trans-unit>                        
             <trans-unit id="Session">
                 <source>Session</source>
@@ -24,7 +24,7 @@
             </trans-unit>                        
             <trans-unit id="Session List">
                 <source>Session List</source>
-                <target>Elenco Sessioni</target>
+                <target>Sessioni</target>
             </trans-unit>                        
             <trans-unit id="Item">
                 <source>Item</source>
@@ -36,7 +36,7 @@
             </trans-unit>                        
             <trans-unit id="Item List">
                 <source>Item List</source>
-                <target>Lista Materiali</target>
+                <target>Materiali</target>
             </trans-unit>                        
             <trans-unit id="History">
                 <source>History</source>
@@ -44,7 +44,7 @@
             </trans-unit>                        
             <trans-unit id="History List">
                 <source>History List</source>
-                <target>Elenco Cronologia</target>
+                <target>Cronologia</target>
             </trans-unit>                        
             <trans-unit id="Removed">
                 <source>Removed</source>
