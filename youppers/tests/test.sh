@@ -184,7 +184,9 @@ echo qr=$query2 Response:
 echo $response | php -f $format
 
 echo -------------- Show a variant  -------------
-response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Variant.read","params":{"sessionId":"'$session_id'","variantId":"'$variant_id'"}}')
+request='{"id":"1","jsonrpc":"2.0","method":"Variant.read","params":{"sessionId":"'$session_id'","variantId":"'$variant_id'"}}'
+echo Request=$request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
 echo variant_id=$variant_id Response:
 echo $response | php -f $format
 
