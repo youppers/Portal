@@ -74,7 +74,7 @@ class Box
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.read"})
+	 * @Serializer\Groups({"details", "json.qr.find"})
 	 */
 	protected $image;
 	
