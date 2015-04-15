@@ -72,6 +72,13 @@ class Box
 	protected $description;
 	
 	/**
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.read"})
+	 */
+	protected $image;
+	
+	/**
 	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 * @Serializer\Expose()
@@ -347,5 +354,29 @@ class Box
     public function getQr()
     {
         return $this->qr;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $image
+     *
+     * @return Box
+     */
+    public function setImage(\Application\Sonata\MediaBundle\Entity\Media $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

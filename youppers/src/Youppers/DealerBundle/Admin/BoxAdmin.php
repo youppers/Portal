@@ -61,6 +61,7 @@ class BoxAdmin extends Admin
 		->add('code')
 		->add('enabled')
 		->add('description')
+		->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('createdAt')
 		->add('updatedAt')		
 		->add('boxProducts', null, array('route' => array('name' => 'edit'), 'associated_property' => 'nameProduct'))
@@ -128,6 +129,16 @@ class BoxAdmin extends Admin
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
+		->add('image', 'sonata_type_model_list',
+				array(
+						'required' => false
+				), array(
+						'link_parameters' => array(
+								'context'  => 'youppers_box',
+								'filter'   => array('context' => array('value' => 'youppers_box'))
+						)
+				)
+		)
 		->end();
 		if (!$this->hasParentFieldDescription()) {
 			$formMapper

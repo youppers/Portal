@@ -69,6 +69,14 @@ sonata_media:
                 show: { width: 220}
                 list: { height: 80}
                 
+        youppers_box:
+            providers:
+                - sonata.media.provider.image
+
+            formats:
+                show: { width: 220}
+                list: { height: 80}
+
         youppers_consultant_photo:
             providers:
                 - sonata.media.provider.image
