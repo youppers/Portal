@@ -25,33 +25,35 @@ class Store
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.session.read"})
+	 * @Serializer\Groups({"details", "json.session.read", "json.box.list"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Dealer", inversedBy="stores")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.session.read"})
+	 * @Serializer\Groups({"details", "json.session.read", "json.box.list"})
 	 */
 	protected $dealer;
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.session.read"})
+	 * @Serializer\Groups({"details", "json.session.read", "json.box.list"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\CommonBundle\Entity\Geoid")
+	 * @Serializer\Expose()
+	 * @Serializer\Groups({"details", "json.box.list"})
 	 **/
 	protected $geoid;
 	
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.session.read"})
+	 * @Serializer\Groups({"details", "json.session.read", "json.box.list"})
 	 */
 	protected $code;
 

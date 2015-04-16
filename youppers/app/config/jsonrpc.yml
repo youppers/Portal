@@ -31,6 +31,8 @@ wa72_json_rpc:
         
         # List consultant available for the session (Store must be already set in the Session)
         Consultant.list: { service: youppers.dealer.consultant, method: listForSession, jms_serialization_context: { groups: [json, json.consultant.list], version: '1', max_depth_checks: true } }
+        Box.list: { service: youppers.dealer.service.box, method: listBoxes, jms_serialization_context: { groups: [json, json.box.list], version: '1', max_depth_checks: true } }
+        Box.show: { service: youppers.dealer.service.box, method: showBox, jms_serialization_context: { groups: [json, json.box.show], version: '1', max_depth_checks: true } }
          
         Product.search: { service: youppers.product.service.product, method: searchProducts, jms_serialization_context: { groups: [json, json.product.list], version: '1', max_depth_checks: true } }
         Variant.list: { service: youppers.product.service.product, method: listVariants, jms_serialization_context: { groups: [json, json.variant.list], version: '1', max_depth_checks: true } }

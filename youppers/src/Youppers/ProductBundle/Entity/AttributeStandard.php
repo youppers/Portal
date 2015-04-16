@@ -63,7 +63,7 @@ class AttributeStandard
 	 * @ORM\ManyToOne(targetEntity="AttributeType", inversedBy="attributeStandards")
 	 * @ORM\JoinColumn(name="attribute_type_id")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.attributes.read"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.attributes.read", "json.box.show"})
 	 */
 	protected $attributeType;
 	

@@ -19,19 +19,19 @@ class Dealer
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"list", "details","create"})
+	 * @JMS\Groups({"list", "details","create", "json"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
-	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read"})
+	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read", "json.box.list"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=20, unique=true)
-	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read"})
+	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read", "json.box.list"})
 	 */
 	protected $code;
 		
@@ -59,7 +59,7 @@ class Dealer
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
-	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read"})
+	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read", "json.box.list"})
 	 */
 	protected $description;
 	

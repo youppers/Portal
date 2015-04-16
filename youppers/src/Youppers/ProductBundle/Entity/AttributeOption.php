@@ -118,7 +118,7 @@ class AttributeOption
 	 * @ORM\ManyToOne(targetEntity="AttributeStandard", inversedBy="attributeOptions")
 	 * @ORM\JoinColumn(name="attribute_standard_id")
 	 * @JMS\Expose()
-	 * @JMS\Groups({"details", "json.qr.find"})
+	 * @JMS\Groups({"details", "json.qr.find", "json.box.show"})
 	 * @Assert\NotNull
 	 */
 	protected $attributeStandard;

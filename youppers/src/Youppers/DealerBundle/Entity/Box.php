@@ -3,7 +3,7 @@ namespace Youppers\DealerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity({"name", "store"})
  * @UniqueEntity({"code", "store"})
- * @Serializer\ExclusionPolicy("all") 
+ * @JMS\ExclusionPolicy("all") 
  */
 class Box
 {
@@ -23,27 +23,29 @@ class Box
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Store", inversedBy="boxes")
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json.box.list"})
 	 */
 	protected $store;
 	
 	/**
 	 * @ORM\Column(type="string", length=60)
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(name="code", type="string", length=20)
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json"})
 	 */
 	protected $code;
 
@@ -59,30 +61,30 @@ class Box
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details"})
 	 */
 	protected $createdAt;
 		
 	/**
 	 * @ORM\Column(type="text", nullable=true )
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json"})
 	 */
 	protected $description;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json.qr.find", "json.box.list", "json.box.show"})
 	 */
 	protected $image;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="BoxProduct", mappedBy="box", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
-	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @JMS\Expose()
+	 * @JMS\Groups({"details", "json.qr.find", "json.box.show"})
 	 **/
 	private $boxProducts;
 		

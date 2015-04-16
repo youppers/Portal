@@ -50,7 +50,7 @@ class VariantProperty
 	 * @ORM\ManyToOne(targetEntity="AttributeOption")
 	 * @ORM\JoinColumn(name="attribute_option_id")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.list", "json.variant.read", "json.product.list"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.list", "json.variant.read", "json.product.list", "json.box.show"})
 	 * @Assert\NotNull
 	 */
 	protected $attributeOption;

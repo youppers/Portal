@@ -30,7 +30,7 @@ class BoxProduct
 	/**
 	 * @ORM\Column(type="string", length=60)
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.box.show"})
 	 */
 	protected $name;
 	
@@ -44,7 +44,7 @@ class BoxProduct
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\CompanyBundle\Entity\Product")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find"})
+	 * @Serializer\Groups({"details", "json.qr.find", "json.box.show"})
 	 **/
 	protected $product;
 

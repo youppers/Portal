@@ -29,6 +29,10 @@ variant_id2=05149cca-cccf-11e4-b4aa-0cc47a127a14
 zone_id1=b50715bc-c98c-11e4-b4aa-0cc47a127a14
 zone_id2=c6f6f8e4-c98c-11e4-b4aa-0cc47a127a14
 
+productId=c2-11e4-a84b-0800273000da-K311261
+storeId=762d6fdb-aba8-11e4-b4aa-0cc47a127a14
+boxId=1879dd78-abb0-11e4-b4aa-0cc47a127a14
+
 pwd=$(dirname $0)
 conf=$pwd/config
 format=$pwd/format.php
@@ -51,7 +55,19 @@ echo response=$response
 access_token=$(echo $response|sed -n -e 's/{"access_token":"\([a-zA-Z0-9]*\)",.*/\1/p')
 echo access_token=$access_token
 
+echo -------------- Find boxes for a product in a store  -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Box.list","params":{"productId":"'$productId'","storeId":"'$storeId'"}}'
+echo Request: $request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo Response:
+echo $response | php -f $format
 
+echo -------------- Show a box -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Box.show","params":{"boxId":"'$boxId'"}}'
+echo Request: $request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo Response:
+echo $response | php -f $format
 
 echo -------------- Call Session.new  -------------
 response=$(curl "$jsonendpoint?access_token=$access_token" -d '{"id":"1","jsonrpc":"2.0","method":"Session.new"}')
