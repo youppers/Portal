@@ -26,7 +26,7 @@ class Product
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 * @Serializer\Expose()
-	 * @Serializer\Groups({"details", "json.qr.find", "json.product.list", "json.variant.list", "json.variant.read", "json.box.show"})
+	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $id;
 	
