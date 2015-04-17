@@ -50,7 +50,7 @@ class SessionService extends ContainerAware
 		if ($storeId) {
 			$store = $em->find('YouppersDealerBundle:Store', $storeId);
 			if (empty($store)) {
-				throw new \Exception('Store not found');
+				throw new \Exception("Invalid storeId " . $storeId);
 			} else {
 				$session->setStore($store);
 			}
@@ -190,7 +190,7 @@ class SessionService extends ContainerAware
 		$session = $this->getSession($sessionId);
 		
 		if (empty($session)) {
-			throw new \Exception("Invalid sessioId ".$sessionId);
+			throw new \Exception("Invalid sessionId ".$sessionId);
 		}
 		
 		if ($this->tokenStorage) {
@@ -276,6 +276,10 @@ class SessionService extends ContainerAware
 	public function send($sessionId)
 	{
 		$session = $this->getSession($sessionId);
+
+		if (empty($session)) {
+			throw new \Exception("Invalid sessionId ".$sessionId);
+		}
 		
 		$profile = $session->getProfile();
 		$store = $session->getStore();

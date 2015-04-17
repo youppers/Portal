@@ -64,7 +64,7 @@ class ItemService extends ContainerAware
 		}
 		$zone = $this->managerRegistry->getRepository('YouppersCustomerBundle:Zone')->find($zoneId);
 		if (empty($zone)) {
-			throw new \Exception(sprintf("Zone'%s' not found",$zoneId));
+			throw new \Exception(sprintf("Zone '%s' not found",$zoneId));
 		}
 		return $zone;
 	}
@@ -100,10 +100,10 @@ class ItemService extends ContainerAware
 			$session = $this->getSession($sessionId);
 			if ($session === null) {
 				$this->logger->error(sprintf("Session '%s' not found",$sessionId));
-				throw new NotFoundResourceException("Session not found");
+				throw new \Exception("Invalid sessionId ".$sessionId);
 			}
 		} else {
-			throw new NotFoundResourceException("Session not specified");
+			throw new \Exception("Session not specified");
 		}
 		
 		$repo = $this->getRepository();
@@ -137,7 +137,7 @@ class ItemService extends ContainerAware
 			$session = $this->getSession($sessionId);
 			if ($session === null) {
 				$this->logger->error(sprintf("Session '%s' not found",$sessionId));
-				throw new NotFoundResourceException("Session not found");
+				throw new \Exception("Invalid sessionId ".$sessionId);
 			}
 		}
 		
