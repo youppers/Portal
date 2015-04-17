@@ -163,7 +163,7 @@ class ProductService extends ContainerAware
 			->where('v.productCollection = :collection')
 			->andWhere('p.attributeOption = :option');
 
-		$variantsId = null;
+		$typeVariantsId = array();
 		$numVariants = 0;
 		foreach ($options as $option) {
 			$this->logger->info(sprintf("Option: %s",$option));
@@ -174,19 +174,46 @@ class ProductService extends ContainerAware
 			
 			if (count($optionVariantsEntities) == 0) {
 				$this->logger->warning("No variant found with option: " . $option);
-				return null;
 			}
 			$optionVariantsId = array();
 			foreach ($optionVariantsEntities as $optionVariantEntity) {
 				$optionVariantsId[] = $optionVariantEntity->getId();
-				if ($this->debug) $this->logger->info(sprintf("Variant: %s",$optionVariantEntity));				
+				if ($this->debug) $this->logger->debug(sprintf("Variant: %s",$optionVariantEntity));				
 			}
+			$typeVariantsId[$option->getAttributeStandard()->getAttributeType()->getId()] = $optionVariantsId; 
+		}
+
+		// primo tentativo: tutte le opzioni
+		$variantsId = null;
+		foreach ($typeVariantsId as $optionVariantsId) {
 			if ($variantsId == null) {
 				$variantsId = $optionVariantsId;
 			} else {
 				$variantsId = array_intersect($variantsId,$optionVariantsId);
 				if (count($variantsId) == 0) {
 					break;
+				}
+			}	
+		}
+		
+		// secondo tentativo: solo opzioni che sono variante e abilitate
+		if (count($variantsId) == 0) {
+			$variantsId = null;
+			foreach ($collection->getProductType()->getProductAttributes() as $productTypeAttribute) {
+				if ((!$productTypeAttribute->getVariant() || !$productTypeAttribute->getEnabled()) 
+						&& array_key_exists($productTypeAttribute->getAttributeType()->getId(),$typeVariantsId)) {
+					$this->logger->info(sprintf("Relaxing option '%s'",$productTypeAttribute->getAttributeType()));
+					unset($typeVariantsId[$productTypeAttribute->getAttributeType()->getId()]);
+				}
+			}
+			foreach ($typeVariantsId as $optionVariantsId) {
+				if ($variantsId == null) {
+					$variantsId = $optionVariantsId;
+				} else {
+					$variantsId = array_intersect($variantsId,$optionVariantsId);
+					if (count($variantsId) == 0) {
+						break;
+					}
 				}
 			}
 		}
