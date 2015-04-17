@@ -57,9 +57,10 @@ class BaseVariantGuesser extends AbstractGuesser
 			if (array_key_exists($typeCode,$this->options[$value])) {
 				return $this->options[$value][$typeCode];
 			} else {
-				$this->logger->debug(sprintf("Attribute option with value '%s' not found for attribute type '%s'",$value,$typeCode));
+				$msg = sprintf("Attribute option with value '%s' not found for attribute type '%s'",$value,$typeCode);
+				$this->logger->error($msg);
+				$this->addTodo("Error: " . $msg);
 				$this->options[$value][$typeCode] = null;
-				$this->addTodo(sprintf("Check option: %s : %s",$typeCode,$value));
 				return null;
 			}
 		} else {
@@ -167,7 +168,7 @@ class BaseVariantGuesser extends AbstractGuesser
 		} elseif (count($values) > 0) {
 			$msg = sprintf("Dimension '%s' not found for '%s'",implode('/',$values),$productName);
 			$this->logger->warning($msg);
-			$this->addTodo($msg);				
+			$this->addTodo("Add: " . $msg);				
 		} else {
 			// TODO none
 			return null;
@@ -213,7 +214,7 @@ class BaseVariantGuesser extends AbstractGuesser
 		} else {
 			$msg = sprintf("Variant '%s' dimension not guessed, but already set '%s'",$variant,$actualDimension);
 			$this->logger->debug($msg);
-			$this->addTodo($msg);				
+			$this->addTodo("Check: " . $msg);				
 		}
 	}
 
