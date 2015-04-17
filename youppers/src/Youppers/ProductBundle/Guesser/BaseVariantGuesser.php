@@ -14,7 +14,11 @@ class BaseVariantGuesser extends AbstractGuesser
 	{
 		if (is_array($value)) {
 			$results = array();
-			$multivalues = implode('/',$value);
+			if (count($value) > 1) {
+				$multivalues = implode('/',$value);
+			} else {
+				$multivalues = null;
+			}
 			foreach ($value as $v1) {
 				$res = $this->searchOptions($typeCode, $v1,$multivalues);
 				if ($res !== null) {
@@ -73,8 +77,8 @@ class BaseVariantGuesser extends AbstractGuesser
 	protected function guessDimension(ProductVariant $variant)
 	{
 		$productName = $variant->getProduct()->getName();
-		if (preg_match("/(\d*,)?(\d+)[xX](\d*,)?(\d+)/", $productName, $a)) {
-			$values = array();
+		$values = array();
+		if (preg_match("/(\d*,)?(\d+)[xX](\d*,)?(\d+)/i", $productName, $a)) {
 			if (empty($a[1])) {
 				$v1 = $a[2];
 			} else {
@@ -126,28 +130,47 @@ class BaseVariantGuesser extends AbstractGuesser
 					$values[] = ceil($v1) . self::PER . floor($v2); // 24x30
 					$values[] = floor($v1) . self::PER . floor($v2); // 23x30
 				}
-			}
-						
-			$values = array_unique($values);
-			
-			$options = $this->searchOptions(self::TYPE_DIMENSION,$values);
-			
-			if (count($options) == 1) {
-				if (count($options[0]) > 1) {
-					$this->logger->error(sprintf("More standars found with values '%s'",implode('/',$values)));						
-					dump($options); die;
-				}
-				return array_pop($options[0]);
-			} elseif (count($options) > 1) {
-				$this->logger->error(sprintf("More dimensions found with values '%s'",implode('/',$values)));
-				dump($options); die;
-				// TODO more than one standard
+			}						
+		} elseif (preg_match("/\s+(\d*,)?(\d+)(\s+|cm)/i", $productName, $a)) {
+			if (!empty($a[1])) {
+				$a[1] = preg_replace('/,/', '', $a[1]);
+				$v = floatval($a[1] . self::DOT . $a[2]);
+				$values[] = $a[1] . self::COMMA . $a[2];
+				$values[] = $a[1] . self::DOT . $a[2];
+				$values[] = strval(ceil($v)); 
+				$values[] = strval(floor($v));
 			} else {
-				$this->logger->debug(sprintf("Dimension not found for '%s' searching '%s'",$productName,implode('/',$values)));
-				// TODO none
-			} 
+				$values[] = $a[2];
+			}			
 		} else {
 			$this->logger->debug(sprintf("Dimension not found in product name for '%s'",$variant));
+			return null;				
+		}
+			
+		$values = array_unique($values);
+		
+		if (count($values) > 0) {
+			$options = $this->searchOptions(self::TYPE_DIMENSION,$values);
+		} else {
+			$options = array();
+		}
+			
+		if (count($options) == 1) {
+			if (count($options[0]) > 1) {
+				$this->logger->error(sprintf("More standars found with values '%s'",implode('/',$values)));
+			}
+			return array_pop($options[0]);
+		} elseif (count($options) > 1) {
+			$this->logger->error(sprintf("More dimensions found with values '%s'",implode('/',$values)));
+			// TODO more than one standard
+			return null;
+		} elseif (count($values) > 0) {
+			$msg = sprintf("Dimension '%s' not found for '%s'",implode('/',$values),$productName);
+			$this->logger->warning($msg);
+			$this->addTodo($msg);				
+		} else {
+			// TODO none
+			return null;
 		}		
 	} 
 	
@@ -186,9 +209,11 @@ class BaseVariantGuesser extends AbstractGuesser
 				//dump($newDimension); dump($actualDimension); die;
 			}
 		} elseif (empty($actualDimension)) {
-			$this->logger->warning(sprintf("Dimension not found for '%s'",$variant));				
+			$this->logger->debug(sprintf("Dimension not found for '%s'",$variant));				
 		} else {
-			$this->logger->debug(sprintf("Variant '%s' dimension not guessed, but already set '%s'",$variant,$actualDimension));				
+			$msg = sprintf("Variant '%s' dimension not guessed, but already set '%s'",$variant,$actualDimension);
+			$this->logger->debug($msg);
+			$this->addTodo($msg);				
 		}
 	}
 
