@@ -23,7 +23,7 @@ class AttributeOptionAdmin extends Admin
 	{
 		$datagridMapper
 		->add('value')
-		->add('attributeStandard')
+		->add('attributeStandard', null, array(), null, array('expanded' => false, 'multiple' => true))
 		->add('enabled')
 		;
 	}

@@ -27,10 +27,49 @@ class VariantPropertyAdmin extends Admin
 		->add('position','hidden',array('attr'=>array("hidden" => true)))			
 		->add('attributeOption', 'sonata_type_model_list', array(
 				'btn_delete'       => false,
-				'required' => false, 'constraints' => new Assert\NotNull()))
+				'required' => false, 'constraints' => new Assert\NotNull()),
+				array('link_parameters' => array(
+						'filter'   => array('attributeStandard' => array('value' => $this->getStandards()))
+					)
+				)
+			)
 		;
 	}
+	
+	private $standards = null;
+	
+	private function getStandards()
+	{
+		$logger = $this->getConfigurationPool()->getContainer()->get('logger');		
 
+		if ($this->standards) {
+			return $this->standards;
+		}
+		$standards = array();
+						
+		if ($variantPropertiesField = $this->getParentFieldDescription()) {
+			if ($productVariantAdmin = $variantPropertiesField->getAdmin()) {
+				if ($variant = $productVariantAdmin->getSubject()) {
+					$logger->debug("VPA: getStandards variant=" . $variant);
+					if ($collection = $variant->getProductCollection()) {
+						foreach ($collection->getStandards() as $standard) {
+							$standards[] = $standard->getId();
+						}
+					} else {						
+						$logger->warning("VPA: getStandards variant->getProductCollection() NULL");
+						// FIXME da gestire altri casi
+					}
+				}
+			}
+		}
+		
+		$logger->debug("VPA: getStandards=".implode(',',$standards));
+		
+		$this->standards = $standards;
+		
+		return $standards;
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */

@@ -36,7 +36,7 @@ class ProductVariant
 	protected $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="ProductCollection", inversedBy="productVariants")
+	 * @ORM\ManyToOne(targetEntity="ProductCollection", inversedBy="productVariants", fetch="EAGER")
 	 * @ORM\JoinColumn(name="product_collection_id")
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json.qr.find", "json.variant.list", "json.variant.read", "json.product.list", "json.box.show"})
