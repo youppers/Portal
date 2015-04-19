@@ -146,9 +146,10 @@ class ProductService extends ContainerAware
 	 * 
 	 * @param ProductCollection $collection
 	 * @param array of AttributeOption $options
+	 * @param boolean $relaxed Perform the search relaxing non variant options if none found with all options 
 	 * TODO use mongodb to search entities
 	 */
-	protected function findVariants(ProductCollection $collection, $options)
+	public function findVariants(ProductCollection $collection, $options, $relaxed = true)
 	{
 		$stopwatch = new Stopwatch();
 		$stopwatch->start('findVariants');
@@ -197,7 +198,7 @@ class ProductService extends ContainerAware
 		}
 		
 		// secondo tentativo: solo opzioni che sono variante e abilitate
-		if (count($variantsId) == 0) {
+		if ($relaxed && count($variantsId) == 0) {
 			$variantsId = null;
 			foreach ($collection->getProductType()->getProductAttributes() as $productTypeAttribute) {
 				if ((!$productTypeAttribute->getVariant() || !$productTypeAttribute->getEnabled()) 
