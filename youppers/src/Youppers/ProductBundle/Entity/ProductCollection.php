@@ -79,6 +79,12 @@ class ProductCollection
 	 * @Serializer\Groups({"json.collection.read"})
 	 */
 	protected $productType;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="AttributeStandard")
+	 * @ORM\JoinTable(name="youppers_dealer__collection_standard")
+	 */
+	protected $standards;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
@@ -441,5 +447,39 @@ class ProductCollection
     public function getAlias()
     {
         return $this->alias;
+    }
+
+    /**
+     * Add standard
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeStandard $standard
+     *
+     * @return ProductCollection
+     */
+    public function addStandard(\Youppers\ProductBundle\Entity\AttributeStandard $standard)
+    {
+        $this->standards[] = $standard;
+
+        return $this;
+    }
+
+    /**
+     * Remove standard
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeStandard $standard
+     */
+    public function removeStandard(\Youppers\ProductBundle\Entity\AttributeStandard $standard)
+    {
+        $this->standards->removeElement($standard);
+    }
+
+    /**
+     * Get standards
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStandards()
+    {
+        return $this->standards;
     }
 }

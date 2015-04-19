@@ -86,6 +86,7 @@ class ProductCollectionAdmin extends YouppersAdmin
 	        ->end()
             ->with('Options', array('class' => 'col-md-6'))
             ->add('enabled', null, array('required'  => false))
+            ->add('standards')
             ->end()
             ->with('Media', array('class' => 'col-md-6'))
             ->add('pdfGallery', 'sonata_type_model_list', 
@@ -138,6 +139,7 @@ class ProductCollectionAdmin extends YouppersAdmin
             ->add('alias')
             ->add('description')
         	->add('enabled')
+        	->add('standards')        	 
             ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
             //->add('productVariants', null, array('route' => array('name' => 'show')))
             //->add('productAttributes.attributeType')
