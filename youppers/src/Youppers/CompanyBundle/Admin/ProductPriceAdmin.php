@@ -62,7 +62,6 @@ class ProductPriceAdmin extends Admin
 		->add('product', null, array('route' => array('name' => 'show')))
 		->add('price')
         ->add('uom')        
-		->add('info','text')
 		->add('createdAt')
 		->add('updatedAt')
 		;

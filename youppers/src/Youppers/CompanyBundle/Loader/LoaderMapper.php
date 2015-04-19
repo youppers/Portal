@@ -31,8 +31,14 @@ class LoaderMapper
 	public function setData($data)
 	{
 		$this->data=$data;
+		return $this;
 	}
-
+	
+	public function getData()
+	{
+		return $this->data;
+	}
+	
 	public function get($what,$returnKey=false,$remove=false)
 	{
 		if (array_key_exists($what,$this->mapping)) {

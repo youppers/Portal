@@ -36,11 +36,6 @@ class ProductPrice
 	 * @ORM\Column(type="string", length=10)
 	 */
 	protected $uom;	
-	
-	/**
-	 * @ORM\Column(type="json")
-	 */
-	protected $info;
 
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")

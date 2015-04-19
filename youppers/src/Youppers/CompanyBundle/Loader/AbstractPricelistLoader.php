@@ -174,6 +174,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			$product->setGtin($productGtin);
 		}
 		
+		$info = json_encode($this->mapper->getData());
+		$product->setInfo($info);
+		
 		if (empty($product->getId())) {
 			if ($this->force && $this->createProduct) {
 				$this->em->persist($product);
@@ -207,11 +210,6 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$price->setProduct($product);
 		$price->setPrice(strtr($this->mapper->remove('price'),array(" " => "", "€" => "","." => "","," => ".")));
 		$price->setUom($this->mapper->remove('uom'));
-		try {
-			$price->setInfo($this->serializer->serialize($this->mapper, 'json'));
-		} catch (Exception $e) {
-			$this->logger->critical(sprintf("At row %d",$this->numRows),$e);
-		}
 		if ($this->force) {
 			$this->em->persist($price);
 		}

@@ -93,6 +93,10 @@ class Product
 	 */
 	protected $createdAt;
 	
+	/**
+	 * @ORM\Column(type="json", nullable=true)
+	 */
+	protected $info;
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
@@ -453,5 +457,29 @@ class Product
     public function getVariant()
     {
         return $this->variant;
+    }
+
+    /**
+     * Set info
+     *
+     * @param json $info
+     *
+     * @return Product
+     */
+    public function setInfo($info)
+    {
+        $this->info = $info;
+
+        return $this;
+    }
+
+    /**
+     * Get info
+     *
+     * @return json
+     */
+    public function getInfo()
+    {
+        return $this->info;
     }
 }
