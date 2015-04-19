@@ -21,11 +21,8 @@ sonata_admin:
                 content: >
                   <h2>Youppers Admin</h2>
                   <ul>
-                    <li>1.0.409
-                      <ul>
-                        <li>Filters in Product > Collection > Variants</li>
-                      </ul>
-                    </li>
+                    <li>1.0.417 Standards for Variant Property associated to Product Collection</li>
+                    <li>1.0.409 Filters in Product > Collection > Variants</li>
                   </ul>
                       
 #            - { position: right, type: sonata.admin_doctrine_orm.block.audit}
