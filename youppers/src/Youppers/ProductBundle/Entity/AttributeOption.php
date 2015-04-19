@@ -46,31 +46,6 @@ class AttributeOption
 		return trim((null === $this->getValue() ? 'New' : $this->getValue()) . ($this->getAttributeStandard() ? ' '. $this->getAttributeStandard()->getSymbol():'')); 
 	}
 	
-	public function getValueWithEquivalence()
-	{
-		$equivalent = $this->getEquivalentOption();
-		if ($equivalent === null) {
-			return $this->getValueWithSymbol();
-		} else {
-			return $this->getValueWithSymbol() . ' ~ ' . $equivalent->getValueWithSymbol();
-		}		 
-	}
-
-	public function getValueWithEquivalences()
-	{
-		$equivalents = $this->getEquivalentOptions();
-		if ($equivalents === null) {
-			return $this->getValueWithEquivalence();
-		} else {
-			$res = $this->getValueWithSymbol();
-			foreach ($equivalents as $equivalent) {
-				$res .= ' ~ ' . $equivalent->getValueWithSymbol();
-			}
-			return $res;
-		}
-			
-	}
-	
 	public function getAttributeType()
 	{
 		return $this->getAttributeStandard() ? $this->getAttributeStandard()->getAttributeType() : null;
@@ -92,6 +67,11 @@ class AttributeOption
 	 * @JMS\Accessor(getter="getValueWithSymbol")
 	 */
 	protected $value;
+	
+	/**
+	 * @ORM\Column(name="alias", type="string", nullable=true)
+	 */
+	protected $alias;
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
@@ -124,17 +104,6 @@ class AttributeOption
 	protected $attributeStandard;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="AttributeOption", mappedBy="equivalentOption")
-	 **/
-	protected $equivalentOptions;
-	
-	/**
-	 * @ORM\ManyToOne(targetEntity="AttributeOption", inversedBy="equivalentOptions")
-	 * @ORM\JoinColumn(name="equivalent_option_id", referencedColumnName="id")
-	 */
-	protected $equivalentOption;
-			
-	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -163,18 +132,11 @@ class AttributeOption
 	}	
 		
 	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle:AttributeOption
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->equivalentOptions = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
      *
-     * @return guid 
+     * @return guid
      */
     public function getId()
     {
@@ -185,6 +147,7 @@ class AttributeOption
      * Set value
      *
      * @param string $value
+     *
      * @return AttributeOption
      */
     public function setValue($value)
@@ -197,7 +160,7 @@ class AttributeOption
     /**
      * Get value
      *
-     * @return string 
+     * @return string
      */
     public function getValue()
     {
@@ -208,6 +171,7 @@ class AttributeOption
      * Set enabled
      *
      * @param boolean $enabled
+     *
      * @return AttributeOption
      */
     public function setEnabled($enabled)
@@ -220,7 +184,7 @@ class AttributeOption
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -231,6 +195,7 @@ class AttributeOption
      * Set position
      *
      * @param integer $position
+     *
      * @return AttributeOption
      */
     public function setPosition($position)
@@ -243,7 +208,7 @@ class AttributeOption
     /**
      * Get position
      *
-     * @return integer 
+     * @return integer
      */
     public function getPosition()
     {
@@ -254,6 +219,7 @@ class AttributeOption
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
+     *
      * @return AttributeOption
      */
     public function setUpdatedAt($updatedAt)
@@ -266,7 +232,7 @@ class AttributeOption
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -277,6 +243,7 @@ class AttributeOption
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return AttributeOption
      */
     public function setCreatedAt($createdAt)
@@ -289,7 +256,7 @@ class AttributeOption
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -300,6 +267,7 @@ class AttributeOption
      * Set image
      *
      * @param \Application\Sonata\MediaBundle\Entity\Media $image
+     *
      * @return AttributeOption
      */
     public function setImage(\Application\Sonata\MediaBundle\Entity\Media $image = null)
@@ -312,7 +280,7 @@ class AttributeOption
     /**
      * Get image
      *
-     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     * @return \Application\Sonata\MediaBundle\Entity\Media
      */
     public function getImage()
     {
@@ -323,6 +291,7 @@ class AttributeOption
      * Set attributeStandard
      *
      * @param \Youppers\ProductBundle\Entity\AttributeStandard $attributeStandard
+     *
      * @return AttributeOption
      */
     public function setAttributeStandard(\Youppers\ProductBundle\Entity\AttributeStandard $attributeStandard = null)
@@ -335,7 +304,7 @@ class AttributeOption
     /**
      * Get attributeStandard
      *
-     * @return \Youppers\ProductBundle\Entity\AttributeStandard 
+     * @return \Youppers\ProductBundle\Entity\AttributeStandard
      */
     public function getAttributeStandard()
     {
@@ -343,58 +312,26 @@ class AttributeOption
     }
 
     /**
-     * Add equivalentOptions
+     * Set alias
      *
-     * @param \Youppers\ProductBundle\Entity\AttributeOption $equivalentOptions
+     * @param string $alias
+     *
      * @return AttributeOption
      */
-    public function addEquivalentOption(\Youppers\ProductBundle\Entity\AttributeOption $equivalentOptions)
+    public function setAlias($alias)
     {
-        $this->equivalentOptions[] = $equivalentOptions;
+        $this->alias = $alias;
 
         return $this;
     }
 
     /**
-     * Remove equivalentOptions
+     * Get alias
      *
-     * @param \Youppers\ProductBundle\Entity\AttributeOption $equivalentOptions
+     * @return string
      */
-    public function removeEquivalentOption(\Youppers\ProductBundle\Entity\AttributeOption $equivalentOptions)
+    public function getAlias()
     {
-        $this->equivalentOptions->removeElement($equivalentOptions);
-    }
-
-    /**
-     * Get equivalentOptions
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getEquivalentOptions()
-    {
-        return $this->equivalentOptions;
-    }
-
-    /**
-     * Set equivalentOption
-     *
-     * @param \Youppers\ProductBundle\Entity\AttributeOption $equivalentOption
-     * @return AttributeOption
-     */
-    public function setEquivalentOption(\Youppers\ProductBundle\Entity\AttributeOption $equivalentOption = null)
-    {
-        $this->equivalentOption = $equivalentOption;
-
-        return $this;
-    }
-
-    /**
-     * Get equivalentOption
-     *
-     * @return \Youppers\ProductBundle\Entity\AttributeOption 
-     */
-    public function getEquivalentOption()
-    {
-        return $this->equivalentOption;
+        return $this->alias;
     }
 }

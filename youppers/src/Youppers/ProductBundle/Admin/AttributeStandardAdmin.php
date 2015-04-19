@@ -79,8 +79,7 @@ class AttributeStandardAdmin extends YouppersAdmin
             ->add('symbol')
             ->add('enabled')
             ->add('description')
-            //->add('attributeOptions', null, array('associated_property' => 'valueWithEquivalence'))
-            ->add('attributeOptions', null, array('associated_property' => 'valueWithEquivalences'))
+            ->add('attributeOptions', null, array('associated_property' => 'valueWithSymbol'))
             ->add('updatedAt')
             ->add('createdAt')
         ;
