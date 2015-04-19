@@ -10,6 +10,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Symfony\Component\Validator\Constraints as Assert;
 use Youppers\ProductBundle\YouppersProductBundle;
+use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Entity\AttributeType;
 
 class ProductVariantAdmin extends YouppersAdmin
 {
@@ -30,6 +32,34 @@ class ProductVariantAdmin extends YouppersAdmin
 		return parent::toString($object);
 	}
 	
+	private function getOptions(ProductCollection $collection,AttributeType $attributeType)
+	{
+		
+		$em = $this->modelManager->getEntityManager('YouppersProductBundle:AttributeOption');
+				
+		$qb = $em->getRepository('YouppersProductBundle:AttributeOption')->createQueryBuilder('o');
+		
+		$query = $qb
+			->join('YouppersProductBundle:VariantProperty','p', 'WITH', 'p.attributeOption = o')
+			->join('YouppersProductBundle:ProductVariant','v', 'WITH', 'p.productVariant = v')
+			->join('o.attributeStandard','s')
+			->where('v.productCollection = :collection')
+			->setParameter('collection', $collection)
+			->andWhere('s.attributeType = :attributeType')
+			->setParameter('attributeType', $attributeType)
+			->addOrderBy('o.position', 'ASC')
+			->getQuery();
+		
+		$options = array();
+		foreach ($query->getResult() as $option) {
+			$options[$option->getId()] = $option->getValueWithSymbol();
+		}
+		return $options;				
+	}
+
+	private $selectedOptions = array();
+	private $numAttributes; 
+	
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -42,6 +72,22 @@ class ProductVariantAdmin extends YouppersAdmin
         	->add('productCollection.brand.name')
             ->add('productCollection.brand.code')
             ->add('productCollection.name');
+    	} else {
+    		$collection = $this->getParent()->getSubject();
+    		$productTypeAttributes = $collection->getProductType()->getProductAttributes();
+    		$this->numAttributes = count($productTypeAttributes);
+    		foreach ($productTypeAttributes as $productTypeAttribute) {
+    			$attributeType = $productTypeAttribute->getAttributeType();    			
+	        	$datagridMapper
+	    		->add('attribute_'.$attributeType->getCode(), 'doctrine_orm_callback', array(
+		    			'label' => $attributeType->getName() . ($productTypeAttribute->getVariant() ? ' (Variant)':''),
+	    		        'callback'   => array($this, 'getAttributeFilter'),
+	                	'field_type' => 'choice'
+            		),null,array(
+            			'choices' => $this->getOptions($collection,$attributeType)
+            		)
+	    		);
+    		}
     	}
         $datagridMapper
     		->add('product.name')
@@ -49,7 +95,38 @@ class ProductVariantAdmin extends YouppersAdmin
             ->add('enabled')
         ;
     }
+        
+    public function getAttributeFilter($queryBuilder, $alias, $field, $value) {
+    	$this->selectedOptions[] = $value['value'];
 
+    	if (count($this->selectedOptions) == $this->numAttributes) {
+    		$options = array();
+    		foreach ($this->selectedOptions as $option) {
+    			if (!empty($option)) {
+    				$options[] = $this->modelManager
+    					->getEntityManager('YouppersProductBundle:AttributeOption')
+    					->find('YouppersProductBundle:AttributeOption',$option);
+    			}
+    		}
+
+    		if (count($options) == 0) {
+    			return true;
+    		}
+    		
+    		$productService = $this->getConfigurationPool()->getContainer()->get('youppers.product.service.product');
+    		$variants = $productService->findVariants($this->getParent()->getSubject(), $options, false);
+    		
+    		$ids = array();
+    		foreach ($variants as $variant) {
+    			$ids[] = $variant->getId();
+    		}
+    		$queryBuilder
+    			->andWhere($alias . '.id IN (:ids)')
+    			->setParameter('ids', $ids);
+    	}
+    
+    	return true;
+    }
     /**
      * @param ListMapper $listMapper
      */
