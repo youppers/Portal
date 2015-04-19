@@ -28,7 +28,7 @@ class CleanSessionCommand extends ContainerAwareCommand
             ->setDescription('Clean useless sessions')
             ->addOption('delete','y', null,'Delete sessions')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> command will remove old and useless sessions.
+The <info>%command.name%</info> command will remove old and useless (without Items, History, ecc.) sessions.
 
   <info>php %command.full_name%</info>
 EOT
@@ -41,6 +41,10 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$n = $this->getContainer()->get('youppers.customer.session')->clean($input->getOption('delete'));
-		$output->writeln(sprintf("Deleted %d sessions",$n));		
+		if ($input->getOption('delete')) {
+			$output->writeln(sprintf("Deleted %d sessions",$n));
+		} else {
+			$output->writeln(sprintf("Can be deleted %d sessions (use -y to actually perform deletion)",$n));
+		}		
     }
 }
