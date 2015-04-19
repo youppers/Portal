@@ -18,12 +18,18 @@ use Youppers\ProductBundle\Entity\ProductCollection;
 abstract class AbstractGuesser extends ContainerAware
 {
 	
-	const TYPE_DIMENSION = 'DIM';
 	const COMMA = ',';
 	const DOT = '.';
 	const PER = 'x';
 	
 	private $todos = array();
+	
+	private $parent = null; // Parent Guesser
+	
+	protected function setParent(AbstractGuesser $parent)
+	{
+		$this->parent = $parent;
+	}
 	
 	public function getTodos()
 	{
@@ -32,7 +38,9 @@ abstract class AbstractGuesser extends ContainerAware
 	
 	protected function addTodo($todo)
 	{
-		if (!in_array($todo,$this->todos)) {
+		if ($this->parent) {
+			$this->parent->addTodo($todo);
+		} else if (!in_array($todo,$this->todos)) {
 			$this->todos[] = $todo;
 		}
 	}
@@ -46,12 +54,31 @@ abstract class AbstractGuesser extends ContainerAware
 		$this->em = $managerRegistry->getManager();
 	}
 
+	public function getManagerRegistry()
+	{
+		if ($this->parent) {
+			return $this->parent->getManagerRegistry();
+		} else {
+			return $this->managerRegistry;
+		}
+	}
+	
 	protected $logger;
 	
 	public function setLogger(LoggerInterface $logger)
 	{
 		$this->logger = $logger;
 	}
+	
+	public function getLogger()
+	{
+		if ($this->parent) {
+			return $this->parent->getLogger();
+		} else {
+			return $this->logger;
+		}
+	}
+	
 		
 	protected $force = false;
 	
@@ -123,11 +150,20 @@ abstract class AbstractGuesser extends ContainerAware
 			->getRepository('YouppersProductBundle:ProductVariant')
 			->findBy(array('productCollection' => $collection));
 		$this->logger->info(sprintf("Guessing %d variants for collection '%s'",count($variants),$collection));
+		$guessers = $this->getCollectionGuessers($collection);
 		foreach ($variants as $variant) {
-			$this->guessVariant($variant);
+			$this->guessVariant($variant,$guessers);
 		}
 	}	
-
-	protected abstract function guessVariant(ProductVariant $variant);
+	
+	protected function getCollectionGuessers($collection)
+	{
+		// TODO parametrico
+		$guessers = array();
+		$guesser = new BaseDimensionPropertyGuesser();
+		$guesser->setParent($this);
+		$guessers[] = $guesser;
+		return $guessers;
+	}
 
 }

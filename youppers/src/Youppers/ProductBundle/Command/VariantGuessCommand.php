@@ -55,6 +55,7 @@ class VariantGuessCommand extends ContainerAwareCommand
 		foreach ($guesser->getTodos() as $todo) {
 			$output->writeln($todo);				
 		}
+		$output->writeln("Done.");		
 	}
 	
 }
