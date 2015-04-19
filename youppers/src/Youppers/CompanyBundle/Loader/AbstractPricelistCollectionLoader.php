@@ -130,7 +130,7 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 			if ($collection === false) {
 				// cached and not created
 			} elseif (empty($collection)) {
-				if ($this->force) {
+				if ($this->force && $this->createCollection) {
 					throw new \Exception(sprintf("Collection with code '%s' of Brand '%s' not found",$collectionCode,$brand));
 				} else {
 					$this->brands[$brand->getCode()][$collectionCode] = false; // warn only once
