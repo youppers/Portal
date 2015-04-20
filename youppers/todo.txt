@@ -11,6 +11,8 @@ Per le varianti bisogna verificare l'univocità, cioè il fatto che gli attribut
 
 TODO
 
+Add variantId to JSON Attributes.read
+
 Upload drag'ndrop
 http://www.jesuisundev.fr/upload-drag-drop-via-dropzonejs-symfony2-on-cloud-amazon-s3/
 http://www.dropzonejs.com/
