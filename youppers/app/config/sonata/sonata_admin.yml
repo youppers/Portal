@@ -21,6 +21,7 @@ sonata_admin:
                 content: >
                   <h2>Youppers Admin</h2>
                   <ul>
+                    <li>1.0.423 Clone Product Variant</li>
                     <li>1.0.417 Standards for Variant Property associated to Product Collection</li>
                     <li>1.0.409 Filters in Product > Collection > Variants</li>
                   </ul>

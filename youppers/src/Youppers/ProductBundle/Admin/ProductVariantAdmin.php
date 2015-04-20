@@ -2,16 +2,18 @@
 
 namespace Youppers\ProductBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Symfony\Component\Validator\Constraints as Assert;
 use Youppers\ProductBundle\YouppersProductBundle;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class ProductVariantAdmin extends YouppersAdmin
 {
@@ -20,6 +22,21 @@ class ProductVariantAdmin extends YouppersAdmin
 		return 'productCollection';
 	}
 
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->add('clone', $this->getRouterIdParameter().'/clone');
+	}
+
+	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+	{
+		parent::configureTabMenu($menu, $action,$childAdmin);
+			
+		if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
+			$id = $this->getRequest()->get($this->getIdParameter());	
+			$menu->addChild('Clone', array('uri' => $this->generateUrl('clone', array('id' => $id))));
+		}
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
