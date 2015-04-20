@@ -5,6 +5,7 @@ namespace Youppers\DealerBundle\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class BoxCRUDController extends CRUDController
 {
