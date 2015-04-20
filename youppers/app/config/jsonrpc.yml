@@ -38,7 +38,7 @@ wa72_json_rpc:
         Variant.list: { service: youppers.product.service.product, method: listVariants, jms_serialization_context: { groups: [json, json.variant.list], version: '1', max_depth_checks: true } }
         Variant.read: { service: youppers.product.service.product, method: readVariant, jms_serialization_context: { groups: [json, json.variant.read], version: '1', max_depth_checks: true } }
         Collection.read: { service: youppers.product.service.product, method: readCollection, jms_serialization_context: { groups: [json, json.collection.read], version: '1', max_depth_checks: true } }
-        Attributes.read: { service: youppers.product.service.product, method: readCollectionAttributes, jms_serialization_context: { groups: [json, json.attributes.read], version: '1', max_depth_checks: true } }
+        Attributes.read: { service: youppers.product.service.product, method: readAttributes, jms_serialization_context: { groups: [json, json.attributes.read], version: '1', max_depth_checks: true } }
 
         Zone.list: { service: youppers.customer.zone, method: listForSession, jms_serialization_context: { groups: [json, json.zone.list], version: '1', max_depth_checks: true } }
         Zone.create: { service: youppers.customer.zone, method: createForSession, jms_serialization_context: { groups: [json, json.zone.read], version: '1', max_depth_checks: true } }

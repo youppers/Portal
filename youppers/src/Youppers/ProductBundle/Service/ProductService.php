@@ -244,6 +244,114 @@ class ProductService extends ContainerAware
 		return $this->managerRegistry->getRepository('YouppersProductBundle:ProductCollection')->find($collectionId);
 	}
 
+	public function readAttributes($collectionId = null, $variantId = null, $sessionId = null)
+	{
+		if (!empty($variantId)) {
+			return $this->readVariantAttributes($variantId, $sessionId);
+		} elseif (!empty($collectionId)) {
+			return $this->readCollectionAttributes($collectionId, $sessionId);
+		} else {
+			throw new \Exception("Must specify at least one of collectionId or variantId");
+		}
+	}
+
+	/**
+	 * Return
+	 *   all options of the products of the collection whose type is an attribute variant for the collection
+	 *   +
+	 *   
+	 * 
+	 * @param uuid $variantId
+	 * @return Collection AttributeOption List of options  
+	 */
+	public function readVariantAttributes($variantId, $sessionId = null)
+	{
+		$variant = $this->readVariant($variantId);
+		if (empty($variant)) {
+			throw new NotFoundHttpException("Invalid variant id");				
+		}
+		$collection = $variant->getProductCollection();
+		
+		$collection->getProductType()->getProductAttributes();
+
+		$repo = $this->managerRegistry->getRepository('YouppersProductBundle:AttributeOption');
+
+		$qb = $repo
+			->createQueryBuilder('o');
+		$query = $qb
+			->join('YouppersProductBundle:VariantProperty','p', 'WITH', 'p.attributeOption = o') // all options 
+			->join('YouppersProductBundle:ProductVariant','v', 'WITH', 'p.productVariant = v')  // of the products 
+			->where('v.productCollection = :collection')  // of the collection
+				->setParameter('collection', $collection)
+			->join('o.attributeStandard','s')  
+			->join('s.attributeType','t')  // whose type
+			->join('t.productAttributes','a')   
+			->andWhere('a.variant = :isVariant')  
+				->setParameter('isVariant', true) // is an attribute variant 
+			->andWhere('a.productType = :collectionProductType')
+				->setParameter('collectionProductType', $collection->getProductType())  // for the collection
+			->orderBy('o.attributeStandard', 'ASC')
+			->addOrderBy('o.position', 'ASC')
+			->getQuery();
+		
+		// all options of the products of the collection whose type is an attribute variant for the collection
+		$options1 = $query->getResult();
+
+		if ($this->debug) dump(implode(', ',$options1));  // example: bidet + vaso + lavabo
+		
+		$typesVariant = array();  
+		foreach ($collection->getProductType()->getProductAttributes() as $attribute) {
+			if ($attribute->getVariant()) {
+				$typesVariant[] = $attribute->getAttributeType();
+			}
+		}
+		
+		if ($this->debug) dump(implode(', ',$typesVariant)); // example: elementi
+		
+		$variantOptions = array();  
+		foreach ($variant->getVariantProperties() as $property) {
+			if (in_array($property->getAttributeType(),$typesVariant)) {
+				$variantOptions[] = $property->getAttributeOption();
+			}			
+		}
+
+		if ($this->debug) dump(implode(', ',$variantOptions)); // example: bidet
+
+		$qb = $repo
+			->createQueryBuilder('o');
+		$query = $qb
+			->join('YouppersProductBundle:VariantProperty','p', 'WITH', 'p.attributeOption = o') // all options
+			->join('YouppersProductBundle:ProductVariant','v', 'WITH', 'p.productVariant = v')  // of the products
+			->where('v.productCollection = :collection')  // of the collection
+				->setParameter('collection', $collection)
+			->join('v.variantProperties','ps')  // that have
+			->andWhere('ps.attributeOption IN (:variantOptions)')  // variant options of the given variant
+				->setParameter('variantOptions', $variantOptions)
+			->orderBy('o.attributeStandard', 'ASC')
+			->addOrderBy('o.position', 'ASC')
+			->getQuery();
+		
+		// all options of the products of the collection that have variant options of the given variant
+		$options2 = $query->getResult();
+		
+		if ($this->debug) dump(implode(', ',$options2));  // example: bidet + sospeso + da oppoggio
+
+		// merge & remove duplicates
+		$options = array_unique(array_merge($options1,$options2));
+		
+		if ($this->debug) dump(implode(', ',$options));  // example: bidet + vaso + lavabo + sospeso + da oppoggio
+		
+		if ($this->debug) {
+			$options0 = $this->readCollectionAttributes($collection->getId());
+			dump(array(
+				'readCollectionAttributes' => count($options0),
+				'readVariantAttributes' => count($options),						
+			));
+		}
+		
+		return $options;
+	}
+	
 	/**
 	 * @param uuid $collectionId
 	 * @return Collection AttributeOption List of options of all the variants of the collection
@@ -251,6 +359,9 @@ class ProductService extends ContainerAware
 	public function readCollectionAttributes($collectionId, $sessionId = null)
 	{
 		$collection = $this->readCollection($collectionId);
+		if (empty($collection)) {
+			throw new NotFoundHttpException("Invalid collection id");
+		}
 		
 		$repo = $this->managerRegistry->getRepository('YouppersProductBundle:AttributeOption');
 		$qb = $repo

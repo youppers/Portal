@@ -55,6 +55,13 @@ echo response=$response
 access_token=$(echo $response|sed -n -e 's/{"access_token":"\([a-zA-Z0-9]*\)",.*/\1/p')
 echo access_token=$access_token
 
+echo -------------- Show attributes of a variant  -------------
+request='{"id":"1","jsonrpc":"2.0","method":"Attributes.read","params":{"variantId":"2c897a91-dec5-11e4-b4aa-0cc47a127a14"}}'
+echo Request: $request
+response=$(curl "$jsonendpoint?access_token=$access_token" -d $request)
+echo Response:
+echo $response | php -f $format
+
 echo -------------- Find boxes for a product in a store  -------------
 request='{"id":"1","jsonrpc":"2.0","method":"Box.list","params":{"productId":"'$productId'","storeId":"'$storeId'"}}'
 echo Request: $request
