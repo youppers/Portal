@@ -71,6 +71,7 @@ class ProductAdmin extends YouppersAdmin
 		->add('code')
 		->add('gtin')
 		->add('enabled', null, array('editable' => true))
+		->add('variant', null, array('route' => array('name' => 'show'), 'label' => 'Collezione','associated_property' => 'productCollection.name'))		
 		->add('brand', null, array(
                  'route' => array(
                      'name' => 'show'
