@@ -2,7 +2,7 @@
 
 namespace Youppers\CompanyBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -10,7 +10,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductAdmin extends YouppersAdmin
@@ -26,13 +25,11 @@ class ProductAdmin extends YouppersAdmin
 	{
 		parent::configureTabMenu($menu, $action,$childAdmin);
 		
-		if ($action == 'show') {	
-			$admin = $this->isChild() ? $this->getParent() : $this;
-			$id = $admin->getRequest()->get('id');
-	
-			$menu->addChild('Assign Qr', array('uri' => $admin->generateUrl('qr', array('id' => $id))));		
-			$menu->addChild('Clone', array('uri' => $admin->generateUrl('clone', array('id' => $id))));
-			$menu->addChild('Enable', array('uri' => $admin->generateUrl('enable', array('id' => $id))));
+		if (empty($childAdmin) && $action == 'show') {
+			$id = $this->getRequest()->get($this->getIdParameter());
+			$menu->addChild('Assign Qr', array('uri' => $this->generateUrl('qr', array('id' => $id))));		
+			$menu->addChild('Clone', array('uri' => $this->generateUrl('clone', array('id' => $id))));
+			$menu->addChild('Enable', array('uri' => $this->generateUrl('enable', array('id' => $id))));
 		}		
 	}
 	

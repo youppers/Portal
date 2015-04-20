@@ -2,12 +2,11 @@
 
 namespace Youppers\ProductBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
@@ -18,19 +17,11 @@ class AttributeTypeAdmin extends YouppersAdmin
 	 */
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
-		if ($childAdmin) {
-			if ($action == 'list') $menu->addChild('Create', array('uri' => $childAdmin->generateUrl('create')));
-			if (in_array($action, array('edit', 'show'))) {
-				$id = $this->getRequest()->get('childId');
-				if ($action != 'show') $menu->addChild('Show', array('uri' => $childAdmin->generateUrl('show', array('id' => $id))));
-				if ($action != 'edit') $menu->addChild('Edit', array('uri' => $childAdmin->generateUrl('edit', array('id' => $id))));
-			}
-		} else {
-			parent::configureTabMenu($menu, $action,$childAdmin);
-			if (in_array($action, array('edit', 'show'))) {
-				$id = $this->getRequest()->get('id');
-				$menu->addChild('Standards', array('uri' => $this->generateUrl('youppers_product.admin.attribute_standard.list', array('id' => $id))));
-			}
+		parent::configureTabMenu($menu, $action,$childAdmin);
+		
+		if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
+			$id = $this->getRequest()->get($this->getIdParameter());
+			$menu->addChild('Standards', array('uri' => $this->generateUrl('youppers_product.admin.attribute_standard.list', array('id' => $id))));
 		}
 	}
 	

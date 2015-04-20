@@ -2,7 +2,7 @@
 
 namespace Youppers\CompanyBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -10,7 +10,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PricelistAdmin extends YouppersAdmin
@@ -21,23 +20,13 @@ class PricelistAdmin extends YouppersAdmin
 	}	
 		
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
-	{
+	{		
+		parent::configureTabMenu($menu, $action,$childAdmin);
 		
-		if ($childAdmin) {
-			if ($action == 'list') $menu->addChild('Add', array('uri' => $childAdmin->generateUrl('create')));
-			if (in_array($action, array('edit', 'show'))) {
-				$id = $this->getRequest()->get('childId');
-				if ($action != 'show') $menu->addChild('Show', array('uri' => $childAdmin->generateUrl('show', array('id' => $id))));
-				if ($action != 'edit') $menu->addChild('Edit', array('uri' => $childAdmin->generateUrl('edit', array('id' => $id))));
-			}
-		} else {
-			parent::configureTabMenu($menu, $action,$childAdmin);
-			if (in_array($action, array('edit', 'show'))) {
-				$id = $this->getRequest()->get('id');
-				$menu->addChild('Products Prices', array('uri' => $this->generateUrl('youppers.company.admin.product_price.list', array('id' => $id))));
-			}
-		}
-		
+		if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
+			$id = $this->getRequest()->get($this->getIdParameter());
+			$menu->addChild('Products Prices', array('uri' => $this->generateUrl('youppers.company.admin.product_price.list', array('id' => $id))));
+		}		
 	}
 	
 	/**

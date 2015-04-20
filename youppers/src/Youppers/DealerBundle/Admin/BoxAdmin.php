@@ -2,7 +2,7 @@
 
 namespace Youppers\DealerBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,7 +12,7 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class BoxAdmin extends Admin
+class BoxAdmin extends YouppersAdmin
 {
 	public function getBatchActions()
 	{
@@ -38,16 +38,14 @@ class BoxAdmin extends Admin
 	
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
-		if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
-	
-		$admin = $this->isChild() ? $this->getParent() : $this;
-		$id = $admin->getRequest()->get('id');
-	
-		if ($action != 'show') $menu->addChild('Show', array('uri' => $admin->generateUrl('show', array('id' => $id))));
-		if ($action != 'edit') $menu->addChild('Edit', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-		if ($action == 'show') $menu->addChild('Assign Qr', array('uri' => $admin->generateUrl('qr', array('id' => $id))));		
-		if ($action == 'show') $menu->addChild('Clone', array('uri' => $admin->generateUrl('clone', array('id' => $id))));
-		if ($action == 'show') $menu->addChild('Enable', array('uri' => $admin->generateUrl('enable', array('id' => $id))));		
+		parent::configureTabMenu($menu, $action,$childAdmin);
+		
+		if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {	
+			$id = $this->getRequest()->get($this->getIdParameter());	
+			if ($action == 'show') $menu->addChild('Assign Qr', array('uri' => $this->generateUrl('qr', array('id' => $id))));		
+			if ($action == 'show') $menu->addChild('Clone', array('uri' => $this->generateUrl('clone', array('id' => $id))));
+			if ($action == 'show') $menu->addChild('Enable', array('uri' => $this->generateUrl('enable', array('id' => $id))));
+		}		
 	}
 	
 	/**

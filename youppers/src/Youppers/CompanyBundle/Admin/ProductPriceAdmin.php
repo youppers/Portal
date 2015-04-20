@@ -11,7 +11,7 @@
 
 namespace Youppers\CompanyBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Youppers\CompanyBundle\Component\UomChoiceList;
 
-class ProductPriceAdmin extends Admin
+class ProductPriceAdmin extends YouppersAdmin
 {
 	public function getParentAssociationMapping()
 	{

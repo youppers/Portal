@@ -20,15 +20,27 @@ abstract class YouppersAdmin extends Admin
 	 */
 	protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
 	{
-		$admin = $this->isChild() ? $this->getParent() : $this;
-		if ($action == 'list' && $admin->hasRoute('create')) $menu->addChild($this->trans('link_action_create', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('create')));
-		if ($childAdmin || in_array($action, array('edit', 'show'))) { 
-			$id = $admin->getRequest()->get('id');
-			if ($action != 'show' && $admin->hasRoute('show')) $menu->addChild($this->trans('link_action_show', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('show', array('id' => $id))));		
-			if ($action != 'edit' && $admin->hasRoute('edit')) $menu->addChild($this->trans('link_action_edit', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-			if ($action != 'edit' && $admin->hasRoute('list')) $menu->addChild($this->trans('link_action_list', array(), 'SonataAdminBundle'), array('uri' => $admin->generateUrl('list')));
+		parent::configureTabMenu($menu, $action,$childAdmin);		
+		/*
+		dump(array(
+			'action' => $action,
+			'this' => $this,	
+			'childAdmin' => $childAdmin,
+			'isChild' => $this->isChild(),
+		    'getParent' => $this->getParent(),
+		));
+		*/
+		if ($childAdmin) {
+			$childAdmin->configureTabMenu($menu, $action);
+		} else {
+			if ($action == 'list' && $this->hasRoute('create')) $menu->addChild($this->trans('link_action_create', array(), 'SonataAdminBundle'), array('uri' => $this->generateUrl('create')));
+			if (in_array($action, array('edit', 'show'))) {
+				$id = $this->getRequest()->get($this->getIdParameter());
+				if ($action != 'show' && $this->hasRoute('show')) $menu->addChild($this->trans('link_action_show', array(), 'SonataAdminBundle'), array('uri' => $this->generateUrl('show', array('id' => $id))));
+				if ($action != 'edit' && $this->hasRoute('edit')) $menu->addChild($this->trans('link_action_edit', array(), 'SonataAdminBundle'), array('uri' => $this->generateUrl('edit', array('id' => $id))));
+				if ($action != 'edit' && $this->hasRoute('list')) $menu->addChild($this->trans('link_action_list', array(), 'SonataAdminBundle'), array('uri' => $this->generateUrl('list')));
+			}
 		}
-	
 	}
 	
 	/**
