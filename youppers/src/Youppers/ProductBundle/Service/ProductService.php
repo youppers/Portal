@@ -337,7 +337,7 @@ class ProductService extends ContainerAware
 		if ($this->debug) dump(implode(', ',$options2));  // example: bidet + sospeso + da oppoggio
 
 		// merge & remove duplicates
-		$options = array_unique(array_merge($options1,$options2));
+		$options = array_values(array_unique(array_merge($options1,$options2)));
 		
 		if ($this->debug) dump(implode(', ',$options));  // example: bidet + vaso + lavabo + sospeso + da oppoggio
 		
