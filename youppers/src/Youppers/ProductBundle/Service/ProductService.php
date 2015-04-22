@@ -219,6 +219,26 @@ class ProductService extends ContainerAware
 			}
 		}
 
+		// terzo tentativo: in ordine
+        if ($relaxed && count($variantsId) == 0) {
+            $variantsId = null;
+            foreach ($collection->getProductType()->getProductAttributes() as $productTypeAttribute) {
+                $optionVariantsId = $typeVariantsId[$productTypeAttribute->getAttributeType()->getId()];
+                if ($variantsId == null) {
+                    $variantsId = $optionVariantsId;
+                } else {
+                    $newVariantsId = array_intersect($variantsId,$optionVariantsId);
+                    if (count($newVariantsId) == 0) {
+				        $this->logger->info(sprintf("Break using option type '%s'",$productTypeAttribute->getAttributeType()));
+                        break;
+                    } else {
+						$variantsId = $newVariantsId;
+					}
+                }
+				$this->logger->info(sprintf("Found %d using option type '%s'",count($variantsId),$productTypeAttribute->getAttributeType()));
+            }
+        }
+
 		if (count($variantsId) > 0) {
 			$qb = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')
 				->createQueryBuilder('v');
