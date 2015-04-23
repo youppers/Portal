@@ -88,7 +88,6 @@ class PricelistAdmin extends YouppersAdmin
 		->add('code')
 		->add('currency', 'sonata_currency')		
 		->add('company', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
-		->add('mapping')
 		->end()
 		->with('Details', array('class' => 'col-md-6'))
 		->add('enabled', 'checkbox', array('required'  => false))

@@ -41,11 +41,6 @@ class Pricelist
 	protected $enabled;
 	
 	/**
-	 * @ORM\Column(type="json")
-	 */
-	protected $mapping;
-
-	/**
 	 * @ORM\Column(type="datetime", name="valid_from")
 	 */
 	protected $validFrom;
