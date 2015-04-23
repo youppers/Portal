@@ -2,51 +2,22 @@
 
 namespace Youppers\ProductBundle\Manager;
 
+use Sonata\CoreBundle\Model\BaseEntityManager;
+use Sonata\CoreBundle\Model\ManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 use Youppers\CompanyBundle\Entity\Brand;
-use Doctrine\ORM\EntityManager;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\ProductType;
 
-class ProductCollectionManager
+class ProductCollectionManager extends BaseEntityManager
 {
-	/**
-	 * @var EntityManager
-	 */
-	protected $em;
 	
-	/**
-	 * @var EntityRepository
-	 */
-	protected $repository;
-	
-	/**
-	 * @var string
-	 */
-	protected $class;
-	
-	/**
-	 * Constructor.
-	 *
-	 * @param EntityManager            $em
-	 * @param string                   $class
-	 */
-	public function __construct(EntityManager $em, $class = 'YouppersProductBundle:ProductCollection')
+	public function __construct(ManagerRegistry $registry)
 	{
-		$this->em = $em;
-		$this->repository = $em->getRepository($class);
-	
-		$metadata = $em->getClassMetadata($class);
-		$this->class = $metadata->name;
+		parent::__construct('Youppers\ProductBundle\Entity\ProductCollection', $registry);
 	}
 	
-	/**
-	 * {@inheritdoc}
-	 */
-	public function findById($id)
-	{
-		return $this->repository->find($id);
-	}
-
 	// cache
 	private $brands = array();
 	
@@ -60,7 +31,7 @@ class ProductCollectionManager
 		$brandCode = trim($brand->getCode());
 		$code = trim($code);
 		if (!array_key_exists($brandCode,$this->brands)) {
-			$collections = $this->repository->findBy(array('brand' => $brand));
+			$collections = $this->findBy(array('brand' => $brand));
 			$brandCollections = array();
 			foreach ($collections as $collection) {
 				$collectionAlias = explode(',',$collection->getAlias());
@@ -91,11 +62,20 @@ class ProductCollectionManager
 			return null;
 		}
 	}
-	
-	public function create(Brand $brand, $collectionName, $collectionCode, ProductType $productType)
+
+	/**
+	 * 
+	 * @param Brand $brand
+	 * @return Collection of Brand
+	 */
+	public function findByBrand(Brand $brand)
 	{
-		$className = $this->getClass();
-		$collection = new $className;
+		return $this->findBy(array('brand' => $brand));		
+	}
+	
+	public function createBrand(Brand $brand, $collectionName, $collectionCode, ProductType $productType)
+	{
+		$collection = $this->create();
 		$collection->setBrand($brand);
 		$collection->setName($collectionName);
 		$collection->setCode($collectionCode);
@@ -105,23 +85,11 @@ class ProductCollectionManager
 		return $collection;		
 	}
 	
-	/**
-	 * Saves a comment to the persistence backend used.
-	 * @TODO use interface
-	 */	
-	public function save(ProductCollection $collection)
+	public function save($collection, $andFlush = true)
 	{
-		$this->em->persist($collection);
-		$this->em->flush();
+		parent::save($collection, $andFlush);
 		$this->brands[$collection->getBrand()->getCode()][$collection->getCode()] = $collection;		
 	}
 	
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getClass()
-	{
-		return $this->class;
-	}
 
 }

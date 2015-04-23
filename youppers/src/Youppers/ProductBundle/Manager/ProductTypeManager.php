@@ -2,39 +2,18 @@
 
 namespace Youppers\ProductBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
+use Sonata\CoreBundle\Model\BaseEntityManager;
+use Sonata\CoreBundle\Model\ManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 use Youppers\ProductBundle\Entity\ProductType;
 
-class ProductTypeManager
+class ProductTypeManager extends BaseEntityManager
 {
-	/**
-	 * @var EntityManager
-	 */
-	protected $em;
 	
-	/**
-	 * @var EntityRepository
-	 */
-	protected $repository;
-	
-	/**
-	 * @var string
-	 */
-	protected $class;
-	
-	/**
-	 * Constructor.
-	 *
-	 * @param EntityManager            $em
-	 * @param string                   $class
-	 */
-	public function __construct(EntityManager $em, $class = 'YouppersProductBundle:ProductType')
+	public function __construct(ManagerRegistry $registry)
 	{
-		$this->em = $em;
-		$this->repository = $em->getRepository($class);
-	
-		$metadata = $em->getClassMetadata($class);
-		$this->class = $metadata->name;
+		parent::__construct('Youppers\ProductBundle\Entity\ProductType', $registry);
 	}
 	
 	/**
@@ -42,7 +21,7 @@ class ProductTypeManager
 	 */
 	public function findById($id)
 	{
-		return $this->repository->find($id);
+		return $this->find($id);
 	}
 	
 	/**
@@ -51,15 +30,7 @@ class ProductTypeManager
 	 */	
 	public function findByCode($code)
 	{
-		return $this->repository->findOneBy(array('code' => $code));
-	}
-		
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getClass()
-	{
-		return $this->class;
+		return $this->findOneBy(array('code' => $code));
 	}
 
 }

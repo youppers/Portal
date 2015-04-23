@@ -14,6 +14,9 @@ use Youppers\CompanyBundle\Entity\Company;
 use Youppers\CompanyBundle\Entity\Brand;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Manager\ProductCollectionManager;
+use Youppers\ProductBundle\Manager\ProductVariantManager;
+use Youppers\ProductBundle\Manager\VariantPropertyManager;
 
 abstract class AbstractGuesser extends ContainerAware
 {
@@ -29,6 +32,7 @@ abstract class AbstractGuesser extends ContainerAware
 	protected function setParent(AbstractGuesser $parent)
 	{
 		$this->parent = $parent;
+		$this->setManagerRegistry($parent->getManagerRegistry());
 	}
 	
 	public function getTodos()
@@ -47,11 +51,17 @@ abstract class AbstractGuesser extends ContainerAware
 			
 	protected $managerRegistry;
 	protected $em;
+	protected $collectionManager;
+	protected $variantManager;
+	protected $variantPropertyManager;
 
 	public function setManagerRegistry(ManagerRegistry $managerRegistry)
 	{
 		$this->managerRegistry = $managerRegistry;
 		$this->em = $managerRegistry->getManager();
+		$this->collectionManager = new ProductCollectionManager($managerRegistry);
+		$this->variantManager = new ProductVariantManager($managerRegistry);
+		$this->variantPropertyManager = new VariantPropertyManager($managerRegistry);
 	}
 
 	public function getManagerRegistry()
@@ -114,10 +124,7 @@ abstract class AbstractGuesser extends ContainerAware
 		if (empty($collectionCode)) {
 			return;
 		}
-		$this->collection = $this
-			->managerRegistry
-			->getRepository('YouppersProductBundle:ProductCollection')
-			->findOneBy(array('brand' => $this->brand, 'code' => $collectionCode));
+		$this->collection = $this->collectionManager->findByCode($this->brand, $collectionCode); 
 		
 		if (empty($this->collection)) {
 			throw new \Exception(sprintf("Collection '%s' not found",$collectionCode));
@@ -130,10 +137,7 @@ abstract class AbstractGuesser extends ContainerAware
 		if ($this->collection) {
 			$this->guessCollection($this->collection);
 		} else {
-			$collections = $this
-				->managerRegistry
-				->getRepository('YouppersProductBundle:ProductCollection')
-				->findBy(array('brand' => $this->brand));
+			$collections = $this->collectionManager->findByBrand($this->brand);
 			foreach ($collections as $collection) {
 				$this->guessCollection($collection);
 			}
@@ -145,10 +149,7 @@ abstract class AbstractGuesser extends ContainerAware
 	 */
 	public function guessCollection(ProductCollection $collection)
 	{		
-		$variants = $this
-			->managerRegistry
-			->getRepository('YouppersProductBundle:ProductVariant')
-			->findBy(array('productCollection' => $collection));
+		$variants = $this->variantManager->findByCollection($collection);
 		$this->logger->info(sprintf("Guessing %d variants for collection '%s'",count($variants),$collection));
 		$guessers = $this->getCollectionGuessers($collection);
 		foreach ($variants as $variant) {

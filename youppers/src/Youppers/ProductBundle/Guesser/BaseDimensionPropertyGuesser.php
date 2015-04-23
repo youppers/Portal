@@ -97,14 +97,12 @@ class BaseDimensionPropertyGuesser extends BasePropertyGuesser
 		if ($newDimension) {
 			if (empty($actualDimension)) {
 				$this->getLogger()->info(sprintf("Variant '%s' new guessed dimension '%s'",$variant,$newDimension));
-				$variantProperty = new VariantProperty();
+				$variantProperty = $this->variantPropertyManager->create();
 				$variantProperty->setProductVariant($variant);
 				$variantProperty->setAttributeOption($newDimension);
 				$variantProperty->setPosition(1 + count($variant->getVariantProperties()));
 				$variant->addVariantProperty($variantProperty);
-				$em = $this->managerRegistry->getManager();
-				$em->persist($variantProperty);
-				$em->flush();
+				$this->variantPropertyManager->save($variantProperty);
 				$text = str_replace($a[0],'',$text);				
 			} elseif ($actualDimension == $newDimension) {
 				$this->getLogger()->debug(sprintf("Variant '%s' actual dimension matches guessed '%s'",$variant,$newDimension));
