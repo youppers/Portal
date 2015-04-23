@@ -34,9 +34,21 @@ class AttributeOptionAdmin extends Admin
 	 * @var array
 	 */
 	protected $datagridValues = array(
-			'_sort_by' => 'position',
+			'_sort_by' => 'value',
 			'enabled' => array('value' => true)
 	);
+	
+	public function getFilterParameters()
+	{
+		$parameters = parent::getFilterParameters();
+		if ($this->hasRequest()) {
+			$standardFilters = $this->request->query->get('s_filter', array());
+			if ($standardFilters != array()) {
+				$parameters['attributeStandard']['value'] = $standardFilters['attributeStandard']['value'];
+			} 
+		}
+		return $parameters;
+	}
 		
 	/**
 	 * @param ListMapper $listMapper

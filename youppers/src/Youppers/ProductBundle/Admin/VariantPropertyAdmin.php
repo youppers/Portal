@@ -29,7 +29,7 @@ class VariantPropertyAdmin extends Admin
 				'btn_delete'       => false,
 				'required' => false, 'constraints' => new Assert\NotNull()),
 				array('link_parameters' => array(
-						'filter'   => array('attributeStandard' => array('value' => $this->getStandards()))
+						's_filter'   => array('attributeStandard' => array('value' => $this->getStandards()))
 					)
 				)
 			)
