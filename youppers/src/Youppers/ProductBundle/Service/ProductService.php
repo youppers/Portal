@@ -178,7 +178,9 @@ class ProductService extends ContainerAware
 			}
 			$optionVariantsId = array();
 			foreach ($optionVariantsEntities as $optionVariantEntity) {
-				$optionVariantsId[] = $optionVariantEntity->getId();
+                if (!empty($optionVariantEntity->getProduct())) {
+				  $optionVariantsId[] = $optionVariantEntity->getId();
+                }
 				if ($this->debug) $this->logger->debug(sprintf("Variant: %s",$optionVariantEntity));				
 			}
 			$typeVariantsId[$option->getAttributeStandard()->getAttributeType()->getId()] = $optionVariantsId; 
