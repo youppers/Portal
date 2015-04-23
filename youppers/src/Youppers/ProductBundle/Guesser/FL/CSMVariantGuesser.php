@@ -1,12 +1,12 @@
 <?php
-namespace Youppers\ProductBundle\Guesser\FL\REX;
+namespace Youppers\ProductBundle\Guesser\FL;
 
 use Youppers\ProductBundle\Guesser\AbstractGuesser;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\ProductBundle\Entity\VariantProperty;
 use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 
-class FLREXVariantGuesser extends BaseVariantGuesser
+class CSMVariantGuesser extends BaseVariantGuesser
 {
 
 }

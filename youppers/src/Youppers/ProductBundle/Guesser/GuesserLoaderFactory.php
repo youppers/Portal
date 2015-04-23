@@ -42,7 +42,7 @@ class GuesserLoaderFactory extends ContainerAware
 		
 		$this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $brandCode, $brand));
 				
-		$classname = sprintf("Youppers\ProductBundle\Guesser\%s\%s\%s%sVariantGuesser",$company->getCode(),$brand->getCode(),$company->getCode(),$brand->getCode());
+		$classname = sprintf("Youppers\ProductBundle\Guesser\%s\%sVariantGuesser",$company->getCode(),$brand->getCode());
 		
 		$this->logger->debug(sprintf("Guesser: '%s'", $classname));
 				

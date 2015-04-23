@@ -9,11 +9,16 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 {
 		
 	public function guessVariant(ProductVariant $variant, $guessers) {
+		$product = $variant->getProduct();
+		if (empty($product)) {
+			$this->logger->critical("Variant without product: " . $variant->getId());
+			return;
+		}
 		$text = $variant->getProduct()->getName();
 		foreach ($guessers as $guesser) {
-			dump($text);
+			if ($this->debug) dump($text);
 			$guesser->guessVariant($variant, $text);
-			dump($text);
+			if ($this->debug) dump($text);
 		}
 	}
 
