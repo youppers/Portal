@@ -1,7 +1,8 @@
 <?php
 namespace Youppers\CompanyBundle\Loader;
 
-class ISPricelistLoader extends AbstractPricelistLoader
+use Youppers\CompanyBundle\Entity\Brand;
+class ISPricelistLoader extends AbstractPricelistCollectionLoader
 {
 	public function createMapper()
 	{
@@ -18,4 +19,16 @@ class ISPricelistLoader extends AbstractPricelistLoader
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
 	}
+	
+	private $newCollectionProductType;
+	
+	protected function getNewCollectionProductType(Brand $brand, $code)
+	{
+		if (!isset($this->newCollectionProductType)) {
+			$this->newCollectionProductType= $this->getProductTypeRepository()
+			->findOneBy(array('code' => 'FULLBATH'));
+		}
+		return $this->newCollectionProductType;
+	}
+	
 }
