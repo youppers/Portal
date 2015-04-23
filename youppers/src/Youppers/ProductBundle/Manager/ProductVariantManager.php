@@ -14,7 +14,7 @@ class ProductVariantManager extends BaseEntityManager
 
 	public function __construct(ManagerRegistry $registry)
 	{
-		parent::__construct('YouppersProductBundle:ProductVariant', $registry);
+		parent::__construct('Youppers\ProductBundle\Entity\ProductVariant', $registry);
 	}
 		
 	public function findByCollection(ProductCollection $collection)

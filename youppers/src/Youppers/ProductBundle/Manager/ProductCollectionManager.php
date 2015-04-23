@@ -17,9 +17,19 @@ class ProductCollectionManager extends BaseEntityManager
 	{
 		parent::__construct('Youppers\ProductBundle\Entity\ProductCollection', $registry);
 	}
+
+	public function _findByCode(Brand $brand, $code)
+	{
+		return $this->findOneBy(array('brand' => $brand, 'code' => $code));		
+	}
 	
 	// cache
 	private $brands = array();
+	
+	public function clear()
+	{
+		$this->brands = array();
+	}
 	
 	/**
 	 *
@@ -73,7 +83,7 @@ class ProductCollectionManager extends BaseEntityManager
 		return $this->findBy(array('brand' => $brand));		
 	}
 	
-	public function createBrand(Brand $brand, $collectionName, $collectionCode, ProductType $productType)
+	public function createCollection(Brand $brand, $collectionName, $collectionCode, ProductType $productType)
 	{
 		$collection = $this->create();
 		$collection->setBrand($brand);
