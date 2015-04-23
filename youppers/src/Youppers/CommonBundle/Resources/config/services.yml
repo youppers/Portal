@@ -48,6 +48,11 @@ services:
       tags:
           - { name: jms_serializer.event_subscriber }
 
+  youppers.common.service.codify:
+      class: Youppers\CommonBundle\Service\CodifyService
+      calls:
+        - [ setContainer, [ '@service_container' ] ]
+
   youppers.common.provider.pdf:
       class: Youppers\CommonBundle\Provider\PdfProvider
       arguments: ['youppers.common.provider.pdf', '@sonata.media.filesystem.local', '@sonata.media.cdn.server', '@sonata.media.generator.default', '@sonata.media.thumbnail.format', ['pdf'], ['application/pdf']]
