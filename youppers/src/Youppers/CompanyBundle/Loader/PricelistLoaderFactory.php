@@ -28,7 +28,7 @@ class PricelistLoaderFactory extends ContainerAware
 			throw new \Exception('Pricelist not found');
 		}
 
-		$classname = sprintf("Youppers\CompanyBundle\Loader\%sPricelistLoader",$pricelist->getCompany()->getCode());
+		$classname = sprintf("Youppers\CompanyBundle\Loader\%s\PricelistLoader",$pricelist->getCompany()->getCode());
 		
 		$this->logger->debug(sprintf("Code: '%s' Pricelist: '%s' Loader: '%s'", $code, $pricelist,$classname));
 				

@@ -9,16 +9,24 @@ use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\CompanyBundle\Entity\Product;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Youppers\ProductBundle\Manager\ProductVariantManager;
+use Youppers\ProductBundle\Manager\ProductTypeManager;
 
 abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader {
 	
 	private $productCollectionRepository;
 	
+	protected $collectionManager;
+	protected $variantManager;
+	protected $productTypeManager;
+	
 	public function setManagerRegistry(ManagerRegistry $managerRegistry)
 	{
 		$this->managerRegistry = $managerRegistry;
 		$this->em = $managerRegistry->getManager();
-		$this->collectionManager = new ProductCollectionManager($this->em);
+		$this->collectionManager = new ProductCollectionManager($managerRegistry);
+		$this->variantManager = new ProductVariantManager($managerRegistry);
+		$this->productTypeManager = new ProductTypeManager($managerRegistry);
 	}
 	
 	protected abstract function getNewCollectionProductType(Brand $brand, $code);
@@ -38,51 +46,32 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 	{
 		$this->createVariant = $createVariant;
 	}
-	
-	private $productTypeRepository;
-	
-	/**
-	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersProductBundle:ProductType
-	 */
-	protected function getProductTypeRepository()
+
+	public function batchClear()
 	{
-		if (null === $this->productTypeRepository) {
-			$this->productTypeRepository = $this->managerRegistry->getRepository('YouppersProductBundle:ProductType');
-		}
-		return $this->productTypeRepository;
+		parent::batchClear();
+		$this->em->clear('Youppers\ProductBundle\Entity\ProductVariant');
+		$this->em->clear('Youppers\ProductBundle\Entity\ProductCollection');
+		$this->collectionManager->clear();
 	}
-	
-	
-	private $productVariantRepository;
-	
-	/**
-	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersProductBundle:ProductVariant
-	 */
-	protected function getProductVariantRepository()
-	{
-		if (null === $this->productVariantRepository) {
-			$this->productVariantRepository = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant');
-		}
-		return $this->productVariantRepository;
-	}
-	
-	
+		
 	protected function handleProduct(Brand $brand)
 	{
 		$product = parent::handleProduct($brand);
 		
 		$collectionCode = $this->mapper->get('collection');
 		if ($collectionCode !== null) {
-			$collection = $this->collectionManager->findByCode($brand, $collectionCode);			
+			$collection = $this->collectionManager->findByCode($brand, $collectionCode);
 			if (empty($collection) && $this->force && $this->createCollection) {				
-				$collection = $this->collectionManager->create($brand, $collectionCode, $collectionCode, $this->getNewCollectionProductType($brand,$collectionCode));
-				$this->collectionManager->save($collection);
+				$collection = $this->collectionManager->createCollection($brand, $collectionCode, $collectionCode, $this->getNewCollectionProductType($brand,$collectionCode));
+				$this->collectionManager->save($collection,false);
 				$this->logger->info(sprintf("Created collection with code '%s' for Brand '%s'",$collectionCode,$brand));
 			}
 			if (empty($collection)) {
 				if ($this->force && $this->createCollection) {
 					throw new \Exception(sprintf("Collection with code '%s' of Brand '%s' not found",$collectionCode,$brand));
 				}
+				$this->logger->info(sprintf("New collection with code '%s' for Brand '%s'",$collectionCode,$brand));
 			} else {
 				$this->handleVariant($collection, $product);
 			}
@@ -98,7 +87,7 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 			->where(Criteria::expr()->eq("product", $product));		
 		$variant = $collection->getProductVariants()->matching($criteria)->first();
 		if (empty($variant)) {		
-			$variant = $this->getProductVariantRepository()
+			$variant = $this->variantManager
 				->findOneBy(array('product' => $product));
 			if (!empty($variant)) {
 				$this->logger->error(sprintf("Product '%s' in collection '%s' instead of '%s'",$product,$variant->getProductCollection(),$collection));
@@ -106,12 +95,12 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 		}
 		if (empty($variant)) {
 			if ($this->force && $this->createVariant) {
-				$variant = new ProductVariant();
+				$variant = $this->variantManager->create();
 				$variant->setProduct($product);
 				$variant->setEnabled(false);
 				$variant->setPosition($this->numRows);
 				$collection->addProductVariant($variant);
-				$this->em->persist($variant);
+				$this->variantManager->save($variant,false);
 				$this->logger->info(sprintf("Created variant '%s'",$variant));
 			} else {
 				$this->logger->info(sprintf("New variant '%s' - '%s'",$collection,$product->getNameCode()));

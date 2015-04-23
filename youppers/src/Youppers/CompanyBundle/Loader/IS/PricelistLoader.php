@@ -1,8 +1,11 @@
 <?php
-namespace Youppers\CompanyBundle\Loader;
+namespace Youppers\CompanyBundle\Loader\IS;
 
 use Youppers\CompanyBundle\Entity\Brand;
-class ISPricelistLoader extends AbstractPricelistCollectionLoader
+use Youppers\CompanyBundle\Loader\AbstractPricelistCollectionLoader;
+use Youppers\CompanyBundle\Loader\LoaderMapper;
+
+class PricelistLoader extends AbstractPricelistCollectionLoader
 {
 	public function createMapper()
 	{
@@ -25,8 +28,8 @@ class ISPricelistLoader extends AbstractPricelistCollectionLoader
 	protected function getNewCollectionProductType(Brand $brand, $code)
 	{
 		if (!isset($this->newCollectionProductType)) {
-			$this->newCollectionProductType= $this->getProductTypeRepository()
-			->findOneBy(array('code' => 'FULLBATH'));
+			$this->newCollectionProductType= $this->productTypeManager
+				->findOneBy(array('code' => 'FULLBATH'));
 		}
 		return $this->newCollectionProductType;
 	}

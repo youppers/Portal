@@ -98,7 +98,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 				} else {
 					//
 				}
-				$this->em->clear($this->getProductPriceRepository()->getClassName());
+				$this->batchClear();
 			}
 		}
 		
@@ -106,6 +106,12 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		
 		$event = $stopwatch->stop('load');
 		$this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
+	}
+
+	public function batchClear()
+	{
+		$this->em->clear('Youppers\CompanyBundle\Entity\Product');
+		$this->em->clear('Youppers\CompanyBundle\Entity\ProductPrice');
 	}
 		
 	protected function handleBrand()
