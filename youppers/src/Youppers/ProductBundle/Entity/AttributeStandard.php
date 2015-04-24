@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
  * @Serializer\ExclusionPolicy("all") 
  * @Serializer\AccessorOrder("custom", custom = {"id","name", "code"})  
  * @Validator\UniqueEntity({"name","attributeType"})
+ * @Validator\UniqueEntity({"symbol","attributeType"})
  */
 class AttributeStandard
 {
