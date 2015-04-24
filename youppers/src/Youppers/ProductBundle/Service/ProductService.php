@@ -198,7 +198,7 @@ class ProductService extends ContainerAware
 				$newVariantsId = array_intersect($variantsId,$optionVariantsId);
 				if (count($newVariantsId) == 0) {
 					$this->logger->info(sprintf("No variants using option type '%s'",$productTypeAttribute->getAttributeType()));
-					if ($relaxed && (!$productTypeAttribute->getVariant() || !$productTypeAttribute->getEnabled())) {
+					if ($relaxed || !$productTypeAttribute->getVariant() || !$productTypeAttribute->getEnabled()) {
 						// keep previous list
 					} else {
 						$variantsId = $newVariantsId;  // lista vuota					
