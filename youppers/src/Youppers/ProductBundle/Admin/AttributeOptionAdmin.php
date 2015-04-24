@@ -60,6 +60,7 @@ class AttributeOptionAdmin extends Admin
 		->add('image', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))		
 		->add('alias')		
 		->add('enabled', null, array('editable' => true))
+		->add('position', null, array('editable' => true))			
 		->add('attributeStandard.attributeType', null, array('label' => 'Attribute Type', 'route' => array('name' => 'show')))
 		->add('attributeStandard', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		;
