@@ -194,6 +194,7 @@ class ProductService extends ContainerAware
 			$optionVariantsId = $typeVariantsId[$productTypeAttribute->getAttributeType()->getId()];
 			if ($variantsId == null) {
 				$variantsId = $optionVariantsId;
+				$this->logger->info(sprintf("Found %d variants using option type '%s'",count($variantsId),$productTypeAttribute->getAttributeType()));
 			} else {
 				$newVariantsId = array_intersect($variantsId,$optionVariantsId);
 				if (count($newVariantsId) == 0) {
