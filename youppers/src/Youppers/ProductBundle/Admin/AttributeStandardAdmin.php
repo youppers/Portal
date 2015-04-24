@@ -16,6 +16,10 @@ class AttributeStandardAdmin extends YouppersAdmin
 		return 'attributeType';
 	}
 	
+	protected $formOptions = array(
+			'cascade_validation' => true
+	);
+	
     /**
      * @param DatagridMapper $datagridMapper
      */

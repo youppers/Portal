@@ -186,60 +186,30 @@ class ProductService extends ContainerAware
 			$typeVariantsId[$option->getAttributeStandard()->getAttributeType()->getId()] = $optionVariantsId; 
 		}
 
-		// primo tentativo: tutte le opzioni
 		$variantsId = null;
-		foreach ($typeVariantsId as $optionVariantsId) {
+		foreach ($collection->getProductType()->getProductAttributes() as $productTypeAttribute) {
+			if (!array_key_exists($productTypeAttribute->getAttributeType()->getId(),$typeVariantsId)) {
+				continue;
+			} 
+			$optionVariantsId = $typeVariantsId[$productTypeAttribute->getAttributeType()->getId()];
 			if ($variantsId == null) {
 				$variantsId = $optionVariantsId;
 			} else {
-				$variantsId = array_intersect($variantsId,$optionVariantsId);
-				if (count($variantsId) == 0) {
+				$newVariantsId = array_intersect($variantsId,$optionVariantsId);
+				if (count($newVariantsId) == 0) {
+					$this->logger->info(sprintf("No variants using option type '%s'",$productTypeAttribute->getAttributeType()));
+					if ($relaxed && (!$productTypeAttribute->getVariant() || !$productTypeAttribute->getEnabled())) {
+						// keep previous list
+					} else {
+						$variantsId = $newVariantsId;  // lista vuota					
+					}					
 					break;
-				}
-			}	
-		}
-		
-		// secondo tentativo: solo opzioni che sono variante e abilitate
-		if ($relaxed && count($variantsId) == 0) {
-			$variantsId = null;
-			foreach ($collection->getProductType()->getProductAttributes() as $productTypeAttribute) {
-				if ((!$productTypeAttribute->getVariant() || !$productTypeAttribute->getEnabled()) 
-						&& array_key_exists($productTypeAttribute->getAttributeType()->getId(),$typeVariantsId)) {
-					$this->logger->info(sprintf("Relaxing option '%s'",$productTypeAttribute->getAttributeType()));
-					unset($typeVariantsId[$productTypeAttribute->getAttributeType()->getId()]);
-				}
-			}
-			foreach ($typeVariantsId as $optionVariantsId) {
-				if ($variantsId == null) {
-					$variantsId = $optionVariantsId;
 				} else {
-					$variantsId = array_intersect($variantsId,$optionVariantsId);
-					if (count($variantsId) == 0) {
-						break;
-					}
+					$this->logger->info(sprintf("Found %d variants using option type '%s'",count($newVariantsId),$productTypeAttribute->getAttributeType()));
+					$variantsId = $newVariantsId;
 				}
 			}
-		}
-
-		// terzo tentativo: in ordine
-        if ($relaxed && count($variantsId) == 0) {
-            $variantsId = null;
-            foreach ($collection->getProductType()->getProductAttributes() as $productTypeAttribute) {
-                $optionVariantsId = $typeVariantsId[$productTypeAttribute->getAttributeType()->getId()];
-                if ($variantsId == null) {
-                    $variantsId = $optionVariantsId;
-                } else {
-                    $newVariantsId = array_intersect($variantsId,$optionVariantsId);
-                    if (count($newVariantsId) == 0) {
-				        $this->logger->info(sprintf("Break using option type '%s'",$productTypeAttribute->getAttributeType()));
-                        break;
-                    } else {
-						$variantsId = $newVariantsId;
-					}
-                }
-				$this->logger->info(sprintf("Found %d using option type '%s'",count($variantsId),$productTypeAttribute->getAttributeType()));
-            }
-        }
+		}		
 
 		if (count($variantsId) > 0) {
 			$qb = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')

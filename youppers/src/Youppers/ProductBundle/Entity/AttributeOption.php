@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as Validator;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use Youppers\ProductBundle\Validator\Constraints\UniqueOptionValueSymbolType;
 
 /**
  * @ORM\Entity
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="standard_value_idx", columns={"attribute_standard_id", "value"}),
  *   })
  * @ORM\HasLifecycleCallbacks
+ * @UniqueOptionValueSymbolType()
  * @Validator\UniqueEntity({"value", "attributeStandard"})
  * @JMS\ExclusionPolicy("all") 
  * @JMS\AccessorOrder("custom", custom = {"id","name", "value"})
