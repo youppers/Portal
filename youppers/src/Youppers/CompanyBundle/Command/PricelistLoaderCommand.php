@@ -15,7 +15,6 @@ use Doctrine\Common\Collections\Criteria;
 
 use Ddeboer\DataImport\Reader\CsvReader;
 use Youppers\CompanyBundle\Entity\Product;
-use Youppers\CompanyBundle\Loader\ISPricelistLoader;
 
 class PricelistLoaderCommand extends ContainerAwareCommand
 {	
