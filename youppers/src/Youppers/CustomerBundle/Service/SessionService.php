@@ -357,9 +357,13 @@ Cordiali saluti
 			
 			$media = $variant->getImage();
 						
-			$mediaProvider = $this->container->get($media->getProviderName());
-			$url = $mediaProvider->generatePublicUrl($media,'reference');
-			$this->logger->debug("Attach: ".$url);
+			if ($media) {
+                $mediaProvider = $this->container->get($media->getProviderName());
+			    $url = $mediaProvider->generatePublicUrl($media,'reference');
+			    $this->logger->debug("Attach: ".$url);
+            } else {
+                $url = "n.d.";
+            }
 			$body .= sprintf("\n\nZona: %s\n",$item->getZone());
 			$body .= sprintf("  Prodotto: %s\n",$variant->getProduct());
 			foreach ($variant->getVariantProperties() as $property) {
