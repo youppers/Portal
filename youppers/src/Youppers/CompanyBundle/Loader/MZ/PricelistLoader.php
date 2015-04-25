@@ -1,5 +1,5 @@
 <?php
-namespace Youppers\CompanyBundle\Loader\IS;
+namespace Youppers\CompanyBundle\Loader\MZ;
 
 use Youppers\CompanyBundle\Entity\Brand;
 use Youppers\CompanyBundle\Loader\AbstractPricelistCollectionLoader;
@@ -11,8 +11,19 @@ class PricelistLoader extends AbstractPricelistCollectionLoader
 	{
 		$mapping = array(
 			'code' => 'codice_catalogo',
-			'descrizione' => 'Description',
+			'name' => function($row) {
+				$matches=preg_split("/x/",$row['formato']);
+				$larghezza = intval($matches[0]);
+				$lunghezza = floatval($matches[1]);
+				$dim = sprintf('%dx%d',$larghezza/10,$lunghezza*100);
+				$name = $row['descrizione'];
+				if (stripos($name,$dim) === false) {
+					$name .= ' ' . $dim;
+				}
+				return $name;
+			}, 
 			'collection' => 'nome_serie',
+			'uom' => function($row) { return 'M2'; },
 			'DIM' => 'formato',
 			'COLOR' => 'colore'
 		);
