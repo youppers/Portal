@@ -14,7 +14,6 @@ use Youppers\ProductBundle\Validator\Constraints\UniqueOptionValueSymbolType;
  *     @ORM\UniqueConstraint(name="standard_value_idx", columns={"attribute_standard_id", "value"}),
  *   })
  * @ORM\HasLifecycleCallbacks
- * @UniqueOptionValueSymbolType()
  * @Validator\UniqueEntity({"value", "attributeStandard"})
  * @JMS\ExclusionPolicy("all") 
  * @JMS\AccessorOrder("custom", custom = {"id","name", "value"})
