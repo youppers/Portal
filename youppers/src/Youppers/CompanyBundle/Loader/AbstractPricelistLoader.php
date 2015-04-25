@@ -173,6 +173,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			$product->setEnabled(true);
 		}
 		$name = $this->mapper->remove('name');
+		if (empty($name) && empty($product->getName())) {
+			throw new \Exception(sprintf("Product name not found in the column '%s'",$this->mapper->key('name')));
+		}
 		$product->setName($name);
 			
 		$productGtin = $this->mapper->remove('gtin');
