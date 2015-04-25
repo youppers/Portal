@@ -42,9 +42,9 @@ class GuesserLoaderFactory extends ContainerAware
 		
 		$this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $brandCode, $brand));
 				
-		$classname = sprintf("Youppers\ProductBundle\Guesser\%s\%sVariantGuesser",$company->getCode(),$brand->getCode());
+		$classname = sprintf("Youppers\ProductBundle\Guesser\%s\VariantGuesser",$company->getCode());
 		
-		$this->logger->debug(sprintf("Guesser: '%s'", $classname));
+		$this->logger->info(sprintf("Guesser: '%s'", $classname));
 				
 		$guesser = new $classname;
 		$guesser->setManagerRegistry($this->managerRegistry);

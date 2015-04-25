@@ -39,7 +39,15 @@ class VariantGuessCommand extends ContainerAwareCommand
 
 		$guesser = $this->getContainer()->get('youppers.product.variant.guesser_factory')->create($input->getArgument("company"),$input->getArgument("brand"),$input->getArgument("collection"));
 		
-		$guesser->setForce($input->getOption('force'));
+		if ($input->getOption('force')) {
+			if ($this->getHelper('dialog')->askConfirmation(
+					$output,
+					"<question>Enter 'y' to confirm execution of data update</question>",
+					false
+			)) {
+				$guesser->setForce($input->getOption('force'));						
+			}
+		}
 
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
 			$guesser->setDebug(true);
@@ -50,7 +58,9 @@ class VariantGuessCommand extends ContainerAwareCommand
 		$output->writeln("Result of Guessing for for:");
 		$output->writeln("  Company: " . $input->getArgument("company"));
 		$output->writeln("  Brand: " . $input->getArgument("brand"));
-		$output->writeln("  Collection: " . $input->getArgument("collection"));
+		if (!empty($input->getArgument("collection"))) {
+			$output->writeln("  Collection: " . $input->getArgument("collection"));
+		}
 		
 		foreach ($guesser->getTodos() as $todo) {
 			$output->writeln($todo);				
