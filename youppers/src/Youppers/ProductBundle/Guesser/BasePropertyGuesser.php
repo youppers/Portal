@@ -14,6 +14,13 @@ class BasePropertyGuesser extends AbstractGuesser
 
 	private $type;
 	
+    private $isVariant = false;
+   
+    public function setIsVariant($isVariant)
+    {
+       $this->isVariant = $isVariant;
+    }
+	
 	protected $variantPropertyManager;
 	
 	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager)
@@ -123,7 +130,11 @@ class BasePropertyGuesser extends AbstractGuesser
 					}
 				}
 			} elseif (count($options)) {
-				$todo = sprintf("Add property of type <info>%s</info> to <info>%s</info>",$type,$variant);
+				if ($this->isVariant) {
+					$todo = sprintf("<error>Must add</error> property of type <info>%s</info> to <info>%s</info>",$type,$variant);
+				} else {
+					$todo = sprintf("Add property of type <info>%s</info> to <info>%s</info>",$type,$variant);
+				}
 				$this->addTodo($todo);
 			}
 		} else {

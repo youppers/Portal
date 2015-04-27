@@ -112,6 +112,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 				$this->getLogger()->critical(sprintf("No guesser for collection '%s' type '%s'",$collection,$type));
 			} else {
 				$guesser->setParent($this);
+				$guesser->setIsVariant($attribute->getVariant());
 				$this->guessers[$collection->getId()][] = $guesser;
 			}
 		}
