@@ -91,7 +91,12 @@ class BasePropertyGuesser extends AbstractGuesser
 		$options = $this->getCollectionOptions($variant->getProductCollection(), $type);
 		foreach ($options as $value => $option) {
 			//if (stripos($text,$value) !== false) {
-			if (preg_match("/[\s\.]+" . preg_quote($value,'/') . "[\s\.]+/i", " ".$text." ")) {
+			if (preg_match("/\.$/",$value)) {
+				$regexp = "/[\s\.]+" . preg_quote($value,'/') . "/i";
+			} else {
+				$regexp = "/[\s\.]+" . preg_quote($value,'/') . "[\s]+/i";
+			}
+			if (preg_match($regexp, " ".$text." ")) {
 				
 				if ($actualOption) {
 					if ($option === $actualOption) {
