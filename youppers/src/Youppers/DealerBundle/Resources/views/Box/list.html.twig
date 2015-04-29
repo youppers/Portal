@@ -1,21 +1,60 @@
 <style>
 <!--
+@CHARSET "UTF-8";
+
+@media print {
+
+  a[href]:after {
+    content: "";
+  }
+  
+  body {
+  	margin: 0mm 0mm 0mm 0mm;
+  }
+
+  .page-header {
+  	 display: none;
+  }
+  
+  div.boxOuter {
+     page-break-inside: avoid;
+     border-color: white;
+  }
+}
+
 .boxOuter {
-	width: 800px;
-	height: 420px;
-	margin: 10px 0px 20px 0px;
+	width: 390px;
+	height: 270px;
+	margin: 5px 5px 5px 5px;
 	border: 2px solid green;
     overflow: hidden;
+    float: left;
 }
+
+.qrOuter {
+	margin: 20px 0px; 
+	float: left;
+	width: 220px;
+	height: 260px;
+}
+
+.descOuter {
+	float: left; 
+	width: 141px;
+	margin: 20px 10px;
+}
+
 .store {
-	font-size: 20px;
+	font-size: 16px;
 }
 .boxName {
-	font-size: 18px;
+	font-size: 16px;
 }
 .boxDescription {
-    font-size: 10px;
+    font-size: 12px;
 }
+
+
 .product {
 	font-size: 8px;
 }
@@ -24,10 +63,11 @@
 </style>
 {% for object in data %}
 <div class="boxOuter">
-	<div style="float: left; width: 410px"">
+	<div class="qrOuter">
+	{% set field_description = { 'options': {'size': 200, 'padding' : 0}} %}
 	{% include 'YouppersCommonBundle::qr.html.twig' %}
 	</div>
-	<div style="float: left; width: 360px; margin: 20px 10px;">
+	<div class="descOuter">
 		<div class="store">Store: {{ object.store }}</div>
 		<div class="boxName">Box: {{ object.name }}</div>
 		<div class="boxDescription">{{ object.description }}</div>
