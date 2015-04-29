@@ -34,4 +34,8 @@ services:
         arguments: ['@doctrine', '@logger']
         calls:
             - [ setContainer, [ '@service_container' ] ]
+            
+    youppers.customer.security.phone_email:
+        class:     Youppers\CustomerBundle\Security\PhoneEmailUserProvider
+        arguments: ['@fos_user.user_manager']
                           

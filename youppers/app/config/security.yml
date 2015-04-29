@@ -21,7 +21,7 @@ security:
 
     providers:
         fos_userbundle:
-            id: fos_user.user_manager
+            id: youppers.customer.security.phone_email  #id: fos_user.user_manager
 
         in_memory:
             memory:
