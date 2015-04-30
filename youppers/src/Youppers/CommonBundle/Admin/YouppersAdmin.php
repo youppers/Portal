@@ -6,6 +6,8 @@ use Sonata\AdminBundle\Admin\Admin;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Youppers\CommonBundle\Exporter\YouppersDoctrineORMQuerySourceIterator;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 /**
  * Common behaviors of admin:
@@ -15,6 +17,25 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
  */
 abstract class YouppersAdmin extends Admin
 {
+	public function getDataSourceIterator()
+	{
+		$datagrid = $this->getDatagrid();
+		$datagrid->buildPager();
+		$fields = $this->getExportFields();
+	
+		$query = $datagrid->getQuery();
+	
+		$query->select('DISTINCT ' . $query->getRootAlias());
+	
+		if ($query instanceof ProxyQuery) {
+			$query->addOrderBy($query->getSortBy(), $query->getSortOrder());
+	
+			$query = $query->getQuery();
+		}
+	
+		return new YouppersDoctrineORMQuerySourceIterator($query, $fields);
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -28,6 +49,8 @@ abstract class YouppersAdmin extends Admin
 			'childAdmin' => $childAdmin,
 			'isChild' => $this->isChild(),
 		    'getParent' => $this->getParent(),
+		    'getModelManager' => $this->getModelManager(),
+			'getExportFields' => $this->getExportFields(),
 		));
 		*/
 		if ($childAdmin) {
