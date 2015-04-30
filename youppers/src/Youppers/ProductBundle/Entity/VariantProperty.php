@@ -15,7 +15,7 @@ class VariantProperty
 {
 	public function __toString()
 	{
-		return $this->getAttributeOption() ?: 'New';
+		return $this->getAttributeOption() ? $this->getAttributeOption()->__toString(): 'New';
 	}
 	
 	public function getAttributeType()
