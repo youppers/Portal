@@ -11,6 +11,21 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class AttributeOptionAdmin extends Admin
 {
+	public function getExportFields()
+	{
+		return array(
+				'id',
+				'enabled',
+				'type' => 'attributeStandard.attributeType.code',
+				'standard' => 'attributeStandard.name',
+				'position',
+				'value',
+				'alias',
+				'symbol' => 'attributeStandard.symbol',
+				'image',
+		);
+	}
+	
 	protected function configureRoutes(RouteCollection $collection)
 	{
 		//$collection->clearExcept(array('create','delete'));

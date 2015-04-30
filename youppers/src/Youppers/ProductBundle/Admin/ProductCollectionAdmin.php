@@ -15,6 +15,22 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductCollectionAdmin extends YouppersAdmin
 {
+	public function getExportFields()
+	{
+		return array(
+				'id',
+				'enabled',
+				'company' => 'brand.company.code',
+				'brand' => 'brand.code',
+				'code',
+				'name',
+				'image',
+				'type' => 'productType',
+				'standards',
+				'docs' => 'pdfGallery.galleryHasMedias',
+		);
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */

@@ -17,6 +17,22 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class ProductVariantAdmin extends YouppersAdmin
 {
+	public function getExportFields()
+	{		
+		return array(
+				'id',
+				'enabled',
+				'company' => 'product.brand.company.code',
+				'brand' => 'product.brand.code',
+				'collection' => 'productCollection.code',
+				'code' => 'product.code',
+				'name' => 'product.name',
+				'image',
+				'properties' => 'variantProperties',
+				'docs' => 'pdfGallery.galleryHasMedias',
+		);
+	}
+		
 	public function getParentAssociationMapping()
 	{
 		return 'productCollection';
