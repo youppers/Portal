@@ -1,4 +1,20 @@
 services:
+    youppers.customer.service.profile:
+        class:     Youppers\CustomerBundle\Service\ProfileService
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+            - [ setTokenStorage, [ '@security.token_storage' ] ]
+
+    youppers.customer.profile:
+      alias: youppers.customer.service.profile
+      
+    youppers.customer.profile.form:    
+        class: 'Sonata\CoreBundle\Form\Type\DoctrineORMSerializationType'
+        arguments: ['@jms_serializer.metadata_factory', '@doctrine', 'youppers_customer_profile_form', 'Youppers\CustomerBundle\Entity\Profile','details']
+        tags:
+           - { name: form.type, alias: youppers_customer_profile_form }
+
     youppers_customer.controller.session:
         class:     Youppers\CustomerBundle\Controller\SessionController
         calls:

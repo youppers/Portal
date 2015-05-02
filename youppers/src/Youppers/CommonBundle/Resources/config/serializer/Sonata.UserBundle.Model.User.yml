@@ -1,0 +1,5 @@
+Sonata\UserBundle\Model\User:
+  properties:
+    phone:
+      groups: ['json']
+      

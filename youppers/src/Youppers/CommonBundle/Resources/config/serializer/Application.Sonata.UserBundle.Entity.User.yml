@@ -1,0 +1,5 @@
+Application\Sonata\UserBundle\Entity\User:
+  properties:
+    id:
+      groups: ['json']
+      
