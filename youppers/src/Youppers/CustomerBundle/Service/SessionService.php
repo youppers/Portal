@@ -347,7 +347,15 @@ con questa email le inviamo l'elenco dei materiali selezionati ed i relativi all
 Cordiali saluti
   $fromName";
    		
-		$items = $session->getItems();
+		$qb = $this->managerRegistry->getRepository('YouppersCustomerBundle:Item')->createQueryBuilder('i');
+		$qb
+			->addSelect('z')
+			->leftJoin('i.zone', 'z')
+			->andWhere('i.session = :session')
+			->setParameter('session',$session)
+			->addOrderBy('z.name')
+		;
+		$items = $qb->getQuery()->execute();
 		
 		foreach ($items as $item) {
 			if ($item->getRemoved()) {

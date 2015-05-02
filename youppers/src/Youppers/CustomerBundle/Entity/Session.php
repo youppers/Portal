@@ -53,8 +53,6 @@ class Session
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Item", mappedBy="session")
-	 * // FIXME breaks SessionService.clean() 
-	 * //@ORM\OrderBy({"zone" = "ASC"})
 	 * @var Item[]
 	 * @JMS\Groups({"details"})
 	 */
