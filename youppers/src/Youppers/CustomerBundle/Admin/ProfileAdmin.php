@@ -39,6 +39,7 @@ class ProfileAdmin extends YouppersAdmin
 		->add('enabled')
 		->add('isDefault')
 		->add('user', null, array('route' => array('name' => 'show')))
+		->add('zones', null, array('route' => array('name' => 'show')))
 		->add('sessions', null, array('route' => array('name' => 'show')))
 		->add('createdAt')
 		->add('updatedAt')

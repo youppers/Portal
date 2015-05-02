@@ -51,6 +51,11 @@ class Profile
 	protected $isDefault;
 	
 	/**
+	 * @ORM\OneToMany(targetEntity="Zone", mappedBy="profile")
+	 */
+	protected $zones;
+	
+	/**
 	 * @ORM\OneToMany(targetEntity="Session", mappedBy="profile")
 	 */
 	protected $sessions;
@@ -289,5 +294,39 @@ class Profile
     public function getSessions()
     {
         return $this->sessions;
+    }
+
+    /**
+     * Add zone
+     *
+     * @param \Youppers\CustomerBundle\Entity\Zone $zone
+     *
+     * @return Profile
+     */
+    public function addZone(\Youppers\CustomerBundle\Entity\Zone $zone)
+    {
+        $this->zones[] = $zone;
+
+        return $this;
+    }
+
+    /**
+     * Remove zone
+     *
+     * @param \Youppers\CustomerBundle\Entity\Zone $zone
+     */
+    public function removeZone(\Youppers\CustomerBundle\Entity\Zone $zone)
+    {
+        $this->zones->removeElement($zone);
+    }
+
+    /**
+     * Get zones
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getZones()
+    {
+        return $this->zones;
     }
 }
