@@ -21,14 +21,14 @@ class Profile
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"list","details","update","create","json.session.read","json.zone.read"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read","json.zone.read", "json"})
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
 	 * @return User
-	 * @JMS\Groups({"list","details","update","create","json.session.read"})
+	 * @JMS\Groups({"details","update","create","json.session.read","json.profile.read"})
 	 */
 	protected $user;
 
@@ -40,17 +40,18 @@ class Profile
 	
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @JMS\Groups({"list","details","update","create","json"})
 	 */
 	protected $enabled;
 
 	/**
 	 * @ORM\Column(type="boolean", name="is_default")
+	 * @JMS\Groups({"list","details","update","create","json"})
 	 */
 	protected $isDefault;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Session", mappedBy="profile")
-	 * @return User
 	 */
 	protected $sessions;
 	
@@ -85,6 +86,9 @@ class Profile
 		if (empty($this->getIsDefault())) {
 			$this->setIsDefault(false);
 		}
+		if (empty($this->getName())) {
+			$this->setName('');
+		}		
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
