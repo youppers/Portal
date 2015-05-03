@@ -1,5 +1,11 @@
 Sonata\UserBundle\Model\User:
   properties:
+    gender:
+      groups: ['json']
+    locale:
+      groups: ['json']
+    timezone:
+      groups: ['json']
     phone:
       groups: ['json']
       
