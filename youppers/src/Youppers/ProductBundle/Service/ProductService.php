@@ -65,23 +65,22 @@ class ProductService extends ContainerAware
 	
 	/**
 	 * Return one ProductVariant
-	 * 
-	 * If only variantId is supplied, return this specific variant
-	 * If there is one or more option, search for matching variants of the same collection
-	 *   if the options allow to select:
-	 *     - exactly one variant: return this
-	 *     - more than one variant and one is that specified by id: return the variant specified
-	 *     - more than one variant but none is that specified by id: return the first of the list
-	 *     - no variant: return null
-	 *    
-	 * @param uuid $variantId the variant actually shown
-	 * @param array<uuid> $options list of id of selected options
-	 * @param string $sessionId Used to track activities
-	 * @return null|ProductVariant
+	 * @param uuid $variantId
+	 * @param uuid $sessionId
 	 */
 	public function readVariant($variantId, $sessionId =  null)
 	{
-		return $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')->find($variantId);
+		$variant = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')->find($variantId);
+		if (empty($variant)) {
+			throw new NotFoundHttpException("Invalid variant id");
+		}
+		if ($sessionId) {
+			$session = $this->container->get('youppers.customer.service.session')->read($sessionId);
+		} else {
+			$session = null;
+		}
+		$this->container->get('youppers.customer.service.history')->newHistoryShow($variant,$session);
+		return $variant;
 	}
 	
 	/**
