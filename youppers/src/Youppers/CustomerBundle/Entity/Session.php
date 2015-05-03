@@ -31,25 +31,25 @@ class Session
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Store")
-	 * @JMS\Groups({"list","details","update","create","json.session.read"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read","json.profile.read"})
 	 */
 	protected $store;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Youppers\DealerBundle\Entity\Consultant")
-	 * @JMS\Groups({"list","details","update","create","json.session.read"})
+	 * @JMS\Groups({"list","details","update","create","json.session.read","json.profile.read"})
 	 */
 	protected $consultant;
 
 	/**
 	 * @ORM\Column(type="string", nullable=true)
-	 * @JMS\Groups({"list","details","update","create","json.session.read"})
+	 * @JMS\Groups({"list","details","update","create","json","json.session.read"})
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\Column(type="boolean")
-	 * @JMS\Groups({"list","details","update","create","json.session.read"})
+	 * @JMS\Groups({"list","details","update","create","json","json.session.read"})
 	 */
 	protected $removed;
 	
@@ -76,7 +76,7 @@ class Session
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @JMS\Groups({"list","details","create","json.session.read"})
+	 * @JMS\Groups({"list","details","create","json","json.session.read"})
 	 */
 	protected $createdAt;
 			

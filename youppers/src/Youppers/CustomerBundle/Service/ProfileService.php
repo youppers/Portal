@@ -38,12 +38,19 @@ class ProfileService extends ContainerAware
 	{
 		$this->tokenStorage = $tokenStorage;
 	}
+
+	private function getUser()
+	{
+		if ($this->tokenStorage
+			&& ($token = $this->tokenStorage->getToken())
+			&& ($user = $token->getUser())) {
+				return $user;
+		}
+	}
 	
 	public function listForUser()
 	{
-		if ($this->tokenStorage
-				&& ($token = $this->tokenStorage->getToken())
-				&& ($user = $token->getUser())) { 
+		if ($user = $this->getUser()) { 
 			return $this->profileManager->findBy(array('user' => $user));
 		}
 		throw new \Exception("User not logged in");		
@@ -51,7 +58,11 @@ class ProfileService extends ContainerAware
 
 	public function create($data)
 	{
-		return $this->handleWrite(null, $data);
+		if ($user = $this->getUser()) {
+			$data['user'] = $user->getId();
+			return $this->handleWrite(null, $data);
+		}
+		throw new \Exception("User not logged in");		
 	}
 		
 	/**
@@ -61,12 +72,18 @@ class ProfileService extends ContainerAware
 	 */
 	public function read($profileId)
 	{
-		$profile = $this->profileManager->find($profileId);
-		
-		if (empty($profile)) {
-			throw new \Exception("Invalid profileId ".$profileId);
+		if ($user = $this->getUser()) {
+			$profile = $this->profileManager->find($profileId);
+			
+			if (empty($profile)) {
+				throw new \Exception("Invalid profileId ".$profileId);
+			}
+			if ($profile->getUser() != $user) {
+				throw new \Exception("User not allowed to read this profile");
+			}					
+			return $profile;		
 		}
-		return $profile;		
+		throw new \Exception("User not logged in");		
 	}
 	
 	/**
@@ -77,29 +94,44 @@ class ProfileService extends ContainerAware
 	 */
 	public function update($profileId, $data)
 	{
-		if ($profileId) {
-			$profile = $this->read($profileId);
+		if ($user = $this->getUser()) {
+			if ($profileId) {
+				$profile = $this->read($profileId);
+			}
+			if ($profile->getUser() != $user) {
+				throw new \Exception("User not allowed to update this profile");
+			}
+			if (array_key_exists('user',$data) && $data['user'] != $user->getId() && !$user->hasRole('ROLE_SUPER_ADMIN')) {
+				throw new \Exception("User not allowed to changed the user of the profile");
+			}				
+			$normalizer = $this->container->get('fos_rest.normalizer.camel_keys');
+			return $this->handleWrite($profile,$normalizer->normalize($data));
 		}
-				
-		return $this->handleWrite($profile,$data);
+		throw new \Exception("User not logged in");
 	}
 
 	public function delete($profileId)
 	{
-		if ($profileId) {
-			$profile = $this->read($profileId);
-			if ($profile) {
-				return $this->profileManager->delete($profile);
+		if ($user = $this->getUser()) {
+			if ($profileId) {
+				$profile = $this->read($profileId);
+				if ($profile->getUser() != $user) {
+					throw new \Exception("User not allow to update this profile");
+				}					
+				if ($profile) {
+					return $this->profileManager->delete($profile);
+				}
 			}
+			throw new \Exception("Invalid profileId ".$profileId);
 		}
-		throw new \Exception("Invalid profileId ".$profileId);
+		throw new \Exception("User not logged in");
 	}
 	
 	/**
 	 * 
-	 * @param guid $id sessionId
-	 * @param array $data
-	 * @return Profile|Form
+	 * @param unknown $profile
+	 * @param unknown $data
+	 * @return \Symfony\Component\Form\mixed|\Symfony\Component\Form\FormInterface
 	 */
 	protected function handleWrite($profile,$data)
 	{

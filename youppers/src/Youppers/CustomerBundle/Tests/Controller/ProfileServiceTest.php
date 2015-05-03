@@ -12,9 +12,9 @@ use Sonata\UserBundle\Entity\UserManager;
 class ProfileServiceTest extends WebTestCase
 {
 	
-	private $variantId = '2c897a91-dec5-11e4-b4aa-0cc47a127a14';
+	private $usercredentials = array('username' => 'raf', 'password' => 'nomos');
 	
-	private $usercredentials = array('username' => 'admin', 'password' => 'admin');
+	private $otherUserId = '1';
 	
 	private $controller;  // json controller
 	
@@ -65,13 +65,13 @@ class ProfileServiceTest extends WebTestCase
  		return '/jsonrpc/';
 	}
  	
-	private $seq = 0;
+	private static $seq = 0;
 	
 	private function makeMethodRequest($method,$params = array())
 	{
 		$requestdata = array(
 				'jsonrpc' => '2.0',
-				'id' => ++$this->seq,
+				'id' => ++self::$seq,
 				'method' => $method,
 				'params' => $params
 		);
@@ -92,7 +92,7 @@ class ProfileServiceTest extends WebTestCase
 	{
 		$requestdata = array(
 				'jsonrpc' => '2.0',
-				'id' => ++$this->seq,
+				'id' => ++self::$seq,
 				'method' => $method,
 				'params' => $params
 		);
@@ -157,10 +157,10 @@ class ProfileServiceTest extends WebTestCase
 	
 	
 	public function testProfileReadInvalid() {
-		$response = $this->makeHttpMethodRequest('Profile.read',array('profileId' => '123'));
-		$this->assertEquals(
-				'Invalid profileId 123',
-				$response['error']['data']
+		$response = $this->makeHttpMethodRequest('Profile.read',array('profileId' => 'invalid'));
+		$this->assertArrayHasKey(
+				'error',
+				$response
 		);
 	}
 
@@ -181,45 +181,152 @@ class ProfileServiceTest extends WebTestCase
 		$response = $this->makeHttpMethodRequest('Profile.read',array('profileId' => $profile['id']));
 		
 		$profile1 = $response['result'];
-		dump($profile1);
+		//dump($profile1);
+
+		$this->assertArrayHasKey(
+				'created_at',
+				$profile1
+		);
+		unset($profile1['created_at']);
+
+		$this->assertArrayHasKey(
+				'updated_at',
+				$profile1
+		);
+		unset($profile1['updated_at']);
 		
 		$this->assertArrayHasKey(
 				'user',
 				$profile1
+		);		
+		unset($profile1['user']);
+
+		$this->assertArrayHasKey(
+				'zones',
+				$profile1
 		);
+		unset($profile1['zones']);
+
+		$this->assertArrayHasKey(
+				'sessions',
+				$profile1
+		);
+		unset($profile1['sessions']);
 		
-		unset($profile1['user']);  // Profile.read must have only this more than Profile.list		
+		// after unset of all extra fields
 		$this->assertEquals(
 				$profile1,
 				self::$profiles[0]
 			);
 	}
-	
-	
-	/*
-	public function testAttributesRead()
+
+	public function testProfileCRUD()
 	{
-		$response1 = $this->makeMethodRequest('Attributes.read',array('variantId' => $this->variantId . 'xx'));
+		$name = 'Profilo ' . md5(rand());
+		$response = $this->makeHttpMethodRequest('Profile.create',array('data' => array('name' => $name)));
+		$this->assertArrayHasKey(
+				'id',
+				$response['result']
+		);				
+		$id = $response['result']['id'];
+		
+		// duplicated name
+		$response = $this->makeHttpMethodRequest('Profile.create',array('data' => array('name' => $name)));
+		$this->assertArrayHasKey(
+				'errors',
+				$response['result']['children']['name']
+		);
+		
+		$response = $this->makeHttpMethodRequest('Profile.read',array('profileId' => $id));
 		$this->assertEquals(
-	    	"Invalid variant id",
-	    	$response1['error']['data']	
-		);		
-		$response2 = $this->makeHttpMethodRequest('Attributes.read',array('variantId' => $this->variantId . 'xx'));
+				$id,
+				$response['result']['id']
+		);
+		
+		$data = array();
+		foreach ($response['result'] as $name => $value) {
+			if ($name == 'id') {
+				continue;
+			}
+			if (!is_array($value)) {
+				$data[$name] = $value;
+			} elseif (array_key_exists('id',$value)) {
+				$data[$name] = $value['id'];
+			}
+		}
+		
+		$response1 = $this->makeHttpMethodRequest('Profile.update',array('profileId' => $id, 'data' => $data));
 		$this->assertEquals(
-	    	"Invalid variant id",
-	    	$response2['error']['data']	
+				$response['result'],
+				$response1['result']
 		);
 
-		$response3 = $this->makeMethodRequest('Attributes.read',array('variantId' => $this->variantId));
-		$this->assertGreaterThan(
-	    	0,
-	    	count($response3['result'])	
-		);
-		$response4 = $this->makeHttpMethodRequest('Attributes.read',array('variantId' => $this->variantId));
+		// toggle enabled
+		$data['enabled'] = !$data['enabled'];
+		$response2 = $this->makeHttpMethodRequest('Profile.update',array('profileId' => $id, 'data' => $data));
 		$this->assertEquals(
-	    	json_encode($response3['result']),
-	    	json_encode($response4['result'])				
+				$response1['result']['enabled'],
+				!$response2['result']['enabled']
 		);
+		$this->assertEquals(
+				$data['enabled'],
+				$response2['result']['enabled']
+		);
+
+		// toggle enabled		
+		$data['enabled'] = !$data['enabled'];
+		$response3 = $this->makeHttpMethodRequest('Profile.update',array('profileId' => $id, 'data' => $data));
+		$this->assertEquals(
+				$response2['result']['enabled'],
+				!$response3['result']['enabled']
+		);
+		$this->assertEquals(
+				$data['enabled'],
+				$response1['result']['enabled']
+		);
+		
+		// toggle is_default
+		$data['is_default'] = !$data['is_default'];
+		$response2 = $this->makeHttpMethodRequest('Profile.update',array('profileId' => $id, 'data' => $data));
+		$this->assertEquals(
+				$response1['result']['is_default'],
+				!$response2['result']['is_default']
+		);
+		$this->assertEquals(
+				$data['is_default'],
+				$response2['result']['is_default']
+		);
+
+		// update name
+		$data['name'] = 'Profilo ' . md5(rand());
+		$response = $this->makeHttpMethodRequest('Profile.update',array('profileId' => $id, 'data' => $data));
+		$this->assertEquals(
+				$response['result']['name'],
+				$data['name']
+		);
+
+		// set another user (only allowed to super admin)
+		$data['user'] = $this->otherUserId;
+		$response = $this->makeHttpMethodRequest('Profile.update',array('profileId' => $id, 'data' => $data));
+		$this->assertArrayHasKey(
+				'error',
+				$response
+		);
+		
+		// delete
+		$response = $this->makeHttpMethodRequest('Profile.delete',array('profileId' => $id));
+		$this->assertArrayNotHasKey(
+				'result',
+				$response
+		);
+		
+		// read must fail after delete
+		$response = $this->makeHttpMethodRequest('Profile.read',array('profileId' => $id));
+		$this->assertArrayHasKey(
+				'error',
+				$response
+		);		
 	}
-	*/	
+	
+	
 }

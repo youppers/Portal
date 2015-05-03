@@ -52,23 +52,25 @@ class Profile
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Zone", mappedBy="profile")
+	 * @JMS\Groups({"json.profile.read"})
 	 */
 	protected $zones;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Session", mappedBy="profile")
+	 * @JMS\Groups({"json.profile.read"})
 	 */
 	protected $sessions;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
-	 * @JMS\Groups({"details"})
+	 * @JMS\Groups({"details","read","update"})
 	 */
 	protected $updatedAt;
 	
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
-	 * @JMS\Groups({"details","update"})
+	 * @JMS\Groups({"details","read","update"})
 	 */
 	protected $createdAt;
 			

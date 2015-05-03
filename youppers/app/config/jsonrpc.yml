@@ -49,7 +49,7 @@ wa72_json_rpc:
         Item.remove: { service: youppers.customer.service.item, method: remove, jms_serialization_context: { groups: [json, json.item.read], version: '1', max_depth_checks: true } }
 
         Profile.list: { service: youppers.customer.profile, method: listForUser, jms_serialization_context: { groups: [list, json, json.profile.list], version: '1', max_depth_checks: true } }
-        Profile.create: { service: youppers.customer.profile, method: create, jms_serialization_context: { groups: [create, json, json.profile.read], version: '1', max_depth_checks: true } }
+        Profile.create: { service: youppers.customer.profile, method: create, jms_serialization_context: { groups: [create, json], version: '1', max_depth_checks: true } }
         Profile.read: { service: youppers.customer.profile, method: read, jms_serialization_context: { groups: [read, json, json.profile.read], version: '1', max_depth_checks: true } }
         Profile.update: { service: youppers.customer.profile, method: update, jms_serialization_context: { groups: [update, json, json.profile.read], version: '1', max_depth_checks: true } }
         Profile.delete: { service: youppers.customer.profile, method: delete, jms_serialization_context: { groups: [delete, json, json.profile.read], version: '1', max_depth_checks: true } }
