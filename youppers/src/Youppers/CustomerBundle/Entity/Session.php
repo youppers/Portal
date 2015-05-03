@@ -19,7 +19,7 @@ class Session
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"list", "details","create","json.session.read"})
+	 * @JMS\Groups({"list", "details","create","json.session.read", "json.profile.read"})
 	 */
 	protected $id;
 
