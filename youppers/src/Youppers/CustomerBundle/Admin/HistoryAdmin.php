@@ -24,19 +24,19 @@ class HistoryAdmin extends Admin
 			->add('session', null, array('route' => array('name' => 'show')))
 			->add('type', 'text')
 			;
-		if ($this->subject->getType() == 'qr_box') {
+		if ($this->subject->getHistoryType() == 'qr_box') {
 			$showMapper
 			->add('box', null, array('route' => array('name' => 'show')))
 			;
 		}
 		
-		if ($this->subject->getType() == 'qr_variant' || $this->subject->getType() == 'variant_show') {
+		if ($this->subject->getHistoryType() == 'qr_variant' || $this->subject->getHistoryType() == 'variant_show') {
 			$showMapper
 			->add('variant', null, array('route' => array('name' => 'show')))
 			;
 		}
 
-		if ($this->subject->getType() == 'item_add' || $this->subject->getType() == 'item_remove') {
+		if ($this->subject->getHistoryType() == 'item_add' || $this->subject->getHistoryType() == 'item_remove') {
 			$showMapper
 			->add('item', null, array('route' => array('name' => 'show')))
 			;
@@ -83,19 +83,19 @@ class HistoryAdmin extends Admin
 			->add('session', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 		;
 		
-		if ($this->subject->getType() == 'qr_box') {		
+		if ($this->subject->getHistoryType() == 'qr_box') {		
 			$formMapper
 				->add('box', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			;				
 		}
 		
-		if ($this->subject->getType() == 'qr_variant' || $this->subject->getType() == 'variant_show') {
+		if ($this->subject->getHistoryType() == 'qr_variant' || $this->subject->getHistoryType() == 'variant_show') {
 			$formMapper
 			->add('variant', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			;
 		}
 
-		if ($this->subject->getType() == 'item_add' || $this->subject->getType() == 'item_remove') {		
+		if ($this->subject->getHistoryType() == 'item_add' || $this->subject->getHistoryType() == 'item_remove') {		
 			$formMapper
 			->add('item', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
 			;
