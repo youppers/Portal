@@ -57,7 +57,7 @@ class Tracker
 			$data['dp'] = $slugifier->slugify($data['ec']) . '/' . $slugifier->slugify($data['ea']) . '/' . $slugifier->slugify($data['el']); // Document Path
 		}
 
-		if ($clientId = $this->request->get('client_id')) {
+		if (!empty($this->request) && ($clientId = $this->request->get('client_id'))) {
 			$data['cid'] = $clientId;  // Client ID FIXME Must identify the device
 		}
 		
