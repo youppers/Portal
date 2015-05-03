@@ -11,6 +11,8 @@ Per le varianti bisogna verificare l'univocità, cioè il fatto che gli attribut
 
 TODO
 
+Add GA Tracking to Variant.read
+
 Add variantId to JSON Attributes.read
 
 Upload drag'ndrop
