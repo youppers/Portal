@@ -258,7 +258,7 @@ class ProductService extends ContainerAware
 	 */
 	public function readVariantAttributes($variantId, $sessionId = null)
 	{
-		$variant = $this->readVariant($variantId);
+		$variant = $this->managerRegistry->getRepository('YouppersProductBundle:ProductVariant')->find($variantId);
 		if (empty($variant)) {
 			throw new NotFoundHttpException("Invalid variant id");				
 		}
