@@ -23,6 +23,7 @@ use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\DealerBundle\Entity\Box;
 use Youppers\CustomerBundle\Entity\Item;
 use Youppers\CustomerBundle\Entity\History;
+use Youppers\CustomerBundle\Manager\HistoryManager;
 
 
 class HistoryService extends ContainerAware
@@ -30,11 +31,13 @@ class HistoryService extends ContainerAware
 	private $managerRegistry;
 	private $logger;
 	private $tokenStorage = null;
+	private $historyManager;
 	
 	public function __construct(ManagerRegistry $managerRegistry, LoggerInterface $logger)
 	{
 		$this->managerRegistry = $managerRegistry;
 		$this->logger = $logger;
+		$this->historyManager = new HistoryManager($managerRegistry);
 	}	
 	
 	/**
@@ -51,6 +54,7 @@ class HistoryService extends ContainerAware
 	/**
 	 * Save History Event Record
 	 * @param History $history
+	 * @deprecated
 	 */
 	protected function save(History $history)
 	{
@@ -69,7 +73,7 @@ class HistoryService extends ContainerAware
 		$history = new HistoryQrBox();
 		$history->setSession($session);
 		$history->setBox($box);
-		$this->save($history);
+		$this->historyManager->save($history);
 	}
 
 	/**
@@ -82,7 +86,7 @@ class HistoryService extends ContainerAware
 		$history = new HistoryQrVariant();
 		$history->setSession($session);
 		$history->setVariant($variant);
-		$this->save($history);
+		$this->historyManager->save($history);
 	}
 
 	/**
@@ -95,7 +99,7 @@ class HistoryService extends ContainerAware
 		$history = new HistoryShow();
 		$history->setSession($session);
 		$history->setVariant($variant);
-		$this->save($history);
+		$this->historyManager->save($history);
 	}
 		
 	/**
@@ -108,7 +112,7 @@ class HistoryService extends ContainerAware
 		$history = new HistoryAdd();
 		$history->setSession($item->getSession());
 		$history->setItem($item);
-		$this->save($history);
+		$this->historyManager->save($history);
 	}
 
 	/**
@@ -121,7 +125,30 @@ class HistoryService extends ContainerAware
 		$history = new HistoryRemove();
 		$history->setSession($item->getSession());
 		$history->setItem($item);
-		$this->save($history);
+		$this->historyManager->save($history);
 	}
 
+	public function historyList(Session $session)
+	{
+		return $this->historyManager->findBy(array('session' => $session),array('createdAt' => 'DESC'));
+	}
+	
+	private function getSession($sessionId)
+	{
+		if ($sessionId) {
+			$session = $this->container->get('youppers.customer.manager.session')->find($sessionId);
+			if ($session === null) {
+				$this->logger->error(sprintf("Session '%s' not found",$sessionId));
+				throw new \Exception("Invalid sessionId ".$sessionId);
+			}
+			return $session;
+		}
+		throw new \Exception("Session not specified");
+	}
+	
+	public function listForSession($sessionId)
+	{
+		return $this->historyList($this->getSession($sessionId));	
+	}
+	
 }

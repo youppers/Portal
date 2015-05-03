@@ -1,16 +1,16 @@
 <?php
 
-namespace Youppers\CustomerBundle\Manager;
+namespace Youppers\DealerBundle\Manager;
 
 use Sonata\CoreBundle\Model\BaseEntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-class ProfileManager extends BaseEntityManager
+class BoxManager extends BaseEntityManager
 {
 	
 	public function __construct(ManagerRegistry $registry)
 	{
-		parent::__construct('Youppers\CustomerBundle\Entity\Profile', $registry);
+		parent::__construct('Youppers\DealerBundle\Entity\Box', $registry);
 	}
 	
 }

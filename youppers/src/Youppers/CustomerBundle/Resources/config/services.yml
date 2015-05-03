@@ -20,12 +20,19 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
-    youppers.customer.session:
+    youppers.customer.manager.session:
+        class:     Youppers\CustomerBundle\Manager\SessionManager
+        arguments: ['@doctrine']
+
+    youppers.customer.service.session:
         class:     Youppers\CustomerBundle\Service\SessionService
         arguments: ['@doctrine', '@logger']
         calls:
             - [ setContainer, [ '@service_container' ] ]
             - [ setTokenStorage, [ '@security.token_storage' ] ]
+
+    youppers.customer.session:
+      alias: youppers.customer.service.session
 
     youppers.customer.session.form:    
         class: 'Sonata\CoreBundle\Form\Type\DoctrineORMSerializationType'
@@ -39,6 +46,10 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
     
+    youppers.customer.manager.item:
+        class:     Youppers\CustomerBundle\Manager\ItemManager
+        arguments: ['@doctrine']
+
     youppers.customer.service.item:
         class:     Youppers\CustomerBundle\Service\ItemService
         arguments: ['@doctrine', '@logger']
@@ -54,4 +65,7 @@ services:
     youppers.customer.security.phone_email:
         class:     Youppers\CustomerBundle\Security\PhoneEmailUserProvider
         arguments: ['@fos_user.user_manager']
-                          
+        
+    youppers.customer.manager.history:
+        class:     Youppers\CustomerBundle\Manager\HistoryManager
+        arguments: ['@doctrine']

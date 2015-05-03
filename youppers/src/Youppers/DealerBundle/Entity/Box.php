@@ -76,7 +76,7 @@ class Box
 	/**
 	 * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
 	 * @JMS\Expose()
-	 * @JMS\Groups({"details", "json.qr.find", "json.box.list", "json.box.show"})
+	 * @JMS\Groups({"details", "json.qr.find", "json.box.list", "json.box.show", "json.history.list"})
 	 */
 	protected $image;
 	

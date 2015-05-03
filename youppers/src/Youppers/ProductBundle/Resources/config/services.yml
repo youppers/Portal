@@ -10,3 +10,8 @@ services:
         arguments: ['@doctrine', '@logger']
         calls:
             - [ setContainer, [ '@service_container' ] ]
+            
+    youppers.product.manager.product_variant:
+        class:     Youppers\ProductBundle\Manager\ProductVariantManager
+        arguments: ['@doctrine']
+            

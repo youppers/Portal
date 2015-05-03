@@ -3,6 +3,7 @@ namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Youppers\ProductBundle\Entity\ProductVariant;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -13,6 +14,7 @@ class HistoryQrVariant extends History
 	/**
 	 * @ORM\ManyToOne(targetEntity="Youppers\ProductBundle\Entity\ProductVariant")
 	 * @return ProductVariant
+	 * @JMS\Groups({"json.history.list"})
 	 */
 	protected $variant;
 	
@@ -21,7 +23,11 @@ class HistoryQrVariant extends History
 		return "QrVariant " . $this->getVariant();
 	}
 	
-	public function getType()
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\Groups({"json.history.list"})
+	 */	
+	public function getHistoryType()
 	{
 		return 'qr_variant';
 	}

@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Youppers\DealerBundle\Entity\Box;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Doctrine\Common\Util\ClassUtils;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -27,6 +28,7 @@ abstract class History
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
      * @var guid
+	 * @JMS\Groups({"read"})
 	 */
 	protected $id;
 
@@ -45,15 +47,16 @@ abstract class History
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
      * @var \DateTime
+	 * @JMS\Groups({"json"})
 	 */
 	protected $createdAt;
 	
 	public function __toString()
 	{
-		return $this->getCreatedAt() ? $this->getType() . '@' . $this->getCreatedAt()->format('c') : 'New';
+		return $this->getCreatedAt() ? $this->getHistoryType() . '@' . $this->getCreatedAt()->format('c') : 'New';
 	}
 		
-	public abstract function getType();
+	public abstract function getHistoryType();
 	
 	/**
 	 * @ORM\PrePersist()

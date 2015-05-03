@@ -3,6 +3,7 @@ namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Youppers\DealerBundle\Entity\Box;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -13,6 +14,7 @@ class HistoryQrBox extends History
 	/**
 	 * @ORM\ManyToOne(targetEntity="Youppers\DealerBundle\Entity\Box")
 	 * @return Box
+	 * @JMS\Groups({"json.history.list"})
 	 */
 	protected $box;
 		
@@ -21,7 +23,11 @@ class HistoryQrBox extends History
 		return "QrBox " . $this->getBox();
 	}
 	
-	public function getType()
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\Groups({"json.history.list"})
+	 */	
+	public function getHistoryType()
 	{
 		return 'qr_box';
 	}

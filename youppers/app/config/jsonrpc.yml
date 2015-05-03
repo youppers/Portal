@@ -56,3 +56,4 @@ wa72_json_rpc:
 
         Store.list: { service: youppers.dealer.store, method: listForUser, jms_serialization_context: { groups: [json, json.store.list], version: '1', max_depth_checks: true } }
         
+        History.list: { service: youppers.customer.service.history, method: listForSession, jms_serialization_context: { groups: [json, json.history.list, json.box.list, json.variant.list], version: '1', max_depth_checks: true } }

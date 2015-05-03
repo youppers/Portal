@@ -30,7 +30,7 @@ class Zone
 	protected $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Profile")
+	 * @ORM\ManyToOne(targetEntity="Profile", inversedBy="zones")
 	 * @var Profile
 	 * @JMS\Groups({"list", "details","create","json.zone.read","json.zone.list", "json.item.list", "json.item.read"})
 	 */

@@ -10,4 +10,7 @@ services:
         arguments: ['@doctrine', '@logger']
         calls:
             - [ setContainer, [ '@service_container' ] ]
-    
+
+    youppers.dealer.manager.box:
+        class:     Youppers\DealerBundle\Manager\BoxManager
+        arguments: ['@doctrine']

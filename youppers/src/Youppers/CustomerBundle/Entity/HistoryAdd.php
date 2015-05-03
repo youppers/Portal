@@ -2,6 +2,8 @@
 namespace Youppers\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Youppers\CustomerBundle\Entity\Item;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -20,7 +22,11 @@ class HistoryAdd extends History
 		return "Add " . $this->getItem()->getDescription();
 	}
 
-	public function getType()
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\Groups({"json.history.list"})
+	 */
+	public function getHistoryType()
 	{
 		return 'item_add';
 	}

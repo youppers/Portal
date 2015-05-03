@@ -15,12 +15,13 @@ class Item
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
-	 * @JMS\Groups({"list", "details","create","json.item.list","json.item.read"})
+	 * @JMS\Groups({"json"})
 	 */
 	protected $id;
 	
 	/**
 	 * @ORM\Column(type="boolean")
+	 * @JMS\Groups({"json"})
 	 */
 	protected $removed;
 	
@@ -33,13 +34,13 @@ class Item
 	/**
 	 * @ORM\ManyToOne(targetEntity="Youppers\ProductBundle\Entity\ProductVariant")
 	 * @return ProductVariant
-	 * @JMS\Groups({"list", "details","create","json.item.list", "json.item.read"})
+	 * @JMS\Groups({"list", "details","create","json.item.list", "json.item.read", "json.history.list"})
 	 */
 	protected $variant;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Zone")
-	 * @JMS\Groups({"list", "details","create","json.item.list", "json.item.read"})
+	 * @JMS\Groups({"list", "details","create","json.item.list", "json.item.read", "json.history.list"})
 	 */
 	protected $zone;	
 		
