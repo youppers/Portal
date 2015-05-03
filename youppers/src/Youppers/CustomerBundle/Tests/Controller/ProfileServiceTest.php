@@ -50,7 +50,23 @@ class ProfileServiceTest extends JsonTestCase
 				$response
 		);
 	}
+	
+	public function testProfileDeleteInvalid() {
+		$response = $this->makeHttpMethodRequest('Profile.delete',array('profileId' => 'invalid'));
+		$this->assertArrayHasKey(
+				'error',
+				$response
+		);		
+	}
 
+	public function testProfileDeleteFail() {
+		$response = $this->makeHttpMethodRequest('Profile.delete',array('profileId' => '8a8c94c0-d925-11e4-b4aa-0cc47a127a14'));
+		$this->assertArrayHasKey(
+				'error',
+				$response
+		);		
+	}
+	
 	public function testProfileReadMultiple()
 	{
 		foreach (self::$profiles as $profile) {
