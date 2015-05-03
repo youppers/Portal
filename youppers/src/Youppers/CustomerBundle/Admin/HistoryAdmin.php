@@ -22,7 +22,7 @@ class HistoryAdmin extends Admin
 	{
 		$showMapper
 			->add('session', null, array('route' => array('name' => 'show')))
-			->add('type', 'text')
+			->add('historyType', 'text')
 			;
 		if ($this->subject->getHistoryType() == 'qr_box') {
 			$showMapper
@@ -53,7 +53,7 @@ class HistoryAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->addIdentifier('type', 'text', array('route' => array('name' => 'show')))
+		->addIdentifier('historyType', 'text', array('route' => array('name' => 'show')))
 		->addIdentifier('createdAt', null, array('route' => array('name' => 'show')))
 		->add('session', null, array('route' => array('name' => 'show')))
 		->add('box', null, array('route' => array('name' => 'show')))
