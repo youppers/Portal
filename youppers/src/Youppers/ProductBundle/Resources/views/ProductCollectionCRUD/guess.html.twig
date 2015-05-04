@@ -1,0 +1,15 @@
+<style>
+<!--
+ error {
+    background-color: red;
+    color: white;
+ } 
+ info {
+    color: green;
+ }
+-->
+</style>
+
+{% for todo in todos %}
+    <li>{{ todo|raw }}</li>
+{% endfor %}

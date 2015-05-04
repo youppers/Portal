@@ -15,6 +15,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductCollectionAdmin extends YouppersAdmin
 {
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->add('guess', $this->getRouterIdParameter().'/guess');
+		$collection->add('forceGuess', $this->getRouterIdParameter().'/forceGuess');
+	}
+	
 	public function getExportFields()
 	{
 		return array(
@@ -41,6 +47,8 @@ class ProductCollectionAdmin extends YouppersAdmin
 		if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
 			$id = $this->getRequest()->get($this->getIdParameter());
 			$menu->addChild('Variants', array('uri' => $this->generateUrl('youppers_product.admin.product_variant.list', array('id' => $id))));
+			$menu->addChild('Guess', array('uri' => $this->generateUrl('guess', array('id' => $id))));				
+			$menu->addChild('Force Guess', array('uri' => $this->generateUrl('forceGuess', array('id' => $id))));				
 		}
 	}
 	

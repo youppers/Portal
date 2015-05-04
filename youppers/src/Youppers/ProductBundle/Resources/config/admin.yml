@@ -33,7 +33,7 @@ services:
 
     youppers_product.admin.product_collection:
         class: Youppers\ProductBundle\Admin\ProductCollectionAdmin
-        arguments: [~, Youppers\ProductBundle\Entity\ProductCollection, ~ ]
+        arguments: [~, Youppers\ProductBundle\Entity\ProductCollection, "YouppersProductBundle:ProductCollectionCRUD" ]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Product, label: 'Product Collection'}
         calls:
