@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Youppers\CommonBundle\Manager\QrManager;
 
 class QrService extends Controller
 {
@@ -200,6 +201,14 @@ class QrService extends Controller
 			} catch (ResourceNotFoundException $e) {
 				$logger->debug("Qr NOT match any route, trying url");
 				$qr = $this->findByUrl($text);
+				if (empty($qr)) {
+					$qrManager = new QrManager($this->get('doctrine'));
+					$qr = $qrManager->create();
+					$qr->setUrl($text);
+					$qr->setEnabled(false);
+					$qr->setTargetType('');
+					$qrManager->save($qr);
+				}
 			}
 		} else {
 			$qr = $this->findById($id);
@@ -208,7 +217,7 @@ class QrService extends Controller
 		if ($qr === null) {
 			$logger->warning("Not found qr '$text'");
 		} else {
-			if (!$qr->getEnabled() && false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+			if (!empty($qr->getTargetType()) && !$qr->getEnabled() && false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 				$logger->error("Found a qr not enabled '$text': "  . $qr->getTargetType());
 				throw $this->createAccessDeniedException('Disabled QRCode is only allowed to admin',new DisabledException('Disabled QRCode'));
 			}				
