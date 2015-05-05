@@ -10,6 +10,3 @@ Sonata\MediaBundle\Model\Media:
     contentType:
       expose: true
       groups: ['list','details','json']
-    providerReference:
-      expose: true
-      groups: ['list','details','json']
