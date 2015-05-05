@@ -24,6 +24,7 @@ class ProductCRUDController extends CRUDController
                                         // to set its id to null
         $clonedObject->setName($object->getName()." (Clone)");
         $clonedObject->setCode($object->getCode()." (Clone)");
+        $clonedObject->setGtin(null);
         $clonedObject->setEnabled(false);
         // TODO gestire clonazione delle varianti
         $clonedObject->setCreatedAt(new \DateTime());
