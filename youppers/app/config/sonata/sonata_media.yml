@@ -239,7 +239,10 @@ sonata_media:
 #            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
 #            filters:
 #                thumbnail: { size: [820, 70], mode: outbound }
-
+    buzz:
+      client:
+        verify_peer: false
+        
 # Enable Doctrine to map the provided entities
 doctrine:
     orm:
