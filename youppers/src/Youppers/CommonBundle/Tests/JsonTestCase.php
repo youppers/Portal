@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DomCrawler\Crawler;
 use Sonata\UserBundle\Entity\UserManager;
 
-class JsonTestCase extends WebTestCase
+abstract class JsonTestCase extends WebTestCase
 {
 	
 	protected $credentials = array('name' => 'test', 'username' => 'signoramaria', 'password' => 'signoramaria');
