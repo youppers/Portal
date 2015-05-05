@@ -35,8 +35,8 @@ class SerializationListener extends ContainerAware implements EventSubscriberInt
 			$format = 'admin';
 		}
 		$event->getVisitor()->addData('url',$mediaProvider->generatePublicUrl($media, $format));
-		if ($mediaProvider instanceof Sonata\MediaBundle\Provider\YouTubeProvider) {
-			$event->getVisitor()->addData('url.reference',$mediaProvider->getDownloadResponse($media)->getTargetUrl());
+		if ($mediaProvider->getName() == "sonata.media.provider.youtube") {
+			$event->getVisitor()->addData('url.reference',$mediaProvider->getDownloadResponse($media,'reference','http')->getTargetUrl());
 		} else {
 			$event->getVisitor()->addData('url.reference',$mediaProvider->generatePublicUrl($media, 'reference'));
 		}
