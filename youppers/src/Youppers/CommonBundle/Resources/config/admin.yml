@@ -5,3 +5,8 @@ services:
         tags:
             - {name: sonata.admin, manager_type: orm, group: Common, label: 'Geoid'}
 
+    youppers_common.admin.qr:
+        class: Youppers\CommonBundle\Admin\QrAdmin
+        arguments: [~, Youppers\CommonBundle\Entity\Qr, ~]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Common, label: 'QRCode'}
