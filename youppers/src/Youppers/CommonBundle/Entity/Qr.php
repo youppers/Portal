@@ -14,6 +14,19 @@ use Doctrine\Common\Collections\Criteria;
  */
 class Qr
 {
+	public function __toString()
+	{
+		return $this->getText();
+	}
+	
+	public function getText()
+	{
+		if (!empty($this->url)) {
+			return $this->url;
+		}
+		return 	'http://demo.youppers.com/qr/' . $this->getId();
+	}
+	
 	/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
