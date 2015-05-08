@@ -77,7 +77,7 @@ class QrAdmin extends YouppersAdmin
 		$formMapper
 			->add('url')
 			->add('targetType')
-			->add('enabled')
+			->add('enabled', null, array('required' => false))
 		;
 		
 		if ($this->subject->getTargetType() == 'youppers_company_product') {
