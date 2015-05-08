@@ -27,6 +27,11 @@ class Qr
 		return 	'http://demo.youppers.com/qr/' . $this->getId();
 	}
 	
+	public function setText($text)
+	{
+		return $this->setUrl($text);
+	}
+	
 	/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id

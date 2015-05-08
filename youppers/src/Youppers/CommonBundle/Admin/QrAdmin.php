@@ -47,7 +47,9 @@ class QrAdmin extends YouppersAdmin
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+		->add('text')
 		->add('targetType', 'text')
+		->add('enabled')
 		;
 		if ($this->subject->getTargetType() == 'youppers_company_product') {
 			$showMapper
@@ -73,18 +75,20 @@ class QrAdmin extends YouppersAdmin
 	{
 		
 		$formMapper
+			->add('url')
 			->add('targetType')
+			->add('enabled')
 		;
 		
-			if ($this->subject->getTargetType() == 'youppers_company_product') {
-			$formMapper
-				->add('products', 'sonata_type_model', array('multiple' => true, 'by_reference' => true))
-			;
+		if ($this->subject->getTargetType() == 'youppers_company_product') {
+// 			$formMapper
+// 				->add('products', 'sonata_type_model', array('multiple' => true, 'required' => false, 'by_reference' => true))
+// 			;
 		}
 		if ($this->subject->getTargetType() == 'youppers_dealer_box') {
-			$formMapper
-				->add('boxes', 'sonata_type_model', array('multiple' => true, 'by_reference' => false))
-			;
+// 			$formMapper
+// 				->add('boxes', 'sonata_type_model', array('multiple' => true, 'required' => false, 'by_reference' => false))
+// 			;
 // 			$formMapper
 // 				->add('boxes', 'sonata_type_collection', 
 // 					array(
