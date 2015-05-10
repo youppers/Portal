@@ -43,7 +43,14 @@ class Zone
 	protected $name;
 		
 	/**
+	 * @ORM\Column(type="boolean", options={"default":true})
+	 * @JMS\Groups({"list","details","update","create","json"})
+	 */
+	protected $enabled;
+	
+	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
+	 * @JMS\Groups({"details","read","update"})
 	 */
 	protected $updatedAt;
 	
@@ -63,6 +70,9 @@ class Zone
 	 */	
 	public function prePersist()
 	{
+		if (empty($this->getEnabled())) {
+			$this->setEnabled(false);
+		}		
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 	}
@@ -177,5 +187,29 @@ class Zone
     public function getProfile()
     {
         return $this->profile;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     *
+     * @return Zone
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
     }
 }

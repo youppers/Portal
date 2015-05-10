@@ -23,6 +23,7 @@ class ZoneAdmin extends YouppersAdmin
 		$showMapper
 		->add('profile', null, array('route' => array('name' => 'show')))
 		->add('name')
+		->add('enabled')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -36,6 +37,7 @@ class ZoneAdmin extends YouppersAdmin
 		$listMapper
 		->add('profile', null, array('route' => array('name' => 'show')))
 		->add('name')		
+		->add('enabled')
 		->add('_action', 'actions', array(
 				'actions' => array(
 						'edit' => array(),
@@ -60,6 +62,7 @@ class ZoneAdmin extends YouppersAdmin
 	{
 		$datagridMapper
 		->add('name')
+		->add('enabled')		
 		;
 	}
 	
@@ -72,6 +75,7 @@ class ZoneAdmin extends YouppersAdmin
 		$formMapper
 			->add('profile', 'sonata_type_model_list', array('required' => false))
 			->add('name')
+			->add('enabled', null, array('required'  => false))
 		;
 	}
 
