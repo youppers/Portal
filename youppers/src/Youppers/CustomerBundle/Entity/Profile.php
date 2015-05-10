@@ -28,7 +28,7 @@ class Profile
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
 	 * @return User
-	 * @JMS\Groups({"details","update","create","json.session.read","json.profile.read"})
+	 * @JMS\Groups({"details","json.session.read","json.profile.read"})
 	 */
 	protected $user;
 
