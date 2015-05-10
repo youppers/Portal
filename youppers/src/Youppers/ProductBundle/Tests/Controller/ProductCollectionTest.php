@@ -14,7 +14,7 @@ class ProductCollectionTest extends JsonTestCase
 	public function testCollectionRead()
 	{
 		$response = $this->makeHttpMethodRequest('Collection.read',array('collectionId' => $this->collectionId));
-		dump($response); die;		
+		//dump($response); die;		
 		$this->assertGreaterThan(
 	    	0,
 	    	count($response['result'])	
