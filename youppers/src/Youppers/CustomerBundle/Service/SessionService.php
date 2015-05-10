@@ -74,7 +74,7 @@ class SessionService extends ContainerAware
 		return $session;
 	}
 		
-	private function getDefaultProfile(User $user)
+	public function getDefaultProfile(User $user)
 	{
 		$repo = $this->managerRegistry->getRepository('YouppersCustomerBundle:Profile');
 		
