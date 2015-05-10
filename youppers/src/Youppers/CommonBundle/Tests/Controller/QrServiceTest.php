@@ -14,7 +14,7 @@ class QrServiceTest extends JsonTestCase
 	{
 		$text = 'http://www.produttore.it/link/' . mt_rand();
 		$response = $this->makeHttpMethodRequest('Qr.find',array('text' => $text, 'sessionId' => $this->sessionId));
-		dump($response); die;		
+		//dump($response); die;		
 		$this->assertGreaterThan(
 	    	0,
 	    	count($response['result'])	

@@ -12,7 +12,7 @@ class SessionServiceTest extends JsonTestCase
 	public function testSessionNew()
 	{
 		$response = $this->makeHttpMethodRequest('Session.new');
-		dump($response);
+		//dump($response);
 		$this->assertGreaterThan(
 				0,
 				count($response['result'])

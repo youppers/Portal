@@ -67,7 +67,7 @@ class HistoryServiceTest extends JsonTestCase
 	public function testRpcList()
 	{
 		$response = $this->makeHttpMethodRequest('History.list',array('sessionId' => $this->sessionId));
-		dump($response);		
+		//dump($response);		
 	}
 	
 }
