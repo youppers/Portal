@@ -1,6 +1,7 @@
 <?php
 namespace Youppers\CommonBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Youppers\CompanyBundle\Entity\Product;
@@ -94,11 +95,11 @@ class Qr
 	{
 		switch ($this->getTargetType()) {
 			case 'youppers_dealer_box':
-				return $this->getBoxes()->filter(function (Box $box) { return $box->getEnabled();});
+				return new ArrayCollection($this->getBoxes()->filter(function (Box $box) { return $box->getEnabled();})->getValues());
 			case 'youppers_company_product':
-				return $this->getProducts()->filter(function (Product $product) { return $product->getEnabled(); });
+                return new ArrayCollection($this->getProducts()->filter(function (Product $product) { return $product->getEnabled(); })->getValues());
 		}
-		return array();
+		return new ArrayCollection(array());
 	}
 	
 	/**
