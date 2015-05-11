@@ -3,7 +3,8 @@ namespace Youppers\CommonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use Doctrine\Common\Collections\Criteria;
+use Youppers\CompanyBundle\Entity\Product;
+use Youppers\DealerBundle\Entity\Box;
 
 /**
  * @ORM\Entity
@@ -91,13 +92,11 @@ class Qr
 	 */
 	public function getTargets()
 	{
-		$criteria = Criteria::create()
-			->where(Criteria::expr()->eq("enabled", true));
 		switch ($this->getTargetType()) {
 			case 'youppers_dealer_box':
-				return $this->getBoxes()->matching($criteria);
+				return $this->getBoxes()->filter(function (Box $box) { return $box->getEnabled();});
 			case 'youppers_company_product':
-				return $this->getProducts()->matching($criteria);
+				return $this->getProducts()->filter(function (Product $product) { return $product->getEnabled(); });
 		}
 		return array();
 	}
@@ -135,7 +134,7 @@ class Qr
     /**
      * Get id
      *
-     * @return guid 
+     * @return mixed
      */
     public function getId()
     {
@@ -250,7 +249,7 @@ class Qr
     /**
      * Remove products
      *
-     * @param \Youppers\CompanyBundle\Entity\Product $products
+     * @param Product $products
      */
     public function removeProduct(\Youppers\CompanyBundle\Entity\Product $products)
     {
