@@ -11,6 +11,9 @@ sonata_admin:
         short_object_description: YouppersCommonBundle:Helper:short-object-description.html.twig
         select:               'YouppersCommonBundle:CRUD:list__select.html.twig'
 
+    security:
+        handler: sonata.admin.security.handler.role
+
     dashboard:
         blocks:
             - { position: left, type: sonata.admin.block.admin_list } # default
@@ -38,7 +41,7 @@ sonata_admin:
 #            - { position: right, type: sonata.customer.block.recent_customers, settings: { title: Recent Customers, number: 5, mode: admin }}
 #            - { position: right, type: sonata.block.service.rss, settings: { title: Sonata Project's Feeds, url: http://sonata-project.org/blog/archive.rss, template: SonataAdminBundle:Block:block_rss_dashboard.html.twig }}
 
-#        groups:
+        groups:
 #            sonata.admin.group.company:
 #                label:  Company
 #                #label_catalogue: YouppersCompanyBundle
@@ -50,8 +53,49 @@ sonata_admin:
 #                    - sonata.product.admin.product
 #                item_adds: []
 #                roles: [ROLE_COMPANY]
-                    
-                    
+
+            Common:
+                roles: [ROLE_ADMIN]
+                icon: '<i class="fa fa-wrench"></i>'
+
+            Company:
+                roles: [ROLE_COMPANY_ADMIN]
+                icon: '<i class="fa fa-university"></i>'
+
+            Product:
+                roles: [ROLE_PRODUCT_ADMIN]
+                icon: '<i class="fa fa-database"></i>'
+
+            Dealer:
+                roles: [ROLE_DEALER_ADMIN]
+                icon: '<i class="fa fa-building"></i>'
+
+            Customer:
+                roles: [ROLE_CUSTOMER_ADMIN]
+                icon: '<i class="fa fa-heart"></i>'
+
+            %sonata.user.admin.groupname%:
+                roles: [ROLE_SUPER_ADMIN]
+                label_catalogue: SonataUserBundle
+                icon: '<i class="fa fa-user"></i>'
+
+            sonata_page:
+                roles: [ROLE_SUPER_ADMIN]
+                label_catalogue: %sonata.page.admin.page.translation_domain%
+
+            sonata_media:
+                roles: [ROLE_SUPER_ADMIN]
+                label_catalogue: %sonata.media.admin.media.translation_domain%
+                icon: '<i class="fa fa-file"></i>'
+
+            sonata_classification:
+                roles: [ROLE_SUPER_ADMIN]
+                label_catalogue: SonataClassificationBundle
+
+            sonata_notification:
+                roles: [ROLE_SUPER_ADMIN]
+                label_catalogue: SonataNotificationBundle
+
             
 #            sonata.admin.group.content:
 #                label:           sonata_content
