@@ -23,6 +23,11 @@ class Company
 	 * @Serializer\Groups({"details"})
 	 */
 	protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Youppers\CommonBundle\Entity\Org", inversedBy="companies")
+     **/
+    protected $org;
 			
 	/**
 	 * @ORM\Column(type="string", length=60, unique=true)
@@ -377,5 +382,29 @@ class Company
     public function getPricelists()
     {
         return $this->pricelists;
+    }
+
+    /**
+     * Set org
+     *
+     * @param \Youppers\CommonBundle\Entity\Org $org
+     *
+     * @return Company
+     */
+    public function setOrg(\Youppers\CommonBundle\Entity\Org $org = null)
+    {
+        $this->org = $org;
+
+        return $this;
+    }
+
+    /**
+     * Get org
+     *
+     * @return \Youppers\CommonBundle\Entity\Org
+     */
+    public function getOrg()
+    {
+        return $this->org;
     }
 }

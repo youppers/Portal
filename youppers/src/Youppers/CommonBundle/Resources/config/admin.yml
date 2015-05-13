@@ -10,3 +10,9 @@ services:
         arguments: [~, Youppers\CommonBundle\Entity\Qr, ~]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Common, label: 'QRCode'}
+
+    youppers.common.admin.org:
+        class: Youppers\CommonBundle\Admin\OrgAdmin
+        arguments: [~, Youppers\CommonBundle\Entity\Org, ~]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Common, label: 'Organization'}

@@ -10,6 +10,8 @@
             <generator strategy="UUID"/>
         </id>
 
+        <many-to-one field="org" target-entity="\Youppers\CommonBundle\Entity\Org" inversed-by="users"/>
+
     </entity>
 
 </doctrine-mapping>

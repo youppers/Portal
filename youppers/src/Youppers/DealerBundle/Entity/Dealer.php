@@ -23,7 +23,12 @@ class Dealer
 	 */
 	protected $id;
 
-	/**
+    /**
+     * @ORM\ManyToOne(targetEntity="\Youppers\CommonBundle\Entity\Org", inversedBy="dealers")
+     **/
+    protected $org;
+
+    /**
 	 * @ORM\Column(type="string", length=60, unique=true)
 	 * @JMS\Groups({"list", "details","create","json.store.read","json.session.read", "json.box.list"})
 	 */
@@ -341,5 +346,29 @@ class Dealer
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set org
+     *
+     * @param \Youppers\CommonBundle\Entity\Org $org
+     *
+     * @return Dealer
+     */
+    public function setOrg(\Youppers\CommonBundle\Entity\Org $org = null)
+    {
+        $this->org = $org;
+
+        return $this;
+    }
+
+    /**
+     * Get org
+     *
+     * @return \Youppers\CommonBundle\Entity\Org
+     */
+    public function getOrg()
+    {
+        return $this->org;
     }
 }
