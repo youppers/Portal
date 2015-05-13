@@ -82,7 +82,7 @@ class ProductCollection
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="AttributeStandard")
-	 * @ORM\JoinTable(name="youppers_dealer__collection_standard")
+	 * @ORM\JoinTable(name="youppers_product__collection_standard")
 	 */
 	protected $standards;
 	
