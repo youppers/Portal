@@ -47,7 +47,14 @@ class Dealer
 	 */
 	protected $email;
 
-	/**
+    /**
+     * @ORM\ManyToMany(targetEntity="\Youppers\CompanyBundle\Entity\Brand", inversedBy="dealers")
+     * @ORM\JoinTable(name="youppers_dealer__brands")
+     * @ORM\OrderBy({"company" = "ASC", "name" = "ASC"})
+     */
+    protected $brands;
+
+    /**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 */
 	protected $enabled;
@@ -80,7 +87,7 @@ class Dealer
 	
 	public function __toString()
 	{
-		return $this->getName() ?: 'New';
+        return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']': 'New';
 	}
 	
 	/**
@@ -107,6 +114,7 @@ class Dealer
      */
     public function __construct()
     {
+        $this->brands = new \Doctrine\Common\Collections\ArrayCollection();
         $this->stores = new \Doctrine\Common\Collections\ArrayCollection();
         $this->consultants = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -114,7 +122,7 @@ class Dealer
     /**
      * Get id
      *
-     * @return guid 
+     * @return guid
      */
     public function getId()
     {
@@ -125,6 +133,7 @@ class Dealer
      * Set name
      *
      * @param string $name
+     *
      * @return Dealer
      */
     public function setName($name)
@@ -137,7 +146,7 @@ class Dealer
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -148,6 +157,7 @@ class Dealer
      * Set code
      *
      * @param string $code
+     *
      * @return Dealer
      */
     public function setCode($code)
@@ -160,7 +170,7 @@ class Dealer
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -168,167 +178,10 @@ class Dealer
     }
 
     /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return Dealer
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean 
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return Dealer
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Dealer
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Dealer
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Add stores
-     *
-     * @param \Youppers\DealerBundle\Entity\Store $stores
-     * @return Dealer
-     */
-    public function addStore(\Youppers\DealerBundle\Entity\Store $stores)
-    {
-        $this->stores[] = $stores;
-
-        return $this;
-    }
-
-    /**
-     * Remove stores
-     *
-     * @param \Youppers\DealerBundle\Entity\Store $stores
-     */
-    public function removeStore(\Youppers\DealerBundle\Entity\Store $stores)
-    {
-        $this->stores->removeElement($stores);
-    }
-
-    /**
-     * Get stores
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getStores()
-    {
-        return $this->stores;
-    }
-
-    /**
-     * Add consultants
-     *
-     * @param \Youppers\DealerBundle\Entity\Consultant $consultants
-     * @return Dealer
-     */
-    public function addConsultant(\Youppers\DealerBundle\Entity\Consultant $consultants)
-    {
-        $this->consultants[] = $consultants;
-
-        return $this;
-    }
-
-    /**
-     * Remove consultants
-     *
-     * @param \Youppers\DealerBundle\Entity\Consultant $consultants
-     */
-    public function removeConsultant(\Youppers\DealerBundle\Entity\Consultant $consultants)
-    {
-        $this->consultants->removeElement($consultants);
-    }
-
-    /**
-     * Get consultants
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getConsultants()
-    {
-        return $this->consultants;
-    }
-
-    /**
      * Set email
      *
      * @param string $email
+     *
      * @return Dealer
      */
     public function setEmail($email)
@@ -341,11 +194,107 @@ class Dealer
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     *
+     * @return Dealer
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Dealer
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Dealer
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Dealer
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -370,5 +319,107 @@ class Dealer
     public function getOrg()
     {
         return $this->org;
+    }
+
+    /**
+     * Add brand
+     *
+     * @param \Youppers\CompanyBundle\Entity\Brand $brand
+     *
+     * @return Dealer
+     */
+    public function addBrand(\Youppers\CompanyBundle\Entity\Brand $brand)
+    {
+        $this->brands[] = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Remove brand
+     *
+     * @param \Youppers\CompanyBundle\Entity\Brand $brand
+     */
+    public function removeBrand(\Youppers\CompanyBundle\Entity\Brand $brand)
+    {
+        $this->brands->removeElement($brand);
+    }
+
+    /**
+     * Get brands
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBrands()
+    {
+        return $this->brands;
+    }
+
+    /**
+     * Add store
+     *
+     * @param \Youppers\DealerBundle\Entity\Store $store
+     *
+     * @return Dealer
+     */
+    public function addStore(\Youppers\DealerBundle\Entity\Store $store)
+    {
+        $this->stores[] = $store;
+
+        return $this;
+    }
+
+    /**
+     * Remove store
+     *
+     * @param \Youppers\DealerBundle\Entity\Store $store
+     */
+    public function removeStore(\Youppers\DealerBundle\Entity\Store $store)
+    {
+        $this->stores->removeElement($store);
+    }
+
+    /**
+     * Get stores
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStores()
+    {
+        return $this->stores;
+    }
+
+    /**
+     * Add consultant
+     *
+     * @param \Youppers\DealerBundle\Entity\Consultant $consultant
+     *
+     * @return Dealer
+     */
+    public function addConsultant(\Youppers\DealerBundle\Entity\Consultant $consultant)
+    {
+        $this->consultants[] = $consultant;
+
+        return $this;
+    }
+
+    /**
+     * Remove consultant
+     *
+     * @param \Youppers\DealerBundle\Entity\Consultant $consultant
+     */
+    public function removeConsultant(\Youppers\DealerBundle\Entity\Consultant $consultant)
+    {
+        $this->consultants->removeElement($consultant);
+    }
+
+    /**
+     * Get consultants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConsultants()
+    {
+        return $this->consultants;
     }
 }

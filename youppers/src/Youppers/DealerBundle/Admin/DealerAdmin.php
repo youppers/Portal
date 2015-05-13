@@ -27,6 +27,7 @@ class DealerAdmin extends YouppersAdmin
 		->add('description')
 		->add('createdAt')
 		->add('updatedAt')
+        ->add('brands', null, array('route' => array('name' => 'show')))
 		->add('stores', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		->add('consultants', null, array('associated_property' => 'fullname', 'route' => array('name' => 'show')))
 		;
@@ -75,11 +76,12 @@ class DealerAdmin extends YouppersAdmin
 		->with('Dealer', array('class' => 'col-md-8'))
 		->add('name')
 		->add('code')
-		->add('email')
+		->add('email', null, array('required'  => false))
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
 		->add('enabled', 'checkbox', array('required'  => false))
+            ->add('brands')
 		->end()
 		;
 	}

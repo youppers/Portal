@@ -37,7 +37,8 @@ class BrandAdmin extends YouppersAdmin
 		->add('enabled')
 		->add('description')
 		->add('url')
-		->add('logo', null, array('label' => 'Brand Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))		
+            ->add('dealers', null, array('route' => array('name' => 'show')))
+            ->add('logo', null, array('label' => 'Brand Logo', 'template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('createdAt')
 		->add('updatedAt')
 		;

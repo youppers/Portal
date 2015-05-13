@@ -73,8 +73,14 @@ class Brand
 	 * @ORM\Column(type="string", nullable=true )
 	 */
 	protected $url;
-	
-	/**
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\Youppers\DealerBundle\Entity\Dealer", mappedBy="brands")
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    protected $dealers;
+
+    /**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -116,20 +122,21 @@ class Brand
 		$this->updatedAt = new \DateTime();
 	}	
 		
-	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle:Brand
 	
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->dealers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return guid 
+     * @return guid
      */
     public function getId()
     {
@@ -140,6 +147,7 @@ class Brand
      * Set name
      *
      * @param string $name
+     *
      * @return Brand
      */
     public function setName($name)
@@ -152,7 +160,7 @@ class Brand
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -163,6 +171,7 @@ class Brand
      * Set code
      *
      * @param string $code
+     *
      * @return Brand
      */
     public function setCode($code)
@@ -175,7 +184,7 @@ class Brand
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -186,6 +195,7 @@ class Brand
      * Set enabled
      *
      * @param boolean $enabled
+     *
      * @return Brand
      */
     public function setEnabled($enabled)
@@ -198,7 +208,7 @@ class Brand
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -209,6 +219,7 @@ class Brand
      * Set description
      *
      * @param string $description
+     *
      * @return Brand
      */
     public function setDescription($description)
@@ -221,7 +232,7 @@ class Brand
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -232,6 +243,7 @@ class Brand
      * Set url
      *
      * @param string $url
+     *
      * @return Brand
      */
     public function setUrl($url)
@@ -244,7 +256,7 @@ class Brand
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -255,6 +267,7 @@ class Brand
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
+     *
      * @return Brand
      */
     public function setUpdatedAt($updatedAt)
@@ -267,7 +280,7 @@ class Brand
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -278,6 +291,7 @@ class Brand
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return Brand
      */
     public function setCreatedAt($createdAt)
@@ -290,7 +304,7 @@ class Brand
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -301,6 +315,7 @@ class Brand
      * Set company
      *
      * @param \Youppers\CompanyBundle\Entity\Company $company
+     *
      * @return Brand
      */
     public function setCompany(\Youppers\CompanyBundle\Entity\Company $company = null)
@@ -313,7 +328,7 @@ class Brand
     /**
      * Get company
      *
-     * @return \Youppers\CompanyBundle\Entity\Company 
+     * @return \Youppers\CompanyBundle\Entity\Company
      */
     public function getCompany()
     {
@@ -324,6 +339,7 @@ class Brand
      * Set logo
      *
      * @param \Application\Sonata\MediaBundle\Entity\Media $logo
+     *
      * @return Brand
      */
     public function setLogo(\Application\Sonata\MediaBundle\Entity\Media $logo = null)
@@ -336,7 +352,7 @@ class Brand
     /**
      * Get logo
      *
-     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     * @return \Application\Sonata\MediaBundle\Entity\Media
      */
     public function getLogo()
     {
@@ -344,32 +360,67 @@ class Brand
     }
 
     /**
-     * Add products
+     * Add dealer
      *
-     * @param \Youppers\CompanyBundle\Entity\Product $products
+     * @param \Youppers\DealerBundle\Entity\Dealer $dealer
+     *
      * @return Brand
      */
-    public function addProduct(\Youppers\CompanyBundle\Entity\Product $products)
+    public function addDealer(\Youppers\DealerBundle\Entity\Dealer $dealer)
     {
-        $this->products[] = $products;
+        $this->dealers[] = $dealer;
 
         return $this;
     }
 
     /**
-     * Remove products
+     * Remove dealer
      *
-     * @param \Youppers\CompanyBundle\Entity\Product $products
+     * @param \Youppers\DealerBundle\Entity\Dealer $dealer
      */
-    public function removeProduct(\Youppers\CompanyBundle\Entity\Product $products)
+    public function removeDealer(\Youppers\DealerBundle\Entity\Dealer $dealer)
     {
-        $this->products->removeElement($products);
+        $this->dealers->removeElement($dealer);
+    }
+
+    /**
+     * Get dealers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDealers()
+    {
+        return $this->dealers;
+    }
+
+    /**
+     * Add product
+     *
+     * @param \Youppers\CompanyBundle\Entity\Product $product
+     *
+     * @return Brand
+     */
+    public function addProduct(\Youppers\CompanyBundle\Entity\Product $product)
+    {
+        $this->products[] = $product;
+
+        return $this;
+    }
+
+    /**
+     * Remove product
+     *
+     * @param \Youppers\CompanyBundle\Entity\Product $product
+     */
+    public function removeProduct(\Youppers\CompanyBundle\Entity\Product $product)
+    {
+        $this->products->removeElement($product);
     }
 
     /**
      * Get products
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProducts()
     {
