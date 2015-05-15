@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+@media print {
+
+  a[href]:after {
+    content: "";
+  }
+
+    .container::before, .site-logo, .breadcrumb {
+        display: none;
+    }
+}
+
+body {
+    background-image:url("//www.youppers.com/wp-content/uploads/2015/03/slide3.jpg");
+    background-size: 100%;
+    background-color: transparent;
+}
+.site-logo {
+    height: 60px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
