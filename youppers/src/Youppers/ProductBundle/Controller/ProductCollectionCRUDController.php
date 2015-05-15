@@ -38,9 +38,13 @@ class ProductCollectionCRUDController extends CRUDController
         $guesser->guess();
 
         $flashBag = $this->admin->getRequest()->getSession()->getFlashBag();
-        
-		$flashBag->add('sonata_flash_error',
-				$this->renderView('YouppersProductBundle:ProductCollectionCRUD:guess.html.twig', array('todos' => $guesser->getTodos())));
+
+        if (count($guesser->getTodos()) > 0) {
+            $flashBag->add('sonata_flash_error',
+                $this->renderView('YouppersProductBundle:ProductCollectionCRUD:guess.html.twig', array('todos' => $guesser->getTodos())));
+        } else {
+            $flashBag->add('sonata_flash_success','All right!');
+        }
 		
         return $this->showAction();    	         
     }
