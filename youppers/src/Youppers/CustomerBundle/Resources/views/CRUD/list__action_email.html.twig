@@ -1,0 +1,7 @@
+
+{% if admin.isGranted('VIEW', object) and admin.hasRoute('email') %}
+    <a href="{{ admin.generateObjectUrl('email', object) }}" class="btn btn-sm btn-default view_link" title="{{ 'Email'|trans({}, 'messages') }}">
+        <i class="glyphicon glyphicon-envelope"></i>
+        {{ 'Email'|trans({}, 'messages') }}
+    </a>
+{% endif %}

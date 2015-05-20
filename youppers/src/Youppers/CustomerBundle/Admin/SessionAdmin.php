@@ -19,8 +19,19 @@ class SessionAdmin extends YouppersAdmin
 	protected function configureRoutes(RouteCollection $collection)
 	{
 		$collection->add('items', $this->getRouterIdParameter().'/item/list');
+        $collection->add('email', $this->getRouterIdParameter().'/email');
 	}
-	
+
+    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        parent::configureTabMenu($menu, $action,$childAdmin);
+
+        if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
+            $id = $this->getRequest()->get($this->getIdParameter());
+            $menu->addChild('Email', array('uri' => $this->generateUrl('email', array('id' => $id))));
+        }
+    }
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -54,7 +65,8 @@ class SessionAdmin extends YouppersAdmin
 		->add('_action', 'actions', array(
 				'actions' => array(
 						'show' => array(),
-						'items' => array('template' => 'YouppersCustomerBundle:CRUD:list__action_items.html.twig'),						
+						'items' => array('template' => 'YouppersCustomerBundle:CRUD:list__action_items.html.twig'),
+                        'email' => array('template' => 'YouppersCustomerBundle:CRUD:list__action_email.html.twig'),
 				)
 		))		
 		;
