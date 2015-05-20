@@ -4,6 +4,9 @@
 sonata_media:
     db_driver:       doctrine_orm # | doctrine_mongodb
     default_context: default
+    resizer:
+        square:
+            #mode: inset
     contexts:
         default:  # the default context is mandatory
             download:
@@ -35,31 +38,24 @@ sonata_media:
                 - sonata.media.provider.image
 
             formats:
-                list: { height: 120}
-                abstract: { width: 100, quality: 100}
-                wide:     { width: 820, quality: 100}
-                small: { width: 100, quality: 100}
-                big:   { width: 970 , quality: 100}
+                show: { width: 200, height: 200}
+                list: { height: 80, width: 80}
 
         youppers_brand_logo:
             providers:
                 - sonata.media.provider.image
 
             formats:
-                list: { height: 120}
-                abstract: { width: 100, quality: 100}
-                wide:     { width: 820, quality: 100}
-                small: { width: 100, quality: 100}
-                big:   { width: 970 , quality: 100}
+                show: { width: 200, height: 200}
+                list: { height: 80, width: 80}
 
         youppers_product:
             providers:
                 - sonata.media.provider.image
 
             formats:
-                show: { width: 220}
-                list: { height: 120}
-                attribute: { height: 80}
+                show: { width: 200, height: 200}
+                list: { height: 80, width: 80}
 
         youppers_attribute:
             providers:
@@ -146,6 +142,7 @@ sonata_media:
 #                     
         image:
            thumbnail: sonata.media.thumbnail.format          # default value
+           resizer: sonata.media.resizer.square
 #           thumbnail: sonata.media.thumbnail.consumer.format # can be used to dispatch the resize action to async task
 #            thumbnail: sonata.media.thumbnail.liip_imagine    # use the LiipImagineBundle to resize the image
         vimeo:
