@@ -1,0 +1,18 @@
+<p>Gentile <b>{{ toName }}</b>,<br>
+
+con questa email le inviamo l'elenco dei materiali selezionati ed i relativi allegati.</p>
+
+<p>Cordiali saluti<br>
+{{ fromName }}</p>
+
+{% for item in session.items %}
+    {% if item.removed %}
+        <!-- Item {{ item }} removed -->
+    {% else %}
+        <div class="zone">{{ item.zone }}</div>
+        <div class="variant">
+            {% thumbnail item.variant.image, 'list' %}
+            {{ item.variant }}
+        </div>
+    {% endif %}
+{% endfor %}

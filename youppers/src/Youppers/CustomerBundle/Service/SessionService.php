@@ -391,8 +391,24 @@ Cordiali saluti
 				}
 			}
 		}
+        $templating = $this->container->get('templating');
 
-		$message->setBody($body);
+        $data = array(
+            'session' => $session,
+            'fromName' => $fromName,
+            'toName' => $toName
+        );
+        $message->setBody(
+            // app/Resources/views/Emails/session.html.twig
+            $templating->render('Emails/session.html.twig',$data),
+            'text/html'
+        );
+        $message->addPart(
+            $templating->render('Emails/session.txt.twig',$data),
+            'text/plain'
+        );
+
+		//$message->setBody($body);
 				
 		$failed = array();
 		$mailer->send($message,$failed);
