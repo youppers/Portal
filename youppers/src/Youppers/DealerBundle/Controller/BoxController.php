@@ -29,7 +29,7 @@ class BoxController extends Controller
 		}
 		return $this->getDoctrine()
 		->getRepository('YouppersDealerBundle:Box')
-		->findBy($criteria,array('name' => 'ASC'),20);
+		->findBy($criteria,array('name' => 'ASC'));
 	}
 	
 	/**

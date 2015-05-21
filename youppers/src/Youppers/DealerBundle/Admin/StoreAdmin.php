@@ -3,6 +3,7 @@
 namespace Youppers\DealerBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -14,8 +15,23 @@ use Youppers\CommonBundle\Admin\YouppersAdmin;
 
 class StoreAdmin extends YouppersAdmin
 {
-		
-	/**
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('qrprint', $this->getRouterIdParameter().'/qrprint');
+    }
+
+    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        parent::configureTabMenu($menu, $action,$childAdmin);
+
+        if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
+            $id = $this->getRequest()->get($this->getIdParameter());
+            if ($action == 'show') $menu->addChild('box_qr_print', array('uri' => $this->generateUrl('qrprint', array('id' => $id))));
+        }
+    }
+
+    /**
 	 * {@inheritdoc}
 	 */
 	protected function configureShowFields(ShowMapper $showMapper)

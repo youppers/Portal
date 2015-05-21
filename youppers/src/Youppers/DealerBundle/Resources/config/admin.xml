@@ -27,7 +27,7 @@
 
             <argument />
             <argument>Youppers\DealerBundle\Entity\Store</argument>
-            <argument />
+            <argument>YouppersDealerBundle:StoreCRUD</argument>
         </service>
 
         <service id="youppers.dealer.admin.consultant" class="Youppers\DealerBundle\Admin\ConsultantAdmin">

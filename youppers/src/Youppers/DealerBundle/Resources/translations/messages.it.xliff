@@ -50,6 +50,10 @@
                 <source>box_enable_action</source>
                 <target>Abilita questo allestimento</target>
             </trans-unit>
+            <trans-unit id="box_qr_print">
+                <source>box_qr_print</source>
+                <target>Stampa QRCode degli allestimenti</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
