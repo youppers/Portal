@@ -7,6 +7,7 @@ use Ddeboer\DataImport\Reader\CsvReader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Youppers\CompanyBundle\Manager\ProductManager;
 use Youppers\CompanyBundle\YouppersCompanyBundle;
 use Monolog\Logger;
 use Youppers\CompanyBundle\Entity\ProductPrice;
@@ -30,6 +31,7 @@ abstract class AbstractLoader extends ContainerAware
 	
 	private $productRepository;
 	protected $product;
+    protected $productManager;
 	
 	private $productPriceRepository;
 	
@@ -41,6 +43,7 @@ abstract class AbstractLoader extends ContainerAware
 	{
 		$this->managerRegistry = $managerRegistry;
 		$this->em = $managerRegistry->getManager();
+        $this->productManager = new ProductManager($managerRegistry);
 	}
 	
 	public function setLogger(LoggerInterface $logger)
@@ -91,7 +94,7 @@ abstract class AbstractLoader extends ContainerAware
 	}
 	
 	/**
-	 * @return \Doct8rine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Product
+	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Product
 	 */
 	protected function getProductRepository()
 	{
@@ -155,6 +158,19 @@ abstract class AbstractLoader extends ContainerAware
 	
 		$this->logger->debug(sprintf("Code: '%s' Product: '%s'", $code, $this->product));
 	}
+
+    public function checkUniqueGtin($product) {
+        $gtin = $product->getGtin();
+        if ($gtin == null) {
+            return true;
+        }
+        $check = $this->productManager->findOneByGtin($gtin);
+        if ($check == null || $check == $product) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 	
 	public function createReader($filename)
 	{

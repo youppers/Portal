@@ -180,7 +180,11 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			
 		$productGtin = $this->mapper->remove('gtin');
 		if (!empty($productGtin)) {
-			$product->setGtin($productGtin);
+            $product->setGtin($productGtin);
+            if (!$this->checkUniqueGtin($product)) {
+                $this->logger->error(sprintf("Duplicated gtin '%s'",$productGtin));
+                $product->setGtin(null);
+            }
 		}
 		
 		$info = json_encode($this->mapper->getData());
@@ -188,7 +192,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		
 		if (empty($product->getId())) {
 			if ($this->force && $this->createProduct) {
-				$this->em->persist($product);
+				$this->productManager->save($product,false);
 			} else {
 				$this->logger->info("New: " . $product);
 			}

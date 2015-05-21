@@ -22,8 +22,7 @@ abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader
 	
 	public function setManagerRegistry(ManagerRegistry $managerRegistry)
 	{
-		$this->managerRegistry = $managerRegistry;
-		$this->em = $managerRegistry->getManager();
+        parent::setManagerRegistry($managerRegistry);
 		$this->collectionManager = new ProductCollectionManager($managerRegistry);
 		$this->variantManager = new ProductVariantManager($managerRegistry);
 		$this->productTypeManager = new ProductTypeManager($managerRegistry);
