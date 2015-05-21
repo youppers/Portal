@@ -6,7 +6,7 @@ sonata_media:
     default_context: default
     resizer:
         square:
-            #mode: inset
+            mode: outbound # inset
     contexts:
         default:  # the default context is mandatory
             download:
@@ -38,32 +38,32 @@ sonata_media:
                 - sonata.media.provider.image
 
             formats:
-                show: { width: 200, height: 200}
-                list: { height: 80, width: 80}
+                show: { width: 200}
+                list: { width: 80}
 
         youppers_brand_logo:
             providers:
                 - sonata.media.provider.image
 
             formats:
-                show: { width: 200, height: 200}
-                list: { height: 80, width: 80}
+                show: { width: 200}
+                list: { width: 80}
 
         youppers_product:
             providers:
                 - sonata.media.provider.image
 
             formats:
-                show: { width: 200, height: 200}
-                list: { height: 80, width: 80}
+                show: { width: 200}
+                list: { width: 80, height: 80}
 
         youppers_attribute:
             providers:
                 - sonata.media.provider.image
 
             formats:
-                show: { width: 220}
-                list: { height: 80}
+                show: { width: 200}
+                list: { width: 80, height: 80}
                 
         youppers_box:
             providers:
