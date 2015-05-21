@@ -23,6 +23,8 @@ class LoaderMapper
 	*/
 	protected $data;
 
+    protected $loadedData;
+
 	public function __construct($mapping)
 	{
 		$this->mapping = $mapping;
@@ -31,6 +33,7 @@ class LoaderMapper
 	public function setData($data)
 	{
 		$this->data=$data;
+        $this->loadedData=$data;
 		return $this;
 	}
 	
@@ -52,7 +55,7 @@ class LoaderMapper
 			if ($returnKey) {
 				return 'Closure';
 			} else {
-				return $key->__invoke($this->data);
+				return $key->__invoke($this->loadedData);
 			}
 		}
 		if ($returnKey) {
