@@ -42,9 +42,9 @@ class BoxAdmin extends YouppersAdmin
 		
 		if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {	
 			$id = $this->getRequest()->get($this->getIdParameter());	
-			if ($action == 'show') $menu->addChild('Assign Qr', array('uri' => $this->generateUrl('qr', array('id' => $id))));		
-			if ($action == 'show') $menu->addChild('Clone', array('uri' => $this->generateUrl('clone', array('id' => $id))));
-			if ($action == 'show') $menu->addChild('Enable', array('uri' => $this->generateUrl('enable', array('id' => $id))));
+			if ($action == 'show') $menu->addChild('box_qr_action', array('uri' => $this->generateUrl('qr', array('id' => $id))));
+			if ($action == 'show') $menu->addChild('box_clone_action', array('uri' => $this->generateUrl('clone', array('id' => $id))));
+			if ($action == 'show') $menu->addChild('box_enable_action', array('uri' => $this->generateUrl('enable', array('id' => $id))));
 		}		
 	}
 	

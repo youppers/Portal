@@ -6,6 +6,30 @@
                 <source>Common</source>
                 <target>Comune</target>
             </trans-unit>
+            <trans-unit id="Cloned successfully">
+                <source>Cloned successfully</source>
+                <target>Clonatura effettuata</target>
+            </trans-unit>
+            <trans-unit id="object_already_have_qr">
+                <source>object_already_have_qr</source>
+                <target>QRCode assegnato in precedenza</target>
+            </trans-unit>
+            <trans-unit id="assigned_new_qr">
+                <source>assigned_new_qr</source>
+                <target>Generato nuovo QRCode ed assegnato a questo oggetto</target>
+            </trans-unit>
+            <trans-unit id="assigned_qr">
+                <source>assigned_qr</source>
+                <target>QRCode assegnato a questo oggetto</target>
+            </trans-unit>
+            <trans-unit id="qr_not_assigned">
+                <source>qr_not_assigned</source>
+                <target>Nessun QRCode assegnato a questo oggetto</target>
+            </trans-unit>
+            <trans-unit id="enabled_qr">
+                <source>enabled_qr</source>
+                <target>QRCode abilitato</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

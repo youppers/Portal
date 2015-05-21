@@ -38,6 +38,18 @@
                 <source>Box Products</source>
                 <target>Prodotti Allestimento</target>
             </trans-unit>
+            <trans-unit id="box_qr_action">
+                <source>box_qr_action</source>
+                <target>Assegna QRCode all'allestimento</target>
+            </trans-unit>
+            <trans-unit id="box_clone_action">
+                <source>box_clone_action</source>
+                <target>Clona come nuova versione dell'allestimento</target>
+            </trans-unit>
+            <trans-unit id="box_enable_action">
+                <source>box_enable_action</source>
+                <target>Abilita questo allestimento</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
