@@ -89,7 +89,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 				continue;
 			}
 			
-			$this->hanldleRow($row);
+			$this->handleRow($row);
 				
 			if ($this->numRows % 500 == 0) {
 				$this->logger->info(sprintf("Read %d rows",$this->numRows));
@@ -229,7 +229,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		return $price;
 	}
 
-	public function hanldleRow($row) {
+	public function handleRow($row) {
 		
 		//parent::hanldleRow($row);
 		
