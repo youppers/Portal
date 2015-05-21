@@ -18,6 +18,7 @@ Add variantId to JSON Attributes.read
 Upload drag'ndrop
 http://www.jesuisundev.fr/upload-drag-drop-via-dropzonejs-symfony2-on-cloud-amazon-s3/
 http://www.dropzonejs.com/
+http://knpbundles.com/1up-lab/OneupUploaderBundle
 
 In Mostra Prodotto la variante non è un link
 
