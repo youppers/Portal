@@ -12,5 +12,11 @@ file that was distributed with this source code.
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-	{% thumbnail value, 'list' %}
+    {% if value %}
+        {% if value.providerName == 'sonata.media.provider.image' %}
+            {% thumbnail value, 'list' %}
+        {% else %}
+            {% thumbnail value, 'admin' %}
+        {% endif %}
+    {% endif %}
 {% endblock %}

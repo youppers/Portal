@@ -1,5 +1,11 @@
 {% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
 
 {% block field %}
-	{% media value, 'show' %}
+    {% if value %}
+        {% if value.providerName == 'sonata.media.provider.image' %}
+            {% thumbnail value, 'show' %}
+        {% else %}
+            {% thumbnail value, 'admin' %}
+        {% endif %}
+    {% endif %}
 {% endblock %}
