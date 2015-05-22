@@ -11,4 +11,37 @@ services:
 #        calls:
 #            - [ setContainer, [ '@service_container' ] ]
     
-    
+    youppers.company.security.company_voter:
+        class:     Youppers\CompanyBundle\Security\CompanyVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.company.security.brand_voter:
+        class:     Youppers\CompanyBundle\Security\BrandVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.company.security.product_voter:
+        class:     Youppers\CompanyBundle\Security\ProductVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.company.security.pricelist_voter:
+        class:     Youppers\CompanyBundle\Security\PricelistVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.company.security.productprice_voter:
+        class:     Youppers\CompanyBundle\Security\ProductPriceVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }

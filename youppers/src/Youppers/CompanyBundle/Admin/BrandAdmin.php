@@ -18,7 +18,29 @@ use Youppers\CommonBundle\Admin\YouppersAdmin;
 
 class BrandAdmin extends YouppersAdmin
 {
-	
+
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+
+        if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
+            return $query;
+        }
+
+        $org = $user->getOrg();
+
+        $query->join($query->getRootAliases()[0] . '.company','c');
+
+        $query->andWhere(
+            $query->expr()->eq('c.org', ':org')
+        );
+        $query->setParameter('org', $org);
+
+        return $query;
+    }
+
 	protected function configureRoutes(RouteCollection $collection)
 	{
 		$collection->add('products', $this->getRouterIdParameter().'/products');

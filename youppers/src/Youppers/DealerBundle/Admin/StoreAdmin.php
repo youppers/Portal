@@ -16,6 +16,28 @@ use Youppers\CommonBundle\Admin\YouppersAdmin;
 class StoreAdmin extends YouppersAdmin
 {
 
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+
+        if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
+            return $query;
+        }
+
+        $org = $user->getOrg();
+
+        $query->join($query->getRootAliases()[0] . '.dealer','d');
+
+        $query->andWhere(
+            $query->expr()->eq('d.org', ':org')
+        );
+        $query->setParameter('org', $org);
+
+        return $query;
+    }
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('qrprint', $this->getRouterIdParameter().'/qrprint');

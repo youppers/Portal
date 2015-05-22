@@ -14,12 +14,33 @@ use Youppers\CommonBundle\Admin\YouppersAdmin;
 class DealerAdmin extends YouppersAdmin
 {
 
-	/**
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+
+        if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
+            return $query;
+        }
+
+        $org = $user->getOrg();
+
+        $query->andWhere(
+            $query->expr()->eq($query->getRootAliases()[0] . '.org', ':org')
+        );
+        $query->setParameter('org', $org);
+
+        return $query;
+    }
+
+    /**
 	 * {@inheritdoc}
 	 */
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
+        ->add('org', null, array('route' => array('name' => 'show')))
 		->add('name')
 		->add('code')
 		->add('email')
@@ -80,6 +101,7 @@ class DealerAdmin extends YouppersAdmin
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
+        ->add('org', 'sonata_type_model_list')
 		->add('enabled', 'checkbox', array('required'  => false))
             ->add('brands')
 		->end()
