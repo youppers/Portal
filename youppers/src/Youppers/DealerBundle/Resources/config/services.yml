@@ -14,3 +14,38 @@ services:
     youppers.dealer.manager.box:
         class:     Youppers\DealerBundle\Manager\BoxManager
         arguments: ['@doctrine']
+
+    youppers.dealer.security.dealer_voter:
+        class:     Youppers\DealerBundle\Security\DealerVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.dealer.security.store_voter:
+        class:     Youppers\DealerBundle\Security\StoreVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.dealer.security.box_voter:
+        class:     Youppers\DealerBundle\Security\BoxVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.dealer.security.consultant_voter:
+        class:     Youppers\DealerBundle\Security\ConsultantVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.dealer.security.boxproduct_voter:
+        class:     Youppers\DealerBundle\Security\BoxProductVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }

@@ -14,7 +14,30 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class BoxAdmin extends YouppersAdmin
 {
-	public function getBatchActions()
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+
+        if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
+            return $query;
+        }
+
+        $org = $user->getOrg();
+
+        $query->join($query->getRootAliases()[0] . '.store','s');
+        $query->join('s.dealer','d');
+
+        $query->andWhere(
+            $query->expr()->eq('d.org', ':org')
+        );
+        $query->setParameter('org', $org);
+
+        return $query;
+    }
+
+    public function getBatchActions()
 	{
 		$actions = parent::getBatchActions();
 		

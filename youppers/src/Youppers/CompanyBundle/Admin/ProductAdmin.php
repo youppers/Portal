@@ -14,7 +14,45 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductAdmin extends YouppersAdmin
 {
-	protected function configureRoutes(RouteCollection $collection)
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $security = $this->getConfigurationPool()->getContainer()->get('security.context');
+        $user = $security->getToken()->getUser();
+
+        if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
+            return $query;
+        }
+
+        $org = $user->getOrg();
+
+        $query->join($query->getRootAliases()[0] . '.brand','b');
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $brands = array();
+            foreach ($org->getDealers() as $dealer) {
+                foreach ($dealer->getBrands() as $brand) {
+                    $brands[$brand->getId()] = $brand;
+                }
+            }
+            $query->andWhere(
+                $query->expr()->in('b', ':brands')
+            );
+            $query->setParameter('brands', array_values($brands));
+        } else {
+            $query->join('b.company','c');
+
+            $query->andWhere(
+                $query->expr()->eq('c.org', ':org')
+            );
+            $query->setParameter('org', $org);
+        }
+
+        return $query;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
 	{
 		$collection->add('qr', $this->getRouterIdParameter().'/qr');
 		$collection->add('clone', $this->getRouterIdParameter().'/clone');
