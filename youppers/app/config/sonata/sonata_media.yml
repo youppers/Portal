@@ -71,7 +71,7 @@ sonata_media:
 
             formats:
                 show: { width: 220}
-                list: { height: 80}
+                list: { width: 80, height: 80}
 
         youppers_consultant_photo:
             providers:
@@ -79,7 +79,7 @@ sonata_media:
 
             formats:
                 show: { width: 220}
-                list: { height: 80}
+                list: { width: 80, height: 80}
         
         #news:
         #    providers:
