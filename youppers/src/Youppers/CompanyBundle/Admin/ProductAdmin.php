@@ -29,21 +29,17 @@ class ProductAdmin extends YouppersAdmin
 
         $query->join($query->getRootAliases()[0] . '.brand','b');
 
-        dump($user->getRoles());
-
-        if ($security->isGranted('ROLE_DEALER_ADMIN_BOX')) {
+        if ($this->getRequest()->isXmlHttpRequest()) {
             $brands = array();
             foreach ($org->getDealers() as $dealer) {
                 foreach ($dealer->getBrands() as $brand) {
                     $brands[$brand->getId()] = $brand;
-                    //dump($brands);
                 }
             }
             $query->andWhere(
                 $query->expr()->in('b', ':brands')
             );
-            $query->setParameter('brands', $brands);
-            dump($query->getQuery()->getSql());
+            $query->setParameter('brands', array_values($brands));
         } else {
             $query->join('b.company','c');
 
