@@ -17,6 +17,18 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class ProductVariantAdmin extends YouppersAdmin
 {
+
+    public function getBatchActions()
+    {
+        $actions = parent::getBatchActions();
+
+        if ($this->isGranted('EDIT')) {
+            $actions = array_merge(array('enable' => array('label' => $this->trans('action_enable', array(), 'messages'))),$actions);
+        }
+
+        return $actions;
+    }
+
 	public function getExportFields()
 	{		
 		return array(
@@ -64,7 +76,7 @@ class ProductVariantAdmin extends YouppersAdmin
 	
 		return parent::toString($object);
 	}
-	
+
 	private function getOptions(ProductCollection $collection,AttributeType $attributeType)
 	{
 		

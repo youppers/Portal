@@ -6,6 +6,14 @@
                 <source>Product</source>
                 <target>Prodotto</target>
             </trans-unit>
+            <trans-unit id="flash_batch_enable_success">
+                <source>flash_batch_enable_success</source>
+                <target>Gli elementi selezionati sono stati abilitati con successo.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_enable_error">
+                <source>flash_batch_enable_error</source>
+                <target>Si è verificato un errore durante l'abilitazione degli elementi.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

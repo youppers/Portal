@@ -78,6 +78,10 @@
                 <source>Product Collection Brand Company Name</source>
                 <target>Nome Produttore</target>
             </trans-unit>
+            <trans-unit id="action_enable">
+                <source>action_enable</source>
+                <target>Abilita</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
