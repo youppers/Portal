@@ -1,0 +1,62 @@
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+<style>
+    zone {
+        width: 100%;
+        padding: 4px;
+        background-color; #369c8e;
+        color: white;
+
+        font-size: 18pt;
+    }
+</style>
+
+<p style="font-family: 'Open Sans', sans-serif;">Gentile <b>{{ toName }}</b>,<br>
+
+con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youppers</b></i> presso <b>{{ session.store.name }}</b> ed i relativi allegati.</p>
+
+<p style="font-family: 'Open Sans', sans-serif;">Cordiali saluti<br>
+    {{ fromName }}</p>
+
+{% macro attr(name, value = "", last=false) %}
+    <div style="float: left; margin: 4px 8px 4px 0px; padding-right: 8px; border-right: 1px solid black;">
+        <div style="font-family:'Open Sans',sans-serif; font-size: 8pt; font-style: italic;">{{ name }}</div>
+        <div style="font-family:'Open Sans',sans-serif; font-size: 14pt; font-weight: bold;">{{ value }}</div>
+        <div style="clear-after: both"></div>
+    </div>
+{% endmacro %}
+
+{% import _self as macros %}
+
+{% set prevZone = null %}
+{% for item in items %}
+    {% if item.removed %}
+        <!-- Item {{ item }} removed -->
+    {% else %}
+        {% if prevZone is null or prevZone != item.zone %}
+            {% set prevZone = item.zone %}
+            <div style="width: 100%; text-align: center; padding:4px; margin: 5px; background-color:#369c8e; color:white; font-family:'Open Sans',sans-serif; font-size: 18pt;">{{ item.zone }}</div>
+        {% endif %}
+        <div style="width:100%; border-bottom: 3px solid #369c8e;">
+            <div>
+                <div style="float: left;">{% thumbnail item.variant.image, 'list' %}</div>
+                <div style="float: left;">
+                    <div style="border-bottom: 1px solid black; float: left;">
+                        {{ macros.attr('brand',item.variant.product.brand.name) }}
+                        {{ macros.attr('serie',item.variant.productCollection.name) }}
+                        {% for property in item.variant.variantProperties %}
+                            {{ macros.attr(property.attributeOption.attributeStandard.attributeType.name,property.attributeOption.valueWithSymbol) }}
+                        {% endfor %}
+                    </div>
+                    <div style="float: left; clear: both; width: 100%;"></div>
+                    <div style="float: left; border-bottom: 1px solid black;">{{ item.variant.product.nameCode }}</div>
+                    <div style="float: left; clear: both"></div>
+                </div>
+                <div style="clear:both"></div>
+                {% dump(item) %}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+
+

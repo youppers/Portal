@@ -395,16 +395,16 @@ Cordiali saluti
 
         $data = array(
             'session' => $session,
+            'items' => $items,
             'fromName' => $fromName,
             'toName' => $toName
         );
         $message->setBody(
-            // app/Resources/views/Emails/session.html.twig
-            $templating->render('Emails/session.html.twig',$data),
+            $templating->render('YouppersCustomerBundle:Emails:session.html.twig',$data),
             'text/html'
         );
         $message->addPart(
-            $templating->render('Emails/session.txt.twig',$data),
+            $templating->render('YouppersCustomerBundle:Emails:session.txt.twig',$data),
             'text/plain'
         );
 
