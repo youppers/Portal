@@ -28,7 +28,7 @@ class SessionAdmin extends YouppersAdmin
 
         if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
             $id = $this->getRequest()->get($this->getIdParameter());
-            $menu->addChild('Email', array('uri' => $this->generateUrl('email', array('id' => $id))));
+            $menu->addChild('Email', array('attributes' => array('icon' => 'glyphicon glyphicon-envelope'), 'uri' => $this->generateUrl('email', array('id' => $id))));
         }
     }
 

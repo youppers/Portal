@@ -56,12 +56,12 @@ abstract class YouppersAdmin extends Admin
 		if ($childAdmin) {
 			$childAdmin->configureTabMenu($menu, $action);
 		} else {
-			if ($action == 'list' && $this->hasRoute('create') && $this->isGranted('CREATE')) $menu->addChild($this->trans('link_action_create', array(), 'SonataAdminBundle'), array('uri' => $this->generateUrl('create')));
+			if ($action == 'list' && $this->hasRoute('create') && $this->isGranted('CREATE')) $menu->addChild($this->trans('link_action_create', array(), 'SonataAdminBundle'), array('attributes' => array('icon' => 'glyphicon glyphicon-plus-sign'), 'uri' => $this->generateUrl('create')));
 			if (in_array($action, array('edit', 'show'))) {
 				$id = $this->getRequest()->get($this->getIdParameter());
-				if ($action != 'show' && $this->hasRoute('show') && $this->isGranted('VIEW')) $menu->addChild($this->trans('link_action_show', array(), 'SonataAdminBundle'), array('uri' => $this->generateUrl('show', array('id' => $id))));
-				if ($action != 'edit' && $this->hasRoute('edit') && $this->isGranted('EDIT')) $menu->addChild($this->trans('link_action_edit', array(), 'SonataAdminBundle'), array('uri' => $this->generateUrl('edit', array('id' => $id))));
-				if ($action != 'edit' && $this->hasRoute('list') && $this->isGranted('LIST')) $menu->addChild($this->trans('link_action_list', array(), 'SonataAdminBundle'), array('uri' => $this->generateUrl('list')));
+				if ($action != 'show' && $this->hasRoute('show') && $this->isGranted('VIEW')) $menu->addChild($this->trans('link_action_show', array(), 'SonataAdminBundle'), array('attributes' => array('icon' => 'glyphicon glyphicon-eye-open'), 'uri' => $this->generateUrl('show', array('id' => $id))));
+				if ($action != 'edit' && $this->hasRoute('edit') && $this->isGranted('EDIT')) $menu->addChild($this->trans('link_action_edit', array(), 'SonataAdminBundle'), array('attributes' => array('icon' => 'glyphicon glyphicon-edit'),'uri' => $this->generateUrl('edit', array('id' => $id))));
+				if ($action != 'edit' && $this->hasRoute('list') && $this->isGranted('LIST')) $menu->addChild($this->trans('link_action_list', array(), 'SonataAdminBundle'), array('attributes' => array('icon' => 'glyphicon glyphicon-list'),'uri' => $this->generateUrl('list')));
 			}
 		}
 	}
