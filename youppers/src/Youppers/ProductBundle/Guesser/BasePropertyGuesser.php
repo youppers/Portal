@@ -64,11 +64,12 @@ class BasePropertyGuesser extends AbstractGuesser
 					//$options = array_merge($options,$standard->getAttributeOptions()->getValues());
 					foreach ($standard->getAttributeOptions()->getValues() as $option) {
 						foreach (explode(';',$option->getAlias()) as $alias) {
+                            $alias = trim($alias);
 							if (!empty($alias)) {
 								$options[$alias] = $option;
 							}
 						}
-						$options[$option->getValue()] = $option;
+						$options[trim($option->getValue())] = $option;
 					}
 				}
 			}
@@ -90,14 +91,24 @@ class BasePropertyGuesser extends AbstractGuesser
 		$actualOption = $this->getActualOption($variant, $type);
 	
 		$options = $this->getCollectionOptions($variant->getProductCollection(), $type);
-		foreach ($options as $value => $option) {
-			//if (stripos($text,$value) !== false) {
-			if (preg_match("/\.$/",$value)) {
-				$regexp = "/[\s\.]+" . preg_quote($value,'/') . "/i";
-			} else {
-				$regexp = "/[\s\.]+" . preg_quote($value,'/') . "[\s]+/i";
-			}
-			if (preg_match($regexp, " ".$text." ")) {
+		foreach ($options as $values => $option) {
+            $match = false;
+            foreach (explode(" ",$values) as $value) {
+                $value = trim($value);
+                if (empty($value)) {
+                    continue;
+                }
+                if (preg_match("/\.$/",$value)) {
+                    $regexp = "/[\s\.]+" . preg_quote($value,'/') . "/i";
+                } else {
+                    $regexp = "/[\s\.]+" . preg_quote($value,'/') . "[\s]+/i";
+                }
+                $match = preg_match($regexp, " ".$text." ");
+                if (!$match) {
+                    break;
+                }
+            }
+			if ($match) {
 				
 				if ($actualOption) {
 					if ($option === $actualOption) {
@@ -107,7 +118,7 @@ class BasePropertyGuesser extends AbstractGuesser
                         if ($this->getForce()) {
                             $this->changeVariantProperty($variant,$actualOption,$option);
                         } else {
-                            $todo = sprintf("<error>Change property</error> <info>%s</info> from <info>%s</info> to <info>%s</info> for <info>%s</info>",
+                            $todo = sprintf("<question>Change property</question> <info>%s</info> from <info>%s</info> to <info>%s</info> for <info>%s</info>",
                                 $option->getAttributeType(), $actualOption->getValueWithSymbol(), $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
                             $this->addTodo($todo);
                         }
@@ -117,7 +128,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					if ($this->getForce()) {
 						$this->addVariantProperty($variant,$option);
 					} else {
-						$todo = sprintf("<error>Add property</error> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
+						$todo = sprintf("<question>Add property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
 						$this->addTodo($todo);
 					}
 					$this->getLogger()->info(sprintf("Variant '%s' new guessed property '%s'",$variant,$option));
@@ -135,7 +146,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					if ($this->getForce()) {
 						$this->addVariantProperty($variant,$option);
 					} else {
-						$todo = sprintf("<error>Add default property</error> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
+						$todo = sprintf("<question>Add default property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
 						$this->addTodo($todo);				
 					}
 				}
@@ -147,8 +158,7 @@ class BasePropertyGuesser extends AbstractGuesser
 				}
 				$this->addTodo($todo);
 			} else {
-                $todo = sprintf("<error>No options</error> for property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
-                $this->addTodo($todo);
+                // no write when no options: already did in getCollectionOptions
             }
 		} else {
 			$this->getLogger()->debug(sprintf("Variant '%s' actual %s is '%s'",$variant,$type,$actualOption));
