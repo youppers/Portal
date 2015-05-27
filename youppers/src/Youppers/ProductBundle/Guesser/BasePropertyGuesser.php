@@ -72,6 +72,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					}
 				}
 			}
+            uksort($options,function($a, $b) { return strlen($b) - strlen($a);});
 			$this->collectionOptions[$collection->getId()][$type->getId()] = $options;
 			if (count($options) == 0) {
 				$this->getLogger()->warning(sprintf("Collection '%s' don't have assigned standards for type '%s'",$collection,$type));
@@ -102,17 +103,21 @@ class BasePropertyGuesser extends AbstractGuesser
 					if ($option === $actualOption) {
 						$this->getLogger()->debug(sprintf("Variant '%s' guessed property '%s' match actual",$variant,$option));
 					} else {
-						$this->getLogger()->info(sprintf("Variant '%s' guessed property '%s' don't match actual '%s'",$variant,$option,$actualOption));
-						$todo = sprintf("<error>Change property</error> <info>%s</info> from <info>%s</info> to <info>%s</info> in <info>%s</info>",
-								$option->getAttributeType(),$actualOption->getValueWithSymbol(),$option->getValueWithSymbol(),$variant);
-						$this->addTodo($todo);
+						$this->getLogger()->warning(sprintf("Variant '%s' guessed property '%s' don't match actual '%s'",$variant,$option,$actualOption));
+                        if ($this->getForce()) {
+                            $this->changeVariantProperty($variant,$actualOption,$option);
+                        } else {
+                            $todo = sprintf("<error>Change property</error> <info>%s</info> from <info>%s</info> to <info>%s</info> for <info>%s</info>",
+                                $option->getAttributeType(), $actualOption->getValueWithSymbol(), $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
+                            $this->addTodo($todo);
+                        }
 						return;
 					}
 				} else {
 					if ($this->getForce()) {
 						$this->addVariantProperty($variant,$option);
 					} else {
-						$todo = sprintf("<error>Add property</error> <info>%s</info> to <info>%s</info>",$option,$variant);
+						$todo = sprintf("<error>Add property</error> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
 						$this->addTodo($todo);
 					}
 					$this->getLogger()->info(sprintf("Variant '%s' new guessed property '%s'",$variant,$option));
@@ -128,20 +133,23 @@ class BasePropertyGuesser extends AbstractGuesser
 					$this->getLogger()->debug(sprintf("Default option false for '%s' type '%s'",$variant,$type));
 				} else {
 					if ($this->getForce()) {
-						$this->addVariantProperty($variant,$this->getDefaultOption($variant,$type));
+						$this->addVariantProperty($variant,$option);
 					} else {
-						$todo = sprintf("<error>Add default property</error> <info>%s</info> to <info>%s</info>",$option,$variant);
+						$todo = sprintf("<error>Add default property</error> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
 						$this->addTodo($todo);				
 					}
 				}
 			} elseif (count($options)) {
 				if ($this->isVariant) {
-					$todo = sprintf("<error>Must add</error> property of type <info>%s</info> to <info>%s</info>",$type,$variant);
+					$todo = sprintf("<error>Not guessed</error> property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
 				} else {
-					$todo = sprintf("Add property of type <info>%s</info> to <info>%s</info>",$type,$variant);
+					$todo = sprintf("Not guessed property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
 				}
 				$this->addTodo($todo);
-			}
+			} else {
+                $todo = sprintf("<error>No options</error> for property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
+                $this->addTodo($todo);
+            }
 		} else {
 			$this->getLogger()->debug(sprintf("Variant '%s' actual %s is '%s'",$variant,$type,$actualOption));
 		}
@@ -156,8 +164,19 @@ class BasePropertyGuesser extends AbstractGuesser
 		$variant->addVariantProperty($variantProperty);
 		$this->variantPropertyManager->save($variantProperty,false);		
 	}
-	
-	protected function searchOptions($typeCode,$value,$multivalues=null)
+
+    protected function changeVariantProperty(ProductVariant $variant, AttributeOption $actualOption, AttributeOption $option)
+    {
+        foreach ($variant->getVariantProperties() as $property) {
+            if ($property->getAttributeOption() === $actualOption) {
+                $property->setAttributeOption($option);
+                break;
+            }
+        }
+    }
+
+
+    protected function searchOptions($typeCode,$value,$multivalues=null)
 	{
 		if (is_array($value)) {
 			$results = array();
