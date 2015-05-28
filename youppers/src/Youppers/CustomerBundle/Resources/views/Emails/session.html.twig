@@ -1,16 +1,5 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
-<style>
-    zone {
-        width: 100%;
-        padding: 4px;
-        background-color; #369c8e;
-        color: white;
-
-        font-size: 18pt;
-    }
-</style>
-
 <p style="font-family: 'Open Sans', sans-serif;">Gentile <b>{{ toName }}</b>,<br>
 
 con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youppers</b></i> presso <b>{{ session.store.name }}</b> ed i relativi allegati.</p>
@@ -18,10 +7,17 @@ con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youpper
 <p style="font-family: 'Open Sans', sans-serif;">Cordiali saluti<br>
     {{ fromName }}</p>
 
-{% macro attr(name, value = "", last=false) %}
-    <div style="float: left; margin: 4px 8px 4px 0px; padding-right: 8px; border-right: 1px solid black;">
-        <div style="font-family:'Open Sans',sans-serif; font-size: 8pt; font-style: italic;">{{ name }}</div>
+{% macro attr(name, value, last=false) %}
+    <div style="float: left; margin: 4px 8px 4px 0px; padding-right: 8px; {% if not last %}border-right: 1px solid black;{% endif %}">
+        {% if name %}<div style="font-family:'Open Sans',sans-serif; font-size: 8pt; font-style: italic;">{{ name }}</div>{% endif %}
         <div style="font-family:'Open Sans',sans-serif; font-size: 14pt; font-weight: bold;">{{ value }}</div>
+        <div style="clear-after: both"></div>
+    </div>
+{% endmacro %}
+
+{% macro attach(name, url, last=false) %}
+    <div style="float: left; margin: 4px 8px 4px 0px; padding-right: 8px; {% if not last %}border-right: 1px solid black;{% endif %}">
+        <div style="font-family:'Open Sans',sans-serif; font-size: 12pt; font-weight: bold;"><a style="text-decoration: none;" href="{{ url }}">{{ name }}</a></div>
         <div style="clear-after: both"></div>
     </div>
 {% endmacro %}
@@ -35,25 +31,35 @@ con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youpper
     {% else %}
         {% if prevZone is null or prevZone != item.zone %}
             {% set prevZone = item.zone %}
-            <div style="width: 100%; text-align: center; padding:4px; margin: 5px; background-color:#369c8e; color:white; font-family:'Open Sans',sans-serif; font-size: 18pt;">{{ item.zone }}</div>
+            <div style="width: auto; text-align: center; padding:4px; margin: 5px 0px; background-color:#369c8e; color:white; font-family:'Open Sans',sans-serif; font-size: 18pt;">{{ item.zone }}</div>
         {% endif %}
-        <div style="width:100%; border-bottom: 3px solid #369c8e;">
+        <div style="width:auto; border-bottom: 3px solid #369c8e;">
             <div>
-                <div style="float: left;">{% thumbnail item.variant.image, 'list' %}</div>
+                <div style="float: left; margin: 4px 6px 4px;"><a href="{{ images[item.id] }}">{% thumbnail item.variant.image, 'list' %}</a></div>
                 <div style="float: left;">
-                    <div style="border-bottom: 1px solid black; float: left;">
+                    <div style="width: auto; border-bottom: 1px solid black; float: left;">
                         {{ macros.attr('brand',item.variant.product.brand.name) }}
                         {{ macros.attr('serie',item.variant.productCollection.name) }}
                         {% for property in item.variant.variantProperties %}
-                            {{ macros.attr(property.attributeOption.attributeStandard.attributeType.name,property.attributeOption.valueWithSymbol) }}
+                            {{ macros.attr(property.attributeOption.attributeStandard.attributeType.name,property.attributeOption.valueWithSymbol, loop.last) }}
                         {% endfor %}
                     </div>
                     <div style="float: left; clear: both; width: 100%;"></div>
-                    <div style="float: left; border-bottom: 1px solid black;">{{ item.variant.product.nameCode }}</div>
+                    <div style="float: left; border-bottom: 1px solid black; padding: 2px 10px 2px 0px;">{{ item.variant.product.nameCode }}</div>
                     <div style="float: left; clear: both"></div>
+                    {% for itemMedia in medias[item.id] %}
+                        {% if loop.first %}
+                            <div style="float: left; padding: 2px 10px 2px 0px;">
+                        {% endif %}
+                        {{ macros.attach(itemMedia.media.name, itemMedia.reference, loop.last) }}
+                        {% if loop.last %}
+                            </div>
+                            <div style="float: left; clear: both"></div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 <div style="clear:both"></div>
-                {% dump(item) %}
+                {# {% dump(item) %} #}
             </div>
         </div>
     {% endif %}

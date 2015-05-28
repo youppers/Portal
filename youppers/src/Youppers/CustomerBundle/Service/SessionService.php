@@ -356,6 +356,9 @@ Cordiali saluti
 			->addOrderBy('z.name')
 		;
 		$items = $qb->getQuery()->execute();
+
+        $medias = array();
+        $images = array();
 		
 		foreach ($items as $item) {
 			if ($item->getRemoved()) {
@@ -369,6 +372,7 @@ Cordiali saluti
                 $mediaProvider = $this->container->get($media->getProviderName());
 			    $url = $mediaProvider->generatePublicUrl($media,'reference');
 			    $this->logger->debug("Attach: ".$url);
+                $images[$item->getId()] = $url;
             } else {
                 $url = "n.d.";
             }
@@ -378,27 +382,54 @@ Cordiali saluti
 				$body .= sprintf("    %s\n",$property->getAttributeOption());
 			}
 			$body .= sprintf("    Immagine: %s\n",$url);			
-			//$message->attach(\Swift_Attachment::fromPath($path));						
-			
-			$gallery = $variant->getPdfGallery();
+			//$message->attach(\Swift_Attachment::fromPath($path));
+
+            $itemMedias = array();
+
+            $gallery = $variant->getProductCollection()->getPdfGallery();
+            if ($gallery) {
+                foreach ($gallery->getGalleryHasMedias() as $galleryMedia) {
+                    $media = $galleryMedia->getMedia();
+                    $itemMedia = array('media' => $media);
+                    $mediaProvider = $this->container->get($media->getProviderName());
+                    $url = $mediaProvider->generatePublicUrl($media, 'reference');
+                    $body .= sprintf("    Allegato: %s\n",$url);
+                    $itemMedia['reference'] = $url;
+                    $url = $mediaProvider->generatePublicUrl($media, 'admin');
+                    //$message->attach(\Swift_Attachment::fromPath($path));
+                    $itemMedia['icon'] = $url;
+                }
+                $itemMedias[] = $itemMedia;
+            }
+
+            $gallery = $variant->getPdfGallery();
 			if ($gallery) {
 				foreach ($gallery->getGalleryHasMedias() as $galleryMedia) {
 					$media = $galleryMedia->getMedia();
+                    $itemMedia = array('media' => $media);
 					$mediaProvider = $this->container->get($media->getProviderName());
 					$url = $mediaProvider->generatePublicUrl($media, 'reference');
-					$body .= sprintf("    Allegato: %s\n",$url);			
-					//$message->attach(\Swift_Attachment::fromPath($path));						
+					$body .= sprintf("    Allegato: %s\n",$url);
+                    $itemMedia['reference'] = $url;
+                    $url = $mediaProvider->generatePublicUrl($media, 'admin');
+					//$message->attach(\Swift_Attachment::fromPath($path));
+                    $itemMedia['icon'] = $url;
 				}
+                $itemMedias[] = $itemMedia;
 			}
+            $medias[$item->getId()] = $itemMedias;
 		}
         $templating = $this->container->get('templating');
 
         $data = array(
             'session' => $session,
             'items' => $items,
+            'images' => $images,
+            'medias' => $medias,
             'fromName' => $fromName,
             'toName' => $toName
         );
+        //echo($templating->render('YouppersCustomerBundle:Emails:session.html.twig',$data)); dump($data); die();
         $message->setBody(
             $templating->render('YouppersCustomerBundle:Emails:session.html.twig',$data),
             'text/html'
