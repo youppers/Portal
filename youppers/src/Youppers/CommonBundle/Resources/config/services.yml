@@ -74,3 +74,9 @@ services:
   youppers_common.jsonrpccontroller:
         class: Youppers\CommonBundle\Controller\YouppersJsonRpcController
         arguments: [ "@service_container", "%wa72.jsonrpc%"]
+
+  youppers_common.oauthtokencontroller:
+        class: Youppers\CommonBundle\Controller\YouppersOAuthTokenController
+        arguments: [ "@fos_oauth_server.server"]
+        calls:
+          - [ setContainer, [ '@service_container' ] ]

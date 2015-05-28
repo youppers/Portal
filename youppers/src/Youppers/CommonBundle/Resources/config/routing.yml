@@ -6,3 +6,9 @@ youppers_common_qr:
 youppers_common_json_rpc:
     pattern: /jsonrpc/
     defaults: { _controller: "youppers_common.jsonrpccontroller:execute" }
+
+youppers_common_oauth_token:
+    pattern: /oauth/v2/token
+    defaults: { _controller: "youppers_common.oauthtokencontroller:tokenAction" }
+    requirements:
+        _method:  GET|POST
