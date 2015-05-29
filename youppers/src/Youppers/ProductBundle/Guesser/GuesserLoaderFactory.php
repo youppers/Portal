@@ -43,10 +43,14 @@ class GuesserLoaderFactory extends ContainerAware
 		$this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $brandCode, $brand));
 				
 		$classname = sprintf("Youppers\ProductBundle\Guesser\%s\VariantGuesser",$company->getCode());
-		
-		$this->logger->info(sprintf("Guesser: '%s'", $classname));
-				
-		$guesser = new $classname;
+
+        if (class_exists($classname)) {
+            $this->logger->info(sprintf("Guesser: '%s'", $classname));
+            $guesser = new $classname;
+        } else {
+            $this->logger->info("Using default Guesser");
+            $guesser = new VariantGuesser();
+        }
 		$guesser->setManagerRegistry($this->managerRegistry);
 		$guesser->setLogger($this->logger);
 		$guesser->setContainer($this->container);
