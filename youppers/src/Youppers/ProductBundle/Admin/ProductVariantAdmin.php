@@ -44,8 +44,13 @@ class ProductVariantAdmin extends YouppersAdmin
 				'docs' => 'pdfGallery.galleryHasMedias',
 		);
 	}
-		
-	public function getParentAssociationMapping()
+
+    public function getDataSourceIterator()
+    {
+        return $this->getModelManager()->getDataSourceIterator($this->getDatagrid(), $this->getExportFields());
+    }
+
+    public function getParentAssociationMapping()
 	{
 		return 'productCollection';
 	}
