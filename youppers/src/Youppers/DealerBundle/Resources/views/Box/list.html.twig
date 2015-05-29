@@ -18,13 +18,13 @@
   
   div.boxOuter {
      page-break-inside: avoid;
-     border-color: white;
+     border-color: gray;
   }
 }
 
 .boxOuter {
-	width: 390px;
-	height: 270px;
+	width: 270px;
+	height: 390px;
 	margin: 5px 5px 5px 5px;
 	border: 2px solid green;
     overflow: hidden;
@@ -32,26 +32,34 @@
 }
 
 .qrOuter {
-	margin: 20px 0px; 
+	margin: 15px 33px;
 	float: left;
-	width: 220px;
-	height: 260px;
+	width: 200px;
+	height: 200px;
+}
+
+.logoOuter {
+    margin: 0px 53px;
+    float: left;
+    width: 160px;
+    height: 48px;
 }
 
 .descOuter {
 	float: left; 
-	width: 141px;
-	margin: 20px 10px;
+	width: 246px;
+    height: 100px;
+	margin: 10px 10px 0px 10px;
 }
 
 .store {
-	font-size: 16px;
+	font-size: 10pt;
 }
 .boxName {
-	font-size: 16px;
+	font-size: 12pt;
 }
 .boxDescription {
-    font-size: 12px;
+    font-size: 9pt;
 }
 
 
@@ -63,14 +71,15 @@
 </style>
 {% for object in data %}
 <div class="boxOuter">
+    <div class="descOuter">
+        <div class="store">{{ object.store.name }}</div>
+        <div class="boxName">[{{ object.code }}] {{ object.name }}</div>
+        <div class="boxDescription">{{ object.description }}</div>
+    </div>
 	<div class="qrOuter">
 	{% set field_description = { 'options': {'size': 200, 'padding' : 0}} %}
 	{% include 'YouppersCommonBundle::qr.html.twig' %}
 	</div>
-	<div class="descOuter">
-		<div class="store">Store: {{ object.store }}</div>
-		<div class="boxName">Box: [{{ object.code }}] {{ object.name }}</div>
-		<div class="boxDescription">{{ object.description }}</div>
-	</div>
+    <div class="logoOuter"><img src="{{ asset('bundles/youpperscommon/14-12-11_Youppers_logo.png') }}" width="160"></div>
 </div>
 {% endfor %}
