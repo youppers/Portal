@@ -13,6 +13,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use FOS\UserBundle\Model\User;
 use Youppers\CustomerBundle\Entity\Profile;
+use Youppers\CustomerBundle\YouppersTCPDF;
 
 class SessionService extends ContainerAware
 {
@@ -338,15 +339,11 @@ class SessionService extends ContainerAware
 		$message->setFrom($fromAddress, $fromName);
 		$message->setTo($toAddress,$toName);
 		$message->setCc($fromAddress,$fromName);
-		
-		$message->setSubject(sprintf("Visita %s al negozio %s",$profile->getName(),$session->getStore()));
-		$body = "Gentile $toName,
 
-con questa email le inviamo l'elenco dei materiali selezionati ed i relativi allegati.
+        $subject = sprintf("Visita %s al negozio %s",$profile->getName(),$session->getStore());
 
-Cordiali saluti
-  $fromName";
-   		
+		$message->setSubject($subject);
+
 		$qb = $this->managerRegistry->getRepository('YouppersCustomerBundle:Item')->createQueryBuilder('i');
 		$qb
 			->addSelect('z')
@@ -367,22 +364,26 @@ Cordiali saluti
 			$variant = $item->getVariant();
 			
 			$media = $variant->getImage();
-						
-			if ($media) {
+
+            if (empty($media)) {
+                $media = $variant->getProductCollection()->getImage();
+            }
+
+            if (empty($media)) {
+                $media = $variant->getProduct()->getBrand()->getImage();
+            }
+
+            if (empty($media)) {
+                $media = $variant->getProduct()->getBrand()->getCompany()->getImage();
+            }
+
+            if ($media) {
                 $mediaProvider = $this->container->get($media->getProviderName());
-			    $url = $mediaProvider->generatePublicUrl($media,'reference');
-			    $this->logger->debug("Attach: ".$url);
+                $url = $mediaProvider->generatePublicUrl($media,'reference');
                 $images[$item->getId()] = $url;
             } else {
-                $url = "n.d.";
+                $images[$item->getId()] = "#";
             }
-			$body .= sprintf("\n\nZona: %s\n",$item->getZone());
-			$body .= sprintf("  Prodotto: %s\n",$variant->getProduct());
-			foreach ($variant->getVariantProperties() as $property) {
-				$body .= sprintf("    %s\n",$property->getAttributeOption());
-			}
-			$body .= sprintf("    Immagine: %s\n",$url);			
-			//$message->attach(\Swift_Attachment::fromPath($path));
 
             $itemMedias = array();
 
@@ -393,29 +394,31 @@ Cordiali saluti
                     $itemMedia = array('media' => $media);
                     $mediaProvider = $this->container->get($media->getProviderName());
                     $url = $mediaProvider->generatePublicUrl($media, 'reference');
-                    $body .= sprintf("    Allegato: %s\n",$url);
                     $itemMedia['reference'] = $url;
                     $url = $mediaProvider->generatePublicUrl($media, 'admin');
                     //$message->attach(\Swift_Attachment::fromPath($path));
                     $itemMedia['icon'] = $url;
+                    $itemMedias[] = $itemMedia;
                 }
-                $itemMedias[] = $itemMedia;
             }
 
             $gallery = $variant->getPdfGallery();
 			if ($gallery) {
 				foreach ($gallery->getGalleryHasMedias() as $galleryMedia) {
 					$media = $galleryMedia->getMedia();
+                    if (empty($media)) {
+                        $this->logger->warning(sprintf("Gallery %s has empty media",$gallery));
+                        continue;
+                    }
                     $itemMedia = array('media' => $media);
 					$mediaProvider = $this->container->get($media->getProviderName());
 					$url = $mediaProvider->generatePublicUrl($media, 'reference');
-					$body .= sprintf("    Allegato: %s\n",$url);
                     $itemMedia['reference'] = $url;
                     $url = $mediaProvider->generatePublicUrl($media, 'admin');
 					//$message->attach(\Swift_Attachment::fromPath($path));
                     $itemMedia['icon'] = $url;
+                    $itemMedias[] = $itemMedia;
 				}
-                $itemMedias[] = $itemMedia;
 			}
             $medias[$item->getId()] = $itemMedias;
 		}
@@ -429,6 +432,7 @@ Cordiali saluti
             'fromName' => $fromName,
             'toName' => $toName
         );
+        //dump($data);
         //echo($templating->render('YouppersCustomerBundle:Emails:session.html.twig',$data)); dump($data); die();
         $message->setBody(
             $templating->render('YouppersCustomerBundle:Emails:session.html.twig',$data),
@@ -439,8 +443,34 @@ Cordiali saluti
             'text/plain'
         );
 
-		//$message->setBody($body);
-				
+        $pdf = $this->container->get("white_october.tcpdf")->create();
+
+        $pdf = new YouppersTCPDF();
+
+        // set document information
+        $pdf->SetCreator("Youppers Italia S.r.l.");
+        $pdf->SetAuthor($fromName);
+        $pdf->SetTitle("Visita " . $session);
+        $pdf->SetSubject($subject);
+        $pdf->SetKeywords('Youppers');
+
+        $pdf->setHeaderText($subject);
+        $pdf->setHeaderImage('bundles/youpperscommon/14-12-11_Youppers_logo.png');
+
+        $html = $templating->render('YouppersCustomerBundle:Emails:session.html.twig',$data);
+
+        //echo($html); die;
+
+        // add a page
+        $pdf->AddPage();
+
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // reset pointer to the last page
+        $pdf->lastPage();
+
+        $message->attach(\Swift_Attachment::newInstance($pdf->Output("Youppers.pdf",'S'),'Youppers.pdf','application/pdf'));
+
 		$failed = array();
 		$mailer->send($message,$failed);
 		

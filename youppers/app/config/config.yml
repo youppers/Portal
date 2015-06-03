@@ -155,3 +155,6 @@ swiftmailer:
 happyr_google_analytics:
     tracking_id: "%google_analytics_tracking_id%"    
     #endpoint: 'https://www.google-analytics.com/debug/collect'
+
+white_october_tcpdf:
+    class: 'Youppers\CustomerBundle\YouppersTCPDF'
