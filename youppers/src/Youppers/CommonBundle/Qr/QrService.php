@@ -275,19 +275,12 @@ class QrService extends Controller
         //$fontname = $pdf->addTTFfont('/path-to-font/DejaVuSans.ttf', 'TrueTypeUnicode', '', 32);
 
         $dimensions = $pdf->getPageDimensions();
-        dump($dimensions);
-
         $slices = array('w' => 4, 'h' => 2);
-
-        $hStoreName = 6;
-        $hBoxName = 6;
-        $hBoxDescription = 12;
 
         $w = $dimensions['wk'] / $slices['w'];
         $h = $dimensions['hk'] / $slices['h'];
-        dump(array('w' =>$w,'h' => $h));
 
-        $sizeQr = 65; //min($w,$h);
+        $sizeQr = 70; //min($w,$h);
 
         // set style for barcode
         $style = array(
@@ -304,7 +297,6 @@ class QrService extends Controller
 
         $i = 0;
         foreach ($boxes as $box) {
-            //dump($box);
             if (empty($box)) {
                 continue;
             }
@@ -317,14 +309,13 @@ class QrService extends Controller
             }
             $x = ($w * (($i / $slices['h']) % $slices['w'])) % $dimensions['wk'];
             $y = ($h * ($i % $slices['h'])) % $dimensions['hk'];
-            dump(array('x' => $x, 'y' =>$y));
 
-            $pdf->Image('bundles/youpperscommon/14-12-11_Youppers_logo.png',$x, $y ,$w);
+            $pdf->Image('bundles/youpperscommon/14-12-11_Youppers_logo.png',$x+$w/4, $y+5 ,$w/2);
 
-            $pdf->write2DBarcode($qr->getText(), 'QRCODE,M', $x + ($w - $sizeQr) /2, $y + 20, $sizeQr, $sizeQr, $style, 'N');
+            $pdf->write2DBarcode($qr->getText(), 'QRCODE,M', $x + ($w - $sizeQr) /2, $y + 15, $sizeQr, $sizeQr, $style, 'N');
 
             $pdf->setCellHeightRatio(0.8);
-            $pdf->SetXY($x, $y + 20 + $sizeQr);
+            $pdf->SetXY($x, $y + 15 + $sizeQr);
             $pdf->SetFont('helvetica', '', 10);
             $pdf->Cell($w, 0, $box->getStore()->getName(), 0, 1, 'C', null, null, 1);
             $pdf->SetXY($x, $pdf->GetY());
