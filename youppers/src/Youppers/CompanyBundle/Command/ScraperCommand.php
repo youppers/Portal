@@ -15,7 +15,7 @@ class ScraperCommand extends ContainerAwareCommand
 		->setName('youppers:scraper')
 		->setDescription('Scrape company brand site')
 		->addArgument('company', InputArgument::REQUIRED, 'Code of the Company')
-		->addArgument('brand', InputArgument::REQUIRED, 'Code of the Brand')
+		->addArgument('brand', InputArgument::OPTIONAL, 'Code of the Brand')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
 		->addOption('create-product',null, InputOption::VALUE_NONE, 'Create product if dont exists')
 		->addOption('create-collection',null, InputOption::VALUE_NONE, 'Create product collection if dont exists')

@@ -34,19 +34,23 @@ class ScraperFactory extends ContainerAware
 		}
 
 		$this->logger->debug(sprintf("Code: '%s' Company: '%s'", $companyCode, $company));
-		
-		$criteria = Criteria::create()
-			->where(Criteria::expr()->eq("code", $brandCode));
-		
-		$brand = $company->getBrands()->matching($criteria)->first();
-		
-		if (empty($brand)) {
-			throw new \Exception(sprintf("Brand '%s' not found",$brandCode));
-		}
-		
-		$this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $brandCode, $brand));
+
+        if ($brandCode) {
+            $criteria = Criteria::create()
+                ->where(Criteria::expr()->eq("code", $brandCode));
+
+            $brand = $company->getBrands()->matching($criteria)->first();
+
+            if (empty($brand)) {
+                throw new \Exception(sprintf("Brand '%s' not found", $brandCode));
+            }
+
+            $this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $brandCode, $brand));
+        } else {
+            $brand = null;
+        }
 				
-		$classname = sprintf("Youppers\ScraperBundle\Scraper\%s\%s\Scraper",$company->getCode(),$brand->getCode(),$company->getCode(),$brand->getCode());
+		$classname = sprintf("Youppers\ScraperBundle\Scraper\%s\Scraper",$company->getCode());
 		
 		$this->logger->debug(sprintf("Scraper: '%s'", $classname));
 				
