@@ -34,8 +34,9 @@ class SessionCRUDController extends CRUDController
 
         $flashBag = $this->admin->getRequest()->getSession()->getFlashBag();
 
+        $result = $this->get('youppers.customer.service.session')->send($id);
+
         try {
-            $result = $this->get('youppers.customer.service.session')->send($id);
             $res = explode("\r\n\r\n",$result);
             $flashBag->add('sonata_flash_success',nl2br($res[0])); // show headers
         } catch (\Exception $e) {
