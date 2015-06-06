@@ -370,11 +370,11 @@ class SessionService extends ContainerAware
             }
 
             if (empty($media)) {
-                $media = $variant->getProduct()->getBrand()->getImage();
+                $media = $variant->getProduct()->getBrand()->getLogo();
             }
 
             if (empty($media)) {
-                $media = $variant->getProduct()->getBrand()->getCompany()->getImage();
+                $media = $variant->getProduct()->getBrand()->getCompany()->getLogo();
             }
 
             if ($media) {
