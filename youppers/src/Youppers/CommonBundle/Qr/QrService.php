@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Youppers\CommonBundle\Manager\QrManager;
+use Youppers\DealerBundle\Entity\Store;
 
 class QrService extends Controller
 {
@@ -252,4 +253,95 @@ class QrService extends Controller
 						
 		return $qr;
 	}
+
+    public function pdfBoxesStore(Store $store) {
+        $pdf = $this->container->get('white_october.tcpdf')->create();
+
+        $pdf = new \TCPDF('L');
+        $pdf->SetMargins(0,0);
+
+        $pdf->SetTitle("Stampa QRCode del Negozio");
+        $pdf->SetSubject($store);
+        $pdf->SetAuthor("Youppers");
+
+        // remove default header/footer
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+        $pdf->SetAutoPageBreak(false);
+
+        $pdf->setCellPaddings(5, 1, 5, 0);
+        $pdf->setCellMargins(0, 0, 0, 0);
+
+        //$fontname = $pdf->addTTFfont('/path-to-font/DejaVuSans.ttf', 'TrueTypeUnicode', '', 32);
+
+        $dimensions = $pdf->getPageDimensions();
+        dump($dimensions);
+
+        $slices = array('w' => 4, 'h' => 2);
+
+        $hStoreName = 6;
+        $hBoxName = 6;
+        $hBoxDescription = 12;
+
+        $w = $dimensions['wk'] / $slices['w'];
+        $h = $dimensions['hk'] / $slices['h'];
+        dump(array('w' =>$w,'h' => $h));
+
+        $sizeQr = 65; //min($w,$h);
+
+        // set style for barcode
+        $style = array(
+            'border' => 0,
+            'vpadding' => 'auto',
+            'hpadding' => 'auto',
+            'fgcolor' => array(0,0,0),
+            'bgcolor' => false, //array(255,255,255)
+            'module_width' => 1, // width of a single module in points
+            'module_height' => 1 // height of a single module in points
+        );
+
+        $boxes = $store->getBoxes()->filter(function ($box) { return $box->getEnabled(); });
+
+        $i = 0;
+        foreach ($boxes as $box) {
+            //dump($box);
+            if (empty($box)) {
+                continue;
+            }
+            $qr = $box->getQr();
+            if (empty($qr)) {
+                continue;
+            }
+            if (($i % ($slices['w'] * $slices['h'])) == 0) {
+                $pdf->AddPage('L', 'A4');
+            }
+            $x = ($w * (($i / $slices['h']) % $slices['w'])) % $dimensions['wk'];
+            $y = ($h * ($i % $slices['h'])) % $dimensions['hk'];
+            dump(array('x' => $x, 'y' =>$y));
+
+            $pdf->Image('bundles/youpperscommon/14-12-11_Youppers_logo.png',$x, $y ,$w);
+
+            $pdf->write2DBarcode($qr->getText(), 'QRCODE,M', $x + ($w - $sizeQr) /2, $y + 20, $sizeQr, $sizeQr, $style, 'N');
+
+            $pdf->setCellHeightRatio(0.8);
+            $pdf->SetXY($x, $y + 20 + $sizeQr);
+            $pdf->SetFont('helvetica', '', 10);
+            $pdf->Cell($w, 0, $box->getStore()->getName(), 0, 1, 'C', null, null, 1);
+            $pdf->SetXY($x, $pdf->GetY());
+            $pdf->SetFont('helvetica', '', 12);
+            $pdf->Cell($w, 0, $box->getName() . ' [' . $box->getCode() . ']', 0, 1, 'C', null, null, 1);
+
+            $pdf->setCellHeightRatio(0.3);
+            $pdf->SetXY($x, $pdf->GetY());
+            $pdf->SetFont('helvetica', '', 8);
+            $maxh = $h - ($pdf->GetY() - $y);
+            $pdf->MultiCell($w, 0, $box->getDescription(), 0, 'C', null, null, null, null, null, null, null, null, $maxh);
+
+            $i++;
+        }
+
+        //die;
+
+        return $pdf;
+    }
 }
