@@ -49,7 +49,9 @@ class StoreAdmin extends YouppersAdmin
 
         if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
             $id = $this->getRequest()->get($this->getIdParameter());
-            if ($action == 'show') $menu->addChild('box_qr_print', array('uri' => $this->generateUrl('qrprint', array('id' => $id))));
+            $menu->addChild($this->trans('box_qr_print', array(), 'SonataAdminBundle'), array('attributes' => array('icon' => 'glyphicon glyphicon-qrcode'), 'uri' => $this->generateUrl('qrprint', array('id' => $id))));
+
+            //if ($action == 'show') $menu->addChild('box_qr_print', array('uri' => $this->generateUrl('qrprint', array('id' => $id))));
         }
     }
 

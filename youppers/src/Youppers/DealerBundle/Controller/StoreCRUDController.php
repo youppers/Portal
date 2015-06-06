@@ -19,7 +19,11 @@ class StoreCRUDController extends CRUDController
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
 
-        return new RedirectResponse($this->generateUrl('youppers_dealer_box_list', array('store' => $object->getId())));
+        $pdf = $this->container->get('youppers.common.qr')->pdfBoxesStore($object);
+
+        $pdf->Output($object . '.pdf', 'D');
+
+        //return new RedirectResponse($this->generateUrl('youppers_dealer_box_list', array('store' => $object->getId())));
     }
 
 }
