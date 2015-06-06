@@ -33,7 +33,7 @@ imports:
     - { resource: sonata/sonata_page.yml }
     - { resource: sonata/sonata_media.yml }
     #- { resource: sonata/sonata_news.yml }
-    #- { resource: sonata/sonata_user.yml }
+    - { resource: sonata/sonata_user.yml }
     #- { resource: sonata/sonata_notification.yml }
 
 #    # Sonata e-commerce bundles
