@@ -18,7 +18,7 @@ class BoxController extends Controller
 	 */
 	public function listAction()
 	{
-		$criteria = array('enabled' => true); 
+		$criteria = array('enabled' => true);
 		if ($storeId=$this->getRequest()->get("store")) {
 			$store = $this->getDoctrine()
 				->getRepository('YouppersDealerBundle:Store')
