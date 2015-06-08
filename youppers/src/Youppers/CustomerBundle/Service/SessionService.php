@@ -285,10 +285,6 @@ class SessionService extends ContainerAware
 		$profile = $session->getProfile();
 		$store = $session->getStore();
 		
-		if (empty($profile)) {
-			throw new \Exception("Profile not selected for session");
-		}
-
 		if (empty($store)) {
 			throw new \Exception("Store not selected for session");
 		}
@@ -317,9 +313,11 @@ class SessionService extends ContainerAware
 
 		$toAddress = null;
 		$toName = null;
-		
-		$toAddress = $profile->getUser()->getEmail();
-		$toName = trim($profile->getUser()->getFullname());
+
+        if (!empty($profile)) {
+            $toAddress = $profile->getUser()->getEmail();
+            $toName = trim($profile->getUser()->getFullname());
+        }
 		if (empty($toAddress)) {
 			$toAddress = $fromAddress;
 		}		
@@ -340,7 +338,7 @@ class SessionService extends ContainerAware
 		$message->setTo($toAddress,$toName);
 		$message->setCc($fromAddress,$fromName);
 
-        $subject = sprintf("Visita %s al negozio %s",$profile->getName(),$session->getStore());
+        $subject = sprintf("Visita al negozio %s",$session->getStore());
 
 		$message->setSubject($subject);
 
