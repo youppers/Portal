@@ -46,9 +46,9 @@ class ProductCollectionAdmin extends YouppersAdmin
 		
 		if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {
 			$id = $this->getRequest()->get($this->getIdParameter());
-			$menu->addChild('Variants', array('uri' => $this->generateUrl('youppers_product.admin.product_variant.list', array('id' => $id))));
-			$menu->addChild('Guess', array('uri' => $this->generateUrl('guess', array('id' => $id))));				
-			$menu->addChild('Force Guess', array('uri' => $this->generateUrl('forceGuess', array('id' => $id))));				
+			$menu->addChild('Variants', array('attributes' => array('icon' => 'glyphicon glyphicon-list-alt'), 'uri' => $this->generateUrl('youppers_product.admin.product_variant.list', array('id' => $id))));
+			$menu->addChild('Guess', array('attributes' => array('icon' => 'fa fa-thumbs-o-up'), 'uri' => $this->generateUrl('guess', array('id' => $id))));
+			$menu->addChild('Force Guess', array('attributes' => array('icon' => 'fa fa-thumbs-up'), 'uri' => $this->generateUrl('forceGuess', array('id' => $id))));
 		}
 	}
 	

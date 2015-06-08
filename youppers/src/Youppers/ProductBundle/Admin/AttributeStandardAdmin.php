@@ -62,7 +62,7 @@ class AttributeStandardAdmin extends YouppersAdmin
             ->with('Options', array('class' => 'col-md-4'))
             ->add('enabled', null, array('required'  => false))
             ->end()
-            ->with('Values', array('class' => 'col-md-12'))
+            ->with('Values', array('class' => 'col-md-12', 'description' => 'Use ; to separate aliases'))
             ->add('attributeOptions', 'sonata_type_collection', array('by_reference' => false), array(
                 'edit' => 'inline',
                 'inline' => 'table',
