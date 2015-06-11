@@ -92,17 +92,21 @@ class AttributeOptionAdmin extends Admin
 		}
 		$formMapper
 		->add('position','hidden',array('attr'=>array("hidden" => true)))			
-		->add('value')
-		->add('image', 'sonata_type_model_list',
-				array(
-						'required' => false
-				), array(
-						'link_parameters' => array(
-								'context'  => 'youppers_attribute',
-								'filter'   => array('context' => array('value' => 'youppers_attribute'))
-						)
-				)
-		)		
+		->add('value');
+        if (!$this->getParentFieldDescription()->getOption('hideOptionsImage')) {
+            $formMapper
+                ->add('image', 'sonata_type_model_list',
+                    array(
+                        'required' => false
+                    ), array(
+                        'link_parameters' => array(
+                            'context' => 'youppers_attribute',
+                            'filter' => array('context' => array('value' => 'youppers_attribute'))
+                        )
+                    )
+                );
+        }
+        $formMapper
 		->add('alias', null, array('help'=>'Use ; to separate aliases'))
 		->add('enabled', null, array('required'  => false))
 		;

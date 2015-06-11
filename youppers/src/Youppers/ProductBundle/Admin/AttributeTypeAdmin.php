@@ -63,6 +63,7 @@ class AttributeTypeAdmin extends YouppersAdmin
             ->end()
             ->with('Options', array('class' => 'col-md-4'))
             ->add('enabled', null, array('required'  => false))
+            ->add('hideOptionsImage', null, array('required'  => false))
             ->end()
             ;
     }
@@ -76,6 +77,7 @@ class AttributeTypeAdmin extends YouppersAdmin
             ->add('name')
             ->add('code')
             ->add('enabled')
+            ->add('hideOptionsImage')
             ->add('description')
             ->add('updatedAt')
             ->add('createdAt')

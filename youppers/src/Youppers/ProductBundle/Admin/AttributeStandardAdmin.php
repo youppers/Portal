@@ -66,7 +66,8 @@ class AttributeStandardAdmin extends YouppersAdmin
             ->add('attributeOptions', 'sonata_type_collection', array('by_reference' => false), array(
                 'edit' => 'inline',
                 'inline' => 'table',
-                'sortable'  => 'position'
+                'sortable'  => 'position',
+                'hideOptionsImage' => $this->getSubject() && $this->getSubject()->getAttributeType() ? $this->getSubject()->getAttributeType()->getHideOptionsImage() : false
             ))
             ->end()
             ;

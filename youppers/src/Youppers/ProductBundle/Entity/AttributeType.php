@@ -51,8 +51,13 @@ class AttributeType
 	 * @JMS\Groups({"details"})
 	 */
 	protected $enabled;
-		
-	/**
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    protected $hideOptionsImage;
+
+    /**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @JMS\Expose()
 	 * @JMS\Groups({"details"})
@@ -99,19 +104,19 @@ class AttributeType
 	}	
 	
 	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle
-     /**
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->attributeStandards = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->productTypes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productAttributes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return guid 
+     * @return guid
      */
     public function getId()
     {
@@ -122,6 +127,7 @@ class AttributeType
      * Set name
      *
      * @param string $name
+     *
      * @return AttributeType
      */
     public function setName($name)
@@ -134,7 +140,7 @@ class AttributeType
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -145,6 +151,7 @@ class AttributeType
      * Set code
      *
      * @param string $code
+     *
      * @return AttributeType
      */
     public function setCode($code)
@@ -157,7 +164,7 @@ class AttributeType
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -168,6 +175,7 @@ class AttributeType
      * Set enabled
      *
      * @param boolean $enabled
+     *
      * @return AttributeType
      */
     public function setEnabled($enabled)
@@ -180,7 +188,7 @@ class AttributeType
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -188,9 +196,34 @@ class AttributeType
     }
 
     /**
+     * Set hideOptionsImage
+     *
+     * @param boolean $hideOptionsImage
+     *
+     * @return AttributeType
+     */
+    public function setHideOptionsImage($hideOptionsImage)
+    {
+        $this->hideOptionsImage = $hideOptionsImage;
+
+        return $this;
+    }
+
+    /**
+     * Get hideOptionsImage
+     *
+     * @return boolean
+     */
+    public function getHideOptionsImage()
+    {
+        return $this->hideOptionsImage;
+    }
+
+    /**
      * Set description
      *
      * @param string $description
+     *
      * @return AttributeType
      */
     public function setDescription($description)
@@ -203,7 +236,7 @@ class AttributeType
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -214,6 +247,7 @@ class AttributeType
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
+     *
      * @return AttributeType
      */
     public function setUpdatedAt($updatedAt)
@@ -226,7 +260,7 @@ class AttributeType
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -237,6 +271,7 @@ class AttributeType
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return AttributeType
      */
     public function setCreatedAt($createdAt)
@@ -249,7 +284,7 @@ class AttributeType
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -257,32 +292,33 @@ class AttributeType
     }
 
     /**
-     * Add attributeStandards
+     * Add attributeStandard
      *
-     * @param \Youppers\ProductBundle\Entity\AttributeStandard $attributeStandards
+     * @param \Youppers\ProductBundle\Entity\AttributeStandard $attributeStandard
+     *
      * @return AttributeType
      */
-    public function addAttributeStandard(\Youppers\ProductBundle\Entity\AttributeStandard $attributeStandards)
+    public function addAttributeStandard(\Youppers\ProductBundle\Entity\AttributeStandard $attributeStandard)
     {
-        $this->attributeStandards[] = $attributeStandards;
+        $this->attributeStandards[] = $attributeStandard;
 
         return $this;
     }
 
     /**
-     * Remove attributeStandards
+     * Remove attributeStandard
      *
-     * @param \Youppers\ProductBundle\Entity\AttributeStandard $attributeStandards
+     * @param \Youppers\ProductBundle\Entity\AttributeStandard $attributeStandard
      */
-    public function removeAttributeStandard(\Youppers\ProductBundle\Entity\AttributeStandard $attributeStandards)
+    public function removeAttributeStandard(\Youppers\ProductBundle\Entity\AttributeStandard $attributeStandard)
     {
-        $this->attributeStandards->removeElement($attributeStandards);
+        $this->attributeStandards->removeElement($attributeStandard);
     }
 
     /**
      * Get attributeStandards
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAttributeStandards()
     {
@@ -290,65 +326,33 @@ class AttributeType
     }
 
     /**
-     * Add productTypes
+     * Add productAttribute
      *
-     * @param \Youppers\ProductBundle\Entity\AttributeStandard $productTypes
+     * @param \Youppers\ProductBundle\Entity\ProductAttribute $productAttribute
+     *
      * @return AttributeType
      */
-    public function addProductType(\Youppers\ProductBundle\Entity\AttributeStandard $productTypes)
+    public function addProductAttribute(\Youppers\ProductBundle\Entity\ProductAttribute $productAttribute)
     {
-        $this->productTypes[] = $productTypes;
+        $this->productAttributes[] = $productAttribute;
 
         return $this;
     }
 
     /**
-     * Remove productTypes
+     * Remove productAttribute
      *
-     * @param \Youppers\ProductBundle\Entity\AttributeStandard $productTypes
+     * @param \Youppers\ProductBundle\Entity\ProductAttribute $productAttribute
      */
-    public function removeProductType(\Youppers\ProductBundle\Entity\AttributeStandard $productTypes)
+    public function removeProductAttribute(\Youppers\ProductBundle\Entity\ProductAttribute $productAttribute)
     {
-        $this->productTypes->removeElement($productTypes);
-    }
-
-    /**
-     * Get productTypes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProductTypes()
-    {
-        return $this->productTypes;
-    }
-
-    /**
-     * Add productAttributes
-     *
-     * @param \Youppers\ProductBundle\Entity\ProductAttribute $productAttributes
-     * @return AttributeType
-     */
-    public function addProductAttribute(\Youppers\ProductBundle\Entity\ProductAttribute $productAttributes)
-    {
-        $this->productAttributes[] = $productAttributes;
-
-        return $this;
-    }
-
-    /**
-     * Remove productAttributes
-     *
-     * @param \Youppers\ProductBundle\Entity\ProductAttribute $productAttributes
-     */
-    public function removeProductAttribute(\Youppers\ProductBundle\Entity\ProductAttribute $productAttributes)
-    {
-        $this->productAttributes->removeElement($productAttributes);
+        $this->productAttributes->removeElement($productAttribute);
     }
 
     /**
      * Get productAttributes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductAttributes()
     {
