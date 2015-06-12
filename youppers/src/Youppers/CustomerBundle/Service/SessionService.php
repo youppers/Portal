@@ -338,7 +338,7 @@ class SessionService extends ContainerAware
 		$message->setTo($toAddress,$toName);
 		$message->setCc($fromAddress,$fromName);
 
-        $subject = sprintf("Visita al negozio %s",$session->getStore());
+        $subject = sprintf("Visita al negozio %s",$session->getStore()->getName());
 
 		$message->setSubject($subject);
 
@@ -354,6 +354,7 @@ class SessionService extends ContainerAware
 
         $medias = array();
         $images = array();
+        $imagesurl = array();
 		
 		foreach ($items as $item) {
 			if ($item->getRemoved()) {
@@ -378,7 +379,8 @@ class SessionService extends ContainerAware
             if ($media) {
                 $mediaProvider = $this->container->get($media->getProviderName());
                 $url = $mediaProvider->generatePublicUrl($media,'reference');
-                $images[$item->getId()] = $url;
+                $imagesurl[$item->getId()] = $url;
+                $images[$item->getId()] = $media;
             } else {
                 $images[$item->getId()] = "#";
             }
@@ -426,6 +428,7 @@ class SessionService extends ContainerAware
             'session' => $session,
             'items' => $items,
             'images' => $images,
+            'imagesurl' => $imagesurl,
             'medias' => $medias,
             'fromName' => $fromName,
             'toName' => $toName

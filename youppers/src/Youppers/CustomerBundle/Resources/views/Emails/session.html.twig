@@ -30,17 +30,18 @@ con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youpper
         {% if prevZone and prevZone != item.zone %}
 <!-- End {{ prevZone }} -->
 </table>
+<br/>
         {% endif %}
-        {% if prevZone is null or prevZone != item.zone %}
-<table>
+        {% if (prevZone is null) or (prevZone != item.zone) %}
+<table style="border-collapse: collapse; width: 100%; page-break-inside: avoid;">
 <!--Begin {{ item.zone }} -->
             {% set prevZone = item.zone %}
          <tr>
             <th colspan="2" style="text-align: center; padding:4px; margin: 5px 0px; background-color:#369c8e; color:white; font-family:'Open Sans',sans-serif; font-size: 18pt;">{{ item.zone }}</th>
          </tr>
         {% endif %}
-         <tr style="margin-bottom: 5px; border-bottom: 3px solid #369c8e;">
-            <td style="width: 85px; margin: 4px 6px 4px; vertical-align: top; padding: 2px;"><a href="{{ images[item.id] }}">{% thumbnail images[item.id], 'list' %}</a></td>
+         <tr style="margin-bottom: 5px; border-bottom: 3px solid #369c8e; page-break-inside: avoid;">
+            <td style="width: 85px; margin: 4px 6px 4px; vertical-align: top; padding: 2px;"><a href="{{ imagesurl[item.id] }}">{% thumbnail images[item.id], 'list' %}</a></td>
             <td>
                <table width="100%">
                    <tr>
