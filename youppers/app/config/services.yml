@@ -7,3 +7,8 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+     monolog.formatter.line.u:
+        class: Monolog\Formatter\LineFormatter
+        arguments: ["", "Y-m-d H:i:s.u"]
+
