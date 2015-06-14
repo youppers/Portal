@@ -84,6 +84,8 @@ abstract class BaseScraper extends AbstractScraper
 	
 	public function scrape()
     {
+        $this->client = new Client();
+
         if ($this->collection) {
             $this->scrapeCollection($this->collection);
         } elseif ($this->brand) {
@@ -100,8 +102,6 @@ abstract class BaseScraper extends AbstractScraper
     public function scrapeBrand(Brand $brand)
     {
 		$this->getLogger()->info(sprintf("Begin scraping brand '%s'",$brand));
-		
-		$this->client = new Client();
 		
 		$collections = $this->getBrandCollections($brand);
 		
@@ -123,8 +123,10 @@ abstract class BaseScraper extends AbstractScraper
     public function scrapeVariant(ProductVariant $variant)
     {
         $this->getLogger()->info(sprintf("Begin scraping variant '%s'",$variant));
-        // TODO
+        $this->doVariantScrape($variant);
         $this->getLogger()->info(sprintf("End scraping variant '%s'",$variant));
     }
+
+    protected abstract function doVariantScrape(ProductVariant $variant);
 
 }

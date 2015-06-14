@@ -8,8 +8,10 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Youppers\CompanyBundle\Entity\Company;
 use Youppers\CompanyBundle\Entity\Brand;
 use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Entity\ProductVariant;
 
 use GuzzleHttp\Message\Request;
+
 
 abstract class AbstractScraper extends ContainerAware
 {
@@ -18,6 +20,8 @@ abstract class AbstractScraper extends ContainerAware
     public abstract function scrapeBrand(Brand $brand);
 
     public abstract function scrapeCollection(ProductCollection $collection);
+
+    public abstract function scrapeVariant(ProductVariant $variant);
 
     private $parent = null;
 	
