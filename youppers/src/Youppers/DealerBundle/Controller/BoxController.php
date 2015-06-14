@@ -70,7 +70,7 @@ class BoxController extends Controller
     		$product = $boxProduct->getProduct();
     	}
 
-    	return array('boxProduct' => $boxProduct, 'scraping' => $this->get('youppers.scraper')->products($product->getBrand()->getCode(),$product->getCode()));
+    	return array('boxProduct' => $boxProduct);
     }
     
 }

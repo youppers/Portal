@@ -12,7 +12,7 @@ class ScraperCommand extends ContainerAwareCommand
 	protected function configure()
 	{
 		$this
-		->setName('youppers:scraper')
+		->setName('youppers:company:scraper')
 		->setDescription('Scrape company brand site')
 		->addArgument('company', InputArgument::REQUIRED, 'Code of the Company')
 		->addArgument('brand', InputArgument::OPTIONAL, 'Code of the Brand')
@@ -28,7 +28,7 @@ class ScraperCommand extends ContainerAwareCommand
 	{			
 		$input->validate();
 
-		$scraper = $this->getContainer()->get('youppers.scraper.factory')->create($input->getArgument("company"),$input->getArgument("brand"));
+		$scraper = $this->getContainer()->get('youppers.company.scraper.factory')->create($input->getArgument("company"),$input->getArgument("brand"));
 		
 		$scraper->setForce($input->getOption('force'));
 		$scraper->setEnable($input->getOption('enable'));

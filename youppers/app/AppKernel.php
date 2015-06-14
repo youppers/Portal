@@ -40,7 +40,7 @@ class AppKernel extends Kernel
         		
         	// YOUPPERS
         	new Youppers\CommonBundle\YouppersCommonBundle(),
-        	new Youppers\ScraperBundle\YouppersScraperBundle(),
+        	//new Youppers\ScraperBundle\YouppersScraperBundle(),
         	new Youppers\CompanyBundle\YouppersCompanyBundle(),
         	new Youppers\ProductBundle\YouppersProductBundle(),
         	new Youppers\DealerBundle\YouppersDealerBundle(),
