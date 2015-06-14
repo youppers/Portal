@@ -1,9 +1,11 @@
 <?php
-namespace Youppers\ScraperBundle\Scraper;
+namespace Youppers\CompanyBundle\Scraper;
 
 use Goutte\Client;
 use Youppers\CompanyBundle\Entity\Brand;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\ProductBundle\Manager\ProductCollectionManager;
 use Youppers\ProductBundle\Manager\ProductTypeManager;
 
@@ -15,11 +17,25 @@ abstract class BaseScraper extends AbstractScraper
 	public function setManagerRegistry(ManagerRegistry $managerRegistry)
 	{
 		parent::setManagerRegistry($managerRegistry);
-		$this->collectionManager = new ProductCollectionManager($this->em);		
-		$this->productTypeManager = new ProductTypeManager($this->em);		
+		$this->collectionManager = new ProductCollectionManager($managerRegistry);
+		$this->productTypeManager = new ProductTypeManager($managerRegistry);
 	}
-		
-	protected $createCollection;
+
+    protected $scrapeCollections;
+
+    public function setScrapeCollections($scrapeCollections)
+    {
+        $this->scrapeCollections = $scrapeCollections;
+    }
+
+    protected $scrapeProducts;
+
+    public function setScrapeProducts($scrapeProducts)
+    {
+        $this->scrapeProducts = $scrapeProducts;
+    }
+
+    protected $createCollection;
 	
 	public function setCreateCollection($createCollection)
 	{
@@ -57,20 +73,58 @@ abstract class BaseScraper extends AbstractScraper
 	}
 	
 	protected $client;
-	
+
+    protected function getBrandCollections(Brand $brand)
+    {
+        if ($this->scrapeCollections) {
+            $this->scrapeBrandCollections($this->brand);
+        }
+        return $this->collectionManager->findBy(array('brand' => $brand));
+    }
 	
 	public function scrape()
-	{
-		$this->getLogger()->info("Begin scraping of ".$this->brand);
+    {
+        if ($this->collection) {
+            $this->scrapeCollection($this->collection);
+        } elseif ($this->brand) {
+            $this->scrapeBrand($this->brand);
+        } else {
+            $this->getLogger()->info(sprintf("Begin scraping company '%s'",$this->company));
+            foreach ($this->company->getBrands() as $brand) {
+                $this->scrapeBrand($brand);
+            }
+            $this->getLogger()->info(sprintf("End scraping company '%s'",$this->company));
+        }
+    }
+
+    public function scrapeBrand(Brand $brand)
+    {
+		$this->getLogger()->info(sprintf("Begin scraping brand '%s'",$brand));
 		
 		$this->client = new Client();
 		
-		$collections = $this->scrapeCollections();
+		$collections = $this->getBrandCollections($brand);
 		
 		foreach ($collections as $collection) {
-			$this->getLogger()->info(sprintf("Collection: '%s'",$collection));				
-		}		
-		$this->getLogger()->info("End scraping.");
+            $this->scrapeCollection($collection);
+		}
+        $this->getLogger()->info(sprintf("End scraping brand '%s'",$brand));
 	}
-	
+
+    public function scrapeCollection(ProductCollection $collection)
+    {
+        $this->getLogger()->info(sprintf("Begin scraping collection '%s'",$collection));
+        foreach ($collection->getProductVariants() as $variant) {
+            $this->scrapeVariant($variant);
+        }
+        $this->getLogger()->info(sprintf("End scraping collection '%s'",$collection));
+    }
+
+    public function scrapeVariant(ProductVariant $variant)
+    {
+        $this->getLogger()->info(sprintf("Begin scraping variant '%s'",$variant));
+        // TODO
+        $this->getLogger()->info(sprintf("End scraping variant '%s'",$variant));
+    }
+
 }

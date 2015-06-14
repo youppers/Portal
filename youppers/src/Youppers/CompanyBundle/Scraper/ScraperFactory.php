@@ -1,5 +1,5 @@
 <?php
-namespace Youppers\ScraperBundle\Scraper;
+namespace Youppers\CompanyBundle\Scraper;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -25,7 +25,7 @@ class ScraperFactory extends ContainerAware
 	 * @throws \Exception
 	 * @return AbstractScraper
 	 */
-	public function create($companyCode,$brandCode)
+	public function create($companyCode,$brandCode,$collectionCode)
 	{
 		$company = $this->managerRegistry->getRepository('YouppersCompanyBundle:Company')->findOneBy(array('code' => $companyCode));
 
@@ -46,11 +46,21 @@ class ScraperFactory extends ContainerAware
             }
 
             $this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $brandCode, $brand));
+
+            if ($collectionCode) {
+                $collection = $this->managerRegistry->getRepository('YouppersProductBundle:ProductCollection')->findOneBy(array('brand' => $brand, 'code' => $collectionCode));
+                if (empty($collection)) {
+                    throw new \Exception(sprintf("Collection '%s' not found", $collectionCode));
+                }
+            } else {
+                $collection = null;
+            }
         } else {
             $brand = null;
+            $collection = null;
         }
 				
-		$classname = sprintf("Youppers\ScraperBundle\Scraper\%s\Scraper",$company->getCode());
+		$classname = sprintf("Youppers\CompanyBundle\Scraper\%s\Scraper",$company->getCode());
 		
 		$this->logger->debug(sprintf("Scraper: '%s'", $classname));
 				
@@ -59,8 +69,9 @@ class ScraperFactory extends ContainerAware
 		$scraper->setLogger($this->logger);
 		$scraper->setContainer($this->container);
 		$scraper->setCompany($company);
-		$scraper->setBrand($brand);
-		
+		if ($brand) $scraper->setBrand($brand);
+        if ($collection) $scraper->setCollection($collection);
+
 		return $scraper;
 		
 	}

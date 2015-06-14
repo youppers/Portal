@@ -1,5 +1,5 @@
 <?php
-namespace Youppers\CompanyBundle\Scraper\MZ;
+namespace Youppers\CompanyBundle\Scraper\IS;
 
 use Youppers\CompanyBundle\Scraper\BaseScraper;
 

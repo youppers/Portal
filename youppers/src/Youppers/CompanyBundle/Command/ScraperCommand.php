@@ -16,7 +16,10 @@ class ScraperCommand extends ContainerAwareCommand
 		->setDescription('Scrape company brand site')
 		->addArgument('company', InputArgument::REQUIRED, 'Code of the Company')
 		->addArgument('brand', InputArgument::OPTIONAL, 'Code of the Brand')
+            ->addArgument('collection', InputArgument::OPTIONAL, 'Code of the Collection')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
+            ->addOption('scrape-collections',null, InputOption::VALUE_NONE, 'Scrape collections')
+            ->addOption('scrape-products',null, InputOption::VALUE_NONE, 'Scrape products')
 		->addOption('create-product',null, InputOption::VALUE_NONE, 'Create product if dont exists')
 		->addOption('create-collection',null, InputOption::VALUE_NONE, 'Create product collection if dont exists')
 		->addOption('create-variant',null, InputOption::VALUE_NONE, 'Create product variant if dont exists')
@@ -28,14 +31,20 @@ class ScraperCommand extends ContainerAwareCommand
 	{			
 		$input->validate();
 
-		$scraper = $this->getContainer()->get('youppers.company.scraper.factory')->create($input->getArgument("company"),$input->getArgument("brand"));
+		$scraper = $this->getContainer()->get('youppers.company.scraper.factory')->create($input->getArgument("company"),$input->getArgument("brand"),$input->getArgument("collection"));
 		
 		$scraper->setForce($input->getOption('force'));
 		$scraper->setEnable($input->getOption('enable'));
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
 			$scraper->setDebug(true);
 		}
-		
+
+        if (method_exists($scraper,'setScrapeCollections')) {
+            $scraper->setScrapeCollections($input->getOption('scrape-collections'));
+        }
+        if (method_exists($scraper,'setScrapeProducts')) {
+            $scraper->setScrapeProducts($input->getOption('scrape-products'));
+        }
 		if (method_exists($scraper,'setCreateProduct')) {
 			$scraper->setCreateProduct($input->getOption('create-product'));
 		}

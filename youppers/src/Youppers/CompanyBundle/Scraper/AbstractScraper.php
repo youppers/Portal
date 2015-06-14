@@ -1,5 +1,5 @@
 <?php
-namespace Youppers\ScraperBundle\Scraper;
+namespace Youppers\CompanyBundle\Scraper;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
@@ -7,14 +7,19 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 use Youppers\CompanyBundle\Entity\Company;
 use Youppers\CompanyBundle\Entity\Brand;
+use Youppers\ProductBundle\Entity\ProductCollection;
 
 use GuzzleHttp\Message\Request;
 
 abstract class AbstractScraper extends ContainerAware
 {
 	public abstract function scrape();
-	
-	private $parent = null;
+
+    public abstract function scrapeBrand(Brand $brand);
+
+    public abstract function scrapeCollection(ProductCollection $collection);
+
+    private $parent = null;
 	
 	protected function setParent(AbstractScraper $parent)
 	{
@@ -75,18 +80,25 @@ abstract class AbstractScraper extends ContainerAware
 		$this->debug = $debug;
 	}
 	
-	protected $company;
+	protected $company = null;
 	
 	public function setCompany(Company $company)
 	{
 		$this->company = $company;
 	}
 	
-	protected $brand;
+	protected $brand = null;
 	
 	public function setBrand(Brand $brand)
 	{
 		$this->brand = $brand;
 	}
-	
+
+    protected $collection = null;
+
+    public function setCollection(ProductCollection $collection)
+    {
+        $this->collection = $collection;
+    }
+
 }
