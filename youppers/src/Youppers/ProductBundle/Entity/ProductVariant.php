@@ -84,8 +84,13 @@ class ProductVariant
 	 * @Serializer\Groups({"json.variant.list", "json.variant.read"})
 	 **/
 	protected $product;
-	
-	/**
+
+    /**
+     * @ORM\Column(type="datetime", name="scraped_at")
+     */
+    protected $scrapedAt;
+
+    /**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -127,28 +132,6 @@ class ProductVariant
 	}
 	
 	/**
-	 * Update variant named based on attributes that are variant specific
-	 */
-	private function updateName() {
-		$attributesType = array();
-		foreach ($this->getAttributesVariant() as $productAttribute) {
-			$attributeType = $productAttribute->getAttributeType();
-			$attributeType->getName(); // fetch
-			$attributesType[]= $attributeType;
-		}
-		dump($attributesType);
-		$criteria = Criteria::create()->where(Criteria::expr()->in("attributeType", $attributesType));
-		dump($attributesType);
-		dump($this->getVariantProperties());
-		$properties = $this->getVariantProperties()->matching($criteria);
-		$nameAtoms = array();
-		foreach ($properties as $property) {
-			$nameAtoms[] = $property->getAttributeOption()->getValue();
-		}
-		$this->setName(implode(", ",$nameAtoms));
-	}
-	
-	/**
 	 * @param VariantProperty $variantProperty
 	 * @return void
 	 */
@@ -156,7 +139,6 @@ class ProductVariant
 	{
 		$variantProperty->setProductVariant($this);
 		$this->variantProperties->add($variantProperty);
-		//$this->updateName();
 	}
 	
 	/**
@@ -380,5 +362,29 @@ class ProductVariant
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Set scrapedAt
+     *
+     * @param \DateTime $scrapedAt
+     *
+     * @return ProductVariant
+     */
+    public function setScrapedAt($scrapedAt)
+    {
+        $this->scrapedAt = $scrapedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get scrapedAt
+     *
+     * @return \DateTime
+     */
+    public function getScrapedAt()
+    {
+        return $this->scrapedAt;
     }
 }

@@ -13,6 +13,7 @@ class Scraper extends BaseScraper
     protected function doVariantScrape(ProductVariant $variant)
     {
         $code = $variant->getProduct()->getCode();
+        $variantcode = substr($code, -2, 2);
         $parameters = array(
             'tx_indexedsearch' => array(
                 'sword' => substr($code,0,-2)
@@ -36,10 +37,20 @@ class Scraper extends BaseScraper
             }
             $product['title'] = $productcrawler->filterXPath('//*[@id="productText"]/div/div[1]/div/h1')->html();
 
+            $product['codes'] = array();
+
             foreach (preg_split("/,/",$productcrawler->filterXPath('//*[@id="productText"]/div/div[1]/div/p[1]/span')->text()) as $productcode) {
                 $productcode = trim($productcode);
                 if (!empty($productcode)) {
-                    $product['codes'][] = $productcode;
+                    if (!in_array($productcode,$product['codes'])) {
+                        $product['codes'][] = $productcode;
+                    }
+                    if (strlen($productcode) == 7 && substr($productcode, 0, 5) == substr($code, 0, 5)) {
+                        $productcode = substr($productcode, 0, -2) . $variantcode;
+                    }
+                    if (!in_array($productcode,$product['codes'])) {
+                        $product['codes'][] = $productcode;
+                    }
                 }
             }
 
@@ -62,11 +73,25 @@ class Scraper extends BaseScraper
             $results[] = $uri;
             $products[] = $product;
 
+            $this->getLogger()->debug("Codes found: " . implode(' ',$product['codes']));
+
             if (in_array($code,$product['codes'])) {
-                $this->getLogger()->info("Code found");
+                if (count($product['codes']) > 1) {
+                    // TODO update two variants;
+                }
                 break; // found
+            } else {
+                $this->getLogger()->warning("No results found for " . $variant . " in page " . $uri);
             }
-            // TODO salvare !
+        }
+
+        if (empty($product)) {
+            $this->getLogger()->warning("No result for " . $code);
+        } else {
+            if (!empty($product['images'])) {
+                $uri = array_shift($product['images']);
+                $this->addVariantImage($variant,$uri);
+            }
         }
 
     }

@@ -96,8 +96,17 @@ class Brand
 	 * @ORM\OneToMany(targetEntity="Product", mappedBy="brand")
 	 **/
 	private $products;
-	
-	public function __toString()
+
+    public function getCompanyFullCode() {
+        return $this->getCompany() ? $this->getCompany()->getCode() : 'null';
+    }
+
+    public function getFullCode() {
+        return $this->getCode() ? $this->getCompanyFullCode() . '-' . $this->getCode() : 'null';
+    }
+
+
+    public function __toString()
 	{
 		return $this->getName() ? $this->getCompany() . ' - ' . $this->getName() . ' [' . $this->getCode() . ']': 'New';
 	}
