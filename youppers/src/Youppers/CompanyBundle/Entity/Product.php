@@ -44,7 +44,7 @@ class Product
 	protected $productPrices;	
 	
 	/**
-	 * @ORM\Column(type="string", length=60)
+	 * @ORM\Column(type="string")
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json"})
 	 */
