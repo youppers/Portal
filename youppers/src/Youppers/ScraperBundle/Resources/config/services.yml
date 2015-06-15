@@ -1,9 +1,0 @@
-services:
-  youppers.scraper:
-      class: 'Youppers\ScraperBundle\Controller\DefaultController'
-      
-  youppers.scraper.factory:
-      class: 'Youppers\ScraperBundle\Scraper\ScraperFactory'
-      arguments: ['@doctrine', '@logger']
-      calls:
-        - [ setContainer, [ '@service_container' ] ]

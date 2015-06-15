@@ -108,7 +108,7 @@ class ConsultantAdmin extends YouppersAdmin
 		)
 		->end()
 		->with('Details', array('class' => 'col-md-6'))
-		->add('user', 'sonata_type_model_list')
+		->add('user', 'sonata_type_model_list', array('required' => false))
 		;
 		if (!$this->hasParentFieldDescription()) {
 			$formMapper->add('dealer', 'sonata_type_model_list', array('required' => false));

@@ -1,5 +1,5 @@
 services:
-    youppers.scraper.factory:
+    youppers.company.scraper.factory:
         class: 'Youppers\CompanyBundle\Scraper\ScraperFactory'
         arguments: ['@doctrine', '@logger']
         calls:

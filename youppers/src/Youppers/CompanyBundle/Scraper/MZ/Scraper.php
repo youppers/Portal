@@ -1,7 +1,7 @@
 <?php
-namespace Youppers\ScraperBundle\Scraper\MG\MRZZ;
+namespace Youppers\CompanyBundle\Scraper\MZ;
 
-use Youppers\ScraperBundle\Scraper\BaseScraper;
+use Youppers\CompanyBundle\Scraper\BaseScraper;
 
 class Scraper extends BaseScraper
 {

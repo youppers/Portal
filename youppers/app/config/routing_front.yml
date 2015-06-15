@@ -103,11 +103,6 @@ youppers_company:
     resource: "@YouppersCompanyBundle/Resources/config/routing.yml"
     prefix:   /    
 
-scraper:
-    resource: "@YouppersScraperBundle/Controller/"
-    type:     annotation
-    prefix:   /scraper
-
 EndroidQrCodeBundle:
     resource:   "@EndroidQrCodeBundle/Controller/"
     type:       annotation

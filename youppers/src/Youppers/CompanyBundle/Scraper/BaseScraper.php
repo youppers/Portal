@@ -1,25 +1,56 @@
 <?php
-namespace Youppers\ScraperBundle\Scraper;
+namespace Youppers\CompanyBundle\Scraper;
 
 use Goutte\Client;
+use GuzzleHttp\Client as GuzzleClient;
+use Sonata\MediaBundle\Model\Media;
+use Symfony\Component\HttpFoundation\File\File;
 use Youppers\CompanyBundle\Entity\Brand;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\ProductBundle\Manager\ProductCollectionManager;
 use Youppers\ProductBundle\Manager\ProductTypeManager;
+use Youppers\ProductBundle\Manager\ProductVariantManager;
 
 abstract class BaseScraper extends AbstractScraper
 {
 	
 	private $collectionManager;
-	
+    private $productTypeManager;
+    private $variantManager;
+
 	public function setManagerRegistry(ManagerRegistry $managerRegistry)
 	{
 		parent::setManagerRegistry($managerRegistry);
-		$this->collectionManager = new ProductCollectionManager($this->em);		
-		$this->productTypeManager = new ProductTypeManager($this->em);		
+		$this->collectionManager = new ProductCollectionManager($managerRegistry);
+		$this->productTypeManager = new ProductTypeManager($managerRegistry);
+        $this->variantManager = new ProductVariantManager($managerRegistry);
 	}
-		
-	protected $createCollection;
+
+    /**
+     * @return \Sonata\MediaBundle\Model\MediaManagerInterface
+     */
+    public function getMediaManager()
+    {
+        return $this->container->get('sonata.media.manager.media');
+    }
+
+    protected $scrapeCollections;
+
+    public function setScrapeCollections($scrapeCollections)
+    {
+        $this->scrapeCollections = $scrapeCollections;
+    }
+
+    protected $scrapeProducts;
+
+    public function setScrapeProducts($scrapeProducts)
+    {
+        $this->scrapeProducts = $scrapeProducts;
+    }
+
+    protected $createCollection;
 	
 	public function setCreateCollection($createCollection)
 	{
@@ -57,20 +88,96 @@ abstract class BaseScraper extends AbstractScraper
 	}
 	
 	protected $client;
-	
+
+    protected function getBrandCollections(Brand $brand)
+    {
+        if ($this->scrapeCollections) {
+            $this->scrapeBrandCollections($this->brand);
+        }
+        return $this->collectionManager->findBy(array('brand' => $brand));
+    }
 	
 	public function scrape()
-	{
-		$this->getLogger()->info("Begin scraping of ".$this->brand);
+    {
+        $this->client = new Client();
+
+        if ($this->collection) {
+            $this->scrapeCollection($this->collection);
+        } elseif ($this->brand) {
+            $this->scrapeBrand($this->brand);
+        } else {
+            $this->getLogger()->info(sprintf("Scraping company '%s'",$this->company));
+            foreach ($this->company->getBrands() as $brand) {
+                $this->scrapeBrand($brand);
+            }
+            $this->getLogger()->debug(sprintf("End scraping company '%s'",$this->company));
+        }
+    }
+
+    public function scrapeBrand(Brand $brand)
+    {
+		$this->getLogger()->info(sprintf("Scraping brand '%s'",$brand));
 		
-		$this->client = new Client();
-		
-		$collections = $this->scrapeCollections();
+		$collections = $this->getBrandCollections($brand);
 		
 		foreach ($collections as $collection) {
-			$this->getLogger()->info(sprintf("Collection: '%s'",$collection));				
-		}		
-		$this->getLogger()->info("End scraping.");
+            $this->scrapeCollection($collection);
+		}
+        $this->getLogger()->debug(sprintf("End scraping brand '%s'",$brand));
 	}
-	
+
+    public function scrapeCollection(ProductCollection $collection)
+    {
+        $this->getLogger()->info(sprintf("Scraping collection '%s'",$collection));
+        foreach ($collection->getProductVariants() as $variant) {
+            $this->scrapeVariant($variant);
+        }
+        $this->getLogger()->debug(sprintf("End scraping collection '%s'",$collection));
+    }
+
+    public function scrapeVariant(ProductVariant $variant)
+    {
+        if ($variant->getScrapedAt()->diff(new \DateTime())->days < 1) {
+            $this->getLogger()->debug(sprintf("Skip already scraped today variant '%s'",$variant));
+            return;
+        }
+        $this->getLogger()->info(sprintf("Scraping variant '%s'",$variant));
+        $this->doVariantScrape($variant);
+        $this->getLogger()->debug(sprintf("End scraping variant '%s'",$variant));
+        $variant->setScrapedAt(new \DateTime());
+        $this->variantManager->save($variant);
+    }
+
+    protected function addVariantImage(ProductVariant $variant, $uri) {
+        $currentMedia = $variant->getImage();
+
+        if (!empty($currentMedia)) {
+            //if ($currentMedia->getProviderReference() == $uri) {
+                $this->getLogger()->debug(sprintf("Variant '%s' already have image '%s'",$variant->getProduct()->getNameCode(),$uri));
+                return;
+            //}
+        }
+
+        $media = $this->getMediaManager()->create();
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'guzzle-download');
+        $guzzle = new GuzzleClient();
+        $response = $guzzle->get($uri,['save_to' => $tmpFile]);
+        if ($response->getStatusCode() != 200) {
+            $this->getLogger()->error(sprintf("Error retrieving '%s': %s",$uri,$response->getReasonPhrase()));
+            return;
+        }
+        $media->setBinaryContent($tmpFile);
+        $media->setContext('youppers_product');
+        $media->setProviderName('sonata.media.provider.image');
+        $media->setProviderReference($uri);
+        $media->setName($variant->getProduct()->getFullCode());
+        $this->getLogger()->info(sprintf("Saved image '%s' as '%s'",trim($uri),$media->getName()));
+        $this->getMediaManager()->save($media);
+
+        $variant->setImage($media);
+    }
+
+    protected abstract function doVariantScrape(ProductVariant $variant);
+
 }

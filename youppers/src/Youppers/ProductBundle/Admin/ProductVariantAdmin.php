@@ -292,7 +292,8 @@ class ProductVariantAdmin extends YouppersAdmin
         	->add('enabled')
             ->add('pdfGallery')
             ->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
-            ->add('variantProperties', null, array('associated_property' => 'attributeOption'))            
+            ->add('variantProperties', null, array('associated_property' => 'attributeOption'))
+            ->add('scrapedAt')
             ->add('updatedAt')
             ->add('createdAt')
         ;
@@ -317,5 +318,5 @@ class ProductVariantAdmin extends YouppersAdmin
     
     	return $object;
     }
-    
+
 }

@@ -44,7 +44,7 @@ class Product
 	protected $productPrices;	
 	
 	/**
-	 * @ORM\Column(type="string", length=60)
+	 * @ORM\Column(type="string")
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json"})
 	 */
@@ -155,8 +155,16 @@ class Product
 	public function getNameCode() {
 		return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']' : 'null';		
 	}
-	
-	public function __toString()
+
+    public function getBrandFullCode() {
+        return $this->getBrand() ? $this->getBrand()->getFullCode() : 'null';
+    }
+
+    public function getFullCode() {
+        return $this->getCode() ? $this->getBrandFullCode() . '-' . $this->getCode() : 'null';
+    }
+
+    public function __toString()
 	{
 		return $this->getName() ? $this->getBrand() . ' - ' . $this->getNameCode() : 'New';
 	}
