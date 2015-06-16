@@ -4,10 +4,6 @@ client_id=4181e57a-cb6c-11e4-b4aa-0cc47a127a14_3jej301vyjy8s0ccwc4w4soo8wc4w4ko0
 client_secret=2zxj9pzrsu4gsg4okcswg84c04gwg4g0oko48wog8c0ocoko8o
 host=127.0.0.1
 
-authendpoint=http://$host/oauth/v2/token
-#jsonendpoint=http://$host/app_dev.php/jsonrpc/
-jsonendpoint=http://$host/jsonrpc/
-
 qrtextid=http://$host/qr/5eeed2c7-abb2-11e4-b4aa-0cc47a127a14?p1=a
 
 variant_id=05149cca-cccf-11e4-b4aa-0cc47a127a14
@@ -25,6 +21,10 @@ else
 	echo Add your configuration in $conf
 	exit
 fi
+
+authendpoint=http://$host/oauth/v2/token
+#jsonendpoint=http://$host/app_dev.php/jsonrpc/
+jsonendpoint=http://$host/jsonrpc/
 
 echo client_id=$client_id
 echo client_secret=$client_secret

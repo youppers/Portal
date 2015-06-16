@@ -9,6 +9,10 @@ _sonata_admin:
 sonata_user_admin:
     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
 
+youppers_product_admin:
+    resource: '@YouppersProductBundle/Resources/config/routing.yml'
+    prefix: product
+
 #sonata_media_pixlr:
 #    resource: '@SonataMediaBundle/Resources/config/routing/pixlr.xml'
 #    prefix:   /media

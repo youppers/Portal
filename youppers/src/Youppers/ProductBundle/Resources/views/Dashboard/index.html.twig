@@ -1,0 +1,80 @@
+{% extends 'YouppersCommonBundle:Admin:layout.html.twig' %}
+
+{% block tab_menu %}
+    &nbsp;
+{% endblock %}
+
+{% block title %}
+    Products Dashboard
+{% endblock %}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block list_table %}
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr class="sonata-ba-list-field-header">
+            <th class="sonata-ba-list-field-header-text">Company</th>
+            <th class="sonata-ba-list-field-header-text">Brand</th>
+            <th class="sonata-ba-list-field-header-text">Products</th>
+            <th class="sonata-ba-list-field-header-text">Collections</th>
+            <th class="sonata-ba-list-field-header-text">with Image</th>
+            <th class="sonata-ba-list-field-header-text">with Attachments</th>
+            <th class="sonata-ba-list-field-header-text">Variants</th>
+            <th class="sonata-ba-list-field-header-text">with Image</th>
+            <th class="sonata-ba-list-field-header-text">with Attachments</th>
+        </thead>
+
+        <tbody>
+            {% for company,brands in stats %}
+                {% for brand,stat in brands %}
+                    <tr>
+                        {% if loop.index == 1 %}
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text" rowspan="{{ loop.length }}">
+                                {{ company }}
+                            </td>
+                        {% endif %}
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ brand }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ stat.products|default(0) }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ stat.collections|default(0) }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ stat.with_image|default(0) }}
+                            {% if stat.collections|default(null) and stat.with_image|default(null) %} = {{ (100*stat.with_image/stat.collections)|number_format(0, '.', ',') }} %{% endif %}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ stat.with_attach|default(0) }}
+                            {% if stat.collections|default(null) and stat.with_attach|default(null) %} = {{ (100*stat.with_attach/stat.collections)|number_format(0, '.', ',') }} %{% endif %}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ stat.variants|default(0) }}
+                            {% if stat.products|default(null) and stat.variants|default(null) %} = {{ (100*stat.variants/stat.products)|number_format(0, '.', ',') }} %{% endif %}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ stat.variants_with_image|default(0) }}
+                            {% if stat.products|default(null) and stat.variants_with_image|default(null) %} = {{ (100*stat.variants_with_image/stat.products)|number_format(0, '.', ',') }} %{% endif %}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ stat.with_attach|default(0) }}
+                            {% if stat.products|default(null) and stat.variants_with_attach|default(null) %} = {{ (100*stat.variants_with_attach/stat.products)|number_format(0, '.', ',') }} %{% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+
+        <tfoot>
+        <tr>
+        </tr>
+        </tfoot>
+    </table>
+{% endblock %}
+

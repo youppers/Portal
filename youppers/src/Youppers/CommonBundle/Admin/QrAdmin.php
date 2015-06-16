@@ -36,6 +36,8 @@ class QrAdmin extends YouppersAdmin
 	{
 		$datagridMapper
 		->add('url')
+        ->add('products.code')
+        ->add('boxes.code')
 		->add('targetType')
 		->add('enabled')
 		;
@@ -76,7 +78,7 @@ class QrAdmin extends YouppersAdmin
 		
 		$formMapper
 			->add('url')
-			->add('targetType')
+//			->add('targetType')
 			->add('enabled', null, array('required' => false))
 		;
 		
