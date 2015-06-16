@@ -1,0 +1,4 @@
+youppers_product.admin.dashboard:
+    resource: "@YouppersProductBundle/Controller/DashboardController.php"
+    type:     annotation
+    prefix:   dashboard
