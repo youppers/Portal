@@ -75,14 +75,14 @@ class DashboardController extends Controller {
         $qb1->where('pc.image is not null');
 
         foreach ($qb1->getQuery()->getArrayResult() as $row) {
-            $stats[$row['company']][$row['brand']]['with_image'] = $row['collections'];
+            $stats[$row['company']][$row['brand']]['collections_with_image'] = $row['collections'];
         }
 
         $qb1 = clone $qb;
         $qb1->where('pc.pdfGallery is not null');
 
         foreach ($qb1->getQuery()->getArrayResult() as $row) {
-            $stats[$row['company']][$row['brand']]['with_attach'] = $row['collections'];
+            $stats[$row['company']][$row['brand']]['collections_with_attach'] = $row['collections'];
         }
 
         $qb = $this->getProductVariantRepository()
