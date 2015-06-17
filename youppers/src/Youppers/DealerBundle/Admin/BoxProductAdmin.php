@@ -106,7 +106,7 @@ class BoxProductAdmin extends Admin
 		$formMapper
 		->add('enabled', null, array('required'  => false))
 		->add('name')
-		->add('product', 'sonata_type_model_list', array('required'  => false, 'btn_add' => false,'btn_delete' => false))
+		->add('product', 'sonata_type_model_list', array('required'  => false, 'btn_add' => false))
         //->add('product','sonata_type_model_autocomplete', array('attr' => array('style' => 'min-width: 600px;'), 'placeholder' => 'Search using the code of the product','property' => 'code','multiple' => false))
 		;
 	}

@@ -78,6 +78,7 @@ class BoxAdmin extends YouppersAdmin
 	{
 		$showMapper
 		->add('store', null, array('route' => array('name' => 'show')))
+        ->add('qr.boxes', null, array('route' => array('name' => 'show'), 'associated_property' => 'name'))
 		->add('name')
 		->add('code')
 		->add('enabled')
@@ -86,8 +87,7 @@ class BoxAdmin extends YouppersAdmin
 		->add('createdAt')
 		->add('updatedAt')		
 		->add('boxProducts', null, array('route' => array('name' => 'edit'), 'associated_property' => 'nameProduct'))
-		->add('qr', null, array('label' => 'QRCode', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
-		->add('qr.boxes', null, array('route' => array('name' => 'show'), 'associated_property' => 'name'))
+		->add('qr', null, array('label' => 'QRCode', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))
 		;
 	}	
 
@@ -116,8 +116,8 @@ class BoxAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
+        ->add('name')
 		->add('code')
-		->add('name')
 		->add('store')
 		->add('enabled')
 		;
@@ -132,6 +132,10 @@ class BoxAdmin extends YouppersAdmin
 			//'enabled' => array('value' => 1)
 	);
 
+    protected $formOptions = array(
+        'cascade_validation' => true
+    );
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -144,8 +148,8 @@ class BoxAdmin extends YouppersAdmin
 			->add('store', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()));
 		}		
 		$formMapper
-		->add('code')
 		->add('name')
+		->add('code')
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
