@@ -62,13 +62,14 @@ class DashboardController extends Controller {
             ->createQueryBuilder('pc')
             ->leftJoin('pc.brand','b')
             ->leftJoin('b.company','c')
-            ->select('c.name as company','b.name as brand','count(pc.id) as collections')
+            ->select('c.name as company','b.name as brand','count(pc.id) as collections','sum(pc.enabled) as collections_enabled')
             ->groupBy('b.id')
             ->orderBy('c.name','ASC')
             ->addOrderBy('b.name','ASC');
 
         foreach ($qb->getQuery()->getArrayResult() as $row) {
             $stats[$row['company']][$row['brand']]['collections'] = $row['collections'];
+            $stats[$row['company']][$row['brand']]['collections_enabled'] = $row['collections_enabled'];
         }
 
         $qb1 = clone $qb;
@@ -76,6 +77,7 @@ class DashboardController extends Controller {
 
         foreach ($qb1->getQuery()->getArrayResult() as $row) {
             $stats[$row['company']][$row['brand']]['collections_with_image'] = $row['collections'];
+            $stats[$row['company']][$row['brand']]['collections_with_image_enabled'] = $row['collections_enabled'];
         }
 
         $qb1 = clone $qb;
@@ -83,6 +85,7 @@ class DashboardController extends Controller {
 
         foreach ($qb1->getQuery()->getArrayResult() as $row) {
             $stats[$row['company']][$row['brand']]['collections_with_attach'] = $row['collections'];
+            $stats[$row['company']][$row['brand']]['collections_with_attach_enabled'] = $row['collections_enabled'];
         }
 
         $qb = $this->getProductVariantRepository()
@@ -90,13 +93,14 @@ class DashboardController extends Controller {
             ->leftJoin('v.product','p')
             ->leftJoin('p.brand','b')
             ->leftJoin('b.company','c')
-            ->select('c.name as company','b.name as brand','count(v.id) as variants')
+            ->select('c.name as company','b.name as brand','count(v.id) as variants','sum(v.enabled) as variants_enabled')
             ->groupBy('b.id')
             ->orderBy('c.name','ASC')
             ->addOrderBy('b.name','ASC');
 
         foreach ($qb->getQuery()->getArrayResult() as $row) {
             $stats[$row['company']][$row['brand']]['variants'] = $row['variants'];
+            $stats[$row['company']][$row['brand']]['variants_enabled'] = $row['variants_enabled'];
         }
 
         $qb1 = clone $qb;
@@ -104,6 +108,7 @@ class DashboardController extends Controller {
 
         foreach ($qb1->getQuery()->getArrayResult() as $row) {
             $stats[$row['company']][$row['brand']]['variants_with_image'] = $row['variants'];
+            $stats[$row['company']][$row['brand']]['variants_with_image_enabled'] = $row['variants_enabled'];
         }
 
         $qb1 = clone $qb;
@@ -111,9 +116,10 @@ class DashboardController extends Controller {
 
         foreach ($qb1->getQuery()->getArrayResult() as $row) {
             $stats[$row['company']][$row['brand']]['variants_with_attach'] = $row['variants'];
+            $stats[$row['company']][$row['brand']]['variants_with_attach_enabled'] = $row['variants_enabled'];
         }
 
-        //dump($stats); //die;
+        dump($stats); //die;
 
         return array(
             'admin_pool' => $admin_pool,
