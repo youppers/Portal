@@ -119,7 +119,7 @@ class DashboardController extends Controller {
             $stats[$row['company']][$row['brand']]['variants_with_attach_enabled'] = $row['variants_enabled'];
         }
 
-        dump($stats); //die;
+        //dump($stats); //die;
 
         return array(
             'admin_pool' => $admin_pool,
