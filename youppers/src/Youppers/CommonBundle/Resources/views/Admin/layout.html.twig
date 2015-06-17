@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block side_bar_before_nav %}
-    {% if app.security.token and is_granted('ROLE_SONATA_SUPER_ADMIN') %}
+    {% if app.security.token and is_granted('ROLE_SUPER_ADMIN') %}
         {% set active = (app.request.attributes.get('_route') == 'youppers_product_dashboard_index') %}
         <ul class="sidebar-menu">
             <li class="treeview{% if active %} active{% endif %}">
