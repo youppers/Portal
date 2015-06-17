@@ -70,7 +70,7 @@ class AttributeOption
 	protected $value;
 	
 	/**
-	 * @ORM\Column(name="alias", type="string", nullable=true)
+	 * @ORM\Column(name="alias", type="string", length=1024, nullable=true)
 	 */
 	protected $alias;
 	

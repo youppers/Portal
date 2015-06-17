@@ -107,7 +107,7 @@ class AttributeOptionAdmin extends Admin
                 );
         }
         $formMapper
-		->add('alias', null, array('help'=>'Use ; to separate aliases'))
+		->add('alias', 'textarea', array('help'=>'Use ; to separate aliases','attr' => array('cols' => '40', 'rows' => '4')))
 		->add('enabled', null, array('required'  => false))
 		;
 
