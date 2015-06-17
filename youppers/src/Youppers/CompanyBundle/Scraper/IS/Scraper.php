@@ -3,12 +3,20 @@ namespace Youppers\CompanyBundle\Scraper\IS;
 
 use Youppers\CompanyBundle\Scraper\BaseScraper;
 use Youppers\ProductBundle\Entity\ProductVariant;
+use Youppers\ProductBundle\Entity\ProductCollection;
 
 use Symfony\Component\DomCrawler\Link;
 use Youppers\CompanyBundle\Scraper\ImgLink;
 
 class Scraper extends BaseScraper
 {
+     public function scrapeCollection(ProductCollection $collection)
+    {
+		if ($collection->getCode()=='NO SUITE DEFINED') {
+		    return;
+        }
+		parent::scrapeCollection($collection);
+    }
 
     protected function doVariantScrape(ProductVariant $variant)
     {
