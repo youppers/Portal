@@ -93,7 +93,7 @@ class AttributeOptionAdmin extends Admin
 		$formMapper
 		->add('position','hidden',array('attr'=>array("hidden" => true)))			
 		->add('value');
-        if (!$this->getParentFieldDescription()->getOption('hideOptionsImage')) {
+        if ($this->getParentFieldDescription() == null || !$this->getParentFieldDescription()->getOption('hideOptionsImage')) {
             $formMapper
                 ->add('image', 'sonata_type_model_list',
                     array(
