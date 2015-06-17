@@ -26,11 +26,9 @@ class VariantGuesser extends BaseVariantGuesser
 
 class FinPropertyGuesser extends BasePropertyGuesser
 {
-	
-	private $defaultOption;
-	
 	protected function getDefaultOption(ProductVariant $variant, AttributeType $type)
 	{
+        parent::getDefaultOption($variant,$type);
 		if (null === $this->defaultOption) {
 			$standard = $variant->getProductCollection()->getStandards()
 				->matching(Criteria::create()->where(Criteria::expr()->eq("attributeType", $type)))->first();
@@ -45,6 +43,5 @@ class FinPropertyGuesser extends BasePropertyGuesser
 		}
 		return $this->defaultOption; 
 	}
-	
 }
 

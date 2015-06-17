@@ -15,7 +15,9 @@ class BasePropertyGuesser extends AbstractGuesser
 	private $type;
 	
     private $isVariant = false;
-   
+
+    protected $defaultOption;
+
     public function setIsVariant($isVariant)
     {
        $this->isVariant = $isVariant;
@@ -295,7 +297,20 @@ class BasePropertyGuesser extends AbstractGuesser
 	 */
 	protected function getDefaultOption(ProductVariant $variant, AttributeType $type)
 	{
-		return null;
+        if (null === $this->defaultOption) {
+            $options = $variant->getProductCollection()->getDefaults();
+            if (empty($options)) {
+                $this->defaultOption = false;
+            } else {
+                foreach ($options as $option) {
+                    if ($option->getAttributeType() == $type) {
+                        $this->defaultOption = $option;
+                        break;
+                    }
+                }
+            }
+        }
+        return $this->defaultOption;
 	}
 
 }

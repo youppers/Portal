@@ -85,8 +85,14 @@ class ProductCollection
 	 * @ORM\JoinTable(name="youppers_product__collection_standard")
 	 */
 	protected $standards;
-	
-	/**
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AttributeOption")
+     * @ORM\JoinTable(name="youppers_product__collection_default")
+     */
+    protected $defaults;
+
+    /**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"json.collection.read"})
@@ -481,5 +487,39 @@ class ProductCollection
     public function getStandards()
     {
         return $this->standards;
+    }
+
+    /**
+     * Add default
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $default
+     *
+     * @return ProductCollection
+     */
+    public function addDefault(\Youppers\ProductBundle\Entity\AttributeOption $default)
+    {
+        $this->defaults[] = $default;
+
+        return $this;
+    }
+
+    /**
+     * Remove default
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $default
+     */
+    public function removeDefault(\Youppers\ProductBundle\Entity\AttributeOption $default)
+    {
+        $this->defaults->removeElement($default);
+    }
+
+    /**
+     * Get defaults
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDefaults()
+    {
+        return $this->defaults;
     }
 }
