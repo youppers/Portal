@@ -20,12 +20,12 @@
             <th class="sonata-ba-list-field-header-text">Company</th>
             <th class="sonata-ba-list-field-header-text">Brand</th>
             <th class="sonata-ba-list-field-header-text">Products</th>
-            <th class="sonata-ba-list-field-header-text">Collections</th>
-            <th class="sonata-ba-list-field-header-text">C. with Image</th>
-            <th class="sonata-ba-list-field-header-text">C. with Attachments</th>
-            <th class="sonata-ba-list-field-header-text">Variants</th>
-            <th class="sonata-ba-list-field-header-text">V. with Image</th>
-            <th class="sonata-ba-list-field-header-text">V. with Attachments</th>
+            <th class="sonata-ba-list-field-header-text">Collections<br/>Enabled</th>
+            <th class="sonata-ba-list-field-header-text">C. with Image<br/>Enabled</th>
+            <th class="sonata-ba-list-field-header-text">C. with Attachments<br/>Enabled</th>
+            <th class="sonata-ba-list-field-header-text">Variants<br/>Enabled</th>
+            <th class="sonata-ba-list-field-header-text">V. with Image<br/>Enabled</th>
+            <th class="sonata-ba-list-field-header-text">V. with Attachments<br/>Enabled</th>
         </thead>
 
         <tbody>
@@ -45,26 +45,32 @@
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ stat.collections|default(0) }}
+                            <br/>{{ stat.collections_enabled|default(0) }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ stat.collections_with_image|default(0) }}
-                            {% if stat.collections|default(null) and stat.collections_with_image|default(null) %} = {{ (100*stat.collections_with_image/stat.collections)|number_format(0, '.', ',') }} %{% endif %}
+                            {% if stat.collections|default(null) and stat.collections_with_image|default(null) %} = {{ (100*stat.collections_with_image/stat.collections)|number_format(0, '.', ',') }}%{% endif %}
+                            <br/>{{ stat.collections_with_image_enabled|default(0) }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ stat.collections_with_attach|default(0) }}
-                            {% if stat.collections|default(null) and stat.collections_with_attach|default(null) %} = {{ (100*stat.collections_with_attach/stat.collections)|number_format(0, '.', ',') }} %{% endif %}
+                            {% if stat.collections|default(null) and stat.collections_with_attach|default(null) %} = {{ (100*stat.collections_with_attach/stat.collections)|number_format(0, '.', ',') }}%{% endif %}
+                            <br/>{{ stat.collections_with_attach_enabled|default(0) }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ stat.variants|default(0) }}
-                            {% if stat.products|default(null) and stat.variants|default(null) %} = {{ (100*stat.variants/stat.products)|number_format(0, '.', ',') }} %{% endif %}
+                            {% if stat.products|default(null) and stat.variants|default(null) %} = {{ (100*stat.variants/stat.products)|number_format(0, '.', ',') }}%{% endif %}
+                            <br/>{{ stat.variants_enabled|default(0) }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ stat.variants_with_image|default(0) }}
-                            {% if stat.products|default(null) and stat.variants_with_image|default(null) %} = {{ (100*stat.variants_with_image/stat.products)|number_format(0, '.', ',') }} %{% endif %}
+                            {% if stat.products|default(null) and stat.variants_with_image|default(null) %} = {{ (100*stat.variants_with_image/stat.products)|number_format(0, '.', ',') }}%{% endif %}
+                            <br/>{{ stat.variants_with_image_enabled|default(0) }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ stat.variants_with_attach|default(0) }}
-                            {% if stat.products|default(null) and stat.variants_with_attach|default(null) %} = {{ (100*stat.variants_with_attach/stat.products)|number_format(0, '.', ',') }} %{% endif %}
+                            {% if stat.products|default(null) and stat.variants_with_attach|default(null) %} = {{ (100*stat.variants_with_attach/stat.products)|number_format(0, '.', ',') }}%{% endif %}
+                            <br/>{{ stat.variants_with_attach_enabled|default(0) }}
                         </td>
                     </tr>
                 {% endfor %}
