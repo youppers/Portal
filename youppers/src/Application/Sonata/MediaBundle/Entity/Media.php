@@ -37,4 +37,32 @@ class Media extends BaseMedia
     {
         return $this->id;
     }
+
+    /**
+     * @var string $Hashkey
+     */
+    protected $hashkey;
+
+    /**
+     * Get Hashkey
+     *
+     * @return string $Hashkey
+     */
+    public function getHashkey()
+    {
+        return $this->hashkey;
+    }
+
+    /**
+     * Set Hashkey
+     *
+     * @return string $Hashkey
+     */
+    public function setHashkey($Hashkey)
+    {
+        $this->hashkey = $Hashkey;
+        return $this;
+    }
+
+
 }

@@ -17,5 +17,7 @@
             <generator strategy="UUID"/>
         </id>
 
+        <field name="hashkey" column="hashkey" type="string" nullable="true" length="255" />
+
     </entity>
 </doctrine-mapping>
