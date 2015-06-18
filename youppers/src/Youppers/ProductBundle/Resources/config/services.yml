@@ -14,4 +14,11 @@ services:
     youppers.product.manager.product_variant:
         class:     Youppers\ProductBundle\Manager\ProductVariantManager
         arguments: ['@doctrine']
-            
+
+    youppers.product.manager.product_collection:
+        class:     Youppers\ProductBundle\Manager\ProductCollectionManager
+        arguments: ['@doctrine']
+
+    youppers.product.manager.attribute_option:
+        class:     Youppers\ProductBundle\Manager\AttributeOptionManager
+        arguments: ['@doctrine']

@@ -51,3 +51,11 @@ services:
         public:    false
         tags:
             - { name: security.voter }
+
+    youppers.company.manager.brand:
+        class:     Youppers\CompanyBundle\Manager\BrandManager
+        arguments: ['@doctrine']
+
+    youppers.company.manager.product:
+        class:     Youppers\CompanyBundle\Manager\ProductManager
+        arguments: ['@doctrine']
