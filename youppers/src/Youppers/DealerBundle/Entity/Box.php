@@ -130,7 +130,7 @@ class Box
 
 	public function __toString()
 	{
-		return $this->getName() ? $this->getStore() . ' - ' . $this->getName(): 'New';
+		return $this->getName() ? $this->getStore() . ' - ' . $this->getName() . ' [' . $this->getCode() . ']': 'New';
 	}
 	
 	/**
