@@ -84,7 +84,12 @@ class Qr
 	 **/
 	protected $boxes;
 
-	/**
+    /**
+     * @ORM\OneToMany(targetEntity="\Application\Sonata\MediaBundle\Entity\Media", mappedBy="qr", fetch="EAGER")
+     **/
+    protected $medias;
+
+    /**
 	 * Use this for qr instead of direct relations
 	 * 
 	 * @Serializer\VirtualProperty
@@ -321,5 +326,39 @@ class Qr
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Add media
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $media
+     *
+     * @return Qr
+     */
+    public function addMedia(\Application\Sonata\MediaBundle\Entity\Media $media)
+    {
+        $this->medias[] = $media;
+
+        return $this;
+    }
+
+    /**
+     * Remove media
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $media
+     */
+    public function removeMedia(\Application\Sonata\MediaBundle\Entity\Media $media)
+    {
+        $this->medias->removeElement($media);
+    }
+
+    /**
+     * Get medias
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMedias()
+    {
+        return $this->medias;
     }
 }

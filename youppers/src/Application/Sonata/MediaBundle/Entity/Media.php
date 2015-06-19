@@ -44,6 +44,11 @@ class Media extends BaseMedia
     protected $hashkey;
 
     /**
+     * @var 'Youppers\CommonBundle\Entity\Qr' $qr
+     */
+    protected $qr;
+
+    /**
      * Get Hashkey
      *
      * @return string $Hashkey
@@ -64,5 +69,27 @@ class Media extends BaseMedia
         return $this;
     }
 
+    /**
+     * Set qr
+     *
+     * @param \Youppers\CommonBundle\Entity\Qr $qr
+     * @return Product
+     */
+    public function setQr(\Youppers\CommonBundle\Entity\Qr $qr = null)
+    {
+        $this->qr = $qr;
+
+        return $this;
+    }
+
+    /**
+     * Get qr
+     *
+     * @return \Youppers\CommonBundle\Entity\Qr
+     */
+    public function getQr()
+    {
+        return $this->qr;
+    }
 
 }

@@ -18,6 +18,6 @@
         </id>
 
         <field name="hashkey" column="hashkey" type="string" nullable="true" length="255" />
-
+        <many-to-one field="qr" target-entity="Youppers\CommonBundle\Entity\Qr" inversed-by="medias" />
     </entity>
 </doctrine-mapping>

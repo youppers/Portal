@@ -1,9 +1,16 @@
 youppers_common:
   qr: 
     youppers_dealer_box:
+      name: "Box"
       entity: 'Youppers\DealerBundle\Entity\Box'
       route: youppers_dealer_box_show 
       
     youppers_company_product:
+      name: "Product"
       entity: 'Youppers\CompanyBundle\Entity\Product'
       route: youppers_company_product_show
+
+    youppers_media:
+      name: "Media"
+      entity: 'Application\Sonata\MediaBundle\Entity\Media'
+      route: sonata_media_download
