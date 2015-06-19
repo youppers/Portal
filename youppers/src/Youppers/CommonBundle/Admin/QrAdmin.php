@@ -15,7 +15,44 @@ use Symfony\Component\Validator\Constraints as Assert;
 class QrAdmin extends YouppersAdmin
 {
 
-	/**
+    private $targets;
+
+    public function setSubject($subject) {
+        parent::setSubject($subject);
+        $this->targets = array();
+        foreach ($this->getFormFieldDescriptions() as $field) {
+            $mapping = $field->getAssociationMapping();
+            if ($mapping) {
+                $targets = (call_user_func(array($subject,'get' . ucfirst($field->getName()))));
+                $this->targets[$field->getName()] = $targets? clone $targets : null;
+            }
+        }
+        //dump($this->targets);
+    }
+
+    public function prePersist($org) {
+        return $this->preUpdate($org);
+    }
+
+    public function preUpdate($qr)
+    {
+        foreach ($this->getFormFieldDescriptions() as $field) {
+            $mapping = $field->getAssociationMapping();
+            if ($mapping) {
+                $newTargets = call_user_func(array($qr,'get' . ucfirst($field->getName())));
+                foreach ($this->targets[$field->getName()] as $target) {
+                    if (!$newTargets->contains($target)) {
+                        $target->setQr(null);
+                    }
+                }
+                foreach ($newTargets as $target) {
+                    $target->setQr($qr);
+                }
+            }
+        }
+    }
+
+    /**
 	 * {@inheritdoc}
 	 */
 	protected function configureListFields(ListMapper $listMapper)
@@ -26,7 +63,7 @@ class QrAdmin extends YouppersAdmin
 		->add('products')
 		->add('boxes')
 		->add('enabled')
-		;				
+		;
 	}
 
 	/**
@@ -43,68 +80,81 @@ class QrAdmin extends YouppersAdmin
 		;
 	}
 
-	/**
+    /**
 	 * {@inheritdoc}
 	 */
 	protected function configureShowFields(ShowMapper $showMapper)
 	{
 		$showMapper
-		->add('text')
+		->add('url')
 		->add('targetType', 'text')
 		->add('enabled')
 		;
-		if ($this->subject->getTargetType() == 'youppers_company_product') {
-			$showMapper
-			->add('products', null, array('route' => array('name' => 'show')))
-			;
-		}
-		if ($this->subject->getTargetType() == 'youppers_dealer_box') {
-			$showMapper
-			->add('boxes', null, array('route' => array('name' => 'show')))
-			;
-		}
-	
+
+        if ($targetsField = $this->getTargetsField()) {
+            $showMapper
+                ->add($targetsField, null, array('route' => array('name' => 'show')))
+            ;
+        };
+
 		$showMapper
-		->add('createdAt')
+        ->add('text', null, array('label' => 'QRCode', 'route' => array('name' => 'youppers_common_qr_redirecttotarget'), 'template' => 'YouppersCommonBundle:CRUD:qr.html.twig'))
+        ->add('createdAt')
 		->add('updatedAt')
 		;
 	}
-	
+
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		
+
 		$formMapper
 			->add('url')
-//			->add('targetType')
+			->add('targetType', 'choice', array('choices' => $this->getTargetTypeChoices()))
 			->add('enabled', null, array('required' => false))
 		;
-		
-		if ($this->subject->getTargetType() == 'youppers_company_product') {
-// 			$formMapper
-// 				->add('products', 'sonata_type_model', array('multiple' => true, 'required' => false, 'by_reference' => true))
-// 			;
-		}
-		if ($this->subject->getTargetType() == 'youppers_dealer_box') {
-// 			$formMapper
-// 				->add('boxes', 'sonata_type_model', array('multiple' => true, 'required' => false, 'by_reference' => false))
-// 			;
-// 			$formMapper
-// 				->add('boxes', 'sonata_type_collection', 
-// 					array(
-// 						//'type_options' => array('delete' => false),
-// 	            		'by_reference'       => true,
-// 	            		'cascade_validation' => true,
-// 						//'required' => false
-// 				), array(
-// 	                'edit' => 'inline',
-// 	                'inline' => 'table'
-// 	            ))
-// 			;
-		}
-				
+
+		if (($this->hasRequest() && $this->getRequest()->isXmlHttpRequest())) {
+ 			$targetsFields = array('products','boxes','medias');
+		} elseif ($targetsField = $this->getTargetsField()) {
+            $targetsFields = array($targetsField);
+        } else {
+            $targetsFields = array();
+        }
+        foreach ($targetsFields as $targetsField) {
+            $formMapper
+                ->add($targetsField, 'sonata_type_model_autocomplete',
+                    array(
+                        'property' => 'name',
+                        'placeholder' => 'Search using the name of the target',
+                        'attr' => array('style' => 'width: 100%;'),
+                        'multiple' => true,
+                        'required' => false,
+                        'by_reference' => false)
+                );
+        }
 	}
+
+    function getTargetsField() {
+        $targets = $this->getConfigurationPool()->getContainer()->getParameter('youppers_common.qr');
+        if ($targetType = $this->subject->getTargetType()) {
+            $targetEntity = $targets[$this->subject->getTargetType()]['entity'];
+            $entityManager = $this->getConfigurationPool()->getContainer()->get('doctrine')->getManagerForClass($targetEntity);
+
+            $mapping = $entityManager->getClassMetadata($targetEntity)->getAssociationMapping('qr');
+            return $mapping['inversedBy'];
+        }
+    }
+
+
+    function getTargetTypeChoices() {
+        $choices = array();
+        foreach ($this->getConfigurationPool()->getContainer()->getParameter('youppers_common.qr') as $targetType => $options) {
+            $choices[$targetType] = $options['name'] ? : $targetType;
+        }
+        return $choices;
+    }
 
 }
