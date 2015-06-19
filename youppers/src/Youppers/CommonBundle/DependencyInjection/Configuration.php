@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
     				->useAttributeAsKey('type')
     				->prototype('array')
     					->children()
+                            ->scalarNode('name')->end()
 						    ->scalarNode('entity')->isRequired()->end()
 						    ->scalarNode('route')->isRequired()->end()
 						    ->end()

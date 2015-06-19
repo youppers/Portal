@@ -340,16 +340,19 @@ class QrService extends Controller
 
         $qr = $this->findById($id);
         if (empty($qr)) {
+            $this->container->get('logger')->warning("Qr Code with id='$id' not found");
             return null;
         }
 
         $targetType = $qr->getTargetType();
         if (empty($targetType)) {
+            $this->container->get('logger')->warning("Qr Code with id='$id' has empty target type");
             return null;
         }
 
         $targetTypes = $this->container->getParameter('youppers_common.qr');
         if (!array_key_exists($targetType,$targetTypes)) {
+            $this->container->get('logger')->warning("Qr Code with id='$id' has invalid target type '$targetType'");
             return null;
         }
 
