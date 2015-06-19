@@ -27,7 +27,7 @@ class QrController extends Controller
 			return $this->redirectToRoute($this->get('youppers.common.qr')->getRouteName($targetType),
 			array("id" => $target->getId()));
 		} else {
-			throw new ResourceNotFoundException('QR code target not found');
+			throw new ResourceNotFoundException('QR code target not found, or qr code not enabled, or target not enabled');
 		}
 	}
 }

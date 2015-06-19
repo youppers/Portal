@@ -8,7 +8,7 @@
 {% elseif not object.enabled %}
 {{ "Not enabled"|trans }}
 {% else %}
-{% set url = url('youppers_common_qr_find', { id: object.qr.id}) %}
+{% set url = url('youppers_common_qr_redirecttotarget', { id: object.qr.id}) %}
 {% set qr_size = field_description.options.size|default(370) %}
 {% set qr_padding = field_description.options.padding|default(20) %}
 {% set div_size = qr_padding + qr_size + qr_padding %}
