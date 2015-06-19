@@ -34,6 +34,8 @@ sonata_page:
         - sonata_cache_js_async
         - sonata_cache_js_sync
         - sonata_cache_apc
+        - youppers_common_json_rpc
+        - youppers_common_oauth_token
 
 #    cache_invalidation:
 #        service:  sonata.page.cache.invalidation.simple
