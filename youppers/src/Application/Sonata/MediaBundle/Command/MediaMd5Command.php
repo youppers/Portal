@@ -56,7 +56,7 @@ class MediaMd5Command extends ContainerAwareCommand
                         //$mediaManager->getObjectManager()->flush();
                     }
                 } catch (FileNotFound $e) {
-                    $logger->debug($media->getName() . ': not found');
+                    $logger->debug($media->getName() . ': file not found');
                     continue;
                 }
             }
@@ -83,7 +83,7 @@ class MediaMd5Command extends ContainerAwareCommand
             }
 
             if ($media->getName() !== $media1->getName()) {
-                $logger->warning("Dont change media whit different names");
+                $logger->info("Dont change media whit different names");
             }
 
             if ($media->getGalleryHasMedias()->count() > 0) {
