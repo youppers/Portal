@@ -335,4 +335,29 @@ class QrService extends Controller
 
         return $pdf;
     }
+
+    public function getTarget($id) {
+
+        $qr = $this->findById($id);
+        if (empty($qr)) {
+            return null;
+        }
+
+        $targetType = $qr->getTargetType();
+        if (empty($targetType)) {
+            return null;
+        }
+
+        $targetTypes = $this->container->getParameter('youppers_common.qr');
+        if (!array_key_exists($targetType,$targetTypes)) {
+            return null;
+        }
+
+        $targetEntity = $targetTypes[$targetType]['entity'];
+
+        $targetManager = $this->getDoctrine()->getManagerForClass($targetEntity);
+
+        return $targetManager->getRepository($targetEntity)->findOneBy(array('qr' => $qr, 'enabled' => true));
+
+    }
 }

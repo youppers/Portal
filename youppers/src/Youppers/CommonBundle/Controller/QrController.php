@@ -18,11 +18,11 @@ class QrController extends Controller
 	 *
 	 * cerca il qr
 	 */
-	public function findAction($id)
+	public function redirectToTargetAction($id)
 	{
 		$qr = $this->container->get('youppers.common.qr')->find('', null, $id);
 
-		if ($qr && $target = $qr->getTargets()->first()) {
+		if ($qr && $target = $this->container->get('youppers.common.qr')->getTarget($id)) {
 			$targetType = $qr->getTargetType();    	
 			return $this->redirectToRoute($this->get('youppers.common.qr')->getRouteName($targetType),
 			array("id" => $target->getId()));
