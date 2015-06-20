@@ -62,6 +62,7 @@ class QrAdmin extends YouppersAdmin
 		->add('targetType')
 		->add('products')
 		->add('boxes')
+        ->add('medias')
 		->add('enabled')
 		;
 	}
