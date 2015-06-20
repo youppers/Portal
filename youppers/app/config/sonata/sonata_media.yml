@@ -26,6 +26,7 @@ sonata_media:
 
         youppers_apk:
             download:
+                strategy: sonata.media.security.public_strategy
                 mode: http # X-Sendfile | http
             providers:
                 - sonata.media.provider.apk
