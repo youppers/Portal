@@ -38,12 +38,16 @@ abstract class AbstractLoader extends ContainerAware
 	protected $fs;
 	protected $enable;
 	protected $force;
-	
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @deprecated
+     */
 	public function setManagerRegistry(ManagerRegistry $managerRegistry)
 	{
 		$this->managerRegistry = $managerRegistry;
 		$this->em = $managerRegistry->getManager();
-        $this->productManager = new ProductManager($managerRegistry);
+        $this->productManager = $this->container->get('youppers.company.manager.product');
 	}
 	
 	public function setLogger(LoggerInterface $logger)
@@ -73,6 +77,7 @@ abstract class AbstractLoader extends ContainerAware
 		
 	/**
 	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Company
+     * @deprecated
 	 */
 	protected function getCompanyRepository()
 	{
@@ -84,6 +89,7 @@ abstract class AbstractLoader extends ContainerAware
 
 	/**
 	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Brand
+     * @deprecated
 	 */
 	protected function getBrandRepository()
 	{
@@ -95,6 +101,7 @@ abstract class AbstractLoader extends ContainerAware
 	
 	/**
 	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Product
+     * @deprecated
 	 */
 	protected function getProductRepository()
 	{
@@ -106,6 +113,7 @@ abstract class AbstractLoader extends ContainerAware
 	
 	/**
 	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:ProductPrice
+     * @deprecated
 	 */
 	protected function getProductPriceRepository()
 	{

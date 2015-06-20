@@ -9,11 +9,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 class ProductManager extends BaseEntityManager
 {
 
-	public function __construct(ManagerRegistry $registry)
-	{
-		parent::__construct('Youppers\CompanyBundle\Entity\Product', $registry);
-	}
-
     private $gtinCache = array();
 
     public function save($entity, $andFlush = true) {

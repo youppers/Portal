@@ -11,6 +11,12 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
+    youppers.company.loader.product_loader_factory:
+        class:     Youppers\CompanyBundle\Loader\ProductLoaderFactory
+        arguments: ['@doctrine', '@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
 #    youppers.company.pricelist.loader.IS:
 #        class:     Youppers\CompanyBundle\Service\BasePricelistLoader
 #        arguments: ['@doctrine', '@logger']
@@ -52,10 +58,14 @@ services:
         tags:
             - { name: security.voter }
 
+    youppers.company.manager.company:
+        class:     Youppers\CompanyBundle\Manager\CompanyManager
+        arguments: ['Youppers\CompanyBundle\Entity\Company', '@doctrine']
+
     youppers.company.manager.brand:
         class:     Youppers\CompanyBundle\Manager\BrandManager
-        arguments: ['@doctrine']
+        arguments: ['Youppers\CompanyBundle\Entity\Brand','@doctrine']
 
     youppers.company.manager.product:
         class:     Youppers\CompanyBundle\Manager\ProductManager
-        arguments: ['@doctrine']
+        arguments: ['Youppers\CompanyBundle\Entity\Product','@doctrine']
