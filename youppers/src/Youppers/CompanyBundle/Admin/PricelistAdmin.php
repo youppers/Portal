@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PricelistAdmin extends YouppersAdmin
 {
-    public function createQuery1($context = 'list')
+    public function createQuery($context = 'list')
     {
         $query = parent::createQuery($context);
 
