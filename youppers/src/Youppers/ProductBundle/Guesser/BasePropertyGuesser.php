@@ -63,11 +63,17 @@ class BasePropertyGuesser extends AbstractGuesser
 			$options = array();
 			foreach ($collection->getStandards()->getValues() as $standard) {
 				if ($standard->getAttributeType() == $type) {
-					//$options = array_merge($options,$standard->getAttributeOptions()->getValues());
 					foreach ($standard->getAttributeOptions()->getValues() as $option) {
 						foreach (explode(';',$option->getAlias()) as $alias) {
                             $alias = trim($alias);
 							if (!empty($alias)) {
+                                if (array_key_exists($alias,$options)) {
+                                    $msg = sprintf("Alias '%s' of '%s' conflict with '%s'",$alias,$option,$options[$alias]);
+                                    $this->getLogger()->warning($msg);
+                                    $todo = sprintf("<error>Correct error in standard options</error> <info>%s</info> then redo guessing.",$msg);
+                                    $this->addTodo($todo);
+                                    break;
+                                }
 								$options[$alias] = $option;
 							}
 						}
