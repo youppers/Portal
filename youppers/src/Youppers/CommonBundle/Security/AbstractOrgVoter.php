@@ -34,7 +34,7 @@ abstract class AbstractOrgVoter implements VoterInterface
     public function supportsAttribute($attribute)
     {
         //$this->logger->debug("VOTE attribute ".$attribute);
-        return preg_match("/ROLE_YOUPPERS_([A-Z_]*)_ADMIN_([A-Z]*)_(VIEW|EDIT)/",$attribute);
+        return preg_match("/ROLE_YOUPPERS_([A-Z_]*)_ADMIN_([A-Z_]*)_(VIEW|EDIT)/",$attribute);
     }
 
     public function vote(TokenInterface $token, $object, array $attributes)
