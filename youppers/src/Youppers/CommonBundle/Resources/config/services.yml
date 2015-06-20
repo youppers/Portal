@@ -57,7 +57,7 @@ services:
       class: Youppers\CommonBundle\Provider\PdfProvider
       arguments: ['youppers.common.provider.pdf', '@sonata.media.filesystem.local', '@sonata.media.cdn.server', '@sonata.media.generator.default', '@sonata.media.thumbnail.format', ['pdf'], ['application/pdf']]
       calls:
-        - [ setTemplates, [ { helper_thumbnail: 'SonataMediaBundle:Provider:thumbnail.html.twig',  helper_view: 'YouppersCommonBundle:Provider:view_pdf.html.twig'} ] ]
+        - [ setTemplates, [ { helper_thumbnail: 'YouppersCommonBundle:Provider:thumbnail_pdf.html.twig',  helper_view: 'YouppersCommonBundle:Provider:view_pdf.html.twig'} ] ]
         - [ setIcon, ['../../bundles/youpperscommon/pdf-icon.png']]
       tags:
           - { name: sonata.media.provider }

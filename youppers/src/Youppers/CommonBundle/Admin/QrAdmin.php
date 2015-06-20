@@ -75,7 +75,8 @@ class QrAdmin extends YouppersAdmin
 		->add('url')
         ->add('products.code')
         ->add('boxes.code')
-		->add('targetType')
+        ->add('medias.name')
+		->add('targetType', 'doctrine_orm_choice', array(), 'choice', array('choices' => $this->getTargetTypeChoices()))
 		->add('enabled')
 		;
 	}
@@ -93,7 +94,7 @@ class QrAdmin extends YouppersAdmin
 
         if ($targetsField = $this->getTargetsField()) {
             $showMapper
-                ->add($targetsField, null, array('route' => array('name' => 'show')))
+                ->add($targetsField)
             ;
         };
 

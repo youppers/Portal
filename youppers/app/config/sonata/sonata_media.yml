@@ -24,6 +24,15 @@ sonata_media:
                 small: { width: 100, quality: 100}
                 big:   { width: 970 , quality: 100}
 
+        youppers_apk:
+            download:
+                mode: http # X-Sendfile | http
+            providers:
+                - sonata.media.provider.apk
+
+            formats:
+                default:
+
         pdf:
             download:
                 mode: http # X-Sendfile | http
@@ -130,6 +139,10 @@ sonata_media:
         file:
             # the resizer must be set to false, otherwhise this can delete icon files from the fs
             resizer:    false
+            allowed_extensions:
+              - zip
+              - pdf
+              - apk
                      
 #        pdf:
 #            # the resizer must be set to false, otherwhise this can delete icon files from the fs
@@ -248,3 +261,12 @@ doctrine:
                 mappings:
                     ApplicationSonataMediaBundle: ~
                     SonataMediaBundle: ~
+
+services:
+  sonata.media.provider.apk:
+      class: %sonata.media.provider.file.class%
+      arguments: ['sonata.media.provider.apk1', '@sonata.media.filesystem.local', '@sonata.media.cdn.server', '@sonata.media.generator.default' , '@sonata.media.thumbnail.format', ['apk'], ['application/vnd.android.package-archive', 'application/jar']]
+      calls:
+        - [ setTemplates, [ { helper_thumbnail: 'YouppersCommonBundle:Provider:thumbnail_apk.html.twig',  helper_view: 'SonataMediaBundle:Provider:view_file.html.twig'} ] ]
+      tags:
+          - { name: sonata.media.provider }
