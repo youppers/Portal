@@ -22,3 +22,18 @@ services:
     youppers.product.manager.attribute_option:
         class:     Youppers\ProductBundle\Manager\AttributeOptionManager
         arguments: ['@doctrine']
+
+    youppers.product.security.product_collection_voter:
+        class:     Youppers\ProductBundle\Security\ProductCollectionVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+
+    youppers.product.security.product_variant_voter:
+        class:     Youppers\ProductBundle\Security\ProductVariantVoter
+        arguments: ['@doctrine', '@logger']
+        public:    false
+        tags:
+            - { name: security.voter }
+

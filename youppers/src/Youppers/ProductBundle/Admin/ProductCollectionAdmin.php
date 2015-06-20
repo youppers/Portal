@@ -15,7 +15,30 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductCollectionAdmin extends YouppersAdmin
 {
-	protected function configureRoutes(RouteCollection $collection)
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+
+        if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
+            return $query;
+        }
+
+        $org = $user->getOrg();
+
+        $query->join($query->getRootAliases()[0] . '.brand','b');
+        $query->join('b.company','c');
+
+        $query->andWhere(
+            $query->expr()->eq('c.org', ':org')
+        );
+        $query->setParameter('org', $org);
+
+        return $query;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
 	{
 		$collection->add('guess', $this->getRouterIdParameter().'/guess');
 		$collection->add('forceGuess', $this->getRouterIdParameter().'/forceGuess');
@@ -48,7 +71,7 @@ class ProductCollectionAdmin extends YouppersAdmin
 			$id = $this->getRequest()->get($this->getIdParameter());
 			$menu->addChild('Variants', array('attributes' => array('icon' => 'glyphicon glyphicon-list-alt'), 'uri' => $this->generateUrl('youppers_product.admin.product_variant.list', array('id' => $id))));
 			$menu->addChild('Guess', array('attributes' => array('icon' => 'fa fa-thumbs-o-up'), 'uri' => $this->generateUrl('guess', array('id' => $id))));
-			$menu->addChild('Force Guess', array('attributes' => array('icon' => 'fa fa-thumbs-up'), 'uri' => $this->generateUrl('forceGuess', array('id' => $id))));
+            if ($this->isGranted('EDIT')) $menu->addChild('Force Guess', array('attributes' => array('icon' => 'fa fa-thumbs-up'), 'uri' => $this->generateUrl('forceGuess', array('id' => $id))));
 		}
 	}
 	
@@ -75,7 +98,7 @@ class ProductCollectionAdmin extends YouppersAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name', null, array('route' => array('name' => 'show')))
+            ->addIdentifier('name')
             ->add('code')
         	->add('countProductVariants', 'url', array('label'=> 'Variants', 'route' => array('identifier_parameter_name' => 'id','name' => 'admin_youppers_product_productcollection_productvariant_list')))
             ->add('image', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
@@ -127,19 +150,6 @@ class ProductCollectionAdmin extends YouppersAdmin
 	        	)
 	        )	        
 	        ->end()
-                        /*
-            ->with('Variants', array('class' => 'col-md-12'))
-            ->add('productVariants', 'sonata_type_collection', 
-            		array('by_reference' => false),
-            		array(
-		                'edit' => 'inline',
-		                'inline' => 'table',
-		                'sortable' => 'position',
-            		)
-            	)
-            ->end()
-            */
-        
         ;
     }
 

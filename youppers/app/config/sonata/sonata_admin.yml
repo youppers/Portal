@@ -64,7 +64,7 @@ sonata_admin:
                 icon: '<i class="fa fa-university"></i>'
 
             Product:
-                roles: [ROLE_PRODUCT_ADMIN]
+                roles: [ROLE_PRODUCT_ADMIN, ROLE_COMPANY_ADMIN_PRODUCT_COLLECTION, ROLE_COMPANY_ADMIN_PRODUCT_VARIANT]
                 icon: '<i class="fa fa-database"></i>'
 
             Dealer:

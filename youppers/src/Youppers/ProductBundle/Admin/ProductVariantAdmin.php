@@ -17,6 +17,29 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class ProductVariantAdmin extends YouppersAdmin
 {
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+
+        if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
+            return $query;
+        }
+
+        $org = $user->getOrg();
+
+        $query->join($query->getRootAliases()[0] . '.productCollection','pc');
+        $query->join('pc.brand','b');
+        $query->join('b.company','c');
+
+        $query->andWhere(
+            $query->expr()->eq('c.org', ':org')
+        );
+        $query->setParameter('org', $org);
+
+        return $query;
+    }
 
     public function getBatchActions()
     {
@@ -184,12 +207,8 @@ class ProductVariantAdmin extends YouppersAdmin
     {
         $listMapper
             ->add('_action', 'actions', array(
-                'actions' => array(
-                    //'show' => array(),
-                    'edit' => array(),
-                    //'delete' => array(),
-                )
-            ))
+                'actions' => ($this->isGranted('EDIT')) ? array('edit' => array()) : array('show' => array()))
+            )
         	->addIdentifier('image', null, array('route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
             ->add('enabled', null, array('editable' => true));
        	if (!($this->isChild() && $this->getParentAssociationMapping() === 'productCollection')) {
