@@ -42,6 +42,7 @@ class AttributeStandardAdmin extends YouppersAdmin
         $listMapper
             ->addIdentifier('name', null, array('route' => array('name' => 'show')))
             ->add('symbol')
+            ->add('attributeOptions', null, array('associated_property' => 'value'))
             ->add('enabled', null, array('editable' => true))
             ->add('attributeType', null, array('route' => array('name' => 'show')))
         ;
