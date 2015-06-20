@@ -193,7 +193,7 @@ class QrService extends Controller
 		if (empty($id)) {
 			try {
 				$route = $this->container->get('router')->match($request->getRequestUri());
-				if ($route['_route'] == 'youppers_common_qr_find') {
+				if ($route['_route'] == 'youppers_common_qr_redirecttotarget') {
 					$id = $route['id'];
 					$qr = $this->findById($id);
 				} else {
