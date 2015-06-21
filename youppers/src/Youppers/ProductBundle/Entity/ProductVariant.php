@@ -22,7 +22,7 @@ class ProductVariant
 	public function __toString()
 	{
 		return $this->getProduct() ?  ''  . $this->getProduct()->getBrand() .
-			' - ' . ($this->getProductCollection() ? $this->getProductCollection()->getName():'?') . 
+			' - ' . ($this->getProductCollection() ? $this->getProductCollection()->getNameCode():'?') .
 			' - ' . $this->getProduct()->getNameCode() : 'New';
 	}
 	

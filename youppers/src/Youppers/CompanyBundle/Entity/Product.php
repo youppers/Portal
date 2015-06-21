@@ -153,7 +153,7 @@ class Product
 	}	
 	
 	public function getNameCode() {
-		return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']' : 'null';		
+		return ($this->getName() ?: '')  . ' [' . ($this->getCode() ?: '') . ']';
 	}
 
     public function getBrandFullCode() {
@@ -166,7 +166,7 @@ class Product
 
     public function __toString()
 	{
-		return $this->getName() ? $this->getBrand() . ' - ' . $this->getNameCode() : 'New';
+		return ($this->getBrand() ?: '') . ' - ' . $this->getNameCode();
 	}
 	
 	/**
