@@ -34,6 +34,7 @@ class ProductLoaderFactory extends ContainerAware
 				
 		$loader = new $classname;
         $loader->setContainer($this->container);
+        $loader->setLogger($this->logger);
 
 		$loader->setCompany($company);
 		

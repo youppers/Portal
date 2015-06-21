@@ -64,7 +64,7 @@ services:
 
     youppers.company.manager.brand:
         class:     Youppers\CompanyBundle\Manager\BrandManager
-        arguments: ['Youppers\CompanyBundle\Entity\Brand','@doctrine']
+        arguments: ['@doctrine']
 
     youppers.company.manager.product:
         class:     Youppers\CompanyBundle\Manager\ProductManager

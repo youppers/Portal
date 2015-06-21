@@ -7,6 +7,7 @@ use Ddeboer\DataImport\Reader\CsvReader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Youppers\CompanyBundle\Entity\Company;
 use Youppers\CompanyBundle\Manager\ProductManager;
 use Youppers\CompanyBundle\YouppersCompanyBundle;
 use Monolog\Logger;
@@ -31,8 +32,7 @@ abstract class AbstractLoader extends ContainerAware
 	
 	private $productRepository;
 	protected $product;
-    protected $productManager;
-	
+
 	private $productPriceRepository;
 	
 	protected $fs;
@@ -47,7 +47,6 @@ abstract class AbstractLoader extends ContainerAware
 	{
 		$this->managerRegistry = $managerRegistry;
 		$this->em = $managerRegistry->getManager();
-        $this->productManager = $this->container->get('youppers.company.manager.product');
 	}
 	
 	public function setLogger(LoggerInterface $logger)
@@ -122,7 +121,10 @@ abstract class AbstractLoader extends ContainerAware
 		}
 		return $this->productPriceRepository;
 	}
-		
+
+    public function setCompany(Company $company) {
+        $this->company = $company;
+    }
 	/**
 	 * Set the brand of the company 
 	 * @param string $code The Brand Code
@@ -167,6 +169,7 @@ abstract class AbstractLoader extends ContainerAware
 		$this->logger->debug(sprintf("Code: '%s' Product: '%s'", $code, $this->product));
 	}
 
+    /*
     public function checkUniqueGtin($product) {
         $gtin = $product->getGtin();
         if ($gtin == null) {
@@ -179,7 +182,8 @@ abstract class AbstractLoader extends ContainerAware
             return false;
         }
     }
-	
+	*/
+
 	public function createReader($filename)
 	{
 		return $this->createCsvReader($filename);

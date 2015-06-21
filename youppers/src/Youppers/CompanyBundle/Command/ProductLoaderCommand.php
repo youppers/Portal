@@ -7,16 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Application\Sonata\ClassificationBundle\Entity\Category;
-
-use Goutte\Client;
-use Symfony\Component\DomCrawler\Link;
-use Doctrine\Common\Collections\Criteria;
-
-use Ddeboer\DataImport\Reader\CsvReader;
-use Youppers\CompanyBundle\Entity\Product;
-
-class PricelistLoaderCommand extends ContainerAwareCommand
+class ProductLoaderCommand extends ContainerAwareCommand
 {	
 	protected function configure()
 	{
@@ -32,7 +23,7 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->addOption('create-collection',null, InputOption::VALUE_NONE, 'Create product collection if dont exists')
 		->addOption('create-variant',null, InputOption::VALUE_NONE, 'Create product variant if dont exists')
 		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable created entity')
-		->addOption('fieldseparator', 'fs', InputOption::VALUE_OPTIONAL, 'Field separator',",")
+		->addOption('fieldseparator', 'fs', InputOption::VALUE_OPTIONAL, 'Field separator',";")
 		;
 	}
 

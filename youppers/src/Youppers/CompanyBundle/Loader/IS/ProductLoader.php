@@ -10,14 +10,11 @@ class ProductLoader extends AbstractProductLoader
 	public function createMapper()
 	{
 		$mapping = array(
-			'code' => 'Material Code',
-			'brand' => function($row) { $matches=preg_split("/\-/",$row['CDS Italia']); if (array_key_exists(1,$matches)) return $matches[1]; },
-			'name' => 'Description',
-			'gtin' => 'EAN13',
-			'price' => 'Price',
-			'collection' => 'Suite',
-			'type' => 'Categoria',	
-			'uom' => function($row) { return 'PCE'; }
+            'brand' => 'Marchio',
+            'collection' => 'Collezione',
+            'name' => 'Nome',
+            'description' => 'Descrizione',
+			'code' => 'Codice'
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
@@ -28,7 +25,7 @@ class ProductLoader extends AbstractProductLoader
 	protected function getNewCollectionProductType(Brand $brand, $code)
 	{
 		if (!isset($this->newCollectionProductType)) {
-			$this->newCollectionProductType= $this->productTypeManager
+			$this->newCollectionProductType= $this->getProductTypeManager()
 				->findOneBy(array('code' => 'FULLBATH'));
 		}
 		return $this->newCollectionProductType;
