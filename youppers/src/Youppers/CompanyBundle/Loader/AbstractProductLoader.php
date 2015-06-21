@@ -42,7 +42,7 @@ abstract class AbstractProductLoader extends AbstractLoader {
     private $productManager;
 
     /**
-     * @return
+     * @return ProductManager
      */
     protected function getProductManager() {
         if (empty($this->productManage)) {
@@ -89,32 +89,18 @@ abstract class AbstractProductLoader extends AbstractLoader {
         if (empty($this->productTypeManager)) {
             $this->productTypeManager = $this->container->get('youppers.product.manager.product_type');
         }
-        return $this->productVariantManager;
+        return $this->productTypeManager;
     }
 
     protected abstract function getNewCollectionProductType(Brand $brand, $code);
 
 	private $brands = array();
-	
-	private $createCollection = false;
-	
-	public function setCreateCollection($createCollection)
-	{
-		$this->createCollection = $createCollection;
-	} 
 
-	private $createVariant = false;
-	
-	public function setCreateVariant($createVariant)
+	public function batch()
 	{
-		$this->createVariant = $createVariant;
-	}
-
-	public function batchClear()
-	{
-        $this->getProductManager()->clear();
-        $this->getProductVariantManager()->clear();
-        $this->getProductCollectionManager()->clear();
+        $this->getProductManager()->getEntityManager()->flush();
+        $this->getProductCollectionManager()->getEntityManager()->flush();
+        $this->getProductVariantManager()->getEntityManager()->flush();
 	}
 
     public function load($filename,$skip=0)
@@ -160,16 +146,11 @@ abstract class AbstractProductLoader extends AbstractLoader {
 
             if ($this->numRows % 500 == 0) {
                 $this->logger->info(sprintf("Read %d rows",$this->numRows));
-                if ($this->force) {
-                    $this->em->flush();
-                } else {
-                    //
-                }
-                $this->batchClear();
+                $this->batch();
             }
         }
 
-        $this->em->flush();
+        $this->batch();
 
         $event = $stopwatch->stop('load');
         $this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
@@ -193,7 +174,7 @@ abstract class AbstractProductLoader extends AbstractLoader {
             $variant = $this->handleVariant($collection, $product);
         }
 
-        die;
+        //die;
 
     }
 
@@ -204,7 +185,7 @@ abstract class AbstractProductLoader extends AbstractLoader {
         $brandCode = $this->mapper->remove('brand');
         if (empty($this->brand)) {
             if (empty($brandCode)) {
-                throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually",$this->mapper->key('brand')));
+                throw new \Exception(sprintf("Brand MUST be in the column '%s' OR must be set manually",$this->mapper->key('brand')));
             }
             $brand = $this->getBrandManager()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
             if (empty($brand)) {
@@ -224,6 +205,9 @@ abstract class AbstractProductLoader extends AbstractLoader {
             $this->logger->info(sprintf("Disabled all products of brand '%s'",$brand));
         }
         */
+        if (!$this->force) {
+            $brand = clone $brand;
+        }
         return $brand;
     }
 
@@ -235,7 +219,7 @@ abstract class AbstractProductLoader extends AbstractLoader {
      */
     protected function handleProduct(Brand $brand)
     {
-        $productCode = $this->mapper->remove('code');
+        $productCode = $this->container->get('youppers.common.service.codify')->codify($this->mapper->remove('code'));
 
         if (empty($productCode)) {
             throw new \Exception(sprintf("Product code not found in the column '%s'",$this->mapper->key('code')));
@@ -251,15 +235,20 @@ abstract class AbstractProductLoader extends AbstractLoader {
         } elseif (!$this->force) {
             $product = clone $product;
         }
-
         if ($this->enable) {
             $product->setEnabled(true);
         }
         $name = $this->mapper->remove('name');
+        $description = $this->mapper->remove('description');
         if (empty($name) && empty($product->getName())) {
-            throw new \Exception(sprintf("Product name not found in the column '%s'",$this->mapper->key('name')));
+            $a = preg_split('/[\.\n]/',$description,2);
+            $name = $a[0];
+            if (empty($name)) {
+                throw new \Exception(sprintf("Product name not found in the column '%s'",$this->mapper->key('name')));
+            }
         }
-        $product->setName($name);
+        if (!empty($name)) $product->setName($name);
+        if (!empty($description)) $product->setDescription($description);
 
         $productGtin = $this->mapper->remove('gtin');
         if (!empty($productGtin)) {
@@ -278,8 +267,8 @@ abstract class AbstractProductLoader extends AbstractLoader {
         $info = json_encode($this->mapper->getData());
         $product->setInfo($info);
 
-        if (empty($product->getId())) {l
-            if ($this->force && $this->createProduct) {
+        if (empty($product->getId())) {
+            if ($this->force) {
                 $this->logger->info("Created new product: " . $product);
                 $this->getProductManager()->save($product,false);
             } else {
@@ -295,21 +284,24 @@ abstract class AbstractProductLoader extends AbstractLoader {
     protected function handleCollection(Product $product)
 	{
         $brand = $product->getBrand();
-		$collectionCode = $this->mapper->get('collection');
-		if ($collectionCode !== null) {
+        $collectionName= $this->mapper->get('collection');
+		$collectionCode = $this->container->get('youppers.common.service.codify')->codify($collectionName);
+		if ($collectionCode == null) {
+            return null;
+        } else {
 			$collection = $this->getProductCollectionManager()->findByCode($brand, $collectionCode);
-			if (empty($collection) && $this->force && $this->createCollection) {				
-				$collection = $this->getProductCollectionManager()->createCollection($brand, $collectionCode, $collectionCode, $this->getNewCollectionProductType($brand,$collectionCode));
-				$this->getProductCollectionManager()->save($collection,false);
-				$this->logger->info(sprintf("Created collection with code '%s' for Brand '%s'",$collectionCode,$brand));
-			}
 			if (empty($collection)) {
-				if ($this->force && $this->createCollection) {
-					throw new \Exception(sprintf("Created new collection with code '%s' of Brand '%s' not found",$collectionCode,$brand));
-				}
-				$this->logger->info(sprintf("New collection with code '%s' of Brand '%s'",$collectionCode,$brand));
-			}
-			//$this->logger->info("Collection: " . $collection);				
+				$collection = $this->getProductCollectionManager()->createCollection($brand, $collectionName, $collectionCode, $this->getNewCollectionProductType($brand,$collectionCode));
+                if ($this->force) {
+                    $this->getProductCollectionManager()->save($collection,false);
+                    $this->logger->info(sprintf("Created new collection '%s'",$collection));
+                } else {
+                    $collection = clone $collection;
+                    $this->logger->info(sprintf("New collection with code '%s' of Brand '%s'",$collectionCode,$brand));
+                }
+			} elseif (!$this->force) {
+                $collection = clone $collection;
+            }
 		}
 		
 		return $collection;
@@ -328,18 +320,21 @@ abstract class AbstractProductLoader extends AbstractLoader {
 			}
 		}
 		if (empty($variant)) {
-			if ($this->force && $this->createVariant) {
-				$variant = $this->getProductVariantManager()->create();
-				$variant->setProduct($product);
-				$variant->setEnabled(false);
-				$variant->setPosition($this->numRows);
-				$collection->addProductVariant($variant);
+            $variant = $this->getProductVariantManager()->create();
+            $variant->setProduct($product);
+            $variant->setEnabled(false);
+            $variant->setPosition($this->numRows);
+			if ($this->force) {
+                $collection->addProductVariant($variant);
 				$this->getProductVariantManager()->save($variant,false);
 				$this->logger->info(sprintf("Created new variant '%s'",$variant));
 			} else {
-				$this->logger->info(sprintf("New variant '%s' - '%s'",$collection,$product->getNameCode()));
+                $variant->setProductCollection($collection);
+				$this->logger->info(sprintf("New variant '%s'",$variant));
 			}
-		}
+		} elseif (!$this->force) {
+            $variant = clone $variant;
+        }
 
 		return $variant;
 	}

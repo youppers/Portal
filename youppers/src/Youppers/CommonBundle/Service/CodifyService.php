@@ -8,7 +8,7 @@ class CodifyService extends ContainerAware
 {
 	public function codify($text)
 	{
-		$slug = $this->container->get('sonata.core.slugify.cocur')->slugify($text,'');
+		$slug = $this->container->get('sonata.core.slugify.cocur')->slugify(trim($text),'');
 		return strtoupper($slug);		
 	}
 }
