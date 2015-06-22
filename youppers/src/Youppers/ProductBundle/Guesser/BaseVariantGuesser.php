@@ -116,7 +116,20 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 				$this->guessers[$collection->getId()][] = $guesser;
 			}
 		}
-	}
+
+        foreach ($collection->getStandards() as $attributeStandard) {
+            $attributeType = $attributeStandard->getAttributeType();
+            foreach ($this->guessers[$collection->getId()] as $guesser) {
+                if ($guesser->getType() == $attributeType) {
+                    continue 2;
+                }
+            }
+            $newGuesser = $this->getCollectionTypeGuesser($collection, $attributeType);
+            $newGuesser->setParent($this);
+            $newGuesser->setIsVariant(false);
+            $this->guessers[$collection->getId()][] = $newGuesser;
+        }
+     }
 	
 	protected function getVariantGuessers(ProductVariant $variant)
 	{
