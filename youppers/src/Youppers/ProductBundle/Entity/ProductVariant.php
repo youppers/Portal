@@ -107,6 +107,7 @@ class ProductVariant
 	{
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
+        $this->scrapedAt = new \DateTime('@0');
 	}
 
 	/**
