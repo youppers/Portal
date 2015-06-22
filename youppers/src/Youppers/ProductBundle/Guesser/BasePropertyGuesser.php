@@ -30,6 +30,10 @@ class BasePropertyGuesser extends AbstractGuesser
 		$this->type = $type;
 		$this->variantPropertyManager = $variantPropertyManager;
 	}
+
+    public function getType() {
+        return $this->type;
+    }
 	
 	public function guessVariant(ProductVariant $variant, &$text) {
 		return $this->guessProperty($variant, $text, $this->type);
@@ -64,6 +68,9 @@ class BasePropertyGuesser extends AbstractGuesser
 			foreach ($collection->getStandards()->getValues() as $standard) {
 				if ($standard->getAttributeType() == $type) {
 					foreach ($standard->getAttributeOptions()->getValues() as $option) {
+                        if (!$option->getEnabled()) {
+                            continue;
+                        }
 						foreach (explode(';',$option->getAlias()) as $alias) {
                             $alias = trim($alias);
 							if (!empty($alias)) {
@@ -92,16 +99,25 @@ class BasePropertyGuesser extends AbstractGuesser
 			}
 		}
 		return $this->collectionOptions[$collection->getId()][$type->getId()];
-	}	
+	}
 
-	protected function guessProperty(ProductVariant $variant, &$text, $type)
+    /**
+     * If the value of the option has multiple words, all words must be in the text
+     * @param ProductVariant $variant
+     * @param $text Search options in this string
+     * @param $type Type of attribute to search
+     */
+    protected function guessProperty(ProductVariant $variant, &$text, $type)
 	{
 		$actualOption = $this->getActualOption($variant, $type);
 	
 		$options = $this->getCollectionOptions($variant->getProductCollection(), $type);
 		foreach ($options as $values => $option) {
             $match = false;
-            foreach (explode(" ",$values) as $value) {
+            $newText = trim($text);
+            $valuesWorlds = explode(" ",$values);
+            usort($valuesWorlds,function($a, $b) { return strlen($b) - strlen($a);});
+            foreach ($valuesWorlds as $value) {
                 $value = trim($value);
                 if (empty($value)) {
                     continue;
@@ -115,9 +131,11 @@ class BasePropertyGuesser extends AbstractGuesser
                 if (!$match) {
                     break;
                 }
+                $newText = trim(preg_replace('/' . preg_quote($value,'/') . '/i','',$newText));
             }
 			if ($match) {
-				
+                //dump(array('text' => $text, 'newText' => $newText));
+                $text = $newText;
 				if ($actualOption) {
 					if ($option === $actualOption) {
 						$this->getLogger()->debug(sprintf("Variant '%s' guessed property '%s' match actual",$variant,$option));
@@ -130,7 +148,6 @@ class BasePropertyGuesser extends AbstractGuesser
                                 $option->getAttributeType(), $actualOption->getValueWithSymbol(), $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
                             $this->addTodo($todo);
                         }
-						return;
 					}
 				} else {
 					if ($this->getForce()) {
@@ -141,8 +158,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					}
 					$this->getLogger()->info(sprintf("Variant '%s' new guessed property '%s'",$variant,$option));
 				}
-				$text = str_replace($option->getValue(),'',$text);
-				return;
+				return true;
 			}
 		}
 		if (empty($actualOption)) {
@@ -158,6 +174,7 @@ class BasePropertyGuesser extends AbstractGuesser
 						$this->addTodo($todo);				
 					}
 				}
+                return true;
 			} elseif (count($options)) {
 				if ($this->isVariant) {
 					$todo = sprintf("<error>Not guessed</error> property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
@@ -309,7 +326,7 @@ class BasePropertyGuesser extends AbstractGuesser
                 $this->defaultOption = false;
             } else {
                 foreach ($options as $option) {
-                    if ($option->getAttributeType() == $type) {
+                    if ($option->getAttributeType() == $type && $option->getEnabled()) {
                         $this->defaultOption = $option;
                         break;
                     }

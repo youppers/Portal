@@ -130,9 +130,22 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 			return;
 		}
 		$text = $variant->getProduct()->getName();
+        $info = json_decode($variant->getProduct()->getInfo(), true);
 		foreach ($this->getVariantGuessers($variant) as $guesser) {
 			if ($this->debug) dump($text);
-			$guesser->guessVariant($variant, $text);
+            if ($guesser instanceof BasePropertyGuesser) {
+                $code = $guesser->getType()->getCode();
+                if (array_key_exists($code,$info)) {
+                    if ($guesser->guessVariant($variant, $info[$code])) {
+                        continue;
+                    } else {
+                        dump($info[$code]);
+                    }
+                }
+            }
+			if ($guesser->guessVariant($variant, $text)) {
+                continue;
+            }
 			if ($this->debug) dump($text);
 		}
 	}
