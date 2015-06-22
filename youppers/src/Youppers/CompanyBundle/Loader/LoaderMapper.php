@@ -39,7 +39,11 @@ class LoaderMapper
 	
 	public function getData()
 	{
-		return $this->data;
+        $res = array();
+        foreach (array_keys($this->data) as $k) {
+            $res[$k] = $this->get($k);
+        }
+		return $res;
 	}
 	
 	public function get($what,$returnKey=false,$remove=false)
@@ -80,7 +84,7 @@ class LoaderMapper
 			return $res;			
 		}
 		if (array_key_exists($key,$this->data)) {
-			$value = trim($this->data[$key]);
+			$value = trim($this->data[$key],"\? \t\n\r\0\x0B");
 			if ($remove) {
 				unset($this->data[$key]);
 			}
