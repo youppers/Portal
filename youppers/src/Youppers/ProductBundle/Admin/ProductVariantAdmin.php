@@ -166,6 +166,7 @@ class ProductVariantAdmin extends YouppersAdmin
     		->add('product.name')
             ->add('product.code')
             ->add('enabled')
+            ->add('variantProperties.attributeOption', null, array(), null, array('expanded' => false, 'multiple' => true))
         ;
     }
         
