@@ -29,6 +29,7 @@ class AttributeStandardAdmin extends YouppersAdmin
 
         	->add('name')
             ->add('symbol')
+            ->add('attributeOptions.value')
             ->add('enabled')
             ->add('attributeType')
         ;
