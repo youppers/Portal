@@ -52,7 +52,12 @@ class AttributeStandard
 	 * @Serializer\Groups({"details", "json"})
 	 */
 	protected $enabled;
-		
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    protected $isVariantImage;
+
 	/**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
@@ -311,5 +316,29 @@ class AttributeStandard
     public function getAttributeOptions()
     {
         return $this->attributeOptions;
+    }
+
+    /**
+     * Set isVariantImage
+     *
+     * @param boolean $isVariantImage
+     *
+     * @return AttributeStandard
+     */
+    public function setIsVariantImage($isVariantImage)
+    {
+        $this->isVariantImage = $isVariantImage;
+
+        return $this;
+    }
+
+    /**
+     * Get isVariantImage
+     *
+     * @return boolean
+     */
+    public function getIsVariantImage()
+    {
+        return $this->isVariantImage;
     }
 }

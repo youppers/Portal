@@ -158,6 +158,14 @@ class BasePropertyGuesser extends AbstractGuesser
 					}
 					$this->getLogger()->info(sprintf("Variant '%s' new guessed property '%s'",$variant,$option));
 				}
+                if ($option->getAttributeStandard()->getIsVariantImage() && $variant->getImage() == null) {
+                    if ($this->getForce()) {
+                        $this->setVariantImageOption($variant,$option);
+                    } else {
+                        $todo = sprintf("<question>Add image</question> <info>%s</info> to <info>%s</info>",$option->getImage(),$variant->getProduct()->getNameCode());
+                        $this->addTodo($todo);
+                    }
+                }
 				return true;
 			}
 		}
@@ -207,6 +215,14 @@ class BasePropertyGuesser extends AbstractGuesser
                 $property->setAttributeOption($option);
                 break;
             }
+        }
+    }
+
+    protected function setVariantImageOption(ProductVariant $variant,AttributeOption $option)
+    {
+        $image = $option->getImage();
+        if ($image) {
+            $variant->setImage($image);
         }
     }
 
