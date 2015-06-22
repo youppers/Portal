@@ -25,6 +25,7 @@ sonata_admin:
                   <h2>Youppers Admin</h2>
                   <ul>
                     <li>1.0.641 Attribute standard images can be used to guess the variant image</li>
+                    <li>1.0.638 Guess uses all standards of the collection, also if not property of product type</li>
                     <li>1.0.526 Print QRCode from store &gt; show</li>
                     <li>1.0.436 Keep value filter in Variant Property Option Select</li>
                     <li>1.0.423 Clone Product Variant</li>
