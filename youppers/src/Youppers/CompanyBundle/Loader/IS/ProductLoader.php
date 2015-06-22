@@ -10,11 +10,11 @@ class ProductLoader extends AbstractProductLoader
 	public function createMapper()
 	{
 		$mapping = array(
-            'brand' => 'Marchio',
-            'collection' => 'Collezione',
-            'name' => 'Nome',
-            'description' => 'Descrizione',
-			'code' => 'Codice'
+            self::FIELD_BRAND => 'Marchio',
+            self::FIELD_COLLECTION => 'Collezione',
+            self::FIELD_NAME => 'Nome',
+            self::FIELD_DESCRIPTION => 'Descrizione',
+            self::FIELD_CODE => 'Codice'
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;

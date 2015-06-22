@@ -15,7 +15,7 @@ use Youppers\CompanyBundle\Entity\ProductPrice;
 
 abstract class AbstractLoader extends ContainerAware
 {
-	/**
+    /**
 	 * @return \Youppers\CompanyBundle\Loader\LoaderMapper
 	 */
 	public abstract function createMapper();
