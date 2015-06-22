@@ -80,7 +80,24 @@ class AttributeOptionAdmin extends Admin
 		->add('attributeStandard', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		;
 	}
-		
+
+    /**
+     * @param ShowMapper $showMapper
+     */
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+        $showMapper
+            ->add('attributeStandard')
+            ->add('position')
+            ->add('value')
+            ->add('image')
+            ->add('alias')
+            ->add('enabled')
+            ->add('updatedAt')
+            ->add('createdAt')
+        ;
+    }
+
 	/**
 	 * {@inheritdoc}
 	 */
