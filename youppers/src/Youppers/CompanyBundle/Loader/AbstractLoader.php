@@ -15,6 +15,15 @@ use Youppers\CompanyBundle\Entity\ProductPrice;
 
 abstract class AbstractLoader extends ContainerAware
 {
+    const BATCH_SIZE = 500;
+
+    const FIELD_BRAND = 'brand';
+    const FIELD_COLLECTION = 'collection';
+    const FIELD_NAME = 'name';
+    const FIELD_DESCRIPTION = 'desciption';
+    const FIELD_CODE = 'code';
+    const FIELD_GTIN = 'gtin';
+
     /**
 	 * @return \Youppers\CompanyBundle\Loader\LoaderMapper
 	 */
@@ -73,54 +82,52 @@ abstract class AbstractLoader extends ContainerAware
 	{
 		$this->debug = $debug;
 	}
-		
-	/**
-	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Company
-     * @deprecated
-	 */
-	protected function getCompanyRepository()
-	{
-		if (null === $this->companyRepository) {
-			$this->companyRepository = $this->managerRegistry->getRepository('YouppersCompanyBundle:Company');
-		}
-		return $this->companyRepository;
-	}
 
-	/**
-	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Brand
-     * @deprecated
-	 */
-	protected function getBrandRepository()
-	{
-		if (null === $this->brandRepository) {
-			$this->brandRepository = $this->managerRegistry->getRepository('YouppersCompanyBundle:Brand');
-		}
-		return $this->brandRepository;
-	}
-	
-	/**
-	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:Product
-     * @deprecated
-	 */
-	protected function getProductRepository()
-	{
-		if (null === $this->productRepository) {
-			$this->productRepository = $this->managerRegistry->getRepository('YouppersCompanyBundle:Product');
-		}
-		return $this->productRepository;
-	}
-	
-	/**
-	 * @return \Doctrine\Common\Persistence\ObjectRepository for YouppersCompanyBundle:ProductPrice
-     * @deprecated
-	 */
-	protected function getProductPriceRepository()
-	{
-		if (null === $this->productPriceRepository) {
-			$this->productPriceRepository = $this->managerRegistry->getRepository('YouppersCompanyBundle:ProductPrice');
-		}
-		return $this->productPriceRepository;
-	}
+    /**
+     * @var CompanyManager
+     */
+    private $companyManager;
+
+    /**
+     * @return CompanyManager
+     */
+    protected function getCompanyManager() {
+        if (empty($this->companyManager)) {
+            $this->companyManager = $this->container->get('youppers.company.manager.company');
+        }
+        return $this->companyManager;
+    }
+
+    /**
+     * @var ProductManager
+     */
+    private $productManager;
+
+    /**
+     * @return ProductManager
+     */
+    protected function getProductManager() {
+        if (empty($this->productManager)) {
+            $this->productManager = $this->container->get('youppers.company.manager.product');
+        }
+        return $this->productManager;
+    }
+
+    /**
+     * @var BrandManager
+     */
+    private $brandManager;
+
+    /**
+     * @return BrandManager
+     */
+    protected function getBrandManager() {
+        if (empty($this->brandManager)) {
+            $this->brandManager = $this->container->get('youppers.company.manager.brand');
+        }
+        return $this->brandManager;
+    }
+
 
     public function setCompany(Company $company) {
         $this->company = $company;
@@ -169,20 +176,18 @@ abstract class AbstractLoader extends ContainerAware
 		$this->logger->debug(sprintf("Code: '%s' Product: '%s'", $code, $this->product));
 	}
 
-    /*
     public function checkUniqueGtin($product) {
         $gtin = $product->getGtin();
         if ($gtin == null) {
             return true;
         }
-        $check = $this->productManager->findOneByGtin($gtin);
+        $check = $this->getProductManager()->findOneByGtin($gtin);
         if ($check == null || $check == $product) {
             return true;
         } else {
             return false;
         }
     }
-	*/
 
 	public function createReader($filename)
 	{

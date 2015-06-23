@@ -24,62 +24,6 @@ use Youppers\ProductBundle\Manager\ProductTypeManager;
 
 abstract class AbstractProductLoader extends AbstractLoader {
 
-    const BATCH_SIZE = 100;
-
-    const FIELD_BRAND = 'brand';
-    const FIELD_COLLECTION = 'collection';
-    const FIELD_NAME = 'name';
-    const FIELD_DESCRIPTION = 'desciption';
-    const FIELD_CODE = 'code';
-    const FIELD_GTIN = 'gtin';
-
-    /**
-     * @var CompanyManager
-     */
-    private $companyManager;
-
-    /**
-     * @return CompanyManager
-     */
-    protected function getCompanyManager() {
-        if (empty($this->companyManager)) {
-            $this->companyManager = $this->container->get('youppers.company.manager.company');
-        }
-        return $this->companyManager;
-    }
-
-    /**
-     * @var BrandManager
-     */
-    private $brandManager;
-
-    /**
-     * @return BrandManager
-     */
-    protected function getBrandManager() {
-        if (empty($this->brandManager)) {
-            $this->brandManager = $this->container->get('youppers.company.manager.brand');
-        }
-        return $this->brandManager;
-    }
-
-    /**
-     * @var ProductManager
-     */
-    private $productManager;
-
-    /**
-     * @return ProductManager
-     */
-    protected function getProductManager() {
-        if (empty($this->productManage)) {
-            $this->productManage = $this->container->get('youppers.company.manager.product');
-        }
-        return $this->productManage;
-    }
-
-
-
     /**
      * @var ProductCollectionManager
      */

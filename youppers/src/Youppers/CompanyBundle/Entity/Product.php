@@ -75,7 +75,7 @@ class Product
 	protected $url;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="\Youppers\ProductBundle\Entity\ProductVariant", mappedBy="product")
+	 * @ORM\OneToOne(targetEntity="\Youppers\ProductBundle\Entity\ProductVariant", mappedBy="product", fetch="EXTRA_LAZY")
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json.qr.find", "json.product.list", "json.box.show"})
 	 **/

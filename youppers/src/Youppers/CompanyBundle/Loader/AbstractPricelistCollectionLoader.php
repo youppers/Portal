@@ -12,6 +12,11 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Youppers\ProductBundle\Manager\ProductVariantManager;
 use Youppers\ProductBundle\Manager\ProductTypeManager;
 
+/**
+ * Class AbstractPricelistCollectionLoader
+ * @package Youppers\CompanyBundle\Loader
+ * @deprecated
+ */
 abstract class AbstractPricelistCollectionLoader extends AbstractPricelistLoader {
 	
 	private $productCollectionRepository;

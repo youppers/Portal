@@ -69,3 +69,11 @@ services:
     youppers.company.manager.product:
         class:     Youppers\CompanyBundle\Manager\ProductManager
         arguments: ['Youppers\CompanyBundle\Entity\Product','@doctrine']
+
+    youppers.company.manager.pricelist:
+        class:     Youppers\CompanyBundle\Manager\PricelistManager
+        arguments: ['Youppers\CompanyBundle\Entity\Pricelist','@doctrine']
+
+    youppers.company.manager.product_price:
+        class:     Youppers\CompanyBundle\Manager\ProductPriceManager
+        arguments: ['Youppers\CompanyBundle\Entity\ProductPrice', '@doctrine']

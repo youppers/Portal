@@ -8,6 +8,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Youppers\CompanyBundle\Entity\Brand;
 use Youppers\CompanyBundle\Entity\Product;
 use Youppers\CompanyBundle\Entity\ProductPrice;
+use Youppers\CompanyBundle\Manager\PricelistManager;
+use Youppers\CompanyBundle\Manager\ProductPriceManager;
 
 abstract class AbstractPricelistLoader extends AbstractLoader
 {
@@ -34,8 +36,38 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	{
 		$this->createProduct = $createProduct;
 	}
-	
-	public function load($filename,$skip=0)
+
+    /**
+     * @var PricelistManager
+     */
+    private $pricelistManager;
+
+    /**
+     * @return PricelistManager
+     */
+    protected function getPricelistManager() {
+        if (empty($this->pricelistManage)) {
+            $this->pricelistManage = $this->container->get('youppers.company.manager.pricelist');
+        }
+        return $this->pricelistManage;
+    }
+
+    /**
+     * @var ProductPriceManager
+     */
+    private $productPriceManager;
+
+    /**
+     * @return ProductPriceManager
+     */
+    protected function getProductPriceManager() {
+        if (empty($this->productPriceManager)) {
+            $this->productPriceManager = $this->container->get('youppers.company.manager.product_price');
+        }
+        return $this->productPriceManager;
+    }
+
+    public function load($filename,$skip=0)
 	{
 		$this->skip = $skip;
 		
@@ -91,30 +123,30 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			
 			$this->handleRow($row);
 				
-			if ($this->numRows % 500 == 0) {
+			if ($this->numRows % self::BATCH_SIZE == 0) {
 				$this->logger->info(sprintf("Read %d rows",$this->numRows));
-				if ($this->force) {
-					$this->em->flush();
-				} else {
-					//
-				}
-				$this->batchClear();
+                $this->batch();
 			}
 		}
 		
-		$this->em->flush();
+		$this->batch();
 		
 		$event = $stopwatch->stop('load');
 		$this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
 	}
 
-	public function batchClear()
-	{
-		$this->em->clear('Youppers\CompanyBundle\Entity\Product');
-		$this->em->clear('Youppers\CompanyBundle\Entity\ProductPrice');
-	}
-		
-	protected function handleBrand()
+    public function batch()
+    {
+        if ($this->force) {
+            $this->getProductManager()->getObjectManager()->flush();
+            $this->getProductPriceManager()->getObjectManager()->flush();
+        } else {
+            $this->getProductManager()->getObjectManager()->clear();
+            $this->getProductPriceManager()->getObjectManager()->clear();
+        }
+    }
+
+    protected function handleBrand()
 	{
 		$brandCode = $this->mapper->remove('brand');
 		if (null !== $brandCode) {
@@ -125,7 +157,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			if (empty($brandCode)) {
 				throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually",$this->mapper->key('brand')));
 			}
-			$brand = $this->getBrandRepository()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
+			$brand = $this->getBrandManager()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
 			if (empty($brand)) {
 				throw new \Exception(sprintf("At row '%d': Brand '%s' not found for Company '%s'",$this->numRows,$brandCode,$this->company));
 			}
@@ -157,16 +189,13 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			throw new \Exception(sprintf("Product code not found in the column '%s'",$this->mapper->key('code')));
 		}
 		
-		$product = $this->getProductRepository()
+		$product = $this->getProductManager()
 			->findOneBy(array('brand' => $brand, 'code' => $productCode));
 		
 		if (empty($product)) {
-			$className = $this->getProductRepository()->getClassName();
-			$product = new $className;
+			$product = $this->getProductManager()->create();
 			$product->setBrand($brand);
 			$product->setCode($productCode);
-		} elseif (!$this->force) {
-			$product = clone $product;
 		}
 		
 		if ($this->enable) {
@@ -191,13 +220,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$product->setInfo($info);
 		
 		if (empty($product->getId())) {
-			if ($this->force && $this->createProduct) {
-				$this->productManager->save($product,false);
-			} else {
-				$this->logger->info("New: " . $product);
-			}
-		} elseif (!$this->force) {
-			$this->logger->debug("Updated: " . $product);
+            $this->getProductManager()->save($product,false);
+            $this->logger->info("New product: " . $product);
+		} else {
+			$this->logger->debug("Updated product: " . $product);
 		}		
 		
 		return $product;
@@ -211,27 +237,22 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	 */
 	protected function handlePrice(Product $product)
 	{
-		$price = $this->getProductPriceRepository()
-		->findOneBy(array('product' => $product, 'pricelist' => $this->pricelist));
+		$price = $this->getProductPriceManager()
+		    ->findOneBy(array('product' => $product, 'pricelist' => $this->pricelist));
 		if ($this->force && !empty($price)) {
-			throw new \Exception(sprintf("Duplicated price at row %d: %s",$this->numRows,implode(',',$row)));
+			throw new \Exception(sprintf("Duplicated price at row %d: %s",$this->numRows,implode(',',$this->mapper)));
 		}
 		
-		$className = $this->getProductPriceRepository()->getClassName();
-		$price = new $className;
+		$price = $this->getProductPriceManager()->create();
 		$price->setPriceList($this->pricelist);
 		$price->setProduct($product);
 		$price->setPrice(strtr($this->mapper->remove('price'),array(" " => "", "€" => "","." => "","," => ".")));
 		$price->setUom($this->mapper->remove('uom'));
-		if ($this->force) {
-			$this->em->persist($price);
-		}
+		$this->getProductPriceManager()->save($price,false);
 		return $price;
 	}
 
 	public function handleRow($row) {
-		
-		//parent::hanldleRow($row);
 		
 		$this->mapper->setData($row);
 		
@@ -239,9 +260,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 
 		if ($brand) {
 			$product = $this->handleProduct($brand);
-			if ($product) {
-				$price = $this->handlePrice($product);
-			}
+			$price = $this->handlePrice($product);
 		}
 		
 	}
