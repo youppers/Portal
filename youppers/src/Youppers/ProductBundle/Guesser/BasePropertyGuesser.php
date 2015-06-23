@@ -137,6 +137,22 @@ class BasePropertyGuesser extends AbstractGuesser
                     $newText = trim(preg_replace('/' . preg_quote($value,'/') . '/i','',$newText));
                 }
             }
+            $requiredOptions = $option->getAttributeStandard()->getRequiredOptions();
+            if ($match && $requiredOptions->count()) {
+                $match = false;
+                foreach ($requiredOptions as $requiredOption) {
+                    $variantProperties = $variant->getVariantProperties();
+                    foreach ($variantProperties as $variantProperty) {
+                        if ($requiredOption == $variantProperty->getAttributeOption()) {
+                            $match = true;
+                            continue 2;
+                        }
+                    }
+                }
+                if (!$match) {
+                    $this->getLogger()->debug(sprintf("Variant '%s' guessed property '%s' but miss required options",$variant,$option));
+                }
+            }
 			if ($match) {
                 //dump(array('text' => $text, 'newText' => $newText));
                 $text = $newText;
@@ -149,7 +165,7 @@ class BasePropertyGuesser extends AbstractGuesser
                             $this->changeVariantProperty($variant,$actualOption,$option);
                         } else {
                             $todo = sprintf("<question>Change property</question> <info>%s</info> from <info>%s</info> to <info>%s</info> for <info>%s</info>",
-                                $option->getAttributeType(), $actualOption->getValueWithSymbol(), $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
+                                $option->getAttributeType(), $actualOption->getAttributeStandard() . ': ' . $actualOption->getValueWithSymbol(), $option->getAttributeStandard() . ': ' . $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
                             $this->addTodo($todo);
                         }
 					}

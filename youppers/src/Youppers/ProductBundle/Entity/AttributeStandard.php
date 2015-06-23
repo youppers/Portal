@@ -68,7 +68,12 @@ class AttributeStandard
      */
     protected $isVariantImage;
 
-	/**
+    /**
+     * @ORM\ManyToMany(targetEntity="AttributeOption")
+     */
+    protected $requiredOptions;
+
+    /**
 	 * @ORM\Column(type="text", nullable=true )
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"details", "json"})
@@ -398,5 +403,39 @@ class AttributeStandard
     public function getUsesOnlyAlias()
     {
         return $this->usesOnlyAlias;
+    }
+
+    /**
+     * Add requiredOption
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $requiredOption
+     *
+     * @return AttributeStandard
+     */
+    public function addRequiredOption(\Youppers\ProductBundle\Entity\AttributeOption $requiredOption)
+    {
+        $this->requiredOptions[] = $requiredOption;
+
+        return $this;
+    }
+
+    /**
+     * Remove requiredOption
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $requiredOption
+     */
+    public function removeRequiredOption(\Youppers\ProductBundle\Entity\AttributeOption $requiredOption)
+    {
+        $this->requiredOptions->removeElement($requiredOption);
+    }
+
+    /**
+     * Get requiredOptions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRequiredOptions()
+    {
+        return $this->requiredOptions;
     }
 }
