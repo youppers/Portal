@@ -64,6 +64,7 @@ class AttributeStandardAdmin extends YouppersAdmin
             ->with('Options', array('class' => 'col-md-4'))
             ->add('enabled', null, array('required'  => false))
             ->add('isVariantImage', null, array('required'  => false))
+            ->add('removeMatchingWords', null, array('required'  => false))
             ->end()
             ->with('Values', array('class' => 'col-md-12', 'description' => 'Use ; to separate aliases'))
             ->add('attributeOptions', 'sonata_type_collection', array('by_reference' => false), array(
@@ -87,6 +88,7 @@ class AttributeStandardAdmin extends YouppersAdmin
             ->add('symbol')
             ->add('enabled')
             ->add('isVariantImage')
+            ->add('removeMatchingWords')
             ->add('description')
             ->add('attributeOptions', null, array('associated_property' => 'valueWithSymbol'))
             ->add('updatedAt')

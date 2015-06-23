@@ -56,6 +56,11 @@ class AttributeStandard
     /**
      * @ORM\Column(type="boolean", options={"default":false})
      */
+    protected $removeMatchingWords;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
     protected $isVariantImage;
 
 	/**
@@ -340,5 +345,29 @@ class AttributeStandard
     public function getIsVariantImage()
     {
         return $this->isVariantImage;
+    }
+
+    /**
+     * Set removeMatchingWords
+     *
+     * @param boolean $removeMatchingWords
+     *
+     * @return AttributeStandard
+     */
+    public function setRemoveMatchingWords($removeMatchingWords)
+    {
+        $this->removeMatchingWords = $removeMatchingWords;
+
+        return $this;
+    }
+
+    /**
+     * Get removeMatchingWords
+     *
+     * @return boolean
+     */
+    public function getRemoveMatchingWords()
+    {
+        return $this->removeMatchingWords;
     }
 }

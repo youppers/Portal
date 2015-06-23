@@ -71,6 +71,7 @@ class BasePropertyGuesser extends AbstractGuesser
                         if (!$option->getEnabled()) {
                             continue;
                         }
+                        $options[trim($option->getValue())] = $option;
 						foreach (explode(';',$option->getAlias()) as $alias) {
                             $alias = trim($alias);
 							if (!empty($alias)) {
@@ -84,7 +85,6 @@ class BasePropertyGuesser extends AbstractGuesser
 								$options[$alias] = $option;
 							}
 						}
-						$options[trim($option->getValue())] = $option;
 					}
 				}
 			}
@@ -97,6 +97,7 @@ class BasePropertyGuesser extends AbstractGuesser
 			} else {
 				$this->getLogger()->info(sprintf("Cached %d options of type '%s' for collection '%s'",count($options),$type,$collection));
 			}
+            dump(array("$type" => $options));
 		}
 		return $this->collectionOptions[$collection->getId()][$type->getId()];
 	}
@@ -131,7 +132,9 @@ class BasePropertyGuesser extends AbstractGuesser
                 if (!$match) {
                     break;
                 }
-                $newText = trim(preg_replace('/' . preg_quote($value,'/') . '/i','',$newText));
+                if ($option->getAttributeStandard()->getRemoveMatchingWords()) {
+                    $newText = trim(preg_replace('/' . preg_quote($value,'/') . '/i','',$newText));
+                }
             }
 			if ($match) {
                 //dump(array('text' => $text, 'newText' => $newText));
