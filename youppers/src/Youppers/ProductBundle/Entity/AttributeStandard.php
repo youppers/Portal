@@ -70,6 +70,7 @@ class AttributeStandard
 
     /**
      * @ORM\ManyToMany(targetEntity="AttributeOption")
+     * @ORM\JoinTable(name="youppers_product__standard_require")
      */
     protected $requiredOptions;
 
