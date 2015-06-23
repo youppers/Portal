@@ -71,7 +71,9 @@ class BasePropertyGuesser extends AbstractGuesser
                         if (!$option->getEnabled()) {
                             continue;
                         }
-                        $options[trim($option->getValue())] = $option;
+                        if (!$standard->getUsesOnlyAlias()) {
+                            $options[trim($option->getValue())] = $option;
+                        }
 						foreach (explode(';',$option->getAlias()) as $alias) {
                             $alias = trim($alias);
 							if (!empty($alias)) {

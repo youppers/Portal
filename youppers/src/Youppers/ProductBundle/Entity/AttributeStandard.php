@@ -61,6 +61,11 @@ class AttributeStandard
     /**
      * @ORM\Column(type="boolean", options={"default":false})
      */
+    protected $usesOnlyAlias;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
     protected $isVariantImage;
 
 	/**
@@ -123,7 +128,7 @@ class AttributeStandard
 		$this->attributeOptions->add($attributeOption);
 	}
 	
-	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle
+	// php app/console doctrine:generate:entities --no-backup YouppersProductBundle:AttributeStandard
     /**
      * Constructor
      */
@@ -369,5 +374,29 @@ class AttributeStandard
     public function getRemoveMatchingWords()
     {
         return $this->removeMatchingWords;
+    }
+
+    /**
+     * Set usesOnlyAlias
+     *
+     * @param boolean $usesOnlyAlias
+     *
+     * @return AttributeStandard
+     */
+    public function setUsesOnlyAlias($usesOnlyAlias)
+    {
+        $this->usesOnlyAlias = $usesOnlyAlias;
+
+        return $this;
+    }
+
+    /**
+     * Get usesOnlyAlias
+     *
+     * @return boolean
+     */
+    public function getUsesOnlyAlias()
+    {
+        return $this->usesOnlyAlias;
     }
 }
