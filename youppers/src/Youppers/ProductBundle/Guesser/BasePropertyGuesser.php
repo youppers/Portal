@@ -97,7 +97,6 @@ class BasePropertyGuesser extends AbstractGuesser
 			} else {
 				$this->getLogger()->info(sprintf("Cached %d options of type '%s' for collection '%s'",count($options),$type,$collection));
 			}
-            dump(array("$type" => $options));
 		}
 		return $this->collectionOptions[$collection->getId()][$type->getId()];
 	}
