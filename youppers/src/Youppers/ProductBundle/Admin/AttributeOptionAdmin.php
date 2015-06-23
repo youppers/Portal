@@ -8,8 +8,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Youppers\CommonBundle\Admin\YouppersAdmin;
 
-class AttributeOptionAdmin extends Admin
+class AttributeOptionAdmin extends YouppersAdmin
 {
 	public function getExportFields()
 	{
@@ -114,6 +115,7 @@ class AttributeOptionAdmin extends Admin
             $formMapper
                 ->add('image', 'sonata_type_model_list',
                     array(
+                        'btn_add'       => false,
                         'required' => false
                     ), array(
                         'link_parameters' => array(
