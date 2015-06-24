@@ -43,7 +43,7 @@ abstract class AbstractMediaLoader extends AbstractLoader {
     private $types = array(
         'company' => array(),
         'brand' => array(),
-        'product' => array(),
+        'product' => array('context' => 'youppers_product'),
         'collection' => array(),
         'attribute' => array()
     );
@@ -184,12 +184,12 @@ abstract class AbstractMediaLoader extends AbstractLoader {
                 $this->logger->warning(sprintf("Variant '%s' already has an image",$variant->getProduct()->getNameCode()));
                 return;
             }
-            $media = $this->handleMedia($mediaType);
+            $name = $this->container->get('sonata.core.slugify.cocur')->slugify($variant->getProduct()->getFullCode() . '-' . $variant->getProduct()->getName());
+            $media = $this->handleMedia($mediaType,$name,$this->types[$mediaType]['context'],$name);
             if (empty($media)) {
                 return;
             }
-            dump($media->getProviderName());
-            if ($media->getProviderName() == 'image') {
+            if ($media->getProviderName() == 'sonata.media.provider.image') {
                 $variant->setImage($media);
             }
         }
@@ -272,25 +272,32 @@ abstract class AbstractMediaLoader extends AbstractLoader {
      * @param $mediaType
      * @return Media
      */
-    protected function handleMedia($mediaType, ProductVariant $variant = null)
+    protected function handleMedia($mediaType, $name = null, $context = 'default')
     {
         $uri = $this->mapper->get(self::FIELD_RES);
         if (empty($uri)) {
-            $this->logger->error(sprintf("Resource not specified at row %d",$this->numRows));
+            $this->logger->debug(sprintf("Resource not specified at row %d",$this->numRows));
             return;
         }
 
         $uri = $this->prefix . $uri;
 
+        if (file_exists($uri)) {
+            $this->logger->info(sprintf("Loading media '%s'",$uri));
+        } else {
+            $this->logger->error(sprintf("Media file not found '%s'",$uri));
+            return;
+        }
+
         $media = $this->getMediaManager()->create();
         $media->setBinaryContent($uri);
-        $media->setContext('youppers_product');
+        $media->setContext($context);
         $media->setProviderName('sonata.media.provider.image');
         $media->setProviderReference($uri);
-        if ($variant) {
-            $name = $variant->getProduct()->getFullCode();
+        if (empty($name)) {
+            $name = $uri;
         }
-        //$media->setName($variant->getProduct()->getFullCode());
+        $media->setName($name);
         $this->logger->info(sprintf("Saved image '%s' as '%s'",trim($uri),$media->getName()));
         $this->getMediaManager()->save($media);
 

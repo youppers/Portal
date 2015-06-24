@@ -13,7 +13,7 @@ class MediaLoader extends AbstractMediaLoader
             self::FIELD_TYPE => 'Tipo',
             self::FIELD_CODE => 'Codice',
             self::FIELD_NAME => 'Nome',
-            self::FIELD_RES => 'Url'
+            self::FIELD_RES => 'Immagine'
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
