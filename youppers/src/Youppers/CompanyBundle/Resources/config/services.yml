@@ -17,6 +17,11 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
+    youppers.company.loader.media_loader_factory:
+        class:     Youppers\CompanyBundle\Loader\MediaLoaderFactory
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
 #    youppers.company.pricelist.loader.IS:
 #        class:     Youppers\CompanyBundle\Service\BasePricelistLoader
 #        arguments: ['@doctrine', '@logger']
