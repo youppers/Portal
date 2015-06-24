@@ -31,7 +31,7 @@ class AttributeOption
 	 */
 	public function getName()
 	{
-		return $this->getAttributeStandard()->getAttributeType()->getName();
+		return  $this->getAttributeStandard() ? $this->getAttributeStandard()->getAttributeType()->getName() : '';
 	}
 	
 	/**
