@@ -21,7 +21,7 @@ class GuesserLoaderFactory extends ContainerAware
 	 * 
 	 * @param string $code The pricelist code
 	 */
-	public function create($companyCode,$brandCode,$collectionCode=null)
+	public function create($companyCode,$brandCode=null,$collectionCode=null)
 	{
 		$company = $this->managerRegistry->getRepository('YouppersCompanyBundle:Company')->findOneBy(array('code' => $companyCode));
 
@@ -30,18 +30,22 @@ class GuesserLoaderFactory extends ContainerAware
 		}
 
 		$this->logger->debug(sprintf("Code: '%s' Company: '%s'", $companyCode, $company));
-		
-		$criteria = Criteria::create()
-			->where(Criteria::expr()->eq("code", $brandCode));
-		
-		$brand = $company->getBrands()->matching($criteria)->first();
-		
-		if (empty($brand)) {
-			throw new \Exception(sprintf("Brand '%s' not found",$brandCode));
-		}
-		
-		$this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $brandCode, $brand));
-				
+
+        if (!empty($brandCode)) {
+            $criteria = Criteria::create()
+                ->where(Criteria::expr()->eq("code", $brandCode));
+
+            $brand = $company->getBrands()->matching($criteria)->first();
+
+            if (empty($brand)) {
+                throw new \Exception(sprintf("Brand '%s' not found",$brandCode));
+            }
+
+            $this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $brandCode, $brand));
+        } else {
+            $brand = null;
+        }
+
 		$classname = sprintf("Youppers\ProductBundle\Guesser\%s\VariantGuesser",$company->getCode());
 
         if (class_exists($classname)) {
@@ -55,7 +59,7 @@ class GuesserLoaderFactory extends ContainerAware
 		$guesser->setLogger($this->logger);
 		$guesser->setContainer($this->container);
 		$guesser->setCompany($company);
-		$guesser->setBrand($brand);
+		if ($brand) $guesser->setBrand($brand);
 		$guesser->setCollection($collectionCode);
 		
 		return $guesser;

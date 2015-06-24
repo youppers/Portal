@@ -112,7 +112,7 @@ class BasePropertyGuesser extends AbstractGuesser
     protected function guessProperty(ProductVariant $variant, &$text, $type)
 	{
 		$actualOption = $this->getActualOption($variant, $type);
-	
+
 		$options = $this->getCollectionOptions($variant->getProductCollection(), $type);
 		foreach ($options as $values => $option) {
             $match = false;
@@ -137,7 +137,7 @@ class BasePropertyGuesser extends AbstractGuesser
                     $newText = trim(preg_replace('/' . preg_quote($value,'/') . '/i','',$newText));
                 }
             }
-            $requiredOptions = $option->getAttributeStandard()->getRequiredOptions();
+            if ($match) $requiredOptions = $option->getAttributeStandard()->getRequiredOptions();
             if ($match && $requiredOptions->count()) {
                 $match = false;
                 foreach ($requiredOptions as $requiredOption) {
@@ -185,16 +185,18 @@ class BasePropertyGuesser extends AbstractGuesser
                         $todo = sprintf("<question>Add image</question> <info>%s</info> to <info>%s</info>",$option->getImage(),$variant->getProduct()->getNameCode());
                         $this->addTodo($todo);
                     }
+                    $this->getLogger()->info(sprintf("Added option image '%s' to '%s'",$option->getImage(),$variant));
                 }
 				return true;
 			}
 		}
-		if (empty($actualOption)) {
+        if (empty($actualOption)) {
 			if ($this->hasDefaultOption($variant,$type)) {
 				$option = $this->getDefaultOption($variant,$type);
 				if ($option === false) {
 					$this->getLogger()->debug(sprintf("Default option false for '%s' type '%s'",$variant,$type));
 				} else {
+                    $this->getLogger()->debug(sprintf("Default option '%s' for '%s'",$option,$variant));
 					if ($this->getForce()) {
 						$this->addVariantProperty($variant,$option);
 					} else {
@@ -206,8 +208,10 @@ class BasePropertyGuesser extends AbstractGuesser
 			} elseif (count($options)) {
 				if ($this->isVariant) {
 					$todo = sprintf("<error>Not guessed</error> property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
+                    $this->getLogger()->warning(sprintf("No guess of type '%s' for '%s'",$type,$variant));
 				} else {
 					$todo = sprintf("Not guessed property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
+                    $this->getLogger()->info(sprintf("No guess of type '%s' for '%s'",$type,$variant));
 				}
 				$this->addTodo($todo);
 			} else {

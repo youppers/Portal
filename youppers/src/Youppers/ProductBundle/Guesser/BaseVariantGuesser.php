@@ -129,6 +129,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
             $newGuesser->setIsVariant(false);
             $this->guessers[$collection->getId()][] = $newGuesser;
         }
+        return $this->guessers[$collection->getId()];
      }
 	
 	protected function getVariantGuessers(ProductVariant $variant)
@@ -136,30 +137,34 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 		return $this->getCollectionGuessers($variant->getProductCollection());
 	}
 	
-	public function guessVariant(ProductVariant $variant, $guessers) {
+	public function guessVariant(ProductVariant $variant, $guessers = null) {
 		$product = $variant->getProduct();
 		if (empty($product)) {
 			$this->getLogger()->critical("Variant without product: " . $variant->getId());
 			return;
 		}
-		$text = $variant->getProduct()->getName();
+		$name = $variant->getProduct()->getName();
         $info = json_decode($variant->getProduct()->getInfo(), true);
-		foreach ($this->getVariantGuessers($variant) as $guesser) {
-			if ($this->debug) dump($text);
+        if ($guessers == null) {
+            $guessers = $this->getVariantGuessers($variant);
+        }
+		foreach ($guessers as $guesser) {
+			if ($this->debug) dump($name);
             if ($guesser instanceof BasePropertyGuesser) {
                 $code = $guesser->getType()->getCode();
-                if (array_key_exists($code,$info)) {
-                    if ($guesser->guessVariant($variant, $info[$code])) {
+                if (array_key_exists($code,$info) && $text = $info[$code]) {
+                    $this->getLogger()->debug(sprintf("Guess '%s' using product info['%s']='%s'",$variant,$code,$text));
+                    if ($guesser->guessVariant($variant, $text)) {
                         continue;
                     } else {
-                        dump($info[$code]);
+                        if ($this->debug) dump($info[$code]);
                     }
                 }
             }
-			if ($guesser->guessVariant($variant, $text)) {
+			if ($guesser->guessVariant($variant, $name)) {
                 continue;
             }
-			if ($this->debug) dump($text);
+			if ($this->debug) dump($name);
 		}
 	}
 
