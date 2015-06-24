@@ -37,7 +37,7 @@ class ProductLoaderCommand extends ContainerAwareCommand
 		$brand = $input->getOption('brand');
 		
 		if ($brand === null) {
-			$output->writeln("Brand code not supplied (multi brand pricelist)");
+			$output->writeln("Brand code not supplied (multi brand product list)");
 		} else {				
 			$loader->setBrandByCode($brand);
 		}
