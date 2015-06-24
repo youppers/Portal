@@ -1,11 +1,11 @@
 <?php
 namespace Youppers\CompanyBundle\Loader\FL;
 
-use Youppers\CompanyBundle\Loader\AbstractPricelistCollectionLoader;
+use Youppers\CompanyBundle\Loader\AbstractPricelistLoader;
 use Youppers\CompanyBundle\Loader\LoaderMapper;
 use Youppers\CompanyBundle\Entity\Brand;
-use Youppers\ProductBundle\Entity\ProductCollection;
-class PricelistLoader extends AbstractPricelistCollectionLoader
+
+class PricelistLoader extends AbstractPricelistLoader
 {
 	public function createMapper()
 	{

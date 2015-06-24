@@ -2,7 +2,6 @@
 namespace Youppers\CompanyBundle\Loader\ISTEST;
 
 use Youppers\CompanyBundle\Entity\Brand;
-use Youppers\CompanyBundle\Loader\AbstractPricelistCollectionLoader;
 use Youppers\CompanyBundle\Loader\LoaderMapper;
 use Youppers\CompanyBundle\Loader\IS\PricelistLoader as IS;
 
