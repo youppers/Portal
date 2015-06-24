@@ -19,10 +19,9 @@ class ProductLoaderCommand extends ContainerAwareCommand
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
-		->addOption('create-product',null, InputOption::VALUE_NONE, 'Create product if dont exists')
-		->addOption('create-collection',null, InputOption::VALUE_NONE, 'Create product collection if dont exists')
-		->addOption('create-variant',null, InputOption::VALUE_NONE, 'Create product variant if dont exists')
+        ->addOption('change-collection', null, InputOption::VALUE_NONE, 'Change product collection')
 		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable created entity')
+        ->addOption('guess', null, InputOption::VALUE_NONE, 'Guess properties of variant')
 		->addOption('fieldseparator', 'fs', InputOption::VALUE_OPTIONAL, 'Field separator',";")
 		;
 	}
@@ -44,21 +43,14 @@ class ProductLoaderCommand extends ContainerAwareCommand
 		}
 		$loader->setForce($input->getOption('force'));
 		$loader->setEnable($input->getOption('enable'));
-		
-		if (method_exists($loader,'setCreateProduct')) {
-			$loader->setCreateProduct($input->getOption('create-product'));
-		}
-		if (method_exists($loader,'setCreateCollection')) {
-			$loader->setCreateCollection($input->getOption('create-collection'));
-		}
-		if (method_exists($loader,'setCreateVariant')) {		
-			$loader->setCreateVariant($input->getOption('create-variant'));
-		}
-		
+        $loader->setGuess($input->getOption('guess'));
+
+        $loader->setChangeCollection($input->getOption('change-collection'));
+
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
 			$loader->setDebug(true);
 		}
-		
+
 		$loader->load($input->getArgument('filename'),$input->getOption('skip')); 
 		
 	}

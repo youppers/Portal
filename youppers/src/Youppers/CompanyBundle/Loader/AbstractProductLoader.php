@@ -24,6 +24,21 @@ use Youppers\ProductBundle\Manager\ProductTypeManager;
 
 abstract class AbstractProductLoader extends AbstractLoader {
 
+    private $changeCollection;
+
+    public function setChangeCollection($flag)
+    {
+        $this->changeCollection = $flag;
+    }
+
+    private $guess;
+
+    public function setGuess($flag)
+    {
+        $this->guess = $flag;
+    }
+
+
     /**
      * @var ProductCollectionManager
      */
@@ -144,9 +159,11 @@ abstract class AbstractProductLoader extends AbstractLoader {
         $collection = $this->handleCollection($product, $brand);
 
         $variant = $this->handleVariant($collection, $product);
-    }
 
-    //private $disabledBrands = array();
+        if ($this->guess) {
+            $this->doGuess($variant);
+        }
+    }
 
     protected function handleBrand()
     {
@@ -164,16 +181,6 @@ abstract class AbstractProductLoader extends AbstractLoader {
             $brand = $this->brand;
         }
 
-        /*
-        if ($this->skip == 0 && $this->force && $this->enable && !array_key_exists($brand->getId(),$this->disabledBrands)) {
-            $query = $this->container->get('youppers.company.manager.product')->getEntityManager()
-                ->createQuery('UPDATE Youppers\CompanyBundle\Entity\ProducT p SET p.enabled = false WHERE p.brand = :brand');
-            $query->setParameter('brand', $brand);
-            $query->execute();
-            $this->disabledBrands[$brand->getId()] = $brand;
-            $this->logger->info(sprintf("Disabled all products of brand '%s'",$brand));
-        }
-        */
         return $brand;
     }
 
@@ -211,8 +218,8 @@ abstract class AbstractProductLoader extends AbstractLoader {
                 throw new \Exception(sprintf("Product name not found in the column '%s'",$this->mapper->key(self::FIELD_NAME)));
             }
         }
-        if (!empty($name)) $product->setName($name);
-        if (!empty($description)) $product->setDescription($description);
+        if (!empty($name) && empty($product->getName())) $product->setName($name);
+        if (!empty($description) && empty($product->getDescription())) $product->setDescription($description);
 
         $productGtin = $this->mapper->remove(self::FIELD_GTIN);
         if (!empty($productGtin)) {
@@ -223,8 +230,13 @@ abstract class AbstractProductLoader extends AbstractLoader {
             }
         }
 
-        $info = json_encode($this->mapper->getData());
-        $product->setInfo($info);
+        $info = $this->mapper->getData();
+        $oldInfo = $product->getInfo();
+        if (!empty($oldInfo)) {
+            $oldInfo = json_decode($oldInfo,true);
+            $info = array_merge($oldInfo,$info);
+        }
+        $product->setInfo(json_encode($info));
 
         if (empty($product->getId())) {
             $this->getProductManager()->save($product,false);
@@ -291,7 +303,12 @@ abstract class AbstractProductLoader extends AbstractLoader {
 			$variant = $this->getProductVariantManager()
 				->findOneBy(array('product' => $product));
 			if (!empty($variant)) {
-				$this->logger->error(sprintf("Product '%s' in collection '%s' instead of '%s'",$product,$variant->getProductCollection(),$collection));
+                if ($this->changeCollection) {
+                    $this->logger->warning(sprintf("Variant '%s' changed from collection '%s' to '%s'",$product,$variant->getProductCollection(),$collection));
+                    $variant->setProductCollection($collection);
+                } else {
+                    $this->logger->error(sprintf("Variant '%s' in collection '%s' instead of '%s'",$product,$variant->getProductCollection(),$collection));
+                }
 			}
 		}
 		if (empty($variant)) {
@@ -324,5 +341,15 @@ abstract class AbstractProductLoader extends AbstractLoader {
         return $variant;
 	}
 
+    private $guesser = null;
+
+    protected function doGuess(ProductVariant $variant)
+    {
+        if (empty($this->guesser)) {
+            $this->guesser = $this->container->get('youppers.product.variant.guesser_factory')->create($this->company->getCode());
+            $this->guesser->setForce($this->force);
+        }
+        $this->guesser->guessVariant($variant);
+    }
 
 }
