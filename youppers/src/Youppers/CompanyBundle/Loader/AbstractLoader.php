@@ -8,7 +8,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Youppers\CompanyBundle\Entity\Company;
+use Youppers\CompanyBundle\Manager\BrandManager;
 use Youppers\CompanyBundle\Manager\ProductManager;
+use Youppers\CompanyBundle\Manager\CompanyManager;
 use Youppers\CompanyBundle\YouppersCompanyBundle;
 use Monolog\Logger;
 use Youppers\CompanyBundle\Entity\ProductPrice;
@@ -23,30 +25,37 @@ abstract class AbstractLoader extends ContainerAware
     const FIELD_DESCRIPTION = 'desciption';
     const FIELD_CODE = 'code';
     const FIELD_GTIN = 'gtin';
+    const FIELD_TYPE = 'type';
+    const FIELD_RES = 'uri';
 
     /**
 	 * @return \Youppers\CompanyBundle\Loader\LoaderMapper
 	 */
 	public abstract function createMapper();
-	
-	protected $managerRegistry;
+
+    /**
+     * @var LoaderMapper
+     */
+    protected $mapper;
+
+    protected $managerRegistry;
 	protected $em;
+    /**
+     * @var LoggerInterface
+     */
 	protected $logger;
-
-	private $companyRepository;
+    /**
+     * @var Company
+     */
 	protected $company;
-	
-	private $brandRepository;
 	protected $brand;
-	
-	private $productRepository;
 	protected $product;
-
-	private $productPriceRepository;
-	
 	protected $fs;
 	protected $enable;
 	protected $force;
+
+    protected $numRows;
+
 
     /**
      * @param ManagerRegistry $managerRegistry

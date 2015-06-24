@@ -17,10 +17,6 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	
 	private $disabledBrands = array();
 	
-	protected $mapper;
-	
-	protected $numRows;
-	
 	private $skip;
 	
 	public function setPricelist($pricelist)
