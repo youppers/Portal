@@ -26,13 +26,6 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$this->company = $pricelist->getCompany();
 	}
 	
-	private $createProduct = false;
-	
-	public function setCreateProduct($createProduct)
-	{
-		$this->createProduct = $createProduct;
-	}
-
     /**
      * @var PricelistManager
      */

@@ -28,7 +28,6 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
-		->addOption('create-product',null, InputOption::VALUE_NONE, 'Create product if dont exists')
 		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable created entity')
 		->addOption('fieldseparator', 'fs', InputOption::VALUE_OPTIONAL, 'Field separator',";")
 		;
@@ -53,8 +52,6 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		}
 		$loader->setForce($input->getOption('force'));
 		$loader->setEnable($input->getOption('enable'));
-		
-        $loader->setCreateProduct($input->getOption('create-product'));
 
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
 			$loader->setDebug(true);
