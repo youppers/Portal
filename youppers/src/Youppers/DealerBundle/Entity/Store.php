@@ -63,7 +63,14 @@ class Store
 	 * @var string
 	 */
 	protected $email;
-	
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+     * @Serializer\Expose()
+     * @Serializer\Groups({"details", "json"})
+     */
+    protected $logo;
+
 	/**
 	 * @ORM\Column(type="boolean", options={"default":true})
 	 * @Serializer\Expose()
@@ -431,5 +438,29 @@ class Store
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $logo
+     *
+     * @return Store
+     */
+    public function setLogo(\Application\Sonata\MediaBundle\Entity\Media $logo = null)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 }

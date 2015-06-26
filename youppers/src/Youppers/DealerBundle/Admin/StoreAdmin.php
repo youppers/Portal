@@ -66,6 +66,7 @@ class StoreAdmin extends YouppersAdmin
 		->add('email')
 		->add('enabled')
 		->add('description')
+        ->add('logo', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('geoid', null, array('route' => array('name' => 'show')))
 		->add('dealer', null, array('route' => array('name' => 'show')))
 		->add('consultants', null, array('route' => array('name' => 'show')))
@@ -115,6 +116,16 @@ class StoreAdmin extends YouppersAdmin
 		->add('code')
 		->add('email')
 		->add('description')
+        ->add('logo', 'sonata_type_model_list',
+            array(
+                'required' => false
+            ), array(
+                'link_parameters' => array(
+                    'context'  => 'youppers_dealer',
+                    'filter'   => array('context' => array('value' => 'youppers_dealer'))
+                )
+            )
+        )
 		->end()
 		->with('Details', array('class' => 'col-md-6'))
 		->add('geoid', 'sonata_type_model_list', array('required' => false, 'constraints' => new Assert\NotNull()))
@@ -138,7 +149,7 @@ class StoreAdmin extends YouppersAdmin
 					'inline' => 'table'
 				))
 				->end();
-		}		
+		}
 	}
 
 	/**

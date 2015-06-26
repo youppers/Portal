@@ -46,6 +46,7 @@ class DealerAdmin extends YouppersAdmin
 		->add('email')
 		->add('enabled')
 		->add('description')
+        ->add('logo', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('createdAt')
 		->add('updatedAt')
         ->add('brands', null, array('route' => array('name' => 'show')))
@@ -99,11 +100,21 @@ class DealerAdmin extends YouppersAdmin
 		->add('code')
 		->add('email', null, array('required'  => false))
 		->add('description')
+        ->add('logo', 'sonata_type_model_list',
+            array(
+                'required' => false
+            ), array(
+                'link_parameters' => array(
+                    'context'  => 'youppers_dealer',
+                    'filter'   => array('context' => array('value' => 'youppers_dealer'))
+                )
+            )
+        )
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
         ->add('org', 'sonata_type_model_list')
 		->add('enabled', 'checkbox', array('required'  => false))
-            ->add('brands')
+         ->add('brands')
 		->end()
 		;
 	}

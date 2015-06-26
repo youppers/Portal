@@ -48,6 +48,13 @@ class Dealer
 	protected $email;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media")
+     * @JMS\Expose()
+     * @JMS\Groups({"details", "json"})
+     */
+    protected $logo;
+
+    /**
      * @ORM\ManyToMany(targetEntity="\Youppers\CompanyBundle\Entity\Brand", inversedBy="dealers")
      * @ORM\JoinTable(name="youppers_dealer__brands")
      * @ORM\OrderBy({"company" = "ASC", "name" = "ASC"})
@@ -421,5 +428,29 @@ class Dealer
     public function getConsultants()
     {
         return $this->consultants;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $logo
+     *
+     * @return Dealer
+     */
+    public function setLogo(\Application\Sonata\MediaBundle\Entity\Media $logo = null)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 }
