@@ -19,19 +19,22 @@ class AttributeStandardAdmin extends YouppersAdmin
 	protected $formOptions = array(
 			'cascade_validation' => true
 	);
-	
+
     /**
      * @param DatagridMapper $datagridMapper
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+        if (!$this->isChild() && $this->getParentAssociationMapping() == 'attributeType') {
+            $datagridMapper
+                ->add('attributeType');
+        }
         $datagridMapper
 
         	->add('name')
             ->add('symbol')
             ->add('attributeOptions.value')
             ->add('enabled')
-            ->add('attributeType')
         ;
     }
 
@@ -41,7 +44,7 @@ class AttributeStandardAdmin extends YouppersAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name', null, array('route' => array('name' => 'show')))
+            ->addIdentifier('name')
             ->add('symbol')
             ->add('attributeOptions', null, array('associated_property' => 'value'))
             ->add('enabled', null, array('editable' => true))
@@ -55,8 +58,13 @@ class AttributeStandardAdmin extends YouppersAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-        	->with('Attribute Standard', array('class' => 'col-md-8'))
-            ->add('attributeType')
+        	->with('Attribute Standard', array('class' => 'col-md-8'));
+        if (!$this->isChild() && $this->getParentAssociationMapping() == 'attributeType') {
+            $formMapper
+                ->add('attributeType');
+        }
+
+        $formMapper
         	->add('name')
             ->add('symbol')
             ->add('enabled', null, array('required'  => false))
