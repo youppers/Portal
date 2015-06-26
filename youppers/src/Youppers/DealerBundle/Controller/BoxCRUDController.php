@@ -21,8 +21,10 @@ class BoxCRUDController extends CRUDController
 
         $clonedObject = clone $object;  // Careful, you may need to overload the __clone method of your object
                                         // to set its id to null
-        $clonedObject->setName($object->getName()." (Clone)");
-        $clonedObject->setCode($object->getCode()." (Clone)");
+        $object->setName(trim(preg_replace('/([^@]+)(.*)/','$1',$object->getName())) . " @" . date('c'));
+        $maxLength = $this->container->get('youppers.dealer.manager.box')->getEntityManager()->getClassMetadata(get_class($object))->getFieldMapping('code')['length'];
+        $object->setCode(substr($object->getCode(),0,$maxLength-strlen(''.time())).time());
+        $this->admin->update($object);
         $clonedObject->setEnabled(false);
         foreach ($object->getBoxProducts() as $boxProduct) {
         	$clonedObject->addBoxProduct(clone $boxProduct);

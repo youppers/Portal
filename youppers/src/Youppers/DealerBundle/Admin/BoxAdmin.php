@@ -64,10 +64,17 @@ class BoxAdmin extends YouppersAdmin
 		parent::configureTabMenu($menu, $action,$childAdmin);
 		
 		if (empty($childAdmin) && in_array($action, array('edit', 'show'))) {	
-			$id = $this->getRequest()->get($this->getIdParameter());	
-			if ($action == 'show') $menu->addChild('box_qr_action', array('uri' => $this->generateUrl('qr', array('id' => $id))));
-			if ($action == 'show') $menu->addChild('box_clone_action', array('uri' => $this->generateUrl('clone', array('id' => $id))));
-			if ($action == 'show') $menu->addChild('box_enable_action', array('uri' => $this->generateUrl('enable', array('id' => $id))));
+			$id = $this->getRequest()->get($this->getIdParameter());
+			if ($action == 'show') {
+                if ($this->getSubject()->getEnabled()) {
+                    $menu->addChild('box_clone_action', array('attributes' => array('icon' => 'fa fa-files-o'), 'uri' => $this->generateUrl('clone', array('id' => $id))));
+                }
+                if ($this->getSubject()->getQr() == null) {
+                    $menu->addChild('box_qr_action', array('attributes' => array('icon' => 'fa fa-qrcode'),'uri' => $this->generateUrl('qr', array('id' => $id))));
+                } elseif (!$this->getSubject()->getEnabled() || !$this->getSubject()->getQr()->getEnabled()) {
+                    $menu->addChild('box_enable_action', array('attributes' => array('icon' => 'fa fa-check-square-o'), 'uri' => $this->generateUrl('enable', array('id' => $id))));
+                }
+            }
 		}		
 	}
 	
@@ -78,10 +85,10 @@ class BoxAdmin extends YouppersAdmin
 	{
 		$showMapper
 		->add('store', null, array('route' => array('name' => 'show')))
-        ->add('qr.boxes', null, array('route' => array('name' => 'show'), 'associated_property' => 'name'))
 		->add('name')
 		->add('code')
 		->add('enabled')
+        ->add('qr.boxes', null, array('route' => array('name' => 'show'), 'associated_property' => 'getNameCodeStatus'))
 		->add('description')
 		->add('image', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('createdAt')
@@ -149,7 +156,7 @@ class BoxAdmin extends YouppersAdmin
 		}		
 		$formMapper
 		->add('name')
-		->add('code')
+		->add('code', null, array('required'  => false))
 		->add('description')
 		->end()
 		->with('Details', array('class' => 'col-md-4'))
@@ -201,4 +208,18 @@ class BoxAdmin extends YouppersAdmin
 
 		return $object;
 	}
+
+    public function preUpdate($object) {
+        $this->prePersist($object);
+    }
+
+    public function prePersist($object)
+    {
+        $code = $object->getCode();
+        if (empty($code)) {
+            $code = $object->getName();
+            $code = $this->getConfigurationPool()->getContainer()->get('youppers.common.service.codify')->codify($code);
+            $object->setCode($code);
+        }
+    }
 }

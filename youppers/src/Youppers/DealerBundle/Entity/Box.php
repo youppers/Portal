@@ -128,9 +128,14 @@ class Box
 		$this->boxProducts->removeElement($boxProduct);
 	}
 
+    public function getNameCodeStatus()
+    {
+        return ($this->getName() ? $this->getName() . ' [' . $this->getCode() . ']': 'New') . ($this->getEnabled() ? '' : " DISABLED ");
+    }
+
 	public function __toString()
 	{
-		return $this->getName() ? $this->getStore() . ' - ' . $this->getName() . ' [' . $this->getCode() . ']': 'New';
+		return ($this->getEnabled() ? '' : "DISABLED ") . ($this->getName() ? $this->getStore() . ' - ' . $this->getName() . ' [' . $this->getCode() . ']': 'New');
 	}
 	
 	/**

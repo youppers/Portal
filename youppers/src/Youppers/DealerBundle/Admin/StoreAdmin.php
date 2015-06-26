@@ -70,7 +70,7 @@ class StoreAdmin extends YouppersAdmin
 		->add('geoid', null, array('route' => array('name' => 'show')))
 		->add('dealer', null, array('route' => array('name' => 'show')))
 		->add('consultants', null, array('route' => array('name' => 'show')))
-		->add('boxes', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
+		->add('boxes', null, array('associated_property' => 'nameCodeStatus', 'route' => array('name' => 'show')))
 		->add('createdAt')
 		->add('updatedAt')
 		;
