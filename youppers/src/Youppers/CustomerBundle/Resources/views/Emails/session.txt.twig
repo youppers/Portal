@@ -2,6 +2,10 @@ Gentile {{ toName }},
 
 con questa email le inviamo l'elenco dei materiali selezionati ed i relativi allegati.
 
+{% if session.name %}
+Riferimento: {{ session.name }}
+{% endif %}
+
 Per vedere il contenuto di questa email bisogna usare un programma di posta in grado leggere il formato HTML.
 
 Cordiali saluti

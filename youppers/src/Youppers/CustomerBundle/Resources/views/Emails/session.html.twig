@@ -4,8 +4,18 @@
 
 con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youppers</b></i> presso <b>{{ session.store.name }}</b> ed i relativi allegati.</p>
 
+{% if session.name %}
+<p style="font-family: 'Open Sans', sans-serif;"><b>Riferimento:</b> {{ session.name }}</p>
+{% endif %}
+
 <p style="font-family: 'Open Sans', sans-serif;">Cordiali saluti<br>
     {{ fromName }}</p>
+
+{% if session.store.logo %}
+    {% thumbnail session.store.logo,'show' %}
+{% elseif session.store.dealer.logo %}
+    {% thumbnail session.store.dealer.logo,'show' %}
+{% endif %}
 
 {% macro attr(name, value, last=false) %}
     <td style="margin: 4px 8px 4px 0px; padding-right: 8px; {% if not last %}border-right: 1px solid black;{% endif %}">
@@ -79,7 +89,10 @@ con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youpper
             </td>
          </tr>
     {% endif %}
-{% endfor %}
+    {%  if loop.last %}
 </table>
+{% endif %}
+{% endfor %}
+
 
 

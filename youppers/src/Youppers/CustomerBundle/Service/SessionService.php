@@ -20,6 +20,8 @@ class SessionService extends ContainerAware
 	private $managerRegistry;
 	private $logger;
 	private $tokenStorage = null;
+
+    const SESSION_NAME_SHORT_LENGHT = 40;
 	
 	public function __construct(ManagerRegistry $managerRegistry, LoggerInterface $logger)
 	{
@@ -338,7 +340,14 @@ class SessionService extends ContainerAware
 		$message->setTo($toAddress,$toName);
 		$message->setCc($fromAddress,$fromName);
 
-        $subject = sprintf("Visita al negozio %s",$session->getStore()->getName());
+        $shortName = $session->getName();
+        if (strlen($shortName) > self::SESSION_NAME_SHORT_LENGHT) {
+            $shortName = substr($shortName,0,self::SESSION_NAME_SHORT_LENGHT - 3) . "...";
+        }
+        if (empty($shortName)) {
+            $shortName = "Visita";
+        }
+        $subject = sprintf("%s Negozio %s",$shortName,$session->getStore()->getName());
 
 		$message->setSubject($subject);
 
