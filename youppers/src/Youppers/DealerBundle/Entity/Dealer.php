@@ -41,7 +41,7 @@ class Dealer
 	protected $code;
 		
 	/**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\Email
      * @var string
 	 */
