@@ -49,6 +49,9 @@ class ProductService extends ContainerAware
 		if (empty($query)) {
 			return;
 		}
+		if (empty($limit)) {
+			$limit = 100;
+		}
 		$repo = $this->managerRegistry->getRepository('YouppersCompanyBundle:Product');
 		$qb = $repo
 			->createQueryBuilder('p');
