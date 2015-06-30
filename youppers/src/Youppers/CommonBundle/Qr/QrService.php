@@ -254,14 +254,21 @@ class QrService extends Controller
 		return $qr;
 	}
 
-    public function pdfBoxesStore(Store $store) {
+    public function pdfBoxesStore(Store $store)
+    {
+        $boxes = $store->getBoxes()->filter(function ($box) { return $box->getEnabled(); });
+        $pdf = $this->pdfBoxes($boxes);
+        $pdf->SetSubject($store);
+    }
+
+    public function pdfBoxes($boxes)
+    {
         $pdf = $this->container->get('white_october.tcpdf')->create();
 
         $pdf = new \TCPDF('L');
         $pdf->SetMargins(0,0);
 
         $pdf->SetTitle("Stampa QRCode del Negozio");
-        $pdf->SetSubject($store);
         $pdf->SetAuthor("Youppers");
 
         // remove default header/footer
@@ -292,8 +299,6 @@ class QrService extends Controller
             'module_width' => 1, // width of a single module in points
             'module_height' => 1 // height of a single module in points
         );
-
-        $boxes = $store->getBoxes()->filter(function ($box) { return $box->getEnabled(); });
 
         $i = 0;
         foreach ($boxes as $box) {
@@ -330,8 +335,6 @@ class QrService extends Controller
 
             $i++;
         }
-
-        //die;
 
         return $pdf;
     }

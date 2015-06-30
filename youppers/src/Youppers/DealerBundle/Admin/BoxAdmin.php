@@ -44,11 +44,11 @@ class BoxAdmin extends YouppersAdmin
 	{
 		$actions = parent::getBatchActions();
 		
-		if ($this->hasRoute('list') && $this->isGranted('SHOW')) {			
-			$actions['print'] = array(
+		if ($this->hasRoute('list') && $this->isGranted('SHOW')) {
+            $actions = array_merge(array('print' => array(
 					'label'            => $this->trans('action_print', array(), 'messages'),
 					'ask_confirmation' => false, // by default always true
-			);
+			)), $actions);
 		}
 		
 		return $actions;

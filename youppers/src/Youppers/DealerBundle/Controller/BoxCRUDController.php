@@ -62,8 +62,29 @@ class BoxCRUDController extends CRUDController
     {
     	$selectedBoxes = $selectedModelQuery->execute();
 
-    	// TODO use TCPDF
-    	
+        $storesBoxes = array();
+        foreach ($selectedBoxes as $box) {
+            $store = $box->getStore();
+            if (array_key_exists($store->getId(),$storesBoxes)) {
+                $storesBoxes[$store->getId()]['boxes'][] = $box;
+            } else {
+                $storesBoxes[$store->getId()]['store'] = $store;
+                $storesBoxes[$store->getId()]['boxes'] = array($box);
+            }
+        }
+
+        if (count($storesBoxes) == 0) {
+            $this->get('session')->getFlashBag()->add('notice','No box selected');
+        } elseif (count($storesBoxes) > 1) {
+            $this->get('session')->getFlashBag()->add('notice','Please select only boxes of the same store');
+        } else {
+            foreach ($storesBoxes as $storeBoxes) {
+                $pdf = $this->container->get('youppers.common.qr')->pdfBoxes($storeBoxes['boxes']);
+                $pdf->Output($storeBoxes['store'] . '.pdf', 'D');
+                return;
+            }
+        }
+
         return $this->listAction();
     }
 }
