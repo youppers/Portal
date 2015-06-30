@@ -2,6 +2,7 @@
 
 namespace Youppers\ProductBundle\Admin;
 
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Youppers\CommonBundle\Admin\YouppersAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,6 +19,9 @@ class ProductCollectionAdmin extends YouppersAdmin
     public function createQuery($context = 'list')
     {
         $query = parent::createQuery($context);
+        if (!$this->isGranted('LIST')) {
+            return $query;
+        }
 
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
 

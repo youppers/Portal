@@ -17,9 +17,11 @@ class ProductAdmin extends YouppersAdmin
     public function createQuery($context = 'list')
     {
         $query = parent::createQuery($context);
+        if (!$this->isGranted('LIST')) {
+            return $query;
+        }
 
-        $security = $this->getConfigurationPool()->getContainer()->get('security.context');
-        $user = $security->getToken()->getUser();
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
 
         if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
             return $query;

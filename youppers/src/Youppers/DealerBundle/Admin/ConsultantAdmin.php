@@ -17,8 +17,11 @@ class ConsultantAdmin extends YouppersAdmin
     public function createQuery($context = 'list')
     {
         $query = parent::createQuery($context);
+        if (!$this->isGranted('LIST')) {
+            return $query;
+        }
 
-        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
 
         if (in_array('ROLE_SUPER_ADMIN',$user->getRoles())) {
             return $query;

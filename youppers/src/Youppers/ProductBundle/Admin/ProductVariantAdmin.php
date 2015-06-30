@@ -20,6 +20,9 @@ class ProductVariantAdmin extends YouppersAdmin
     public function createQuery($context = 'list')
     {
         $query = parent::createQuery($context);
+        if (!$this->isGranted('LIST')) {
+            return $query;
+        }
 
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
 
