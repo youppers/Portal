@@ -28,6 +28,9 @@
             <argument />
             <argument>Youppers\DealerBundle\Entity\Store</argument>
             <argument>YouppersDealerBundle:StoreCRUD</argument>
+            <call method="addChild">
+                <argument type="service" id="youppers.dealer.admin.box" />
+            </call>
         </service>
 
         <service id="youppers.dealer.admin.consultant" class="Youppers\DealerBundle\Admin\ConsultantAdmin">

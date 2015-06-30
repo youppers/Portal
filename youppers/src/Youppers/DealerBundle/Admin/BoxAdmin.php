@@ -77,7 +77,12 @@ class BoxAdmin extends YouppersAdmin
             }
 		}		
 	}
-	
+
+    public function getParentAssociationMapping()
+    {
+        return 'store';
+    }
+
 	/**
 	 * {@inheritdoc}
 	 */
