@@ -259,6 +259,7 @@ class QrService extends Controller
         $boxes = $store->getBoxes()->filter(function ($box) { return $box->getEnabled(); });
         $pdf = $this->pdfBoxes($boxes);
         $pdf->SetSubject($store);
+		return $pdf;
     }
 
     public function pdfBoxes($boxes)
