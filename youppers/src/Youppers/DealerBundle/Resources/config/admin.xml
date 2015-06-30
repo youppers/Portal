@@ -22,17 +22,6 @@
             -->
         </service>
 
-        <service id="youppers.dealer.admin.store" class="Youppers\DealerBundle\Admin\StoreAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Store" />
-
-            <argument />
-            <argument>Youppers\DealerBundle\Entity\Store</argument>
-            <argument>YouppersDealerBundle:StoreCRUD</argument>
-            <call method="addChild">
-                <argument type="service" id="youppers.dealer.admin.box" />
-            </call>
-        </service>
-
         <service id="youppers.dealer.admin.consultant" class="Youppers\DealerBundle\Admin\ConsultantAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Consultant"/>
 
@@ -41,7 +30,18 @@
             <argument />
         </service>
 
-        <service id="youppers.dealer.admin.box" class="Youppers\DealerBundle\Admin\BoxAdmin">
+        <service id="youppers_dealer.admin.store" class="Youppers\DealerBundle\Admin\StoreAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Store" />
+
+            <argument />
+            <argument>Youppers\DealerBundle\Entity\Store</argument>
+            <argument>YouppersDealerBundle:StoreCRUD</argument>
+            <call method="addChild">
+                <argument type="service" id="youppers_dealer.admin.box" />
+            </call>
+        </service>
+
+        <service id="youppers_dealer.admin.box" class="Youppers\DealerBundle\Admin\BoxAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Box" />
 
             <argument />

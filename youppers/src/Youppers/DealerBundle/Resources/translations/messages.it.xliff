@@ -34,6 +34,10 @@
                 <source>Box List</source>
                 <target>Elenco Allestimenti</target>
             </trans-unit>
+            <trans-unit id="boxes">
+                <source>boxes</source>
+                <target>Allestimenti</target>
+            </trans-unit>
             <trans-unit id="Box Products">
                 <source>Box Products</source>
                 <target>Prodotti Allestimento</target>

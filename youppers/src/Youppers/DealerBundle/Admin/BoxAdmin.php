@@ -112,7 +112,7 @@ class BoxAdmin extends YouppersAdmin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-		->addIdentifier('name', null, array('route' => array('name' => 'show')))
+		->addIdentifier('name')
 		->add('code')
 		->add('enabled')
 		->add('store', null, array(
@@ -123,6 +123,9 @@ class BoxAdmin extends YouppersAdmin
         ->add('boxProducts', null, array('associated_property' => 'nameProduct'), array('width' => '100px'))
 		->add('qr', null, array('label' => 'QR code', 'route' => array('name' => 'youppers_common_qr_box'), 'template' => 'YouppersCommonBundle:CRUD:list_qr.html.twig'))		
 		;
+        if ($this->isChild()) {
+            $listMapper->remove($this->getParentAssociationMapping());
+        }
 	}
 
 	/**
@@ -136,6 +139,9 @@ class BoxAdmin extends YouppersAdmin
 		->add('store')
 		->add('enabled')
 		;
+        if ($this->isChild()) {
+            $datagridMapper->remove($this->getParentAssociationMapping());
+        }
 	}
 	
 	/**
@@ -196,6 +202,10 @@ class BoxAdmin extends YouppersAdmin
 	            ))
 			->end();
 		}
+
+        if ($this->isChild()) {
+            $formMapper->remove($this->getParentAssociationMapping());
+        }
 	}
 
 	/**
