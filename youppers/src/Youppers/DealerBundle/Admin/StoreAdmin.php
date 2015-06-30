@@ -118,7 +118,7 @@ class StoreAdmin extends YouppersAdmin
 		$formMapper
 		->add('name')
 		->add('code')
-		->add('email')
+        ->add('email', null, array('required'  => false))
 		->add('description')
         ->add('logo', 'sonata_type_model_list',
             array(
