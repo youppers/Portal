@@ -115,6 +115,7 @@ class BoxAdmin extends YouppersAdmin
 		->addIdentifier('name')
 		->add('code')
 		->add('enabled')
+        ->add('image', null, array('route' => array('name' => 'show'), 'template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))
 		->add('store', null, array(
                  'route' => array(
                      'name' => 'show'
