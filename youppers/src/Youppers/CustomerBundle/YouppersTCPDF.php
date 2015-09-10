@@ -11,6 +11,11 @@ namespace Youppers\CustomerBundle;
 
 class YouppersTCPDF extends \TCPDF {
 
+	public function __construct() {
+		parent::__construct();
+		$this->SetMargins(10,20,10);
+	}
+
     protected $youppersHeaderText;
 
     public function setHeaderText($text) {
@@ -26,16 +31,17 @@ class YouppersTCPDF extends \TCPDF {
     //Page header
     public function Header() {
         // Logo
-        $this->Image($this->youppersHeaderImage, 10, 0, 40, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $this->Image($this->youppersHeaderImage, 10, 2, 40, 0, 'PNG', 'http://www.youppers.com', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font
         $this->SetFont('DejaVu Sans', 'B', 10);
         // Title
         $this->Cell(0, // the cell extends up to the right margin
-                    15, // cell height
+                    10, // cell height
                     $this->youppersHeaderText,
                     'B', // Border bottom
                     2,  // the current position should go after the call: Bottom
                     'C', 0, '', 0, false, 'T', 'C');
+        $this->SetY(20);
     }
 
     // Page footer

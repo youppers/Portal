@@ -478,6 +478,8 @@ class SessionService extends ContainerAware
 
         // reset pointer to the last page
         $pdf->lastPage();
+		
+		//$pdf->Output(); die;
 
         $message->attach(\Swift_Attachment::newInstance($pdf->Output('','S'), $session . '.pdf','application/pdf'));
 

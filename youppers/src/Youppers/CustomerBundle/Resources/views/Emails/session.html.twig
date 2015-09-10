@@ -11,11 +11,13 @@ con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youpper
 <p style="font-family: 'Open Sans', sans-serif;">Cordiali saluti<br>
     {{ fromName }}</p>
 
+<p>
 {% if session.store.logo %}
     {% thumbnail session.store.logo,'show' %}
 {% elseif session.store.dealer.logo %}
     {% thumbnail session.store.dealer.logo,'show' %}
 {% endif %}
+</p>
 
 {% macro attr(name, value, last=false) %}
     <td style="margin: 4px 8px 4px 0px; padding-right: 8px; {% if not last %}border-right: 1px solid black;{% endif %}">
@@ -43,7 +45,7 @@ con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youpper
 <br/>
         {% endif %}
         {% if (prevZone is null) or (prevZone != item.zone) %}
-<table style="border-collapse: collapse; width: 100%; page-break-inside: avoid;">
+<table style="border-collapse: collapse; width: 540px; page-break-inside: avoid;">
 <!--Begin {{ item.zone }} -->
             {% set prevZone = item.zone %}
          <tr>
@@ -52,11 +54,11 @@ con questa email le inviamo l'elenco dei materiali selezionati con <i><b>Youpper
         {% endif %}
          <tr style="margin-bottom: 5px; border-bottom: 3px solid #369c8e; page-break-inside: avoid;">
             <td style="width: 85px; margin: 4px 6px 4px; vertical-align: top; padding: 2px;"><a href="{{ imagesurl[item.id] }}">{% thumbnail images[item.id], 'list' %}</a></td>
-            <td>
+            <td style="width: 455px;">
                <table width="100%">
                    <tr>
                        <td style="border-bottom: 1px solid black; padding: 0px;">
-                           <table>
+                           <table width="100%">
                                <tr>
                             {{ macros.attr('Marchio',item.variant.product.brand.name) }}
                             {{ macros.attr('Collezione',item.variant.productCollection.name) }}
