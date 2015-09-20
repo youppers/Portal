@@ -498,6 +498,9 @@ class SessionService extends ContainerAware
 	public function remove($sessionId)
 	{
 		$session = $this->getSession($sessionId);
+		if (!isset($session)) {
+			return null;
+		}
 		$session->setRemoved(true);
 		$em = $this->managerRegistry->getManagerForClass(get_class($session));
 		$em->flush();
