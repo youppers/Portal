@@ -125,9 +125,15 @@ class OrgAdmin extends YouppersAdmin
 		$formMapper
 			->add('name')
             ->add('enabled', null, array('required' => false))
-            ->add('companies')
-            ->add('dealers')
-            ->add('users')
+            ->add('companies', null, array(
+                'help' => 'Companies owned by this org - each company can belong to only one organization'
+            ))
+            ->add('dealers', null, array(
+                'help' => 'Dealers owned by this org - each dealer can belong to only one organization'
+            ))
+            ->add('users', null, array(
+                'help' => 'Users owned by this org - each user can belong to only one organization'
+            ))
 		;
 
 	}
