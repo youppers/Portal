@@ -59,7 +59,7 @@ class LoaderMapper
 			if ($returnKey) {
 				return 'Closure';
 			} else {
-				return $key->__invoke($this->loadedData);
+				return $key->__invoke($this->loadedData,$this->data);
 			}
 		}
 		if ($returnKey) {
