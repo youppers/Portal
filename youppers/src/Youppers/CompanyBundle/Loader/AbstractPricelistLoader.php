@@ -13,6 +13,9 @@ use Youppers\CompanyBundle\Manager\ProductPriceManager;
 
 abstract class AbstractPricelistLoader extends AbstractLoader
 {
+	const FIELD_UOM = 'uom';
+	const FIELD_PRICE =	'price';
+
 	protected $pricelist;
 	
 	private $disabledBrands = array();
