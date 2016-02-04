@@ -41,6 +41,14 @@
             </call>
         </service>
 
+        <service id="youppers.dealer.admin.brand" class="Youppers\DealerBundle\Admin\DealerBrandAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Brand"/>
+
+            <argument />
+            <argument>Youppers\DealerBundle\Entity\DealerBrand</argument>
+            <argument />
+        </service>
+
         <service id="youppers_dealer.admin.box" class="Youppers\DealerBundle\Admin\BoxAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Dealer" label="Box" />
 

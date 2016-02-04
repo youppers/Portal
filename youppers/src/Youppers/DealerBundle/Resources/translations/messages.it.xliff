@@ -10,6 +10,14 @@
                 <source>Dealer List</source>
                 <target>Elenco Rivenditori</target>
             </trans-unit>
+            <trans-unit id="Dealer Code">
+                <source>Dealer Code</source>
+                <target>Codice Rivenditore</target>
+            </trans-unit>
+            <trans-unit id="Dealer Brand List">
+                <source>Dealer Brand List</source>
+                <target>Elenco Marchi Rivenditore</target>
+            </trans-unit>
             <trans-unit id="Store">
                 <source>Store</source>
                 <target>Negozio</target>
