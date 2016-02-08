@@ -71,11 +71,6 @@ class ProductVariantAdmin extends YouppersAdmin
 		);
 	}
 
-    public function getDataSourceIterator()
-    {
-        return $this->getModelManager()->getDataSourceIterator($this->getDatagrid(), $this->getExportFields());
-    }
-
     public function getParentAssociationMapping()
 	{
 		return 'productCollection';
