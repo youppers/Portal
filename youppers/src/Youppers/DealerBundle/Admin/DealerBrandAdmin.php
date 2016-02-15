@@ -23,12 +23,12 @@ class DealerBrandAdmin extends YouppersAdmin
 				)
 			))
 			->add('enabled', null, array('editable' => true))
+			->add('code', null, array('identifier' => true, 'code' => 'getDefaultCode'))
 			->add('brand', null, array(
 				'route' => array(
 					'name' => 'show'
 				)
 			))
-			->addIdentifier('code', null, array('editable' => true))
 		;
 	}
 
@@ -38,8 +38,9 @@ class DealerBrandAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-            ->add('dealer.code')
             ->add('enabled')
+			->add('dealer')
+			->add('code')
 			->add('brand.code')
 		;
 	}
@@ -52,8 +53,8 @@ class DealerBrandAdmin extends YouppersAdmin
         $showMapper
             ->add('dealer')
             ->add('enabled')
+			->add('code')
             ->add('brand')
-            ->add('code')
         ;
     }
 
@@ -68,9 +69,28 @@ class DealerBrandAdmin extends YouppersAdmin
 		}
 		$formMapper
 			->add('enabled', null, array('required'  => false))
+			->add('code', null, array('attr' => array('size' => 5)))
 			->add('brand', 'sonata_type_model_list', array('btn_add' => false))
-            ->add('code')
 		;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getNewInstance()
+	{
+		$object = parent::getNewInstance();
+
+		$filterParameters = $this->getFilterParameters();
+
+		if (isset($filterParameters['dealer'])) {
+			$dealer = $this->getModelManager()->find('Youppers\DealerBundle\Entity\Dealer',$filterParameters['dealer']['value']);
+			$object->setDealer($dealer);
+		}
+
+		$object->setEnabled(true);
+
+		return $object;
 	}
 
 }

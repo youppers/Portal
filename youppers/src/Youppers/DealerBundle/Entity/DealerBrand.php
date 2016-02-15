@@ -9,11 +9,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="youppers_dealer__dealer_brand",
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(name="dealer_brand_idx", columns={"dealer_id", "brand_id"}),
- *     @ORM\UniqueConstraint(name="dealer_code_idx", columns={"dealer_id", "code"})
  *   })
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity({"brand", "dealer"})
- * @UniqueEntity({"code", "dealer"})
  */
 class DealerBrand
 {
@@ -30,12 +28,12 @@ class DealerBrand
 	protected $dealer;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="\Youppers\CompanyBundle\Entity\Brand")
+	 * @ORM\ManyToOne(targetEntity="\Youppers\CompanyBundle\Entity\Brand", inversedBy="dealers")
 	 **/
 	protected $brand;
 
 	/**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=15, nullable=true)
 	 */
 	protected $code;
 	
@@ -53,10 +51,14 @@ class DealerBrand
 	 * @ORM\Column(type="datetime", name="created_at")
 	 */
 	protected $createdAt;
-		
-	public function __toString()
+
+    public function getBrandWithCode() {
+        return ($this->getBrand() ? $this->getBrand() : "New") . ($this->getCode() ? " - " . $this->getCode() : "");
+    }
+
+    public function __toString()
 	{
-		return ($this->getDealer() ? $this->getDEaler() : "New") . ($this->getBrand() ? " - " . $this->getBrand() : "New") . " - " . $this->getCode();
+		return ($this->getDealer() ? $this->getDealer() : "New") . ($this->getBrand() ? " - " . $this->getBrand() : "New") . ($this->getCode() ? " - " . $this->getCode() : "");
 	}
 
 	/**
@@ -75,7 +77,24 @@ class DealerBrand
 	{
 		$this->updatedAt = new \DateTime();
 	}
-	
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getDefaultCode()
+    {
+        if (is_null($this->code)) {
+            if (is_null($this->brand)) {
+                return $this->code;
+            } else {
+                return $this->getBrand()->getCode() . '*';
+            }
+        }
+        return $this->code;
+    }
+
 	// php app/console doctrine:generate:entities --no-backup YouppersDealerBundle
 
 
@@ -101,16 +120,6 @@ class DealerBrand
         $this->code = $code;
 
         return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
     }
 
     /**
@@ -231,5 +240,15 @@ class DealerBrand
     public function getBrand()
     {
         return $this->brand;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

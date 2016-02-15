@@ -55,11 +55,10 @@ class Dealer
     protected $logo;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Youppers\CompanyBundle\Entity\Brand", inversedBy="dealers")
-     * @ORM\JoinTable(name="youppers_dealer__brands")
-     * @ORM\OrderBy({"company" = "ASC", "name" = "ASC"})
+     * @ORM\OneToMany(targetEntity="DealerBrand", mappedBy="dealer", cascade={"all"}, orphanRemoval=true)
+	 * @ORM\OrderBy({"code" = "ASC", "createdAt" = "ASC"})
      */
-    protected $brands;
+    protected $dealerBrands;
 
     /**
 	 * @ORM\Column(type="boolean", options={"default":true})
@@ -91,7 +90,33 @@ class Dealer
 	 * @ORM\OneToMany(targetEntity="Consultant", mappedBy="dealer")
 	 **/
 	protected $consultants;
-	
+
+	/**
+	 * Add dealerBrand
+	 *
+	 * @param \Youppers\DealerBundle\Entity\DealerBrand $dealerBrand
+	 *
+	 * @return Dealer
+	 */
+	public function addDealerBrand(\Youppers\DealerBundle\Entity\DealerBrand $dealerBrand)
+	{
+		$dealerBrand->setDealer($this);
+		$this->dealerBrands->add($dealerBrand);
+
+		return $this;
+	}
+
+	/**
+	 * Remove dealerBrand
+	 *
+	 * @param \Youppers\DealerBundle\Entity\DealerBrand $dealerBrand
+	 */
+	public function removeDealerBrand(\Youppers\DealerBundle\Entity\DealerBrand $dealerBrand)
+	{
+		$dealerBrand->setBrand(null);
+		$this->dealerBrands->removeElement($dealerBrand);
+	}
+
 	public function __toString()
 	{
         return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']': 'New';
@@ -121,7 +146,7 @@ class Dealer
      */
     public function __construct()
     {
-        $this->brands = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dealerBrands = new \Doctrine\Common\Collections\ArrayCollection();
         $this->stores = new \Doctrine\Common\Collections\ArrayCollection();
         $this->consultants = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -329,37 +354,37 @@ class Dealer
     }
 
     /**
-     * Add brand
+     * Set logo
      *
-     * @param \Youppers\CompanyBundle\Entity\Brand $brand
+     * @param \Application\Sonata\MediaBundle\Entity\Media $logo
      *
      * @return Dealer
      */
-    public function addBrand(\Youppers\CompanyBundle\Entity\Brand $brand)
+    public function setLogo(\Application\Sonata\MediaBundle\Entity\Media $logo = null)
     {
-        $this->brands[] = $brand;
+        $this->logo = $logo;
 
         return $this;
     }
 
     /**
-     * Remove brand
+     * Get logo
      *
-     * @param \Youppers\CompanyBundle\Entity\Brand $brand
+     * @return \Application\Sonata\MediaBundle\Entity\Media
      */
-    public function removeBrand(\Youppers\CompanyBundle\Entity\Brand $brand)
+    public function getLogo()
     {
-        $this->brands->removeElement($brand);
+        return $this->logo;
     }
 
     /**
-     * Get brands
+     * Get dealerBrands
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getBrands()
+    public function getDealerBrands()
     {
-        return $this->brands;
+        return $this->dealerBrands;
     }
 
     /**
@@ -428,29 +453,5 @@ class Dealer
     public function getConsultants()
     {
         return $this->consultants;
-    }
-
-    /**
-     * Set logo
-     *
-     * @param \Application\Sonata\MediaBundle\Entity\Media $logo
-     *
-     * @return Dealer
-     */
-    public function setLogo(\Application\Sonata\MediaBundle\Entity\Media $logo = null)
-    {
-        $this->logo = $logo;
-
-        return $this;
-    }
-
-    /**
-     * Get logo
-     *
-     * @return \Application\Sonata\MediaBundle\Entity\Media
-     */
-    public function getLogo()
-    {
-        return $this->logo;
     }
 }

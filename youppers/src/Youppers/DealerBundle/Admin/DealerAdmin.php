@@ -52,7 +52,7 @@ class DealerAdmin extends YouppersAdmin
         ->add('logo', null,array('template' => 'YouppersCommonBundle:CRUD:show_image.html.twig'))
 		->add('createdAt')
 		->add('updatedAt')
-        ->add('brands', null, array('route' => array('name' => 'show')))
+			->add('dealerBrands', null, array('associated_property' => 'brandWithCode', 'route' => array('name' => 'show')))
 		->add('stores', null, array('associated_property' => 'name', 'route' => array('name' => 'show')))
 		->add('consultants', null, array('associated_property' => 'fullname', 'route' => array('name' => 'show')))
 		;
@@ -117,7 +117,19 @@ class DealerAdmin extends YouppersAdmin
 		->with('Details', array('class' => 'col-md-4'))
         ->add('org', 'sonata_type_model_list')
 		->add('enabled', 'checkbox', array('required'  => false))
-         ->add('brands')
+			->end()
+			->with('Marchi', array('class' => 'col-md-12'))
+			->add('dealerBrands', 'sonata_type_collection',
+				array(
+					//'type_options' => array('delete' => false),
+					'by_reference'       => false,
+					'cascade_validation' => true,
+					//'required' => false
+				), array(
+					'edit' => 'inline',
+					'inline' => 'table'
+				))
+
 		->end()
 		;
 	}

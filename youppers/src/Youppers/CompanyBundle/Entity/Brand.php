@@ -75,8 +75,7 @@ class Brand
 	protected $url;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Youppers\DealerBundle\Entity\Dealer", mappedBy="brands")
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\OneToMany(targetEntity="\Youppers\DealerBundle\Entity\DealerBrand", mappedBy="brand")
      */
     protected $dealers;
 
@@ -371,11 +370,11 @@ class Brand
     /**
      * Add dealer
      *
-     * @param \Youppers\DealerBundle\Entity\Dealer $dealer
+     * @param \Youppers\DealerBundle\Entity\DealerBrand $dealer
      *
      * @return Brand
      */
-    public function addDealer(\Youppers\DealerBundle\Entity\Dealer $dealer)
+    public function addDealer(\Youppers\DealerBundle\Entity\DealerBrand $dealer)
     {
         $this->dealers[] = $dealer;
 
@@ -385,9 +384,9 @@ class Brand
     /**
      * Remove dealer
      *
-     * @param \Youppers\DealerBundle\Entity\Dealer $dealer
+     * @param \Youppers\DealerBundle\Entity\DealerBrand $dealer
      */
-    public function removeDealer(\Youppers\DealerBundle\Entity\Dealer $dealer)
+    public function removeDealer(\Youppers\DealerBundle\Entity\DealerBrand $dealer)
     {
         $this->dealers->removeElement($dealer);
     }
