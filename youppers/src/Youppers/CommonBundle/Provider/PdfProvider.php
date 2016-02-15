@@ -17,11 +17,10 @@ class PdfProvider extends FileProvider
 	{
 		if ($format == 'reference') {
 			$path = $this->getReferenceImage($media);
+			return $this->getCdn()->getPath($path, $media->getCdnIsFlushable());
 		} else {
-			$path = $this->iconPath;
+			return $this->iconPath;
 		}
-	
-		return $this->getCdn()->getPath($path, $media->getCdnIsFlushable());
 	}
 		
 	public function setIcon($path)
