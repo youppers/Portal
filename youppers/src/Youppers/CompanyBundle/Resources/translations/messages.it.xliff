@@ -30,6 +30,10 @@
                 <source>Product List</source>
                 <target>Lista Prodotti</target>
             </trans-unit>
+            <trans-unit id="products_prices">
+                <source>Products Prices</source>
+                <target>Prezzi dei Prodotti</target>
+            </trans-unit>
             <trans-unit id="products">
                 <source>Products</source>
                 <target>Prodotti</target>
@@ -54,9 +58,29 @@
                 <source>Price List</source>
                 <target>Listino Prezzi</target>
             </trans-unit>
+            <trans-unit id="pricelist">
+                <source>Pricelist</source>
+                <target>Listino</target>
+            </trans-unit>
             <trans-unit id="Pricelist List">
                 <source>Pricelist List</source>
                 <target>Elenco Listini Prezzi</target>
+            </trans-unit>
+            <trans-unit id="product_price_list">
+                <source>Product Price List</source>
+                <target>Elenco Prezzi Prodotti</target>
+            </trans-unit>
+            <trans-unit id="product_price">
+                <source>Product Price</source>
+                <target>Prezzo del Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_prices">
+                <source>Product Prices</source>
+                <target>Prezzi del Prodotto</target>
+            </trans-unit>
+            <trans-unit id="product_pricelist">
+                <source>Product and Pricelist</source>
+                <target>Producto e Listino</target>
             </trans-unit>
             <trans-unit id="validity">
                 <source>Validity</source>
@@ -69,6 +93,34 @@
             <trans-unit id="valid_to">
                 <source>Valid To</source>
                 <target>Valido Al</target>
+            </trans-unit>
+            <trans-unit id="currency">
+                <source>Currency</source>
+                <target>Valuta</target>
+            </trans-unit>
+            <trans-unit id="surface">
+                <source>Surface</source>
+                <target>Superficie</target>
+            </trans-unit>
+            <trans-unit id="company_code">
+                <source>Company Code</source>
+                <target>Codice Società</target>
+            </trans-unit>
+            <trans-unit id="uom">
+                <source>Uom</source>
+                <target>Unità</target>
+            </trans-unit>
+            <trans-unit id="quantity">
+                <source>Quanity</source>
+                <target>Quantità</target>
+            </trans-unit>
+            <trans-unit id="vatcode">
+                <source>Vatcode</source>
+                <target>Codice IVA</target>
+            </trans-unit>
+            <trans-unit id="status">
+                <source>Status</source>
+                <target>Stato</target>
             </trans-unit>
         </body>
     </file>

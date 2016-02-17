@@ -42,6 +42,10 @@
                 <source>Variant</source>
                 <target>Variante</target>
             </trans-unit>
+            <trans-unit id="variants">
+                <source>Variants</source>
+                <target>Varianti</target>
+            </trans-unit>
             <trans-unit id="Product Variant List">
                 <source>Product Variant List</source>
                 <target> Varianti Prodotto</target>
