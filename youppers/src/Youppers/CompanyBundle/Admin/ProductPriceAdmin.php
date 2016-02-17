@@ -61,7 +61,11 @@ class ProductPriceAdmin extends YouppersAdmin
     	->add('pricelist', null, array('route' => array('name' => 'show')))
 		->add('product', null, array('route' => array('name' => 'show')))
 		->add('price')
-        ->add('uom')        
+			->add('vatcode')
+        ->add('uom')
+			->add('quantity')
+			->add('surface')
+			->add('status')
 		->add('createdAt')
 		->add('updatedAt')
 		;
@@ -75,11 +79,15 @@ class ProductPriceAdmin extends YouppersAdmin
         $formMapper
         	->with('Price', array('class' => 'col-md-6'))        
         	->add('price')
-        	->add('uom', 'choice', array('choice_list' => UomChoiceList::create()))        
+			->add('vatcode')
+        	->add('uom', 'choice', array('choice_list' => UomChoiceList::create()))
         	// TODO usare vendor/sonata-project/ecommerce/src/Component/Currency/CurrencyFormType.php
         	// TODO mettere simbolo valuta correttamente
             //->add('price','money')     
-            ->end()   
+			->add('quantity')
+			->add('surface')
+			->add('status')
+            ->end()
         ;
 
     	if (!$this->hasParentFieldDescription() && !$this->isChild()) {

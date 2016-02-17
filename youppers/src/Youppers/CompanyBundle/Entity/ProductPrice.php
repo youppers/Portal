@@ -28,16 +28,44 @@ class ProductPrice
 	protected $pricelist;
 		
 	/**
-	 * @ORM\Column(type="decimal", scale=4)
+	 * @ORM\Column(type="decimal", precision=15, scale=4)
+     * Price of the product for 1 unit of measure
 	 */
 	protected $price;
-	
-	/**
-	 * @ORM\Column(type="string", length=10)
-	 */
-	protected $uom;	
 
-	/**
+    /**
+     * @ORM\Column(type="string", length=6, nullable=true)
+     */
+    protected $vatcode;
+
+    /**
+	 * @ORM\Column(type="string", length=10)
+     * Unit Of Measure
+	 */
+	protected $uom;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=2, options={"default":1})
+     * indicates the quantity of product (expressed in uom) present in the smallest package
+     */
+    protected $quantity;
+
+    /**
+     * @ORM\Column(type="decimal", precision=8, scale=4, nullable=true)
+     * surface for the quantity of the product
+     */
+    protected $surface;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     * E = Eliminated, taken off the price list, no longer available
+     * S = End of Stock
+     * R = By Request
+     * M = Custom made articles
+     */
+    protected $status;
+
+    /**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
 	protected $updatedAt;
@@ -78,7 +106,7 @@ class ProductPrice
     /**
      * Get id
      *
-     * @return guid 
+     * @return guid
      */
     public function getId()
     {
@@ -89,6 +117,7 @@ class ProductPrice
      * Set price
      *
      * @param string $price
+     *
      * @return ProductPrice
      */
     public function setPrice($price)
@@ -101,7 +130,7 @@ class ProductPrice
     /**
      * Get price
      *
-     * @return string 
+     * @return string
      */
     public function getPrice()
     {
@@ -109,9 +138,34 @@ class ProductPrice
     }
 
     /**
+     * Set vatcode
+     *
+     * @param string $vatcode
+     *
+     * @return ProductPrice
+     */
+    public function setVatcode($vatcode)
+    {
+        $this->vatcode = $vatcode;
+
+        return $this;
+    }
+
+    /**
+     * Get vatcode
+     *
+     * @return string
+     */
+    public function getVatcode()
+    {
+        return $this->vatcode;
+    }
+
+    /**
      * Set uom
      *
      * @param string $uom
+     *
      * @return ProductPrice
      */
     public function setUom($uom)
@@ -124,7 +178,7 @@ class ProductPrice
     /**
      * Get uom
      *
-     * @return string 
+     * @return string
      */
     public function getUom()
     {
@@ -132,32 +186,82 @@ class ProductPrice
     }
 
     /**
-     * Set info
+     * Set quantity
      *
-     * @param json $info
+     * @param string $quantity
+     *
      * @return ProductPrice
      */
-    public function setInfo($info)
+    public function setQuantity($quantity)
     {
-        $this->info = $info;
+        $this->quantity = $quantity;
 
         return $this;
     }
 
     /**
-     * Get info
+     * Get quantity
      *
-     * @return json 
+     * @return string
      */
-    public function getInfo()
+    public function getQuantity()
     {
-        return $this->info;
+        return $this->quantity;
+    }
+
+    /**
+     * Set surface
+     *
+     * @param string $surface
+     *
+     * @return ProductPrice
+     */
+    public function setSurface($surface)
+    {
+        $this->surface = $surface;
+
+        return $this;
+    }
+
+    /**
+     * Get surface
+     *
+     * @return string
+     */
+    public function getSurface()
+    {
+        return $this->surface;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return ProductPrice
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
+     *
      * @return ProductPrice
      */
     public function setUpdatedAt($updatedAt)
@@ -170,7 +274,7 @@ class ProductPrice
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -181,6 +285,7 @@ class ProductPrice
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return ProductPrice
      */
     public function setCreatedAt($createdAt)
@@ -193,7 +298,7 @@ class ProductPrice
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -204,6 +309,7 @@ class ProductPrice
      * Set product
      *
      * @param \Youppers\CompanyBundle\Entity\Product $product
+     *
      * @return ProductPrice
      */
     public function setProduct(\Youppers\CompanyBundle\Entity\Product $product = null)
@@ -216,7 +322,7 @@ class ProductPrice
     /**
      * Get product
      *
-     * @return \Youppers\CompanyBundle\Entity\Product 
+     * @return \Youppers\CompanyBundle\Entity\Product
      */
     public function getProduct()
     {
@@ -227,6 +333,7 @@ class ProductPrice
      * Set pricelist
      *
      * @param \Youppers\CompanyBundle\Entity\Pricelist $pricelist
+     *
      * @return ProductPrice
      */
     public function setPricelist(\Youppers\CompanyBundle\Entity\Pricelist $pricelist = null)
@@ -239,7 +346,7 @@ class ProductPrice
     /**
      * Get pricelist
      *
-     * @return \Youppers\CompanyBundle\Entity\Pricelist 
+     * @return \Youppers\CompanyBundle\Entity\Pricelist
      */
     public function getPricelist()
     {
