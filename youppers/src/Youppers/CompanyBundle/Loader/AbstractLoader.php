@@ -51,6 +51,7 @@ abstract class AbstractLoader extends ContainerAware
 	protected $brand;
 	protected $product;
 	protected $fs;
+	protected $append;
 	protected $enable;
 	protected $force;
 
@@ -76,7 +77,11 @@ abstract class AbstractLoader extends ContainerAware
 	{
 		$this->fs = $fs;
 	}
-	
+
+	public function setAppend($append) {
+		$this->append = $append;
+	}
+
 	public function setEnable($enable) {
 		$this->enable = $enable;
 	}

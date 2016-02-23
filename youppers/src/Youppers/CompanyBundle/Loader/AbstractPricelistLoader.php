@@ -10,18 +10,96 @@ use Youppers\CompanyBundle\Entity\Product;
 use Youppers\CompanyBundle\Entity\ProductPrice;
 use Youppers\CompanyBundle\Manager\PricelistManager;
 use Youppers\CompanyBundle\Manager\ProductPriceManager;
+use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Manager\ProductCollectionManager;
+use Youppers\ProductBundle\Entity\ProductVariant;
+use Youppers\ProductBundle\Manager\ProductVariantManager;
+use Doctrine\Common\Collections\Criteria;
 
 abstract class AbstractPricelistLoader extends AbstractLoader
 {
 	const FIELD_UOM = 'uom';
 	const FIELD_PRICE =	'price';
+	const FIELD_QUANTITY = 'quantity';
+	const FIELD_SURFACE = 'surface';
 
 	protected $pricelist;
 	
 	private $disabledBrands = array();
-	
+
 	private $skip;
-	
+
+	/**
+	 * @var boolean
+	 * Load Collection and Variant of the Product
+	 */
+	private $loadProduct;
+
+	public function setLoadProduct($loadProduct)
+	{
+		$this->loadProduct = $loadProduct;
+	}
+
+	public function setChangeCollection($flag)
+	{
+		$this->changeCollection = $flag;
+		if ($this->changeCollection && !$this->loadProduct) {
+			$this->logger->warning("Change Collection is not performed if the loading of the product Collection and Variant is not enabled");
+		}
+	}
+
+	private $guess;
+
+	public function setGuess($flag)
+	{
+		$this->guess = $flag;
+		if ($this->guess && !$this->loadProduct) {
+			$this->logger->warning("Guess is not performed if the loading of the product Collection and Variant is not enabled");
+		}
+	}
+
+
+	/**l
+	 * @var ProductCollectionManager
+	 */
+	private $productCollectionManager;
+
+	/**
+	 * @return ProductCollectionManager
+	 */
+	protected function getProductCollectionManager() {
+		if (empty($this->productCollectionManager)) {
+			$this->productCollectionManager = $this->container->get('youppers.product.manager.product_collection');
+		}
+		return $this->productCollectionManager;
+	}
+
+	/**
+	 * @var ProductVariantManager
+	 */
+	private $productVariantManager;
+
+	/**
+	 * @return ProductVariantManager
+	 */
+	protected function getProductVariantManager() {
+		if (empty($this->productVariantManager)) {
+			$this->productVariantManager = $this->container->get('youppers.product.manager.product_variant');
+		}
+		return $this->productVariantManager;
+	}
+
+	private $productTypeManager;
+
+	protected function getProductTypeManager() {
+		if (empty($this->productTypeManager)) {
+			$this->productTypeManager = $this->container->get('youppers.product.manager.product_type');
+		}
+		return $this->productTypeManager;
+	}
+
+	protected abstract function getNewCollectionProductType(Brand $brand, $code);
+
 	public function setPricelist($pricelist)
 	{
 		$this->pricelist = $pricelist;
@@ -38,10 +116,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
      * @return PricelistManager
      */
     protected function getPricelistManager() {
-        if (empty($this->pricelistManage)) {
-            $this->pricelistManage = $this->container->get('youppers.company.manager.pricelist');
+        if (empty($this->pricelistManager)) {
+            $this->pricelistManager = $this->container->get('youppers.company.manager.pricelist');
         }
-        return $this->pricelistManage;
+        return $this->pricelistManager;
     }
 
     /**
@@ -86,16 +164,18 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		
 		if ($skip>0) {
 			$this->logger->info(sprintf("Skip '%d' rows",$skip));
+		} else if ($this->append) {
+			$this->logger->info("Appending to existing pricelist");
 		} else {
 			$query = $this->em->createQuery('DELETE Youppers\CompanyBundle\Entity\ProductPrice p WHERE p.pricelist = :pricelist');
 			$query->setParameter('pricelist', $this->pricelist);
 			if ($this->force) {
 				$numDeleted = $query->execute();
 				if ($numDeleted > 0) {
-					$this->logger->info(sprintf("Deleted '%d' rows before reloading pricelist.",$numDeleted));
+					$this->logger->info(sprintf("Deleted '%d' prices before reloading pricelist.",$numDeleted));
 				}
 			} else {
-				$this->logger->info("SQL: " . $query->getSql());
+				$this->logger->debug("SQL: " . $query->getSql());
 			}
 		}
 			
@@ -109,6 +189,11 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		foreach ($reader as $row) {
 	
 			$this->numRows++;
+
+			if ($this->numRows == 1) {
+				$this->logger->info('Column headers: ' . var_export($reader->getColumnHeaders(), true));
+			}
+
 			if ($this->numRows <= $skip) {
 				continue;
 			}
@@ -132,22 +217,26 @@ abstract class AbstractPricelistLoader extends AbstractLoader
         if ($this->force) {
             $this->getProductManager()->getObjectManager()->flush();
             $this->getProductPriceManager()->getObjectManager()->flush();
+			$this->getProductCollectionManager()->getEntityManager()->flush();
+			$this->getProductVariantManager()->getEntityManager()->flush();
         } else {
             $this->getProductManager()->getObjectManager()->clear();
             $this->getProductPriceManager()->getObjectManager()->clear();
+			$this->getProductCollectionManager()->getEntityManager()->clear();
+			$this->getProductVariantManager()->getEntityManager()->clear();
         }
     }
 
     protected function handleBrand()
 	{
-		$brandCode = $this->mapper->remove('brand');
+		$brandCode = $this->mapper->remove(self::FIELD_BRAND);
 		if (null !== $brandCode) {
 			$this->setBrandByCode($brandCode);
 		}
 		
 		if (empty($this->brand)) {
 			if (empty($brandCode)) {
-				throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually",$this->mapper->key('brand')));
+				throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually",$this->mapper->key(self::FIELD_BRAND)));
 			}
 			$brand = $this->getBrandManager()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
 			if (empty($brand)) {
@@ -203,7 +292,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if (!empty($productGtin)) {
             $product->setGtin($productGtin);
             if (!$this->checkUniqueGtin($product)) {
-                $this->logger->error(sprintf("Duplicated gtin '%s'",$productGtin));
+                $this->logger->error(sprintf("Duplicated gtin '%s' at row %d",$productGtin,$this->numRows));
                 $product->setGtin(null);
             }
 		}
@@ -238,23 +327,130 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$price = $this->getProductPriceManager()->create();
 		$price->setPriceList($this->pricelist);
 		$price->setProduct($product);
-		$price->setPrice(strtr($this->mapper->remove('price'),array(" " => "", "€" => "","." => "","," => ".")));
-		$price->setUom($this->mapper->remove('uom'));
+		$price->setPrice(strtr($this->mapper->remove(self::FIELD_PRICE),array(" " => "", "€" => "","." => "","," => ".")));
+		$price->setUom($this->mapper->remove(self::FIELD_UOM));
+		if (empty($price->getUom())) {
+			throw new \Exception(sprintf("UOM cannot be null at row %d",$this->numRows));
+		}
+		$price->setQuantity($this->mapper->remove(self::FIELD_QUANTITY));
 		$this->getProductPriceManager()->save($price,false);
 		return $price;
 	}
 
+	/**
+	 *
+	 * @param Product $product
+	 * @return null|object
+	 * @throws \Exception
+	 */
+	protected function handleCollection(Product $product, Brand $brand)
+	{
+		//$brand = $product->getBrand();
+		$collectionName= $this->mapper->get(self::FIELD_COLLECTION);
+		$collectionCode = $this->container->get('youppers.common.service.codify')->codify($collectionName);
+		if ($collectionCode == null) {
+			return null;
+		} else {
+			$collection = $this->getProductCollectionManager()->findByCode($brand, $collectionCode);
+			if (empty($collection)) {
+				$collection = $this->getProductCollectionManager()->createCollection($brand, $collectionName, $collectionCode, $this->getNewCollectionProductType($brand,$collectionCode));
+			}
+		}
+
+		if (empty($collection->getId())) {
+			$this->getProductCollectionManager()->save($collection,false);
+			if ($this->force) {
+				$this->logger->info(sprintf("Created new collection '%s'",$collection));
+			} else {
+				$this->logger->info(sprintf("New collection with code '%s' of Brand '%s'",$collectionCode,$brand));
+			}
+		} else {
+			if ($this->force) {
+				$this->logger->debug(sprintf("Updated collection '%s'",$collection));
+			} else {
+				$this->logger->debug(sprintf("Collection '%s'",$collection));
+			}
+		}
+
+		return $collection;
+	}
+
+	protected function handleVariant(ProductCollection $collection, Product $product)
+	{
+		$criteria = Criteria::create()
+			->where(Criteria::expr()->eq("product", $product));
+		$variant = $collection->getProductVariants()->matching($criteria)->first();
+		if (empty($variant)) {
+			$variant = $this->getProductVariantManager()
+				->findOneBy(array('product' => $product));
+			if (!empty($variant)) {
+				if ($this->changeCollection) {
+					$this->logger->warning(sprintf("Variant '%s' changed from collection '%s' to '%s'",$product,$variant->getProductCollection(),$collection));
+					$variant->setProductCollection($collection);
+				} else {
+					$this->logger->error(sprintf("Variant '%s' in collection '%s' instead of '%s'",$product,$variant->getProductCollection(),$collection));
+				}
+			}
+		}
+		if (empty($variant)) {
+			$variant = $this->getProductVariantManager()->create();
+			$variant->setProduct($product);
+			$variant->setEnabled(false);
+			$variant->setPosition($this->numRows);
+			if ($this->force) {
+				$collection->addProductVariant($variant);
+			} else {
+				$variant->setProductCollection($collection);
+			}
+		}
+
+		if (empty($variant->getId())) {
+			$this->getProductVariantManager()->save($variant,false);
+			if ($this->force) {
+				$this->logger->info(sprintf("Created new variant '%s'",$variant));
+			} else {
+				$this->logger->info(sprintf("New variant '%s'",$variant));
+			}
+		} else {
+			if ($this->force) {
+				$this->logger->debug(sprintf("Updated variant '%s'",$variant));
+			} else {
+				$this->logger->debug(sprintf("Variant '%s'",$variant));
+			}
+		}
+
+		return $variant;
+	}
+
+	private $guesser = null;
+
+	protected function doGuess(ProductVariant $variant)
+	{
+		if (empty($this->guesser)) {
+			$this->guesser = $this->container->get('youppers.product.variant.guesser_factory')->create($this->company->getCode());
+			$this->guesser->setForce($this->force);
+		}
+		$this->guesser->guessVariant($variant);
+	}
+
+	/**
+	 * @param $row
+	 * @throws \Exception
+     */
 	public function handleRow($row) {
 		
 		$this->mapper->setData($row);
 		
 		$brand = $this->handleBrand();
-
-		if ($brand) {
-			$product = $this->handleProduct($brand);
-			$price = $this->handlePrice($product);
+		$product = $this->handleProduct($brand);
+		$price = $this->handlePrice($product);
+		if ($this->loadProduct) {
+			$collection = $this->handleCollection($product, $brand);
+			$variant = $this->handleVariant($collection, $product);
+			if ($this->guess) {
+				$this->doGuess($variant);
+			}
 		}
-		
 	}
 	
 	

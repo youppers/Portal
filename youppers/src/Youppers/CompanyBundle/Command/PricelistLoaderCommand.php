@@ -25,10 +25,14 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->setDescription('Load Company Pricelist')
 		->addArgument('pricelist', InputArgument::REQUIRED, 'Code of the pricelist to update')
 		->addArgument('filename', InputArgument::REQUIRED, 'File name to load from' )
+		->addOption('append', 'a', InputOption::VALUE_OPTIONAL, 'Append to existing pricelist (default: delete all prices')
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
+		->addOption('change-collection', null, InputOption::VALUE_NONE, 'Change product collection')
 		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable created entity')
+		->addOption('load-product', 'p', InputOption::VALUE_NONE, 'Load Collection and Variant of the Product')
+		->addOption('guess', null, InputOption::VALUE_NONE, 'Guess properties of variant')
 		->addOption('fieldseparator', 'fs', InputOption::VALUE_OPTIONAL, 'Field separator',";")
 		;
 	}
@@ -50,8 +54,13 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		} else {				
 			$loader->setBrandByCode($brand);
 		}
+		$loader->setAppend($input->getOption('append'));
 		$loader->setForce($input->getOption('force'));
 		$loader->setEnable($input->getOption('enable'));
+		$loader->setLoadProduct($input->getOption('load-product'));
+		$loader->setGuess($input->getOption('guess'));
+		$loader->setChangeCollection($input->getOption('change-collection'));
+
 
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
 			$loader->setDebug(true);
