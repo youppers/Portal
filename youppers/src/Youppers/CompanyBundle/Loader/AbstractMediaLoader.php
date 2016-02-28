@@ -4,21 +4,6 @@ namespace Youppers\CompanyBundle\Loader;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use Youppers\CompanyBundle\Entity\Company;
-use Youppers\CompanyBundle\Manager\CompanyManager;
-
-use Youppers\CompanyBundle\Entity\Brand;
-use Youppers\CompanyBundle\Manager\BrandManager;
-
-use Youppers\CompanyBundle\Entity\Product;
-use Youppers\CompanyBundle\Manager\ProductManager;
-
-use Youppers\ProductBundle\Entity\ProductCollection;
-use Youppers\ProductBundle\Manager\ProductCollectionManager;
-
-use Youppers\ProductBundle\Entity\ProductVariant;
-use Youppers\ProductBundle\Manager\ProductVariantManager;
-
 use Doctrine\Common\Collections\Criteria;
 use Youppers\ProductBundle\Manager\ProductTypeManager;
 
@@ -63,36 +48,6 @@ abstract class AbstractMediaLoader extends AbstractLoader {
         }
     }
 
-    /**
-     * @var ProductCollectionManager
-     */
-    private $productCollectionManager;
-
-    /**
-     * @return ProductCollectionManager
-     */
-    protected function getProductCollectionManager() {
-        if (empty($this->productCollectionManager)) {
-            $this->productCollectionManager = $this->container->get('youppers.product.manager.product_collection');
-        }
-        return $this->productCollectionManager;
-    }
-
-    /**
-     * @var ProductVariantManager
-     */
-    private $productVariantManager;
-
-    /**
-     * @return ProductVariantManager
-     */
-    protected function getProductVariantManager() {
-        if (empty($this->productVariantManager)) {
-            $this->productVariantManager = $this->container->get('youppers.product.manager.product_variant');
-        }
-        return $this->productVariantManager;
-    }
-
     private $productTypeManager;
 
     protected function getProductTypeManager() {
@@ -119,50 +74,8 @@ abstract class AbstractMediaLoader extends AbstractLoader {
 
     public function load($filename,$skip=0)
     {
-        $this->skip = $skip;
-
-        $this->logger->info(sprintf("Loading media from '%s'.",$filename));
-
-        $reader = $this->createReader($filename);
-
-        $this->numRows = 0;
-
-        $reader->setHeaderRowNumber(0);
-
-        $this->mapper = $this->createMapper();
-
-        $this->logger->info("Using mapper: " . $this->mapper);
-
-        if ($skip>0) {
-            $this->logger->info(sprintf("Skip '%d' rows",$skip));
-        }
-
-        // speed up
-        if (!$this->debug) {
-            $this->container->get('doctrine')->getConnection()->getConfiguration()->setSQLLogger(null);
-        }
-
-        $stopwatch = new Stopwatch();
-        $stopwatch->start('load');
-        foreach ($reader as $row) {
-
-            $this->numRows++;
-            if ($this->numRows <= $skip) {
-                continue;
-            }
-
-            $this->handleRow($row);
-
-            if ($this->numRows % self::BATCH_SIZE == 0) {
-                $this->logger->info(sprintf("Read %d rows",$this->numRows));
-                $this->batch();
-            }
-        }
-
-        $this->batch();
-
-        $event = $stopwatch->stop('load');
-        $this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
+        $this->logger->info(sprintf("Loading media from '%s'.", $filename));
+        parent::load($filename,$skip);
     }
 
     public function handleRow($row) {
@@ -193,29 +106,6 @@ abstract class AbstractMediaLoader extends AbstractLoader {
                 $variant->setImage($media);
             }
         }
-    }
-
-    /**
-     * @return Brand
-     * @throws \Exception
-     */
-    protected function handleBrand()
-    {
-        $brandCode = $this->mapper->remove(self::FIELD_BRAND);
-
-        if (empty($this->brand)) {
-            if (empty($brandCode)) {
-                throw new \Exception(sprintf("Brand MUST be in the column '%s' OR must be set manually",$this->mapper->key('brand')));
-            }
-            $brand = $this->getBrandManager()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
-            if (empty($brand)) {
-                throw new \Exception(sprintf("At row '%d': Brand '%s' not found for Company '%s'",$this->numRows,$brandCode,$this->company));
-            }
-        } else {
-            $brand = $this->brand;
-        }
-
-        return $brand;
     }
 
     protected function handleType()

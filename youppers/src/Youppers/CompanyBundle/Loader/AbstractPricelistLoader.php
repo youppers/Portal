@@ -2,9 +2,6 @@
 
 namespace Youppers\CompanyBundle\Loader;
 
-use Ddeboer\DataImport\Reader\CsvReader;
-use Ddeboer\DataImport\Reader\Factory\CsvReaderFactory;
-use Symfony\Component\Stopwatch\Stopwatch;
 use Youppers\CompanyBundle\Entity\Brand;
 use Youppers\CompanyBundle\Entity\Product;
 use Youppers\CompanyBundle\Entity\ProductPrice;
@@ -25,10 +22,6 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 
 	protected $pricelist;
 	
-	private $disabledBrands = array();
-
-	private $skip;
-
 	/**
 	 * @var boolean
 	 * Load Collection and Variant of the Product
@@ -59,44 +52,6 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	}
 
 
-	/**l
-	 * @var ProductCollectionManager
-	 */
-	private $productCollectionManager;
-
-	/**
-	 * @return ProductCollectionManager
-	 */
-	protected function getProductCollectionManager() {
-		if (empty($this->productCollectionManager)) {
-			$this->productCollectionManager = $this->container->get('youppers.product.manager.product_collection');
-		}
-		return $this->productCollectionManager;
-	}
-
-	/**
-	 * @var ProductVariantManager
-	 */
-	private $productVariantManager;
-
-	/**
-	 * @return ProductVariantManager
-	 */
-	protected function getProductVariantManager() {
-		if (empty($this->productVariantManager)) {
-			$this->productVariantManager = $this->container->get('youppers.product.manager.product_variant');
-		}
-		return $this->productVariantManager;
-	}
-
-	private $productTypeManager;
-
-	protected function getProductTypeManager() {
-		if (empty($this->productTypeManager)) {
-			$this->productTypeManager = $this->container->get('youppers.product.manager.product_type');
-		}
-		return $this->productTypeManager;
-	}
 
 	protected abstract function getNewCollectionProductType(Brand $brand, $code);
 
@@ -137,10 +92,8 @@ abstract class AbstractPricelistLoader extends AbstractLoader
         return $this->productPriceManager;
     }
 
-    public function load($filename,$skip=0)
+	public function load($filename,$skip=0)
 	{
-		$this->skip = $skip;
-		
 		if (empty($this->pricelist)) {
 			throw new \Exception("Pricelist MUST be set before loading prices.");
 		}
@@ -150,18 +103,6 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			$this->logger->info("And enable products");
 		}
 	
-		$reader = $this->createReader($filename);
-	
-		$this->numRows = 0;
-	
-		$reader->setHeaderRowNumber(0);
-	
-		$this->serializer = $this->container->get('serializer');
-	
-		$this->mapper = $this->createMapper();
-	
-		$this->logger->info("Using mapper: " . $this->mapper);
-		
 		if ($skip>0) {
 			$this->logger->info(sprintf("Skip '%d' rows",$skip));
 		} else if ($this->append) {
@@ -178,41 +119,11 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 				$this->logger->debug("SQL: " . $query->getSql());
 			}
 		}
-			
-		// speed up
-		if (!$this->debug) {
-			$this->em->getConnection()->getConfiguration()->setSQLLogger(null);
-		}
-	
-		$stopwatch = new Stopwatch();
-		$stopwatch->start('load');
-		foreach ($reader as $row) {
-	
-			$this->numRows++;
 
-			if ($this->numRows == 1) {
-				$this->logger->info('Column headers: ' . var_export($reader->getColumnHeaders(), true));
-			}
-
-			if ($this->numRows <= $skip) {
-				continue;
-			}
-			
-			$this->handleRow($row);
-				
-			if ($this->numRows % self::BATCH_SIZE == 0) {
-				$this->logger->info(sprintf("Read %d rows",$this->numRows));
-                $this->batch();
-			}
-		}
-		
-		$this->batch();
-		
-		$event = $stopwatch->stop('load');
-		$this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
+		parent::load($filename,$skip);
 	}
 
-    public function batch()
+    protected function batch()
     {
         if ($this->force) {
             $this->getProductManager()->getObjectManager()->flush();
@@ -229,23 +140,8 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 
     protected function handleBrand()
 	{
-		$brandCode = $this->mapper->remove(self::FIELD_BRAND);
-		if (null !== $brandCode) {
-			$this->setBrandByCode($brandCode);
-		}
-		
-		if (empty($this->brand)) {
-			if (empty($brandCode)) {
-				throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually",$this->mapper->key(self::FIELD_BRAND)));
-			}
-			$brand = $this->getBrandManager()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
-			if (empty($brand)) {
-				throw new \Exception(sprintf("At row '%d': Brand '%s' not found for Company '%s'",$this->numRows,$brandCode,$this->company));
-			}
-		} else {
-			$brand = $this->brand;
-		}
-			
+		$brand = parent::handleBrand();
+
 		if ($this->skip == 0 && $this->force && $this->enable && !array_key_exists($brand->getId(),$this->disabledBrands)) {
 			$query = $this->em->createQuery('UPDATE Youppers\CompanyBundle\Entity\ProducT p SET p.enabled = false WHERE p.brand = :brand');
 			$query->setParameter('brand', $brand);
@@ -375,6 +271,12 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		return $collection;
 	}
 
+	/**
+	 * @param ProductCollection $collection
+	 * @param Product $product
+	 * @return null|object
+	 *
+	 */
 	protected function handleVariant(ProductCollection $collection, Product $product)
 	{
 		$criteria = Criteria::create()

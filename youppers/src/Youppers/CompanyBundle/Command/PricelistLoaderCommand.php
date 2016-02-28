@@ -15,6 +15,8 @@ use Doctrine\Common\Collections\Criteria;
 
 use Ddeboer\DataImport\Reader\CsvReader;
 use Youppers\CompanyBundle\Entity\Product;
+use Youppers\CompanyBundle\Loader\AbstractLoader;
+use Youppers\CompanyBundle\Loader\AbstractPricelistLoader;
 
 class PricelistLoaderCommand extends ContainerAwareCommand
 {	
@@ -37,12 +39,16 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		;
 	}
 
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @throws \Exception
+     */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{	
-		//new ISPricelistLoader();
-		
 		$input->validate();
 
+		/** @var AbstractPricelistLoader $loader */
 		$loader = $this->getContainer()->get('youppers.company.pricelist.loader_factory')->create($input->getArgument("pricelist"));
 		
 		$loader->setFs($input->getOption('fieldseparator'));

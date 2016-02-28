@@ -4,15 +4,24 @@ namespace Youppers\CompanyBundle\Loader;
 
 use Doctrine\Common\Collections\Criteria;
 use Ddeboer\DataImport\Reader\CsvReader;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Youppers\CompanyBundle\Entity\Company;
+use Youppers\CompanyBundle\Entity\Brand;
+use Youppers\CompanyBundle\Entity\Product;
+use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\CompanyBundle\Manager\BrandManager;
 use Youppers\CompanyBundle\Manager\ProductManager;
 use Youppers\CompanyBundle\Manager\CompanyManager;
+use Youppers\ProductBundle\Manager\ProductCollectionManager;
+use Youppers\ProductBundle\Manager\ProductTypeManager;
+use Youppers\ProductBundle\Manager\ProductVariantManager;
+
 use Youppers\CompanyBundle\YouppersCompanyBundle;
-use Monolog\Logger;
 use Youppers\CompanyBundle\Entity\ProductPrice;
 
 abstract class AbstractLoader extends ContainerAware
@@ -28,7 +37,14 @@ abstract class AbstractLoader extends ContainerAware
     const FIELD_TYPE = 'type';
     const FIELD_RES = 'uri';
 
-    /**
+	protected $disabledBrands = array();
+
+	/**
+	 * @var integer $skip
+	 */
+	protected $skip;
+
+	/**
 	 * @return \Youppers\CompanyBundle\Loader\LoaderMapper
 	 */
 	public abstract function createMapper();
@@ -39,22 +55,55 @@ abstract class AbstractLoader extends ContainerAware
     protected $mapper;
 
     protected $managerRegistry;
+
+	/**
+	 * @var ObjectManager $em
+	 */
 	protected $em;
+
     /**
      * @var LoggerInterface
      */
 	protected $logger;
+
     /**
-     * @var Company
+     * @var Company $company
      */
 	protected $company;
+
+	/**
+	 * @var Brand $brand
+	 */
 	protected $brand;
+
+	/**
+	 * @var Product
+	 */
 	protected $product;
+
+	/**
+	 * @var string $fs
+	 */
 	protected $fs;
+
+	/**
+	 * @var boolean $append
+	 */
 	protected $append;
+
+	/**
+	 * @var boolean $enable
+	 */
 	protected $enable;
+
+	/**
+	 * @var boolean $force
+	 */
 	protected $force;
 
+	/**
+	 * @var integer $numRows
+	 */
     protected $numRows;
 
 
@@ -190,7 +239,7 @@ abstract class AbstractLoader extends ContainerAware
 		$this->logger->debug(sprintf("Code: '%s' Product: '%s'", $code, $this->product));
 	}
 
-    public function checkUniqueGtin($product) {
+    public function checkUniqueGtin(Product $product) {
         $gtin = $product->getGtin();
         if ($gtin == null) {
             return true;
@@ -203,11 +252,55 @@ abstract class AbstractLoader extends ContainerAware
         }
     }
 
-	public function createReader($filename)
-	{
-		return $this->createCsvReader($filename);
+	/**l
+	 * @var ProductCollectionManager
+	 */
+	private $productCollectionManager;
+
+	/**
+	 * @return ProductCollectionManager
+	 */
+	protected function getProductCollectionManager() {
+		if (empty($this->productCollectionManager)) {
+			$this->productCollectionManager = $this->container->get('youppers.product.manager.product_collection');
+		}
+		return $this->productCollectionManager;
 	}
-	
+
+	/**
+	 * @var ProductVariantManager
+	 */
+	private $productVariantManager;
+
+	/**
+	 * @return ProductVariantManager
+	 */
+	protected function getProductVariantManager() {
+		if (empty($this->productVariantManager)) {
+			$this->productVariantManager = $this->container->get('youppers.product.manager.product_variant');
+		}
+		return $this->productVariantManager;
+	}
+
+	/**
+	 * @var ProductTypeManager $productTypeManager
+	 */
+	private $productTypeManager;
+
+	/**
+	 * @return ProductTypeManager
+	 */
+	protected function getProductTypeManager() {
+		if (empty($this->productTypeManager)) {
+			$this->productTypeManager = $this->container->get('youppers.product.manager.product_type');
+		}
+		return $this->productTypeManager;
+	}
+
+	/**
+	 * @param $filename
+	 * @return CsvReader
+	 */
 	public function createCsvReader($filename)
 	{
 		$file = new \SplFileObject($filename);	
@@ -221,6 +314,91 @@ abstract class AbstractLoader extends ContainerAware
 	 * @param boolean $force Write data on database
 	 * @param boolean $enable Enable product
 	 */
-	public abstract function load($filename,$skip);	
+	public function load($filename,$skip=0)
+	{
+		$this->skip = $skip;
 
+		$reader = $this->createCsvReader($filename);
+
+		$this->numRows = 0;
+
+		$reader->setHeaderRowNumber(0);
+
+		$this->serializer = $this->container->get('serializer');
+
+		$this->mapper = $this->createMapper();
+
+		$this->logger->info("Using mapper: " . $this->mapper);
+
+		// speed up
+		if (!$this->debug) {
+			$this->em->getConnection()->getConfiguration()->setSQLLogger(null);
+		}
+
+		$stopwatch = new Stopwatch();
+		$stopwatch->start('load');
+		foreach ($reader as $row) {
+
+			$this->numRows++;
+
+			if ($this->numRows == 1) {
+				$this->logger->info('Column headers: ' . var_export($reader->getColumnHeaders(), true));
+			}
+
+			if ($this->numRows <= $skip) {
+				continue;
+			}
+
+			$this->handleRow($row);
+
+			if ($this->numRows % self::BATCH_SIZE == 0) {
+				$this->logger->info(sprintf("Read %d rows",$this->numRows));
+				$this->batch();
+			}
+		}
+
+		$this->batch();
+
+		$event = $stopwatch->stop('load');
+		$this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
+	}
+
+	/**
+	 * @return Brand
+	 * @throws \Exception
+	 */
+	protected function handleBrand()
+	{
+		$brandCode = $this->mapper->remove(self::FIELD_BRAND);
+		if (null !== $brandCode) {
+			$this->setBrandByCode($brandCode);
+		}
+
+		if (empty($this->brand)) {
+			if (empty($brandCode)) {
+				throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually", $this->mapper->key(self::FIELD_BRAND)));
+			}
+			$brand = $this->getBrandManager()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
+			if (empty($brand)) {
+				throw new \Exception(sprintf("At row '%d': Brand '%s' not found for Company '%s'", $this->numRows, $brandCode, $this->company));
+			}
+			$this->brand = $brand;
+		} else {
+			return $this->brand;
+		}
+	}
+
+	/**
+	 * @param $row
+	 * @return mixed
+	 * Called for each row
+	 */
+	protected abstract function handleRow($row);
+
+	/**
+	 * @return mixed
+	 * Called each BATCH_SIZE rows and after the last row
+	 * Should perform clear or flush
+	 */
+	protected abstract function batch();
 }
