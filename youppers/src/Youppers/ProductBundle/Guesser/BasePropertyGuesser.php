@@ -1,11 +1,13 @@
 <?php
 namespace Youppers\ProductBundle\Guesser;
 
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Youppers\ProductBundle\Guesser\AbstractGuesser;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\ProductBundle\Entity\VariantProperty;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
+use Youppers\ProductBundle\Manager\AttributeOptionManager;
 use Youppers\ProductBundle\Manager\VariantPropertyManager;
 use Youppers\ProductBundle\Entity\AttributeOption;
 
@@ -22,21 +24,43 @@ class BasePropertyGuesser extends AbstractGuesser
     {
        $this->isVariant = $isVariant;
     }
-	
+
+	/**
+	 * @var boolean $autoAddOptions
+	 * True only if the concrete guesser is confident to automatuically add options to a standard
+	 */
+	protected $autoAddOptions = false;
+
 	protected $variantPropertyManager;
-	
-	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager)
+
+	protected $attributeOptionManager;
+
+	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager, AttributeOptionManager $attributeOptionManager)
 	{
 		$this->type = $type;
 		$this->variantPropertyManager = $variantPropertyManager;
+		$this->attributeOptionManager = $attributeOptionManager;
 	}
 
     public function getType() {
         return $this->type;
     }
-	
-	public function guessVariant(ProductVariant $variant, &$text) {
-		return $this->guessProperty($variant, $text, $this->type);
+
+	/**
+	 * @return string Column where to find the value of the type
+	 * The default is the code of the type, but subclasses can override
+	 */
+	public function getTypeColumn() {
+		return $this->getType()->getCode();
+	}
+
+	/**
+	 * @param ProductVariant $variant
+	 * @param $text Search values of the attributes here
+	 * @param bool $textIsValue text is a value, so must be searched as is
+	 */
+	public function guessVariant(ProductVariant $variant, &$text, $textIsValue = false) {
+		return $this->guessProperty($variant, $text, $this->type, $textIsValue);
 	}
 	
 	/**
@@ -57,7 +81,9 @@ class BasePropertyGuesser extends AbstractGuesser
 	}
 	
 	private $collectionOptions = array();
-	
+
+	private $collectionStandards = array();
+
 	protected function getCollectionOptions(ProductCollection $collection, AttributeType $type)
 	{
 		if (!array_key_exists($collection->getId(),$this->collectionOptions)) {
@@ -65,8 +91,10 @@ class BasePropertyGuesser extends AbstractGuesser
 		}
 		if (!array_key_exists($type->getId(),$this->collectionOptions[$collection->getId()])) {
 			$options = array();
+			$standards = array();
 			foreach ($collection->getStandards()->getValues() as $standard) {
 				if ($standard->getAttributeType() == $type) {
+					$standards[] = $standard;
 					foreach ($standard->getAttributeOptions()->getValues() as $option) {
                         if (!$option->getEnabled()) {
                             continue;
@@ -92,10 +120,19 @@ class BasePropertyGuesser extends AbstractGuesser
 			}
             uksort($options,function($a, $b) { return strlen($b) - strlen($a);});
 			$this->collectionOptions[$collection->getId()][$type->getId()] = $options;
-			if (count($options) == 0) {
-				$this->getLogger()->warning(sprintf("Collection '%s' don't have assigned standards for type '%s'",$collection,$type));
-				$todo = sprintf("<error>Add standard</error> of type <info>%s</info> for collection <info>%s</info> then redo guessing.",$type,$collection);
+			$this->collectionStandards[$collection->getId()][$type->getId()] = $standards;
+			if (count($standards) == 0) {
+				$this->getLogger()->warning(sprintf("Collection '%s' don't have assigned standards for type '%s'", $collection, $type));
+				$todo = sprintf("<error>Add standard</error> of type <info>%s</info> for collection <info>%s</info> then redo guessing.", $type, $collection);
 				$this->addTodo($todo);
+			} else if (count($options) == 0) {
+				if (!$this->autoAddOptions) {
+					$this->getLogger()->warning(sprintf("Collection '%s' don't have options for type '%s'",$collection,$type));
+					foreach ($standards as $standard) {
+						$todo = sprintf("<error>Add options</error> to standard <info>%s</info> then redo guessing.",$standard);
+						$this->addTodo($todo);
+					}
+				}
 			} else {
 				$this->getLogger()->info(sprintf("Cached %d options of type '%s' for collection '%s'",count($options),$type,$collection));
 			}
@@ -103,13 +140,43 @@ class BasePropertyGuesser extends AbstractGuesser
 		return $this->collectionOptions[$collection->getId()][$type->getId()];
 	}
 
+	private function createOption(ProductVariant $variant, AttributeType $type, $value)
+	{
+		$standards = $this->collectionStandards[$variant->getProductCollection()->getId()][$type->getId()];
+		if (count($standards) == 0) {
+			$this->getLogger()->error(sprintf("Cannot autoadd if the collection '%s' dont have standard of type '%s'", $variant->getProductCollection(), $type));
+			return null;
+		}
+		if (count($standards) > 1) {
+			throw new Exception(sprintf("Cannot autoadd if the collection '%s' has more than one standard of type '%s'", $variant->getProductCollection(), $type));
+		}
+		$standard = array_pop($standards);
+		foreach ($this->getCollectionOptions($variant->getProductCollection(), $type) as $option) {
+			if ($option->getValue() == $value) {
+				throw new Exception(sprintf("Already exists option '%s' with value '%s'", $option, $value));
+			}
+		}
+		$option = $this->attributeOptionManager->create();
+		$option->setAttributeStandard($standard);
+		$option->setValue(trim($value));
+		$option->setEnabled(true);
+		$option->setPosition(count($this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()]) + 1);
+		$this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()][$value] = $option;
+		$this->getLogger()->debug(sprintf("Auto add option '%s' for '%s'", $option, $variant));
+		if ($this->getForce()) {
+			$this->attributeOptionManager->save($option);
+		}
+		return $option;
+	}
+
     /**
      * If the value of the option has multiple words, all words must be in the text
      * @param ProductVariant $variant
      * @param $text Search options in this string
-     * @param $type Type of attribute to search
+     * @param $type AttributeType of attribute to search
+	 * @param $textIsValue text is a value, so must be searched as is
      */
-    protected function guessProperty(ProductVariant $variant, &$text, $type)
+    protected function guessProperty(ProductVariant $variant, &$text, AttributeType $type, $textIsValue = false)
 	{
 		$actualOption = $this->getActualOption($variant, $type);
 
@@ -205,6 +272,19 @@ class BasePropertyGuesser extends AbstractGuesser
 					}
 				}
                 return true;
+			} elseif ($this->autoAddOptions && $textIsValue) {
+				$option = $this->createOption($variant,$type, $text);
+				if ($option === null) {
+					$todo = sprintf("<error>Cannot add option</error> <info>%s</info>",$text);
+					$this->addTodo($todo);
+				} else {
+					if ($this->getForce()) {
+						$this->addVariantProperty($variant,$option);
+					} else {
+						$todo = sprintf("<question>Will add new option</question> <info>%s</info>",$option);
+						$this->addTodo($todo);
+					}
+				}
 			} elseif (count($options)) {
 				if ($this->isVariant) {
 					$todo = sprintf("<error>Not guessed</error> property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());

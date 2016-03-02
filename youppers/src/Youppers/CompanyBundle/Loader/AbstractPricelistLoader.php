@@ -128,13 +128,13 @@ abstract class AbstractPricelistLoader extends AbstractLoader
         if ($this->force) {
             $this->getProductManager()->getObjectManager()->flush();
             $this->getProductPriceManager()->getObjectManager()->flush();
-			$this->getProductCollectionManager()->getEntityManager()->flush();
-			$this->getProductVariantManager()->getEntityManager()->flush();
+			$this->getProductCollectionManager()->getObjectManager()->flush();
+			$this->getProductVariantManager()->getObjectManager()->flush();
         } else {
             $this->getProductManager()->getObjectManager()->clear();
             $this->getProductPriceManager()->getObjectManager()->clear();
-			$this->getProductCollectionManager()->getEntityManager()->clear();
-			$this->getProductVariantManager()->getEntityManager()->clear();
+			$this->getProductCollectionManager()->getObjectManager()->clear();
+			$this->getProductVariantManager()->getObjectManager()->clear();
         }
     }
 

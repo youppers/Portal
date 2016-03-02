@@ -11,7 +11,7 @@ use Monolog\Logger;
 
 abstract class AbstractGuesser extends ContainerAware
 {
-	
+
 	private $todos = array();
 	
 	private $parent = null; // Parent Guesser

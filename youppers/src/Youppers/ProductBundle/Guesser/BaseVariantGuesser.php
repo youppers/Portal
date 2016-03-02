@@ -1,6 +1,7 @@
 <?php
 namespace Youppers\ProductBundle\Guesser;
 
+use Youppers\ProductBundle\Entity\AttributeStandard;
 use Youppers\ProductBundle\Guesser\AbstractGuesser;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\ProductBundle\Entity\VariantProperty;
@@ -8,9 +9,11 @@ use Youppers\CompanyBundle\Entity\ProductPrice;
 use Youppers\CompanyBundle\Entity\Company;
 use Youppers\CompanyBundle\Entity\Brand;
 use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Manager\AttributeOptionManager;
 use Youppers\ProductBundle\Manager\ProductCollectionManager;
 use Youppers\ProductBundle\Manager\ProductVariantManager;
 use Youppers\ProductBundle\Manager\VariantPropertyManager;
+use Youppers\ProductBundle\Manager\AttributeStandardManager;
 use Youppers\ProductBundle\Entity\AttributeType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -20,13 +23,18 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 	protected $collectionManager;
 	protected $variantManager;
 	protected $variantPropertyManager;
-	
+	protected $attributeStandardManager;
+	protected $attributeOptionManager;
+
 	public function setManagerRegistry(ManagerRegistry $managerRegistry)
 	{
 		parent::setManagerRegistry($managerRegistry);
+		// TODO Usare getProductCollectionManager come in AbstractLoader
 		$this->collectionManager = new ProductCollectionManager($managerRegistry);
 		$this->variantManager = new ProductVariantManager($managerRegistry);
 		$this->variantPropertyManager = new VariantPropertyManager($managerRegistry);
+		$this->attributeStandardManager = new AttributeStandardManager($managerRegistry);
+		$this->attributeOptionManager = new AttributeOptionManager($managerRegistry);
 	}
 	
 	protected $company;
@@ -57,7 +65,17 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 		}
 	
 	}
-		
+
+	protected $standardName = null;
+
+	public function setStandardName($standardName)
+	{
+		if (empty($standardName)) {
+			return;
+		}
+		$this->standardName = $standardName;
+	}
+
 	public function guess()
 	{
 		if ($this->collection) {
@@ -69,16 +87,65 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 			}
 		}
 	}
+
+	/**
+	 * @param ProductCollection $collection
+	 * Check if Collection has all the required stdandards
+	 * if standardName is set, try to associate the standard with that name
+	 */
+	protected function checkCollectionStandards(ProductCollection $collection) {
+		foreach ($collection->getProductType()->getProductAttributes() as $attribute) {
+			$collectionStandard = null;
+			$type = $attribute->getAttributeType();
+			foreach ($collection->getStandards() as $attributeStandard) {
+				$attributeType = $attributeStandard->getAttributeType();
+				if ($attributeType == $type) {
+					$collectionStandard = $attributeStandard;
+					$this->getLogger()->debug(sprintf("Collection '%s' has standard '%s'",$collection,$collectionStandard));
+					continue 2; // next type
+				}
+			}
+			if ($collectionStandard == null && $this->standardName) {
+				// find standard
+				$this->getLogger()->info(sprintf("Finding standard named '%s' of type '%s' for collection '%s'",$this->standardName,$type,$collection));
+				$collectionStandard = $this->attributeStandardManager->findOneBy(array('name' => $this->standardName, 'attributeType' => $type));
+				if ($collectionStandard == null) {
+					$this->getLogger()->warning(sprintf("Cannot find standard named '%s' of type '%s' for collection '%s'",$this->standardName,$type,$collection));
+				} else {
+					$this->getLogger()->info(sprintf("Using standard '%s' for collection '%s'",$collectionStandard,$collection));
+					// assign standard to collection
+					$collection->addStandard($collectionStandard);
+					$this->collectionManager->getEntityManager()->flush();
+				}
+			}
+			if ($collectionStandard == null) {
+				$this->getLogger()->debug(sprintf("Collection '%s' don't have standard for type '%s'",$collection,$type));
+			}
+		}
+	}
 	
 	public function guessCollection(ProductCollection $collection)
 	{
+		$this->checkCollectionStandards($collection);
 		$variants = $this->variantManager->findByCollection($collection);
 		$this->getLogger()->info(sprintf("Guessing %d variants for collection '%s'",count($variants),$collection));
 		$guessers = $this->getCollectionGuessers($collection);
 		foreach ($variants as $variant) {
 			$this->guessVariant($variant,$guessers);
 		}
-		$this->variantManager->getEntityManager()->flush();
+		if ($this->getForce()) {
+			$this->attributeOptionManager->getObjectManager()->flush();
+			//$this->attributeStandardManager->getObjectManager()->flush();
+			//$this->collectionManager->getObjectManager()->flush();
+			$this->variantManager->getObjectManager()->flush();
+			$this->variantPropertyManager->getObjectManager()->flush();
+		} else {
+			//$this->attributeOptionManager->getObjectManager()->clear();
+			//$this->attributeStandardManager->getObjectManager()->clear();
+			//$this->collectionManager->getObjectManager()->clear();
+			$this->variantManager->getObjectManager()->clear();
+			$this->variantPropertyManager->getObjectManager()->clear();
+		}
 	}
 	
 	/**
@@ -90,7 +157,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 	 */
 	protected function getCollectionTypeGuesser(ProductCollection $collection, AttributeType $type)
 	{
-		return new BasePropertyGuesser($type,$this->variantPropertyManager);
+		return new BasePropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 	}
 
 	private $guessers = array();
@@ -151,10 +218,10 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 		foreach ($guessers as $guesser) {
 			if ($this->debug) dump($name);
             if ($guesser instanceof BasePropertyGuesser) {
-                $code = $guesser->getType()->getCode();
+                $code = $guesser->getTypeColumn();
                 if (array_key_exists($code,$info) && $text = $info[$code]) {
                     $this->getLogger()->debug(sprintf("Guess '%s' using product info['%s']='%s'",$variant,$code,$text));
-                    if ($guesser->guessVariant($variant, $text)) {
+                    if ($guesser->guessVariant($variant, $text, true)) {
                         continue;
                     } else {
                         if ($this->debug) dump($info[$code]);

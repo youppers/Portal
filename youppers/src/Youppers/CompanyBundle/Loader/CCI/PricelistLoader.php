@@ -30,8 +30,6 @@ class PricelistLoader extends AbstractPricelistLoader
 			self::FIELD_PRICE => 'EUR=PL>',
 			self::FIELD_QUANTITY => 'BOX_PZ / PC in BOX',
             self::FIELD_SURFACE => 'BOX_MQ / SM in BOX',
-			self::FIELD_DIM => 'Formato - Size',
-			self::FIELD_COL => 'Colore',
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
