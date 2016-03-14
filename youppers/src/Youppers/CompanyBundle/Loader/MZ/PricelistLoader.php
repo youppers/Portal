@@ -7,25 +7,23 @@ use Youppers\CompanyBundle\Loader\LoaderMapper;
 
 class PricelistLoader extends AbstractPricelistLoader
 {
+	/**
+	 * @return LoaderMapper
+	 */
+/*
+NAME;LIST;CODE SERIE;SERIE;ITEM;CODE ITEM;CODE CATALOG;CODE RAG CATALOG;CATALOG;CODE UOM;UNIT AMOUNT LIST;QTY PC-BOX;QTY BOX - PALLET;QTY M2-BOX;QTY_M2_PALLET;QTY KG - BOX;QTY KG - PALLET;QTY GROSS WEIGHT - BOX;QTY GROSS WEIGHT - PALLET;CODE EAN;ITEM STATUS CODE;THICKNESS;DOMESTIC GROUP;SEGMENT;FLAG CATALOG;DATE ACTIVE;END DATE ACTIVE;INTRASTAT;PLAIN FLAG;DAL-TILE ITEM;DAL-TILE DATA
+RA_R1_EUR_016;RAGNO ITALIA 2016 EURO;546;060X500 ARTEAK  BATTISCOPA;060X500  BT.ARTEAK CIL;00R0AN15;R0AN;QJ-04;ARTEAK;m;13,2;15;96;0,45;43,2;9;864;9,25;887,6;8010885281359;10;MM 09;3-BASSA;BASIC;Y;01/03/2016;;69089091;N;;N
+ */
 	public function createMapper()
 	{
 		$mapping = array(
-			'code' => 'codice_catalogo',
-			'name' => function($row) {
-				$matches=preg_split("/x/",$row['formato']);
-				$larghezza = intval($matches[0]);
-				$lunghezza = floatval($matches[1]);
-				$dim = sprintf('%dx%d',$larghezza/10,$lunghezza*100);
-				$name = $row['descrizione'];
-				if (stripos($name,$dim) === false) {
-					$name .= ' ' . $dim;
-				}
-				return $name;
-			}, 
-			'collection' => 'nome_serie',
-			'uom' => function($row) { return 'M2'; },
-			'DIM' => 'formato',
-			'COLOR' => 'colore'
+			self::FIELD_CODE => 'CODE CATALOG',
+			self::FIELD_NAME => 'ITEM',
+			self::FIELD_COLLECTION => 'CATALOG',
+			self::FIELD_UOM => 'CODE UOM',
+			self::FIELD_QUANTITY => 'QTY PC-BOX',
+			self::FIELD_SURFACE => 'QTY M2-BOX',
+			self::FIELD_GTIN => 'CODE EAN',
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
@@ -36,7 +34,7 @@ class PricelistLoader extends AbstractPricelistLoader
 	protected function getNewCollectionProductType(Brand $brand, $code)
 	{
 		if (!isset($this->newCollectionProductType)) {
-			$this->newCollectionProductType= $this->productTypeManager
+			$this->newCollectionProductType= $this->getProductTypeManager()
 				->findOneBy(array('code' => 'TILE'));
 		}
 		return $this->newCollectionProductType;
