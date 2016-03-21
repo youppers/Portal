@@ -216,22 +216,22 @@ abstract class BaseVariantGuesser extends AbstractGuesser
             $guessers = $this->getVariantGuessers($variant);
         }
 		foreach ($guessers as $guesser) {
-			if ($this->debug) dump($name);
+			if ($this->getDebug()) dump($name);
             if ($guesser instanceof BasePropertyGuesser) {
                 $code = $guesser->getTypeColumn();
                 if (array_key_exists($code,$info) && $text = $info[$code]) {
-                    $this->getLogger()->debug(sprintf("Guess '%s' using product info['%s']='%s'",$variant,$code,$text));
+                    $this->getLogger()->debug(sprintf("Guess %s of '%s' using product info['%s']='%s'",$code, $variant,$code,$text));
                     if ($guesser->guessVariant($variant, $text, true)) {
                         continue;
                     } else {
-                        if ($this->debug) dump($info[$code]);
+                        if ($this->getDebug()) dump($info[$code]);
                     }
                 }
             }
 			if ($guesser->guessVariant($variant, $name)) {
                 continue;
             }
-			if ($this->debug) dump($name);
+			if ($this->getDebug()) dump($name);
 		}
 	}
 

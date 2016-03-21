@@ -84,8 +84,17 @@ abstract class AbstractGuesser extends ContainerAware
 		}		
 	}
 
-	protected $debug = false;
-	
+	private $debug = false;
+
+	public function getDebug()
+	{
+		if ($this->parent) {
+			return $this->parent->getDebug();
+		} else {
+			return $this->debug;
+		}
+	}
+
 	public function setDebug($debug)
 	{
 		$this->debug = $debug;

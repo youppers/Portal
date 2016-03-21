@@ -95,7 +95,7 @@ class BasePropertyGuesser extends AbstractGuesser
 			foreach ($collection->getStandards()->getValues() as $standard) {
 				if ($standard->getAttributeType() == $type) {
 					$standards[] = $standard;
-					foreach ($standard->getAttributeOptions()->getValues() as $option) {
+					foreach ($this->attributeOptionManager->findBy(array('attributeStandard' => $standard)) as $option) {
                         if (!$option->getEnabled()) {
                             continue;
                         }
@@ -116,6 +116,10 @@ class BasePropertyGuesser extends AbstractGuesser
 							}
 						}
 					}
+				}
+				$this->getLogger()->debug(sprintf("Collection '%s': loaded %d options (with alias) for standard '%s'",$collection,count($options),$standard));
+				if ($this->getDebug()) {
+					$this->getLogger()->debug($standard . ':' . implode(' ',array_keys($options)));
 				}
 			}
             uksort($options,function($a, $b) { return strlen($b) - strlen($a);});
@@ -161,7 +165,7 @@ class BasePropertyGuesser extends AbstractGuesser
 		$option->setValue(trim($value));
 		$option->setEnabled(true);
 		$option->setPosition(count($this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()]) + 1);
-		$this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()][$value] = $option;
+		//$this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()][$value] = $option;
 		$this->getLogger()->debug(sprintf("Auto add option '%s' for '%s'", $option, $variant));
 		if ($this->getForce()) {
 			$this->attributeOptionManager->save($option);
