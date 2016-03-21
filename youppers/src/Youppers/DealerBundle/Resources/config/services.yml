@@ -11,8 +11,18 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
+    youppers.dealer.service.pricelist:
+        class:     Youppers\DealerBundle\Service\PricelistService
+        arguments: ['@logger']
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
     youppers.dealer.manager.box:
         class:     Youppers\DealerBundle\Manager\BoxManager
+        arguments: ['@doctrine']
+
+    youppers.dealer.manager.dealer:
+        class:     Youppers\DealerBundle\Manager\DealerManager
         arguments: ['@doctrine']
 
     youppers.dealer.security.dealer_voter:
