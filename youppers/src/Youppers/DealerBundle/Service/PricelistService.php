@@ -11,6 +11,7 @@ use Youppers\CompanyBundle\Entity\Company;
 use Psr\Log\LoggerInterface;
 use Doctrine\Common\Collections\Criteria;
 use Youppers\CompanyBundle\Entity\Pricelist;
+use Youppers\DealerBundle\Entity\Dealer;
 use Youppers\DealerBundle\Entity\DealerBrand;
 
 class PricelistService extends ContainerAware
@@ -46,6 +47,19 @@ class PricelistService extends ContainerAware
 			->andWhere(Criteria::expr()->gte('validTo',$now));
 		return $company->getPricelists()->matching($criteria);
 	}
+
+	/**
+	 * @param $dealerCode string
+	 * @return Dealer
+	 */
+	private function getDealerByCode($dealerCode) {
+		$dealer = $this->getDealerManager()->findOneBy(array('code' => $dealerCode));
+		if (empty($dealer)) {
+			throw new \InvalidArgumentException(sprintf("Dealer with code '%s' not found",$dealerCode));
+		}
+		return $dealer;
+	}
+
 	/**
 	 * Export
 	 * @param $dealerCode Code of the dealer
@@ -53,7 +67,7 @@ class PricelistService extends ContainerAware
 	 * @param null $brandCode Optional code of the brand
 	 */
 	public function export($dealerCode, $path, $brandCode = null) {
-		$dealer = $this->getDealerManager()->findOneBy(array('code' => $dealerCode));
+		$dealer = $this->getDealerByCode($dealerCode);
 		$absolutePath = realpath($path);
 		if (empty($absolutePath)) {
 			throw new \InvalidArgumentException("Invalid path supplied: $path");
@@ -68,7 +82,7 @@ class PricelistService extends ContainerAware
 			$criteria->andWhere(Criteria::expr()->eq("code", $brandCode));
 			$dealerBrands = $dealer->getDealerBrands()->matching($criteria);
 			if (count($dealerBrands) != 1) {
-				throw new \InvalidArgumentException("Invalid brand code supplied: $brandCode");
+				throw new \InvalidArgumentException("Invalid brand code or not enabled: $brandCode");
 			}
 		} else {
 			$dealerBrands = $dealer->getDealerBrands()->matching($criteria);
@@ -81,8 +95,8 @@ class PricelistService extends ContainerAware
 			$this->logger->debug(sprintf("Writing pricelists for '%s'", $dealerBrand));
 			foreach ($this->getCompanyPricelists($dealerBrand->getBrand()->getCompany()) as $pricelist) {
 				$filename = $absolutePath . DIRECTORY_SEPARATOR . $dealer->getCode()
-                    . '-' . $pricelist->getCode()
                     . '-' . ($dealerBrand->getCode()?: $dealerBrand->getBrand()->getCode())
+					. '-' . $pricelist->getCode()
                     . '.xml';
                 if (file_exists($filename)) {
                     unlink($filename);
@@ -120,7 +134,7 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 
         $fields = array(
             'SIGLA' => 'product.brand.code',
-            'SERIE' => 'product.variant.productCollection.code',
+            'SERIE' => 'product.variant.productCollection.name',
             'CODICE' => 'product.code',
             'DESCRIZIONE' => 'product.name',
             'UM' => 'uom',
@@ -140,7 +154,7 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
         $data = parent::current();
 
         $data['SIGLA'] = $this->dealerBrandCode;
-        $data['TONI'] = $data['TONI'] ==  'TILE' ? 'S' : 'N';
+        //$data['TONI'] = $data['TONI'] ==  'TILE' ? 'S' : 'N';
         return $data;
     }
 
