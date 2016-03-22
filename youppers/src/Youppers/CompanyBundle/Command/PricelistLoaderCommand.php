@@ -27,7 +27,7 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->setDescription('Load Company Pricelist')
 		->addArgument('pricelist', InputArgument::REQUIRED, 'Code of the pricelist to update')
 		->addArgument('filename', InputArgument::REQUIRED, 'File name to load from' )
-		->addOption('append', 'a', InputOption::VALUE_OPTIONAL, 'Append to existing pricelist (default: delete all prices')
+		->addOption('append', 'a', InputOption::VALUE_NONE, 'Append to existing pricelist (default: delete all prices')
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
