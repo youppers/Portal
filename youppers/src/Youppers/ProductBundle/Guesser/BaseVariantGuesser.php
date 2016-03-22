@@ -66,16 +66,6 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 	
 	}
 
-	protected $standardName = null;
-
-	public function setStandardName($standardName)
-	{
-		if (empty($standardName)) {
-			return;
-		}
-		$this->standardName = $standardName;
-	}
-
 	public function guess()
 	{
 		if ($this->collection) {
@@ -93,7 +83,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 	 * Check if Collection has all the required stdandards
 	 * if standardName is set, try to associate the standard with that name
 	 */
-	protected function checkCollectionStandards(ProductCollection $collection) {
+	protected function checkCollectionStandards(ProductCollection $collection, $guessers) {
 		foreach ($collection->getProductType()->getProductAttributes() as $attribute) {
 			$collectionStandard = null;
 			$type = $attribute->getAttributeType();
@@ -105,17 +95,27 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 					continue 2; // next type
 				}
 			}
-			if ($collectionStandard == null && $this->standardName) {
+			foreach ($guessers as $guesser) {
+				if ($guesser->getType() == $type) {
+					$defaultStandardName = $guesser->getDefaultStandardName();
+					continue 1; // exit foreach
+				}
+			}
+			if ($collectionStandard == null && $defaultStandardName != null) {
 				// find standard
-				$this->getLogger()->info(sprintf("Finding standard named '%s' of type '%s' for collection '%s'",$this->standardName,$type,$collection));
-				$collectionStandard = $this->attributeStandardManager->findOneBy(array('name' => $this->standardName, 'attributeType' => $type));
+				$this->getLogger()->info(sprintf("Finding standard named '%s' of type '%s' for collection '%s'",$defaultStandardName,$type,$collection));
+				$collectionStandard = $this->attributeStandardManager->findOneBy(array('name' => $defaultStandardName, 'attributeType' => $type));
 				if ($collectionStandard == null) {
-					$this->getLogger()->warning(sprintf("Cannot find standard named '%s' of type '%s' for collection '%s'",$this->standardName,$type,$collection));
+					$this->getLogger()->warning(sprintf("Cannot find standard named '%s' of type '%s' for collection '%s'",$defaultStandardName,$type,$collection));
 				} else {
 					$this->getLogger()->info(sprintf("Using standard '%s' for collection '%s'",$collectionStandard,$collection));
 					// assign standard to collection
 					$collection->addStandard($collectionStandard);
-					$this->collectionManager->getEntityManager()->flush();
+					if (!$this->getForce()) {
+						$todo = sprintf("<question>Will assign standard</question> <info>%s</info> to collection <info>%s</info>",$collectionStandard,$collection);
+						$this->addTodo($todo);
+					}
+					//$this->collectionManager->getEntityManager()->flush();
 				}
 			}
 			if ($collectionStandard == null) {
@@ -126,23 +126,23 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 	
 	public function guessCollection(ProductCollection $collection)
 	{
-		$this->checkCollectionStandards($collection);
 		$variants = $this->variantManager->findByCollection($collection);
 		$this->getLogger()->info(sprintf("Guessing %d variants for collection '%s'",count($variants),$collection));
 		$guessers = $this->getCollectionGuessers($collection);
+		$this->checkCollectionStandards($collection,$guessers);
 		foreach ($variants as $variant) {
 			$this->guessVariant($variant,$guessers);
 		}
 		if ($this->getForce()) {
 			$this->attributeOptionManager->getObjectManager()->flush();
 			//$this->attributeStandardManager->getObjectManager()->flush();
-			//$this->collectionManager->getObjectManager()->flush();
+			$this->collectionManager->getObjectManager()->flush();
 			$this->variantManager->getObjectManager()->flush();
 			$this->variantPropertyManager->getObjectManager()->flush();
 		} else {
 			//$this->attributeOptionManager->getObjectManager()->clear();
 			//$this->attributeStandardManager->getObjectManager()->clear();
-			//$this->collectionManager->getObjectManager()->clear();
+			$this->collectionManager->getObjectManager()->clear();
 			$this->variantManager->getObjectManager()->clear();
 			$this->variantPropertyManager->getObjectManager()->clear();
 		}

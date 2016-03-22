@@ -2,6 +2,7 @@
 namespace Youppers\ProductBundle\Guesser;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Youppers\ProductBundle\Entity\AttributeStandard;
 use Youppers\ProductBundle\Guesser\AbstractGuesser;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\ProductBundle\Entity\VariantProperty;
@@ -45,6 +46,15 @@ class BasePropertyGuesser extends AbstractGuesser
     public function getType() {
         return $this->type;
     }
+
+	/**
+	 * @return string|null The name of the default standard name for this property
+	 */
+	public function getDefaultStandardName()
+	{
+		return null;
+	}
+
 
 	/**
 	 * @return string Column where to find the value of the type
@@ -144,6 +154,17 @@ class BasePropertyGuesser extends AbstractGuesser
 		return $this->collectionOptions[$collection->getId()][$type->getId()];
 	}
 
+	/**
+	 * @param $value string
+	 * @param AttributeStandard $standard
+	 * @return string The value normalized for the standard
+	 * @throws \InvalidArgumentException if the value doesn't conform to the standard
+	 */
+	protected function normalizeValue($value,AttributeStandard $standard)
+	{
+		return $value;
+	}
+
 	private function createOption(ProductVariant $variant, AttributeType $type, $value)
 	{
 		$standards = $this->collectionStandards[$variant->getProductCollection()->getId()][$type->getId()];
@@ -155,6 +176,12 @@ class BasePropertyGuesser extends AbstractGuesser
 			throw new Exception(sprintf("Cannot autoadd if the collection '%s' has more than one standard of type '%s'", $variant->getProductCollection(), $type));
 		}
 		$standard = array_pop($standards);
+		try {
+			$value = $this->normalizeValue($value,$standard);
+		} catch (\InvalidArgumentException $e) {
+			$this->getLogger()->error(sprintf("Cannot autoadd '%s': %s",$value,$e->getMessage()));
+			return null;
+		}
 		foreach ($this->getCollectionOptions($variant->getProductCollection(), $type) as $option) {
 			if ($option->getValue() == $value) {
 				throw new Exception(sprintf("Already exists option '%s' with value '%s'", $option, $value));
@@ -165,10 +192,10 @@ class BasePropertyGuesser extends AbstractGuesser
 		$option->setValue(trim($value));
 		$option->setEnabled(true);
 		$option->setPosition(count($this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()]) + 1);
-		//$this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()][$value] = $option;
+		$this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()][$value] = $option;
 		$this->getLogger()->debug(sprintf("Auto add option '%s' for '%s'", $option, $variant));
 		if ($this->getForce()) {
-			$this->attributeOptionManager->save($option);
+			$this->attributeOptionManager->save($option,false);
 		}
 		return $option;
 	}
@@ -279,7 +306,7 @@ class BasePropertyGuesser extends AbstractGuesser
 			} elseif ($this->autoAddOptions && $textIsValue) {
 				$option = $this->createOption($variant,$type, $text);
 				if ($option === null) {
-					$todo = sprintf("<error>Cannot add option</error> <info>%s</info>",$text);
+					$todo = sprintf("<error>Cannot add option</error> <info>%s</info> of type <info>%s</info>",$text,$type);
 					$this->addTodo($todo);
 				} else {
 					if ($this->getForce()) {

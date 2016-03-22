@@ -2,6 +2,7 @@
 namespace Youppers\ProductBundle\Guesser\CCI;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Youppers\ProductBundle\Guesser\BaseDimensionPropertyGuesser;
 use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
@@ -14,12 +15,6 @@ use Youppers\ProductBundle\Manager\AttributeOptionManager;
 
 class VariantGuesser extends BaseVariantGuesser
 {
-	public function __construct()
-	{
-		$this->autoAddOptions = true;
-	}
-
-
 	protected function getCollectionTypeGuesser(ProductCollection $collection, AttributeType $type)
 	{
 		if ($type->getCode() == 'COLOR') {
@@ -52,15 +47,15 @@ class ColorPropertyGuesser extends BasePropertyGuesser
 		return 'Colore';
 	}
 
+	public function getDefaultStandardName()
+	{
+		return 'Imola Ceramiche';
+	}
+
 }
 
-class DimPropertyGuesser extends BasePropertyGuesser
+class DimPropertyGuesser extends BaseDimensionPropertyGuesser
 {
-	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager, AttributeOptionManager $attributeOptionManager)
-	{
-		parent::__construct($type, $variantPropertyManager, $attributeOptionManager);
-		$this->autoAddOptions = true;
-	}
 
 	public function getTypeColumn()
 	{
@@ -88,5 +83,16 @@ class FinPropertyGuesser extends BasePropertyGuesser
 		}
 		return $this->defaultOption; 
 	}
+
+	public function getTypeColumn()
+	{
+		return 'Finitura';
+	}
+
+	public function getDefaultStandardName()
+	{
+		return 'Finitura';
+	}
+
 }
 

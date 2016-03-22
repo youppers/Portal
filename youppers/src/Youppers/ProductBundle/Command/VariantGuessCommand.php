@@ -30,7 +30,6 @@ class VariantGuessCommand extends ContainerAwareCommand
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
-			->addOption('standard', null, InputOption::VALUE_REQUIRED, 'Automatic set the collection standard using given name')
 		;
 	}
 
@@ -48,10 +47,6 @@ class VariantGuessCommand extends ContainerAwareCommand
 			)) {
 				$guesser->setForce($input->getOption('force'));						
 			}
-		}
-
-		if ($input->getOption('standard')) {
-			$guesser->setStandardName($input->getOption('standard'));
 		}
 
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
