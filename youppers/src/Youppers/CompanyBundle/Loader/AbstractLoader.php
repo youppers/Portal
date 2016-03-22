@@ -30,6 +30,7 @@ abstract class AbstractLoader extends ContainerAware
 
     const FIELD_BRAND = 'brand';
     const FIELD_COLLECTION = 'collection';
+	const FIELD_COLLECTION_CODE = 'collection_code';
     const FIELD_NAME = 'name';
     const FIELD_DESCRIPTION = 'desciption';
     const FIELD_CODE = 'code';

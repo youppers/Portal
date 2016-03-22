@@ -25,6 +25,7 @@ class PricelistLoader extends AbstractPricelistLoader
                     $row['Aspetto Superficiale'] . ' ' .
                     $row['Bordi']);
             },
+			self::FIELD_COLLECTION_CODE => 'Codice Progetto - Collection Code',
 			self::FIELD_COLLECTION => 'Descrizione Progetto - Collection',
 			self::FIELD_UOM => 'Unita Misura - Sales Unit',
 			self::FIELD_PRICE => 'EUR=PL>',

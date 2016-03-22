@@ -217,7 +217,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$price = $this->getProductPriceManager()
 		    ->findOneBy(array('product' => $product, 'pricelist' => $this->pricelist));
 		if ($this->force && !empty($price)) {
-			throw new \Exception(sprintf("Duplicated price at row %d: %s",$this->numRows,implode(',',$this->mapper)));
+			throw new \Exception(sprintf("Duplicated price at row %d: %s",$this->numRows,implode(',',$this->mapper->getData())));
 		}
 		
 		$price = $this->getProductPriceManager()->create();
@@ -243,7 +243,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	{
 		//$brand = $product->getBrand();
 		$collectionName= $this->mapper->get(self::FIELD_COLLECTION);
-		$collectionCode = $this->container->get('youppers.common.service.codify')->codify($collectionName);
+		$collectionCode= $this->mapper->get(self::FIELD_COLLECTION_CODE);
+		if (empty($collectionCode)) {
+			$collectionCode = $this->container->get('youppers.common.service.codify')->codify($collectionName);
+		}
 		if ($collectionCode == null) {
 			return null;
 		} else {
