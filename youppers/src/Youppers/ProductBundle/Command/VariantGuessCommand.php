@@ -28,7 +28,6 @@ class VariantGuessCommand extends ContainerAwareCommand
 		->addArgument('brand', InputArgument::REQUIRED, 'Code of the Brand' )
 		->addArgument('collection', InputArgument::OPTIONAL, 'Code of the Collection' )
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
-		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
 		;
 	}
