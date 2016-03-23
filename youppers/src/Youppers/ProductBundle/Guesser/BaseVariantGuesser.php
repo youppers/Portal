@@ -106,6 +106,8 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 				$this->getLogger()->info(sprintf("Finding standard named '%s' of type '%s' for collection '%s'",$defaultStandardName,$type,$collection));
 				$collectionStandard = $this->attributeStandardManager->findOneBy(array('name' => $defaultStandardName, 'attributeType' => $type));
 				if ($collectionStandard == null) {
+					$todo = sprintf("<error>Cannot find standard</error> named <info>%s</info> of type <info>%s</info>",$defaultStandardName,$type);
+					$this->addTodo($todo);
 					$this->getLogger()->warning(sprintf("Cannot find standard named '%s' of type '%s' for collection '%s'",$defaultStandardName,$type,$collection));
 				} else {
 					$this->getLogger()->info(sprintf("Using standard '%s' for collection '%s'",$collectionStandard,$collection));
