@@ -1,6 +1,7 @@
 <?php
 namespace Youppers\DealerBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
@@ -116,6 +117,20 @@ class Dealer
 		$dealerBrand->setBrand(null);
 		$this->dealerBrands->removeElement($dealerBrand);
 	}
+
+    /**
+     * @return ArrayCollection of Brands
+     */
+    public function getBrands()
+    {
+        $brands = new ArrayCollection();
+        $this->getDealerBrands()->forAll(
+            function($id, $dealerBrand) use (&$brands) {
+                $brands->add($dealerBrand->getBrand());
+            }
+        );
+        return $brands;
+    }
 
 	public function __toString()
 	{
