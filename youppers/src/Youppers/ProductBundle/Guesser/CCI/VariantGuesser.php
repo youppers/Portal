@@ -26,8 +26,8 @@ class VariantGuesser extends BaseVariantGuesser
 		if ($type->getCode() == 'FIN') {
 			return new FinPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
-		if ($type->getCode() == 'MIX' && $collection->getCode() != 'VETRO') {
-			return new IgnorePropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
+		if ($type->getCode() == 'EDGE') {
+			return new EdgePropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
 		return parent::getCollectionTypeGuesser($collection, $type);
 	}
@@ -91,8 +91,28 @@ class FinPropertyGuesser extends BasePropertyGuesser
 
 	public function getDefaultStandardName()
 	{
-		return 'Finitura';
+		// FIXME Move to config
+		return 'Superficie Piastrella';
 	}
 
 }
 
+class EdgePropertyGuesser extends BasePropertyGuesser
+{
+	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager, AttributeOptionManager $attributeOptionManager)
+	{
+		parent::__construct($type, $variantPropertyManager, $attributeOptionManager);
+		$this->autoAddOptions = false;
+	}
+
+	public function getTypeColumn()
+	{
+		return 'Bordi';
+	}
+
+	public function getDefaultStandardName()
+	{
+		return 'Bordo Piastrella';
+	}
+
+}
