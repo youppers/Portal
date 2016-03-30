@@ -350,7 +350,12 @@ abstract class AbstractLoader extends ContainerAware
 				continue;
 			}
 
-			$this->handleRow($row);
+			try {
+				$this->handleRow($row);
+			} catch (\Exception $e) {
+				$this->logger->critical("Exception " . $e->getMessage() . " at row " . $this->numRows . " :" . var_export($row, true));
+				throw $e;
+			}
 
 			if ($this->numRows % self::BATCH_SIZE == 0) {
 				$this->logger->info(sprintf("Read %d rows",$this->numRows));
