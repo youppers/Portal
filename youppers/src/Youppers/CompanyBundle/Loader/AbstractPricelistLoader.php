@@ -3,6 +3,7 @@
 namespace Youppers\CompanyBundle\Loader;
 
 use Youppers\CompanyBundle\Entity\Brand;
+use Youppers\CompanyBundle\Entity\Pricelist;
 use Youppers\CompanyBundle\Entity\Product;
 use Youppers\CompanyBundle\Entity\ProductPrice;
 use Youppers\CompanyBundle\Manager\PricelistManager;
@@ -20,6 +21,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	const FIELD_QUANTITY = 'quantity';
 	const FIELD_SURFACE = 'surface';
 
+	/**
+	 * @var Pricelist
+	 */
 	protected $pricelist;
 	
 	/**
@@ -166,9 +170,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			throw new \Exception(sprintf("Product code not found in the column '%s'",$this->mapper->key('code')));
 		}
 		
-		$product = $this->getProductManager()
-			->findOneBy(array('brand' => $brand, 'code' => $productCode));
-		
+		$product = $this->getProductManager()->findOneByBrandAndCode($brand, $productCode);
 		if (empty($product)) {
 			$product = $this->getProductManager()->create();
 			$product->setBrand($brand);
@@ -223,14 +225,65 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$price = $this->getProductPriceManager()->create();
 		$price->setPriceList($this->pricelist);
 		$price->setProduct($product);
-		$price->setPrice(strtr($this->mapper->remove(self::FIELD_PRICE),array(" " => "", "€" => "","." => "","," => ".")));
+		$price->setPrice($this->normalizePrice($this->mapper->remove(self::FIELD_PRICE)));
 		$price->setUom($this->mapper->remove(self::FIELD_UOM));
-		if (empty($price->getUom())) {
-			throw new \Exception(sprintf("UOM cannot be null at row %d",$this->numRows));
-		}
-		$price->setQuantity($this->mapper->remove(self::FIELD_QUANTITY));
+		$price->setQuantity($this->normalizeQuantity($this->mapper->remove(self::FIELD_QUANTITY)));
+		$price->setSurface($this->normalizeSurface($this->mapper->remove(self::FIELD_SURFACE)));
 		$this->getProductPriceManager()->save($price,false);
 		return $price;
+	}
+
+	/**
+	 * Normalize price, es: € 1.200,30 => 1200.30
+	 * @param $price string
+	 * @return string
+	 */
+	protected function normalizePrice($price)
+	{
+		$price1 = strtr($price,array(" " => "", "€" => "","." => "","," => "."));
+		if (preg_match('/([0-9]*)\.([0-9]*)/',$price1,$matches)) {
+			$price2 = $matches[1] . '.' . $matches[2];
+			return $price2;
+		} else {
+			throw new \InvalidArgumentException("Invalid price: " . $price);
+		}
+	}
+
+	/**
+	 * @param $quantity string
+	 * @return string
+	 */
+	protected function normalizeQuantity($quantity)
+	{
+		if (empty($quantity)) {
+			return $quantity;
+		}
+		if (preg_match('/([0-9]*)[\.,]([0-9]*)/',$quantity,$matches)) {
+			$quantity2 = $matches[1] . '.' . $matches[2];
+			return $quantity2;
+		} else if (preg_match('/([0-9]*)/',$quantity,$matches)) {
+			$quantity1 = $matches[1];
+			return $quantity1;
+		} else {
+			throw new \InvalidArgumentException("Invalid quantity: " . $quantity);
+		}
+	}
+
+	/**
+	 * @param $surface string
+	 * @return string
+	 */
+	protected function normalizeSurface($surface)
+	{
+		if (empty($surface)) {
+			return $surface;
+		}
+		if (preg_match('/([0-9]*)[\.,]([0-9]*)/',$surface,$matches)) {
+			$surface2 = $matches[1] . '.' . $matches[2];
+			return $surface2;
+		} else {
+			throw new \InvalidArgumentException("Invalid surface: " . $surface);
+		}
 	}
 
 	/**
