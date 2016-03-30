@@ -39,13 +39,13 @@ class ProductPrice
     protected $vatcode;
 
     /**
-	 * @ORM\Column(type="string", length=10)
+	 * @ORM\Column(type="string", length=10, nullable=true)
      * Unit Of Measure
 	 */
 	protected $uom;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, options={"default":1})
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      * indicates the quantity of product (expressed in uom) present in the smallest package
      */
     protected $quantity;
