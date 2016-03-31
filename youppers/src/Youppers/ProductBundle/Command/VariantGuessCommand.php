@@ -59,12 +59,12 @@ class VariantGuessCommand extends ContainerAwareCommand
 		$output->writeln("  Brand: " . $input->getArgument("brand"));
 		if (!empty($input->getArgument("collection"))) {
 			$output->writeln("  Collection: " . $input->getArgument("collection"));
+			foreach ($guesser->getTodos() as $todo) {
+				$output->writeln($todo);
+			}
 		}
 		
-		foreach ($guesser->getTodos() as $todo) {
-			$output->writeln($todo);				
-		}
-		$output->writeln("Done.");		
+		$output->writeln("Done.");
 	}
 	
 }
