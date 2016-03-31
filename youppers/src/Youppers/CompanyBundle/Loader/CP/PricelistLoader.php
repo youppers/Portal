@@ -32,4 +32,15 @@ class PricelistLoader extends AbstractPricelistLoader
 		return $mapper;
 	}
 
+	private $newCollectionProductType;
+
+	protected function getNewCollectionProductType(Brand $brand, $code)
+	{
+		if (!isset($this->newCollectionProductType)) {
+			$this->newCollectionProductType= $this->getProductTypeManager()
+				->findOneBy(array('code' => 'TILE'));
+		}
+		return $this->newCollectionProductType;
+	}
+
 }
