@@ -339,8 +339,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			->where(Criteria::expr()->eq("product", $product));
 		$variant = $collection->getProductVariants()->matching($criteria)->first();
 		if (empty($variant)) {
-			$variant = $this->getProductVariantManager()
-				->findOneBy(array('product' => $product));
+			$variant = $this->getProductVariantManager()->findOneByProduct($product);
 			if (!empty($variant)) {
 				if ($this->changeCollection) {
 					$this->logger->warning(sprintf("Variant '%s' changed from collection '%s' to '%s'",$product,$variant->getProductCollection(),$collection));
