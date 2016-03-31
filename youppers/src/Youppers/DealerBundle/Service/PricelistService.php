@@ -138,11 +138,9 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
             'CODICE' => 'product.code',
             'DESCRIZIONE' => 'product.name',
             'UM' => 'uom',
-            'PREZZO1' => 'price',
-            'PREZZO2' => 'price',
-            'PREZZO3' => 'price',
-            'FORMATO' => 'surface',
-            'TONI' => 'product.variant.productCollection.productType.code',
+            'PREZZO' => 'price',
+            'FORMATO' => 'product.variant.formato',
+            'TONI' => 'product.variant.toni',
             'IMBALLO' => 'quantity',
         );
 
@@ -154,7 +152,6 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
         $data = parent::current();
 
         $data['SIGLA'] = $this->dealerBrandCode;
-        //$data['TONI'] = $data['TONI'] ==  'TILE' ? 'S' : 'N';
         return $data;
     }
 
