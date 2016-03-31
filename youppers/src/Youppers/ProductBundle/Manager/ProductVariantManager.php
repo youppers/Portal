@@ -35,6 +35,12 @@ class ProductVariantManager extends BaseEntityManager
 		return parent::save($productVariant,$andFlush);
 	}
 
+	public function flush()
+	{
+		$this->getEntityManager()->flush();
+		$this->cache = array();
+	}
+
 	public function findOneByProduct(Product $product)
 	{
 		$key = $product->getId();

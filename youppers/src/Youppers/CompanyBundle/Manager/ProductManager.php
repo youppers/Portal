@@ -29,6 +29,12 @@ class ProductManager extends BaseEntityManager
         return parent::save($entity,$andFlush);
     }
 
+    public function flush()
+    {
+        $this->getEntityManager()->flush();
+        $this->productCache = array();
+    }
+
     public function findOneByGtin($gtin) {
         if (array_key_exists($gtin,$this->gtinCache)) {
             return $this->gtinCache[$gtin];

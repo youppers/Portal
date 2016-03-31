@@ -130,10 +130,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
     protected function batch()
     {
         if ($this->force) {
-            $this->getProductManager()->getObjectManager()->flush();
+            $this->getProductManager()->flush();
             $this->getProductPriceManager()->getObjectManager()->flush();
-			$this->getProductCollectionManager()->getObjectManager()->flush();
-			$this->getProductVariantManager()->getObjectManager()->flush();
+			$this->getProductCollectionManager()->flush();
+			$this->getProductVariantManager()->flush();
         } else {
             $this->getProductManager()->getObjectManager()->clear();
             $this->getProductPriceManager()->getObjectManager()->clear();

@@ -30,7 +30,13 @@ class ProductCollectionManager extends BaseEntityManager
 	{
 		$this->brands = array();
 	}
-	
+
+	public function flush()
+	{
+		$this->getEntityManager()->flush();
+		$this->brands = array();
+	}
+
 	/**
 	 *
 	 * @param Brand $brand Collection Brand
