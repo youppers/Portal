@@ -244,6 +244,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if (preg_match('/([0-9]*)\.([0-9]*)/',$price1,$matches)) {
 			$price2 = $matches[1] . '.' . $matches[2];
 			return $price2;
+		} else if (preg_match('/([0-9]*)/',$price1,$matches)) {
+			$price3 = $matches[1];
+			return $price3;
 		} else {
 			throw new \InvalidArgumentException("Invalid price: " . $price);
 		}
