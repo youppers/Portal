@@ -148,7 +148,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					}
 				}
 			} else {
-				$this->getLogger()->info(sprintf("Cached %d options of type '%s' for collection '%s'",count($options),$type,$collection));
+				$this->getLogger()->debug(sprintf("Cached %d options of type '%s' for collection '%s'",count($options),$type,$collection));
 			}
 		}
 		return $this->collectionOptions[$collection->getId()][$type->getId()];
@@ -322,7 +322,7 @@ class BasePropertyGuesser extends AbstractGuesser
                     $this->getLogger()->warning(sprintf("No guess of type '%s' for '%s'",$type,$variant));
 				} else {
 					$todo = sprintf("Not guessed property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
-                    $this->getLogger()->info(sprintf("No guess of type '%s' for '%s'",$type,$variant));
+                    $this->getLogger()->debug(sprintf("No guess of type '%s' for '%s'",$type,$variant));
 				}
 				$this->addTodo($todo);
 			} else {
