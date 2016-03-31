@@ -194,10 +194,13 @@ abstract class AbstractPricelistLoader extends AbstractLoader
                 $product->setGtin(null);
             }
 		}
-		
+
 		$info = json_encode($this->mapper->getData());
+		if (json_last_error()>0) {
+			$this->logger->error(json_last_error_msg());
+		}
 		$product->setInfo($info);
-		
+
 		if (empty($product->getId())) {
             $this->getProductManager()->save($product,false);
             $this->logger->info("New product: " . $product);
