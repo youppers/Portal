@@ -103,7 +103,7 @@ class BasePropertyGuesser extends AbstractGuesser
 			$options = array();
 			$standards = array();
 			foreach ($collection->getStandards()->getValues() as $standard) {
-				if ($standard->getAttributeType() == $type) {
+				if ($standard->getAttributeType()->getCode() == $type->getCode()) {
 					$standards[] = $standard;
 					foreach ($this->attributeOptionManager->findBy(array('attributeStandard' => $standard)) as $option) {
                         if (!$option->getEnabled()) {

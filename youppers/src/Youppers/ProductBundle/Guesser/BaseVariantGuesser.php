@@ -89,14 +89,14 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 			$type = $attribute->getAttributeType();
 			foreach ($collection->getStandards() as $attributeStandard) {
 				$attributeType = $attributeStandard->getAttributeType();
-				if ($attributeType == $type) {
+				if ($attributeType->getCode() == $type->getCode()) {
 					$collectionStandard = $attributeStandard;
 					$this->getLogger()->debug(sprintf("Collection '%s' has standard '%s'",$collection,$collectionStandard));
 					continue 2; // next type
 				}
 			}
 			foreach ($guessers as $guesser) {
-				if ($guesser->getType() == $type) {
+				if ($guesser->getType()->getCode() === $type->getCode()) {
 					$defaultStandardName = $guesser->getDefaultStandardName();
 					continue 1; // exit foreach
 				}
@@ -136,17 +136,9 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 			$this->guessVariant($variant,$guessers);
 		}
 		if ($this->getForce()) {
-			$this->attributeOptionManager->getObjectManager()->flush();
-			//$this->attributeStandardManager->getObjectManager()->flush();
 			$this->collectionManager->getObjectManager()->flush();
-			$this->variantManager->getObjectManager()->flush();
-			$this->variantPropertyManager->getObjectManager()->flush();
 		} else {
-			//$this->attributeOptionManager->getObjectManager()->clear();
-			//$this->attributeStandardManager->getObjectManager()->clear();
-			$this->collectionManager->getObjectManager()->clear();
-			$this->variantManager->getObjectManager()->clear();
-			$this->variantPropertyManager->getObjectManager()->clear();
+			$this->collectionManager->getObjectManager()->detach($collection);
 		}
 	}
 	
