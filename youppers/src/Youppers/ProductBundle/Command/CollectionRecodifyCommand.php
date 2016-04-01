@@ -19,7 +19,7 @@ class CollectionRecodifyCommand extends ContainerAwareCommand
 			->setName('youppers:collections:recodify')
 			->setDescription('Recodify collections code')
 			->addArgument('company', InputArgument::REQUIRED, 'Code of the company')
-			->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
+			->addOption('write', 'w', InputOption::VALUE_NONE, 'Write data update')
 		;
 	}
 
@@ -49,14 +49,14 @@ class CollectionRecodifyCommand extends ContainerAwareCommand
 				$collectionName = $collection->getName();
 				$collectionCode = $collection->getCode();
 				$newCollectionCode = $codifier->codify($collectionName);
-				if ($collectionCode == $collectionName && $newCollectionCode != $collectionCode) {
+				if (strcasecmp($collectionCode,$collectionName) == 0 && $newCollectionCode != $collectionCode) {
 					$output->writeln(sprintf("Changing code to '%s' of '%s'",$newCollectionCode,$collection));
 					$collection->setCode($newCollectionCode);
 				}
 			}
 		}
 
-        if ($input->getOption('force')) {
+        if ($input->getOption('write')) {
             $collectionManager->getEntityManager()->flush();
         }
 
