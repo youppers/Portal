@@ -24,6 +24,7 @@ RA_R1_EUR_016;RAGNO ITALIA 2016 EURO;546;060X500 ARTEAK  BATTISCOPA;060X500  B
 			self::FIELD_QUANTITY => 'QTY PC-BOX',
 			self::FIELD_SURFACE => 'QTY M2-BOX',
 			self::FIELD_GTIN => 'CODE EAN',
+			self::FIELD_PRICE => 'UNIT AMOUNT LIST',
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
