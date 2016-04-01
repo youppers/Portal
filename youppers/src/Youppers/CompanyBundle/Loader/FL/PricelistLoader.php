@@ -12,14 +12,15 @@ class PricelistLoader extends AbstractPricelistLoader
 		// "Brand","Serie","descrizione","Formato","Materiale","descrizione materiale","UM","nota","Gruppo Prezzi","Listino"
 		// "REX","ALABASTRI DI REX","LUCIDO","60X120",739805,"ALABASTRI REX MADREPERLA LAP 60X120 RET","M2",,"GR-1340",109		
 		$mapping = array(
-			'brand' => 'Brand',
-			'collection' => 'Serie',
-			'code' => 'Materiale',
-			'properties' => array('FIN' => 'descrizione', 'DIM' => 'Formato'),
-			'name' => 'descrizione materiale',
-			'gtin' => false,
-			'price' => 'Listino',
-			'uom' => 'UM'
+			self::FIELD_BRAND => 'BRAND',
+			self::FIELD_COLLECTION => 'Serie/ Collection',
+			self::FIELD_CODE => 'cod./code',
+			self::FIELD_NAME => 'descrizione/item description',
+			self::FIELD_GTIN => 'cod EAN',
+			self::FIELD_PRICE => 'Price List eur/m2',
+			self::FIELD_UOM => 'UM',
+			self::FIELD_QUANTITY => 'pz/sc',
+			self::FIELD_SURFACE => 'm2/sc m2/box',
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;

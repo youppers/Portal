@@ -14,10 +14,10 @@ class VariantGuesser extends BaseVariantGuesser
 	protected function getCollectionTypeGuesser(ProductCollection $collection, AttributeType $type)
 	{
 		if ($type->getCode() == 'FIN') {
-			return new FinPropertyGuesser($type,$this->variantPropertyManager);
+			return new FinPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
 		if ($type->getCode() == 'MIX' && $collection->getCode() != 'VETRO') {
-			return new IgnorePropertyGuesser($type,$this->variantPropertyManager);
+			return new IgnorePropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
 		return parent::getCollectionTypeGuesser($collection, $type);
 	}

@@ -82,7 +82,7 @@ class ProductCollectionManager extends BaseEntityManager
 	/**
 	 * 
 	 * @param Brand $brand
-	 * @return Collection of Brand
+	 * @return ProductCollection[] of Brand
 	 */
 	public function findByBrand(Brand $brand)
 	{
