@@ -343,7 +343,7 @@ abstract class AbstractLoader extends ContainerAware
 			$this->numRows++;
 
 			if ($this->numRows == 1) {
-				$this->logger->info('Column headers: ' . var_export($reader->getColumnHeaders(), true));
+				$this->checkHeaders($reader->getColumnHeaders());
 			}
 
 			if ($this->numRows <= $skip) {
@@ -367,6 +367,16 @@ abstract class AbstractLoader extends ContainerAware
 
 		$event = $stopwatch->stop('load');
 		$this->logger->info(sprintf("Load done, read %d rows in %d mS",$this->numRows,$event->getDuration()));
+	}
+
+	public function checkHeaders($headers)
+	{
+		$this->logger->info('Column headers: ' . var_export($headers, true));
+		foreach ($this->mapper->getKeys() as $key) {
+			if (!in_array($key,$headers)) {
+				$this->logger->error(sprintf("Missing column '%s'",$key));
+			}
+		}
 	}
 
 	/**

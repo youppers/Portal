@@ -17,7 +17,7 @@ class PricelistLoader extends AbstractPricelistLoader
 			self::FIELD_CODE => 'cod./code',
 			self::FIELD_NAME => 'descrizione/item description',
 			self::FIELD_GTIN => 'cod EAN',
-			self::FIELD_PRICE => 'Price List eur/m2',
+			self::FIELD_PRICE => 'Price List',
 			self::FIELD_UOM => 'UM',
 			self::FIELD_QUANTITY => 'pz/sc',
 			self::FIELD_SURFACE => 'm2/sc m2/box',

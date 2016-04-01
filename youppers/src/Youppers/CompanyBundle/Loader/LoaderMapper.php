@@ -45,6 +45,17 @@ class LoaderMapper
         }
 		return $res;
 	}
+
+	public function getKeys()
+	{
+		$keys = array();
+		foreach (array_values($this->mapping) as $k) {
+			if (is_string($k)) {
+				$keys[] = $k;
+			}
+		}
+		return $keys;
+	}
 	
 	public function get($what,$returnKey=false,$remove=false)
 	{
