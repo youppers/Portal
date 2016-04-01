@@ -241,10 +241,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	protected function normalizePrice($price)
 	{
 		$price1 = strtr($price,array(" " => "", "€" => "","." => "","," => "."));
-		if (preg_match('/([0-9]*)\.([0-9]*)/',$price1,$matches)) {
+		if (preg_match('/([0-9]+)\.([0-9]+)/',$price1,$matches)) {
 			$price2 = $matches[1] . '.' . $matches[2];
 			return $price2;
-		} else if (preg_match('/([0-9]*)/',$price1,$matches)) {
+		} else if (preg_match('/([0-9]+)/',$price1,$matches)) {
 			$price3 = $matches[1];
 			return $price3;
 		} else {
@@ -261,10 +261,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if (empty($quantity)) {
 			return $quantity;
 		}
-		if (preg_match('/([0-9]*)[\.,]([0-9]*)/',$quantity,$matches)) {
+		if (preg_match('/([0-9]+)[\.,]([0-9]+)/',$quantity,$matches)) {
 			$quantity2 = $matches[1] . '.' . $matches[2];
 			return $quantity2;
-		} else if (preg_match('/([0-9]*)/',$quantity,$matches)) {
+		} else if (preg_match('/([0-9]+)/',$quantity,$matches)) {
 			$quantity1 = $matches[1];
 			return $quantity1;
 		} else {
@@ -281,10 +281,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if (empty($surface)) {
 			return $surface;
 		}
-		if (preg_match('/([0-9]*)[\.,]([0-9]*)/',$surface,$matches)) {
+		if (preg_match('/([0-9]+)[\.,]([0-9]+)/',$surface,$matches)) {
 			$surface2 = $matches[1] . '.' . $matches[2];
 			return $surface2;
-		} else if (preg_match('/([0-9]*)/',$surface,$matches)) {
+		} else if (preg_match('/([0-9]+)/',$surface,$matches)) {
 			$surface1 = $matches[1];
 			return $surface1;
 		} else {
