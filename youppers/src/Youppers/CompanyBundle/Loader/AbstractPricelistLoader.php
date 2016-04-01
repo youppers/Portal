@@ -130,10 +130,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
     protected function batch()
     {
         if ($this->force) {
-            $this->getProductManager()->flush();
             $this->getProductPriceManager()->getObjectManager()->flush();
-			$this->getProductCollectionManager()->flush();
-			$this->getProductVariantManager()->flush();
         } else {
             $this->getProductManager()->getObjectManager()->clear();
             $this->getProductPriceManager()->getObjectManager()->clear();
@@ -287,6 +284,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if (preg_match('/([0-9]*)[\.,]([0-9]*)/',$surface,$matches)) {
 			$surface2 = $matches[1] . '.' . $matches[2];
 			return $surface2;
+		} else if (preg_match('/([0-9]*)/',$surface,$matches)) {
+			$surface1 = $matches[1];
+			return $surface1;
 		} else {
 			throw new \InvalidArgumentException("Invalid surface: " . $surface);
 		}
