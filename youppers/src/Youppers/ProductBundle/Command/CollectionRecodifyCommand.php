@@ -20,6 +20,7 @@ class CollectionRecodifyCommand extends ContainerAwareCommand
 			->setDescription('Recodify collections code')
 			->addArgument('company', InputArgument::REQUIRED, 'Code of the company')
 			->addOption('write', 'w', InputOption::VALUE_NONE, 'Write data update')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force update of the code')
 		;
 	}
 
@@ -32,7 +33,9 @@ class CollectionRecodifyCommand extends ContainerAwareCommand
 	{	
 		$input->validate();
 
-		/** @var ProductCollectionManager $collectionManager */
+        $logger = $this->getContainer()->get('logger');
+
+        /** @var ProductCollectionManager $collectionManager */
 		$collectionManager = $this->getContainer()->get('youppers.product.manager.product_collection');
 
         /** @var CompanyManager $companyManager */
@@ -49,8 +52,15 @@ class CollectionRecodifyCommand extends ContainerAwareCommand
 				$collectionName = $collection->getName();
 				$collectionCode = $collection->getCode();
 				$newCollectionCode = $codifier->codify($collectionName);
-				if (strcasecmp($collectionCode,$collectionName) == 0 && $newCollectionCode != $collectionCode) {
-					$output->writeln(sprintf("Changing code to '%s' of '%s'",$newCollectionCode,$collection));
+                $logger->debug(sprintf("%s old '%s' new '%s'",$collectionName,$collectionCode,$newCollectionCode));
+				if ($newCollectionCode != $collectionCode) {
+                    if (strcasecmp($collectionCode,$collectionName) != 0) {
+                        if (!$input->getOption('force')) {
+                            $logger->warning(sprintf("Inconsistend collection name and code (%s), please change manually to '%s' or use --force",$collection,$newCollectionCode));
+                            continue;
+                        }
+                    }
+                    $logger->info(sprintf("Changing code of '%s' to '%s'",$collection,$newCollectionCode));
 					$collection->setCode($newCollectionCode);
 				}
 			}
