@@ -107,6 +107,12 @@ class PricelistService extends ContainerAware
                 $source = new ProductPriceIterator($this->getProductPriceManager()->getEntityManager(), $dealerBrand, $pricelist);
 
                 Handler::create($source,$writer)->export();
+				if ($source->getRecords() == 0) {
+					$this->logger->info(sprintf("No prices for brand '%s' in pricelist '%s'", $dealerBrand->getBrand(),$pricelist));
+					unlink($filename);
+				} else {
+					$this->logger->info(sprintf("Written %d prices in: %s", $source->getRecords(), $filename));
+				}
 			}
 		}
 
@@ -121,6 +127,19 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
     private $dealerBrand;
     private $brandCode;
     private $dealerBrandCode;
+
+	private $records = 0;
+
+	function next()
+	{
+		$this->records++;
+		return parent::next();
+	}
+
+	function getRecords()
+	{
+		return $this->records;
+	}
 
     function __construct(EntityManager $em, DealerBrand $dealerBrand, Pricelist $pricelist)
     {
