@@ -25,7 +25,7 @@ class PricelistService extends ContainerAware
 	}
 
 	/**
-	 * @return \Doctrine\Common\Persistence\ObjectManager|null
+	 * @return BaseEntityManager
 	 */
 	private function getDealerManager() {
 		return $this->container->get('youppers.dealer.manager.dealer');
@@ -67,6 +67,9 @@ class PricelistService extends ContainerAware
 	 * @param null $brandCode Optional code of the brand
 	 */
 	public function export($dealerCode, $path, $brandCode = null) {
+
+		$this->getDealerManager()->getConnection()->getConfiguration()->setSQLLogger(null);  // save memory
+
 		$dealer = $this->getDealerByCode($dealerCode);
 		$absolutePath = realpath($path);
 		if (empty($absolutePath)) {
@@ -114,6 +117,7 @@ class PricelistService extends ContainerAware
 					$this->logger->info(sprintf("Written %d prices in: %s", $source->getRecords(), $filename));
 				}
 			}
+			$this->getDealerManager()->getEntityManager()->clear(); // save memory
 		}
 
 	}
