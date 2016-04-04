@@ -30,7 +30,7 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->addOption('append', 'a', InputOption::VALUE_NONE, 'Append to existing pricelist (default: delete all prices')
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
-		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update')
+		->addOption('write', 'w', InputOption::VALUE_NONE, 'Execute data update')
 		->addOption('change-collection', null, InputOption::VALUE_NONE, 'Change product collection')
 		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable created entity')
 		->addOption('load-product', 'p', InputOption::VALUE_NONE, 'Load Collection and Variant of the Product')
@@ -61,7 +61,17 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 			$loader->setBrandByCode($brand);
 		}
 		$loader->setAppend($input->getOption('append'));
-		$loader->setForce($input->getOption('force'));
+		if ($input->getOption('write')) {
+			if ($this->getHelper('dialog')->askConfirmation(
+				$output,
+				"<question>Enter 'y' to confirm execution of data update</question> ",
+				false
+			)) {
+				$loader->setForce($input->getOption('write'));
+			}
+		}
+
+		$loader->setForce($input->getOption('write'));
 		$loader->setEnable($input->getOption('enable'));
 		$loader->setLoadProduct($input->getOption('load-product'));
 		$loader->setGuess($input->getOption('guess'));
