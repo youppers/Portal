@@ -302,10 +302,19 @@ abstract class AbstractLoader extends ContainerAware
 	 * @param $filename
 	 * @return CsvReader
 	 */
-	public function createCsvReader($filename)
+	protected function createCsvReader($filename)
 	{
 		$file = new \SplFileObject($filename);	
 		return new CsvReader($file, $this->fs);
+	}
+
+	/**
+	 * @param $filename string
+	 * @return Reader
+	 */
+	protected function createReader($filename)
+	{
+		return $this->createCsvReader($filename);
 	}
 	
 	/**
@@ -319,7 +328,7 @@ abstract class AbstractLoader extends ContainerAware
 	{
 		$this->skip = $skip;
 
-		$reader = $this->createCsvReader($filename);
+		$reader = $this->createReader($filename);
 
 		$this->numRows = 0;
 

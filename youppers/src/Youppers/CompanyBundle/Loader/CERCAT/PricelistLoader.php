@@ -30,7 +30,7 @@ class PricelistLoader extends AbstractPricelistLoader
 		return $this->newCollectionProductType;
 	}
 
-    public function createCsvReader($filename)
+    protected function createReader($filename)
     {
         $reader = parent::createCsvReader($filename);
         $reader->setStrict(false);
