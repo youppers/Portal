@@ -20,6 +20,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	const FIELD_PRICE =	'price';
 	const FIELD_QUANTITY = 'quantity';
 	const FIELD_SURFACE = 'surface';
+	const FIELD_STATUS = 'status';
 
 	/**
 	 * @var Pricelist
@@ -229,6 +230,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$price->setUom($this->mapper->remove(self::FIELD_UOM));
 		$price->setQuantity($this->normalizeQuantity($this->mapper->remove(self::FIELD_QUANTITY)));
 		$price->setSurface($this->normalizeSurface($this->mapper->remove(self::FIELD_SURFACE)));
+		$price->setStatus($this->mapper->remove(self::FIELD_STATUS));
 		$this->getProductPriceManager()->save($price,false);
 		return $price;
 	}

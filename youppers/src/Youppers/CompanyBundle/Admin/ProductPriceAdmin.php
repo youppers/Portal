@@ -37,6 +37,7 @@ class ProductPriceAdmin extends YouppersAdmin
 		$datagridMapper
 		->add('product.name')
 		->add('product.code')
+			->add('status')
 		;
 	}
 	

@@ -28,6 +28,7 @@ abstract class An6PricelistLoader extends AbstractPricelistLoader
             self::FIELD_NAME => array('DesArt1','DesArt2','Note'),
             self::FIELD_UOM => 'UmBase',
             self::FIELD_QUANTITY => 'Quantita',
+            self::FIELD_STATUS => 'Stato',
             self::FIELD_PRICE => 'PrezzoListino',
             self::FIELD_SURFACE => function($row) { return $row['Moltiplicatore'] * $row['CoeffSuperficie']; },
         );
