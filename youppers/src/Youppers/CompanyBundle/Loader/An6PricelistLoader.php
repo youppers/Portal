@@ -23,10 +23,13 @@ abstract class An6PricelistLoader extends AbstractPricelistLoader
     {
         // TODO to be completed
         $mapping = array(
-            self::FIELD_COLLECTION => 'CodiceFAM',
             self::FIELD_CODE => 'CodArt',
-            self::FIELD_NAME => 'DesArt1',
+            self::FIELD_GTIN => 'EAN13',
+            self::FIELD_NAME => array('DesArt1','DesArt2','Note'),
+            self::FIELD_UOM => 'UmBase',
+            self::FIELD_QUANTITY => 'Quantita',
             self::FIELD_PRICE => 'PrezzoListino',
+            self::FIELD_SURFACE => function($row) { return $row['Moltiplicatore'] * $row['CoeffSuperficie']; },
         );
         $mapper = new LoaderMapper($mapping);
         return $mapper;
