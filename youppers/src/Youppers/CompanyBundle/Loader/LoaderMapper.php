@@ -56,7 +56,19 @@ class LoaderMapper
 		}
 		return $keys;
 	}
-	
+
+	/**
+	 * The mapping right side can be:
+	 * - a string: search for a column with that name
+	 * - an integer: return tthis column (0 based)
+	 * - an array: return these columns glued with a space
+	 * - a closure function: execute these passing two paraemetrers: originally loaded data row and actual data array
+	 *
+	 * @param string $what The name of the field that want mapped
+	 * @param bool $returnKey Return the key that map "what" instead of the value
+	 * @param bool $remove Remove the returned value from data (see getData() )
+	 * @return mixed|null
+	 */
 	public function get($what,$returnKey=false,$remove=false)
 	{
 		if (array_key_exists($what,$this->mapping)) {
@@ -72,6 +84,10 @@ class LoaderMapper
 			} else {
 				return $key->__invoke($this->loadedData,$this->data);
 			}
+		}
+		if (is_numeric($key)) {
+			$keys = array_keys($this->loadedData);
+			$key = $keys[$key];
 		}
 		if ($returnKey) {
 			if (is_array($key)) {
@@ -92,7 +108,7 @@ class LoaderMapper
 					}
 				}
 			}
-			return $res;			
+			return trim(implode(" ",$res));
 		}
 		if (array_key_exists($key,$this->data)) {
 			$value = trim($this->data[$key],"\? \t\n\r\0\x0B");
