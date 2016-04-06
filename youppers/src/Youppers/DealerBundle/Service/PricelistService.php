@@ -24,6 +24,12 @@ class PricelistService extends ContainerAware
 		$this->logger = $logger;
 	}
 
+	protected $debug = false;
+
+	public function setDebug($debug)
+	{
+		$this->debug = $debug;
+	}
 	/**
 	 * @return BaseEntityManager
 	 */
@@ -68,7 +74,7 @@ class PricelistService extends ContainerAware
 	 */
 	public function export($dealerCode, $path, $brandCode = null) {
 
-		$this->getDealerManager()->getConnection()->getConfiguration()->setSQLLogger(null);  // save memory
+		if (!$this->debug) $this->getDealerManager()->getConnection()->getConfiguration()->setSQLLogger(null);  // save memory
 
 		$dealer = $this->getDealerByCode($dealerCode);
 		$absolutePath = realpath($path);

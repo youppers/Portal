@@ -24,6 +24,9 @@ class PricelistExportCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $pricelistService = $this->getContainer()->get('youppers.dealer.service.pricelist');
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
+            $pricelistService->setDebug(true);
+        }
         $pricelistService->export(
             $input->getArgument('dealer'),
             $input->getArgument('path'),
