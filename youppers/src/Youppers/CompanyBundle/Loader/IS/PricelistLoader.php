@@ -28,7 +28,7 @@ class PricelistLoader extends AbstractPricelistLoader
 	protected function getNewCollectionProductType(Brand $brand, $code)
 	{
 		if (!isset($this->newCollectionProductType)) {
-			$this->newCollectionProductType= $this->productTypeManager
+			$this->newCollectionProductType= $this->getProductTypeManager()
 				->findOneBy(array('code' => 'FULLBATH'));
 		}
 		return $this->newCollectionProductType;
