@@ -367,7 +367,7 @@ abstract class AbstractLoader extends ContainerAware
 			}
 
 			if ($this->numRows % self::BATCH_SIZE == 0) {
-				$this->logger->info(sprintf("Read %d rows",$this->numRows));
+				$this->logger->info(sprintf("Read %d rows using %.3f MB",$this->numRows,memory_get_usage()/(1024*1024)));
 				$this->batch();
 			}
 		}
