@@ -20,7 +20,7 @@ class PricelistLoader extends AbstractPricelistLoader
 			self::FIELD_PRICE => 'Price List',
 			self::FIELD_UOM => 'UM',
 			self::FIELD_QUANTITY => 'pz/sc',
-			self::FIELD_SURFACE => 'm2/sc m2/box',
+			self::FIELD_SURFACE => array('m2/sc m2/box',' m2/lastra '),
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
