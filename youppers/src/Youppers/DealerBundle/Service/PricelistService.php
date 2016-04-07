@@ -112,8 +112,15 @@ class PricelistService extends ContainerAware
 					if ($force) {
 						unlink($filename);
 					} else {
-						$this->logger->info(sprintf("Existing pricelist '%s' use force to overwite file: %s", $pricelist, $filename));
-						continue;
+						$mtime = filemtime($filename);
+						$pltime = $pricelist->getUpdatedAt()->getTimestamp();
+						if ($pltime > $mtime) {
+							$this->logger->debug("Removing export file older than pricelist");
+							unlink($filename);
+						} else {
+							$this->logger->info(sprintf("Existing pricelist '%s' use force or update pricelist to overwite file: %s", $pricelist, $filename));
+							continue;
+						}
 					}
                 }
 				$this->logger->info(sprintf("Writing pricelist '%s' in: %s", $pricelist, $filename));

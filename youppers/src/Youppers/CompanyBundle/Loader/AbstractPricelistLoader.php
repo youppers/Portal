@@ -126,6 +126,11 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		}
 
 		parent::load($filename,$skip);
+
+		if ($this->force) {
+			$this->pricelist->setUpdatedAt(new \DateTime());
+			$this->getPricelistManager()->save($this->pricelist,true);
+		}
 	}
 
     protected function batch()
