@@ -183,7 +183,7 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
             'PREZZO' => 'price',
             'FORMATO' => 'product.variant.formato',
             'TONI' => 'product.variant.toni',
-            'IMBALLO' => 'quantity',
+            'IMBALLO' => 'surface',
         );
 
         parent::__construct($query,$fields);
