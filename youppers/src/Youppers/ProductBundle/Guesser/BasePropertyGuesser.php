@@ -227,7 +227,7 @@ class BasePropertyGuesser extends AbstractGuesser
                 } else {
                     $regexp = "/[\s\.]+" . preg_quote($value,'/') . "[0-9\s]+/i";
                 }
-                $match = preg_match($regexp, " ".$text." ");
+                $match = preg_match($regexp, " ".iconv("UTF-8", "ASCII//TRANSLIT", $text)." ");
                 if (!$match) {
                     break;
                 }
