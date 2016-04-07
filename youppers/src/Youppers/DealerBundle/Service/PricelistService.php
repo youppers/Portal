@@ -70,9 +70,10 @@ class PricelistService extends ContainerAware
 	 * Export
 	 * @param $dealerCode Code of the dealer
 	 * @param $path Where to werite the pricelist
-	 * @param null $brandCode Optional code of the brand
+	 * @param string $brandCode Optional code of the brand
+	 * @param boolean $force Overwrite existing file
 	 */
-	public function export($dealerCode, $path, $brandCode = null) {
+	public function export($dealerCode, $path, $brandCode = null, $force = false) {
 
 		if (!$this->debug) $this->getDealerManager()->getConnection()->getConfiguration()->setSQLLogger(null);  // save memory
 
@@ -108,7 +109,12 @@ class PricelistService extends ContainerAware
 					. '-' . $pricelist->getCode()
                     . '.xml';
                 if (file_exists($filename)) {
-                    unlink($filename);
+					if ($force) {
+						unlink($filename);
+					} else {
+						$this->logger->info(sprintf("Existing pricelist '%s' use force to overwite file: %s", $pricelist, $filename));
+						continue;
+					}
                 }
 				$this->logger->info(sprintf("Writing pricelist '%s' in: %s", $pricelist, $filename));
 				$writer = new XmlExcelWriter($filename);

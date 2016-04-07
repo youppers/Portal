@@ -17,7 +17,8 @@ class PricelistExportCommand extends ContainerAwareCommand
             ->setDescription('Export pricelist of the dealer')
             ->addArgument('dealer', InputArgument::REQUIRED, 'Dealer Code', null)
             ->addArgument('path', InputArgument::REQUIRED, 'Where to save the pricelist', null)
-			->addOption('brand', null, InputOption::VALUE_OPTIONAL, 'Brand Code')
+			->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Export overwrites existing files')
 			;
     }
 
@@ -30,7 +31,8 @@ class PricelistExportCommand extends ContainerAwareCommand
         $pricelistService->export(
             $input->getArgument('dealer'),
             $input->getArgument('path'),
-            $input->getOption('brand')
+            $input->getOption('brand'),
+            $input->getOption('force')
         );
     }
 }
