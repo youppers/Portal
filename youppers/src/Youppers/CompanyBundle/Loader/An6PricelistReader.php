@@ -74,7 +74,7 @@ class An6PricelistReader implements CountableReaderInterface, \SeekableIterator
 
     public function __construct(\SplFileObject $file)
     {
-        if ($file->getExtension() != 'an6') {
+        if (strtolower($file->getExtension()) != 'an6') {
             throw new \Exception("File must have .an6 extension");
         }
 
