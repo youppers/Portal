@@ -315,6 +315,7 @@ class BasePropertyGuesser extends AbstractGuesser
 						$todo = sprintf("<question>Will add new option</question> <info>%s</info>",$option);
 						$this->addTodo($todo);
 					}
+					return true;
 				}
 			} elseif (count($options)) {
 				if ($this->isVariant) {
