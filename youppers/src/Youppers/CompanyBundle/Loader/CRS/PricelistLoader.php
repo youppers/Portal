@@ -26,7 +26,7 @@ class PricelistLoader extends AbstractPricelistLoader
 	{
 		if (!isset($this->newCollectionProductType)) {
 			$this->newCollectionProductType= $this->getProductTypeManager()
-				->findOneBy(array('code' => 'Rubinetteria'));
+				->findOneBy(array('code' => 'TAP'));
 		}
 		return $this->newCollectionProductType;
 	}
