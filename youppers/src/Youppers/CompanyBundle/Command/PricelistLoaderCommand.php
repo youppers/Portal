@@ -29,6 +29,8 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->addArgument('filename', InputArgument::REQUIRED, 'File name to load from' )
 		->addOption('append', 'a', InputOption::VALUE_NONE, 'Append to existing pricelist (default: delete all prices')
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
+			->addOption('batch', null, InputOption::VALUE_OPTIONAL, 'Size of the batch (default 500)',500)
+			->addOption('max', null, InputOption::VALUE_OPTIONAL, 'Skip rows after <n>',0)
 		->addOption('brand', 'b', InputOption::VALUE_OPTIONAL, 'Brand Code')
 		->addOption('write', 'w', InputOption::VALUE_NONE, 'Execute data update')
 		->addOption('change-collection', null, InputOption::VALUE_NONE, 'Change product collection')
@@ -76,6 +78,8 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		$loader->setLoadProduct($input->getOption('load-product'));
 		$loader->setGuess($input->getOption('guess'));
 		$loader->setChangeCollection($input->getOption('change-collection'));
+		$loader->setBatchSize($input->getOption('batch'));
+		$loader->setMaxRows($input->getOption('max'));
 
 
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {

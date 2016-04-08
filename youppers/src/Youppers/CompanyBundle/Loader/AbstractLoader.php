@@ -26,8 +26,6 @@ use Youppers\CompanyBundle\Entity\ProductPrice;
 
 abstract class AbstractLoader extends ContainerAware
 {
-    const BATCH_SIZE = 500;
-
     const FIELD_BRAND = 'brand';
     const FIELD_COLLECTION = 'collection';
 	const FIELD_COLLECTION_CODE = 'collection_code';
@@ -37,6 +35,20 @@ abstract class AbstractLoader extends ContainerAware
     const FIELD_GTIN = 'gtin';
     const FIELD_TYPE = 'type';
     const FIELD_RES = 'uri';
+
+	private $batchsize = 500;
+
+	public function setBatchSize($batchsize)
+	{
+		$this->batchsize = $batchsize;
+	}
+
+	private $maxrows = 0;
+
+	public function setMaxRows($maxrows)
+	{
+		$this->maxrows = $maxrows;
+	}
 
 	protected $disabledBrands = array();
 
@@ -359,6 +371,10 @@ abstract class AbstractLoader extends ContainerAware
 				continue;
 			}
 
+			if ($this->maxrows > 0 && $this->numRows > ($this->maxrows+$this->skip)) {
+				continue;
+			}
+
 			try {
 				$this->handleRow($row);
 			} catch (\Exception $e) {
@@ -366,7 +382,7 @@ abstract class AbstractLoader extends ContainerAware
 				throw $e;
 			}
 
-			if ($this->numRows % self::BATCH_SIZE == 0) {
+			if ($this->numRows == ($this->maxrows+$this->skip) || $this->numRows % $this->batchsize == 0) {
 				$this->logger->info(sprintf("Read %d rows using %.3f MB",$this->numRows,memory_get_usage()/(1024*1024)));
 				$this->batch();
 			}
