@@ -354,7 +354,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if (empty($variant)) {
 			$variant = $this->getProductVariantManager()->findOneByProduct($product);
 			if (!empty($variant)) {
-				if ($this->changeCollection) {
+				if ($variant->getProductCollection()->getCode() == $collection->getCode()) {
+					// NOTE: This is a side effect, because "matching" don't see variant non perfesisted
+					$this->logger->warning("Duplicated product: ".$product);
+				} elseif ($this->changeCollection) {
 					$this->logger->warning(sprintf("Variant '%s' changed from collection '%s' to '%s'",$product,$variant->getProductCollection(),$collection));
 					$variant->setProductCollection($collection);
 				} else {
