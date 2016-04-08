@@ -88,16 +88,20 @@ class PricelistService extends ContainerAware
 		$criteria = Criteria::create()
 			->where(Criteria::expr()->eq("enabled", true));
 
+		$dealerBrands = $dealer->getDealerBrands()->matching($criteria);
+		if (count($dealerBrands) < 1) {
+			throw new \InvalidArgumentException("Dealer don't have brands enabled");
+		}
+
 		if (!empty($brandCode)) {
-			$criteria->andWhere(Criteria::expr()->eq("code", $brandCode));
-			$dealerBrands = $dealer->getDealerBrands()->matching($criteria);
-			if (count($dealerBrands) != 1) {
-				throw new \InvalidArgumentException("Invalid brand code or not enabled: $brandCode");
-			}
-		} else {
-			$dealerBrands = $dealer->getDealerBrands()->matching($criteria);
+			$dealerBrands = $dealerBrands->filter(
+				function($dealerBrand) use ($brandCode) {
+					return ($dealerBrand->getCode() == $brandCode
+						|| (empty($dealerBrand->getCode()) && ($dealerBrand->getBrand()->getCode() == $brandCode)));
+				}
+			);
 			if (count($dealerBrands) < 1) {
-				throw new \InvalidArgumentException("Dealer don't have brands enabled");
+				throw new \InvalidArgumentException("Invalid brand code or not enabled: $brandCode");
 			}
 		}
 
