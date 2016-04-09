@@ -225,7 +225,8 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$price = $this->getProductPriceManager()
 		    ->findOneBy(array('product' => $product, 'pricelist' => $this->pricelist));
 		if ($this->force && !empty($price)) {
-			throw new \Exception(sprintf("Duplicated price at row %d: %s",$this->numRows,implode(',',$this->mapper->getData())));
+			$this->logger->error(sprintf("Duplicated price at row %d: %s",$this->numRows,implode(',',$this->mapper->getLoadedData())));
+			return $price;
 		}
 		
 		$price = $this->getProductPriceManager()->create();
