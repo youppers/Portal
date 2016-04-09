@@ -36,7 +36,12 @@ class LoaderMapper
         $this->loadedData=$data;
 		return $this;
 	}
-	
+
+	public function getLoadedData()
+	{
+		return $this->loadedData;
+	}
+
 	public function getData()
 	{
         $res = array();
