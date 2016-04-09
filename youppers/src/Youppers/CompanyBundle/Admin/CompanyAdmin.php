@@ -57,7 +57,7 @@ class CompanyAdmin extends YouppersAdmin
                  'route' => array(
                      'name' => 'show'
                  ),
-				'associated_property' => 'name'
+				'associated_property' => 'nameCodeStatus'
              ))
 		;
 	}

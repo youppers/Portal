@@ -104,6 +104,10 @@ class Brand
         return $this->getCode() ? $this->getCompanyFullCode() . '-' . $this->getCode() : 'null';
     }
 
+    public function getNameCodeStatus()
+    {
+        return ($this->getName() ? $this->getName() . ' [' . $this->getCode() . ']': 'New') . ($this->getEnabled() ? '' : " DISABLED ");
+    }
 
     public function __toString()
 	{
