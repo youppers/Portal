@@ -160,7 +160,7 @@ class BasePropertyGuesser extends AbstractGuesser
 	 * @return string The value normalized for the standard
 	 * @throws \InvalidArgumentException if the value doesn't conform to the standard
 	 */
-	protected function normalizeValue($value,AttributeStandard $standard)
+	protected function normalizeValue($value,AttributeStandard $standard=null)
 	{
 		return $value;
 	}
@@ -210,12 +210,14 @@ class BasePropertyGuesser extends AbstractGuesser
     protected function guessProperty(ProductVariant $variant, &$text, AttributeType $type, $textIsValue = false)
 	{
 		$actualOption = $this->getActualOption($variant, $type);
-
+		$newText = trim($text);
+		if ($textIsValue) {
+			$newText = $this->normalizeValue($newText);
+		}
 		$options = $this->getCollectionOptions($variant->getProductCollection(), $type);
 		foreach ($options as $values => $option) {
             $match = false;
-            $newText = trim($text);
-            $valuesWorlds = explode(" ",$values);
+			$valuesWorlds = explode(" ",$values);
             usort($valuesWorlds,function($a, $b) { return strlen($b) - strlen($a);});
             foreach ($valuesWorlds as $value) {
                 $value = trim($value);
@@ -227,7 +229,7 @@ class BasePropertyGuesser extends AbstractGuesser
                 } else {
                     $regexp = "/[\s\.]+" . preg_quote($value,'/') . "[0-9\s]+/i";
                 }
-                $match = preg_match($regexp, " ".iconv("UTF-8", "ASCII//TRANSLIT", $text)." ");
+                $match = preg_match($regexp, " ".iconv("UTF-8", "ASCII//TRANSLIT", $newText)." ");
                 if (!$match) {
                     break;
                 }
@@ -312,7 +314,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					if ($this->getForce()) {
 						$this->addVariantProperty($variant,$option);
 					} else {
-						$todo = sprintf("<question>Will add new option</question> <info>%s</info>",$option);
+						$todo = sprintf("<question>Add new property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
 						$this->addTodo($todo);
 					}
 					return true;

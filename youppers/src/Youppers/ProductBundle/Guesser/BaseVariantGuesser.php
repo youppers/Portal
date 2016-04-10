@@ -114,7 +114,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 					// assign standard to collection
 					$collection->addStandard($collectionStandard);
 					if (!$this->getForce()) {
-						$todo = sprintf("<question>Will assign standard</question> <info>%s</info> to collection <info>%s</info>",$collectionStandard,$collection);
+						$todo = sprintf("<question>Assign standard</question> <info>%s</info> to collection <info>%s</info>",$collectionStandard,$collection);
 						$this->addTodo($todo);
 					}
 					//$this->collectionManager->getEntityManager()->flush();
