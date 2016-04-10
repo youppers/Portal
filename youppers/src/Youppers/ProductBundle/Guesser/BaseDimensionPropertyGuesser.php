@@ -24,6 +24,8 @@ class BaseDimensionPropertyGuesser extends BasePropertyGuesser
 	public function normalizeValue($value,AttributeStandard $standard = null)
 	{
 		if (preg_match(self::PATTERN,$value,$matches)) {
+			$matches[1]=preg_replace('/^0+/','',$matches[1]);
+			$matches[2]=preg_replace('/^0+/','',$matches[2]);
 			$normalized = str_replace(".",",",$matches[1] . 'X' . $matches[2]);
 			if ($this->getDebug()) {
 				$this->getLogger()->debug(sprintf("Dimension value '%s' normalized '%s'",$value,$normalized));
