@@ -38,5 +38,14 @@ class PricelistLoader extends AbstractPricelistLoader
 		}
 		return $this->newCollectionProductType;
 	}
-	
+
+    public function handleRow($row)
+    {
+        if (empty($row['CODICE'])) {
+            $this->logger->warning("Comment row: " . print_r($row,true));
+            return;
+        }
+        return parent::handleRow($row);
+    }
+
 }
