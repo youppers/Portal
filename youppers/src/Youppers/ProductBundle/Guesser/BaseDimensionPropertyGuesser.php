@@ -19,12 +19,16 @@ class BaseDimensionPropertyGuesser extends BasePropertyGuesser
 		return 'Lato x Lato in cm';
 	}
 
-	const PATTERN = '/^([0-9]+\.?[0-9]*)\s*x\s*([0-9]+\.?[0-9]*)$/i';
+	const PATTERN = '/^([0-9]+[,\.]?[0-9]*)\s*x\s*([0-9]+[,\.]?[0-9]*)$/i';
 
-	public function normalizeValue($value,AttributeStandard $standard)
+	public function normalizeValue($value,AttributeStandard $standard = null)
 	{
 		if (preg_match(self::PATTERN,$value,$matches)) {
-			return $matches[1] . 'x' . $matches[2];
+			$normalized = str_replace(".",",",$matches[1] . 'X' . $matches[2]);
+			if ($this->getDebug()) {
+				$this->getLogger()->debug(sprintf("Dimension value '%s' normalized '%s'",$value,$normalized));
+			}
+			return $normalized;
 		} else {
 			throw new \InvalidArgumentException("Value must match " . self::PATTERN);
 		}
