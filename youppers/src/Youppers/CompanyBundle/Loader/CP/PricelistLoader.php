@@ -26,7 +26,8 @@ class PricelistLoader extends AbstractPricelistLoader
 			self::FIELD_COLLECTION => 'SERIE',
 			self::FIELD_UOM => 'UM',
 			self::FIELD_PRICE => '1A SC.',
-			'prova' => 123
+			self::FIELD_QUANTITY => 'PZ/SC',
+			self::FIELD_SURFACE => 'MQ',
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
