@@ -173,18 +173,19 @@ class BasePropertyGuesser extends AbstractGuesser
 			return null;
 		}
 		if (count($standards) > 1) {
-			throw new Exception(sprintf("Cannot autoadd if the collection '%s' has more than one standard of type '%s'", $variant->getProductCollection(), $type));
+			$this->getLogger()->error(sprintf("Cannot autoadd if the collection '%s' has more than one standard of type '%s'", $variant->getProductCollection(), $type));
+			return null;
 		}
 		$standard = array_pop($standards);
-		try {
-			$value = $this->normalizeValue($value,$standard);
-		} catch (\InvalidArgumentException $e) {
-			$this->getLogger()->error(sprintf("Cannot autoadd '%s': %s",$value,$e->getMessage()));
+		$value = $this->normalizeValue($value,$standard);
+		if (empty($value)) {
+			$this->getLogger()->error("Cannot autoadd not normalized value");
 			return null;
 		}
 		foreach ($this->getCollectionOptions($variant->getProductCollection(), $type) as $option) {
 			if ($option->getValue() == $value) {
-				throw new Exception(sprintf("Already exists option '%s' with value '%s'", $option, $value));
+				$this->getLogger()->error(sprintf("Already exists option '%s' with value '%s'", $option, $value));
+				return null;
 			}
 		}
 		$option = $this->attributeOptionManager->create();

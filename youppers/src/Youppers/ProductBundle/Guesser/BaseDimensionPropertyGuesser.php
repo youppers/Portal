@@ -30,7 +30,8 @@ class BaseDimensionPropertyGuesser extends BasePropertyGuesser
 			}
 			return $normalized;
 		} else {
-			throw new \InvalidArgumentException("Value must match " . self::PATTERN);
+			$this->getLogger()->error(sprintf("Value '%s' must match '%s'",$value,self::PATTERN));
+			return null;
 		}
 	}
 
