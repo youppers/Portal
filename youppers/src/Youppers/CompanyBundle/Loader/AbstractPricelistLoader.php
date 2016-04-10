@@ -56,7 +56,16 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		}
 	}
 
-
+	/**
+	 * @param Product $product
+	 * @param Brand $brand
+	 * @return null
+	 */
+	protected function guessProductCollection(Product $product,Brand $brand)
+	{
+		$this->logger->warning(sprintf("Loader %s not implements product collection guesser",get_class($this)));
+		return null;
+	}
 
 	protected abstract function getNewCollectionProductType(Brand $brand, $code);
 
@@ -310,6 +319,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	{
 		//$brand = $product->getBrand();
 		$collectionName= $this->mapper->get(self::FIELD_COLLECTION);
+		if (empty($collectionName) && $this->guess) {
+			$collectionName = $this->guessProductCollection($product,$brand);
+		}
 		$collectionCode= $this->mapper->get(self::FIELD_COLLECTION_CODE);
 		if (empty($collectionCode)) {
 			$collectionCode = $this->container->get('youppers.common.service.codify')->codify($collectionName);
