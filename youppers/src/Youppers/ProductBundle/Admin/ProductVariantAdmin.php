@@ -216,7 +216,7 @@ class ProductVariantAdmin extends YouppersAdmin
        	}
        	$listMapper
             ->add('product.name')
-            ->add('product.code')
+            ->add('product', null, array('associated_property' => 'code', 'route' => array('name' => 'show')))
             ->add('variantProperties', null, array('associated_property' => 'attributeOption'))
         ;
     }
