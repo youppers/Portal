@@ -60,7 +60,10 @@ abstract class AbstractGuesser extends ContainerAware
 	{
 		$this->logger = $logger;
 	}
-	
+
+	/**
+	 * @return LoggerInterface
+	 */
 	public function getLogger()
 	{
 		if ($this->parent) {
