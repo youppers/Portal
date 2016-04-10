@@ -433,7 +433,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if ($this->loadProduct) {
 			$collection = $this->handleCollection($product, $brand);
 			if (empty($collection)) {
-				$this->logger->critical("Collection not found, cannot handle variant of prodyuct " . $product);
+				$this->logger->critical("Collection not found, cannot handle variant of product " . $product);
 				return false;
 			}
 			$variant = $this->handleVariant($collection, $product);
