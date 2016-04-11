@@ -275,7 +275,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	protected function normalizeQuantity($quantity)
 	{
 		if (empty($quantity)) {
-			return $quantity;
+			return 1;
 		}
 		if (preg_match('/([0-9]+)[\.,]([0-9]+)/',$quantity,$matches)) {
 			$quantity2 = $matches[1] . '.' . $matches[2];
@@ -294,6 +294,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	 */
 	protected function normalizeUom($uom)
 	{
+		if (empty($uom)) {
+			$uom = 'PZ';
+		}
 		return UomChoiceList::normalize($uom);
 	}
 
