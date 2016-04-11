@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Youppers\CompanyBundle\Component\UomChoiceList;
 use Youppers\CompanyBundle\Entity\Pricelist;
 use Youppers\CompanyBundle\Manager\PricelistManager;
+use Youppers\CompanyBundle\Manager\ProductPriceManager;
 
 class PricelistUomNormalizerCommand extends ContainerAwareCommand
 {	
@@ -54,7 +55,9 @@ class PricelistUomNormalizerCommand extends ContainerAwareCommand
 		} else {
             $criteria['code'] = $pricelistcode;
             $pricelist = $pricelistManager->findOneBy($criteria);
-			$prices = $pricelist->getPrices();
+            /** @var ProductPriceManager $productPriceManager */
+            $productPriceManager = $this->getContainer()->get('youppers.company.manager.productprice');
+			$prices = $productPriceManager->findBy(array('pricelist' => $pricelist));
 			$i = 0;
             $iprec = 1;
 			$k = 0;
