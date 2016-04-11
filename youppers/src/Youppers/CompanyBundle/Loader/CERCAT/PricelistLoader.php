@@ -57,6 +57,8 @@ class PricelistLoader extends AbstractPricelistLoader
             return;
         }
         $row[self::FIELD_COLLECTION] = $this->currentCollection;
+		$row[self::FIELD_UOM] = 'PZ';
+		$row[self::FIELD_QUANTITY] = 1;
 		parent::handleRow($row);
 	}
 
