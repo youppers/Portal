@@ -2,6 +2,7 @@
 
 namespace Youppers\CompanyBundle\Loader;
 
+use Youppers\CompanyBundle\Component\UomChoiceList;
 use Youppers\CompanyBundle\Entity\Brand;
 use Youppers\CompanyBundle\Entity\Pricelist;
 use Youppers\CompanyBundle\Entity\Product;
@@ -231,18 +232,16 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	 */
 	protected function handlePrice(Product $product)
 	{
-		$price = $this->getProductPriceManager()
-		    ->findOneBy(array('product' => $product, 'pricelist' => $this->pricelist));
+		$price = $this->getProductPriceManager()->findOneByProductAndList($product,$this->pricelist);
 		if ($this->force && !empty($price)) {
 			$this->logger->error(sprintf("Duplicated price at row %d: %s",$this->numRows,implode(',',$this->mapper->getLoadedData())));
-			return $price;
+		} else {
+			$price = $this->getProductPriceManager()->create();
 		}
-		
-		$price = $this->getProductPriceManager()->create();
 		$price->setPriceList($this->pricelist);
 		$price->setProduct($product);
 		$price->setPrice($this->normalizePrice($this->mapper->remove(self::FIELD_PRICE)));
-		$price->setUom($this->mapper->remove(self::FIELD_UOM));
+		$price->setUom($this->normalizeUom($this->mapper->remove(self::FIELD_UOM)));
 		$price->setQuantity($this->normalizeQuantity($this->mapper->remove(self::FIELD_QUANTITY)));
 		$price->setSurface($this->normalizeSurface($this->mapper->remove(self::FIELD_SURFACE)));
 		$price->setStatus($this->mapper->remove(self::FIELD_STATUS));
@@ -287,6 +286,15 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		} else {
 			throw new \InvalidArgumentException("Invalid quantity: " . $quantity);
 		}
+	}
+
+	/**
+	 * @param $uom string
+	 * @return string Normalized Uom
+	 */
+	protected function normalizeUom($uom)
+	{
+		return UomChoiceList::normalize($uom);
 	}
 
 	/**
