@@ -208,6 +208,7 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 		$data = parent::current();
 		$descrizione = $data['DESCRIZIONE'];
 		$serie = $data['SERIE'];
+		$data['TONI'] = 'N';
 
 		$descrizione = trim($descrizione,' '.chr(0xC2).chr(0xA0)); // trim also non breaking spaces
 
@@ -268,7 +269,9 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 				$descrizione = $serie . ' ' . $descrizione;;
 			}
 
-			$data['TONI'] = ($variant->getProductCollection()->getProductType()->getCode() == 'TILE') ? 'S' : 'N';
+			if ($variant->getProductCollection()->getProductType()->getCode() == 'TILE') {
+				$data['TONI'] = 'S';	
+			}
 
 		}
 
@@ -285,7 +288,6 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 
 		$data['SIGLA'] = substr($this->dealerBrandCode,0,3);
 		$data['CODICE'] = substr(trim($data['CODICE']),0,20);
-
 
         return $data;
     }
