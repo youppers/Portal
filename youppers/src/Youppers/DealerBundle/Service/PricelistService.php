@@ -11,14 +11,16 @@ use Youppers\CompanyBundle\Entity\Company;
 use Psr\Log\LoggerInterface;
 use Doctrine\Common\Collections\Criteria;
 use Youppers\CompanyBundle\Entity\Pricelist;
+use Youppers\CompanyBundle\Entity\ProductPrice;
 use Youppers\DealerBundle\Entity\Dealer;
 use Youppers\DealerBundle\Entity\DealerBrand;
+use Youppers\ProductBundle\Entity\AttributeOption;
 
 class PricelistService extends ContainerAware
 {
 	private $managerRegistry;
 	private $logger;
-	
+
 	public function __construct(LoggerInterface $logger)
 	{
 		$this->logger = $logger;
@@ -30,6 +32,7 @@ class PricelistService extends ContainerAware
 	{
 		$this->debug = $debug;
 	}
+
 	/**
 	 * @return BaseEntityManager
 	 */
@@ -37,7 +40,7 @@ class PricelistService extends ContainerAware
 		return $this->container->get('youppers.dealer.manager.dealer');
 	}
 
-    /**
+	/**
      * @return BaseEntityManager|null
      */
     private function getProductPriceManager() {
@@ -128,9 +131,16 @@ class PricelistService extends ContainerAware
 					}
                 }
 				$this->logger->info(sprintf("Writing pricelist '%s' in: %s", $pricelist, $filename));
-				$writer = new XmlExcelWriter($filename);
+				$columnTypes = array(
+					'SIGLA' => 'String',
+					'SERIE' => 'String',
+					'CODICE' => 'String',
+					'PREZZO' => 'Number',
+					'FORMATO' => 'String',
+				);
+				$writer = new XmlExcelWriter($filename, true, $columnTypes);
 
-                $source = new ProductPriceIterator($this->getProductPriceManager()->getEntityManager(), $dealerBrand, $pricelist);
+                $source = new ProductPriceIterator($this->getProductPriceManager($dealer)->getEntityManager(), $dealerBrand, $pricelist);
 
                 Handler::create($source,$writer)->export();
 				if ($source->getRecords() == 0) {
@@ -185,8 +195,8 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
             'DESCRIZIONE' => 'product.name',
             'UM' => 'uom',
             'PREZZO' => 'price',
-            'FORMATO' => 'product.variant.formato',
-            'TONI' => 'product.variant.toni',
+            'FORMATO' => 'product.variant.variantProperties',
+            'TONI' => 'product.variant.variantProperties',
             'IMBALLO' => 'surface',
         );
 
@@ -195,9 +205,88 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 
     function current()
     {
-        $data = parent::current();
+		$data = parent::current();
+		$descrizione = $data['DESCRIZIONE'];
+		$serie = $data['SERIE'];
 
-        $data['SIGLA'] = $this->dealerBrandCode;
+		$descrizione = trim($descrizione,' '.chr(0xC2).chr(0xA0)); // trim also non breaking spaces
+
+		$current = $this->iterator->current();
+
+		/** @var ProductPrice $current */
+		$price = $current[0];
+
+		$variant = $price->getProduct()->getVariant();
+
+		if ($variant) {
+			$properties = $variant->getVariantProperties();
+
+			/** @var AttributeOption $dimOption */
+			$dimOption = null;
+			/** @var AttributeOption $itemOption */
+			$itemOption = null;
+
+			foreach ($properties as $property) {
+				if ($property->getAttributeType()->getCode() == 'DIM') {
+					$dimOption = $property->getAttributeOption();
+				}
+				if ($property->getAttributeType()->getCode() == 'ITEM') {
+					$itemOption = $property->getAttributeOption();
+				}
+			}
+			$newFormato = '';
+
+			if (!empty($dimOption)) {
+				$dimValue = $dimOption->getValue();
+				$dimStandard = $dimOption->getAttributeStandard();
+
+				if ($dimStandard->getName() == 'Lato x Lato in mm') {
+					$factor = 0.1;
+				} else {
+					$factor = 1;
+				}
+				if (preg_match('/([0-9,\.]+)X([0-9,\.]+)/i', $dimValue, $matches)) {
+					$newFormato = ($matches[1] * $factor) . 'X' . intval($matches[2] * $factor);
+					$newFormato = str_replace(".", ",", $newFormato);
+					$data['FORMATO'] = $newFormato;
+					// leva il formato dalla descrizione
+
+					$descrizione = trim(str_replace($dimValue,'',$descrizione));
+				}
+			}
+
+			// leva la serie dalla descrizione
+			$descrizione = trim(str_replace($serie,'',$descrizione));
+
+			if ($variant->getProductCollection()->getProductType()->getCode() == 'TILE') {
+				// a) per i listini delle ceramiche le descrizioni vengono date nell’ordine: FORMATO + SERIE + DESCRIZIONE ARTICOLO
+				$descrizione = $newFormato . ' ' . $serie . ' ' . $descrizione;
+			} elseif ($itemOption && $itemOption->getValue() == 'Piatto doccia') {
+				// b) per gli altri listini: SERIE + ARTICOLO, tranne per i piatti doccia che vanno inseriti come segue: PIATTO DOCCIA + SERIE + MISURA
+				$descrizione = 'PIATTO DOCCIA' . ' ' . $serie . ' ' . $newFormato . ' ' . $descrizione;;
+			} else {
+				$descrizione = $serie . ' ' . $descrizione;;
+			}
+
+			$data['TONI'] = ($variant->getProductCollection()->getProductType()->getCode() == 'TILE') ? 'S' : 'N';
+
+		}
+
+		// la colonna FORMATO viene compilata solo nel caso dei MQ o dei ML
+		if ($data['UM'] == 'MQ' || $data['UM'] == 'ML') {
+		} else {
+			$data['FORMATO'] = '';
+			$data['IMBALLO'] = '';
+		}
+
+		$data['SERIE'] = substr($serie,0,10);
+
+		$data['DESCRIZIONE'] = substr($descrizione,0,70);
+
+		$data['SIGLA'] = substr($this->dealerBrandCode,0,3);
+		$data['CODICE'] = substr(trim($data['CODICE']),0,20);
+
+
         return $data;
     }
 

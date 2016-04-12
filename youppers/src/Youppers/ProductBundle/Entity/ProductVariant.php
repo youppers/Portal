@@ -26,28 +26,6 @@ class ProductVariant
 			' - ' . $this->getProduct()->getNameCode() : 'New';
 	}
 
-    /**
-     * Custom Venturini
-     * @return string
-     */
-    public function getFormato()
-    {
-        foreach ($this->getVariantProperties() as $property) {
-            if ($property->getAttributeType()->getCode() == 'DIM') {
-                return $property->getAttributeOption()->getValue();
-            }
-        }
-    }
-
-    /**
-     * Custom Venturini
-     * @return string
-     */
-    public function getToni()
-    {
-        return ($this->getProductCollection()->getProductType()->getCode() == 'TILE') ? 'S' : 'N';
-    }
-
 	/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
