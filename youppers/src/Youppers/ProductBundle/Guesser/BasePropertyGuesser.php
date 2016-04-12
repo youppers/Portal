@@ -221,18 +221,24 @@ class BasePropertyGuesser extends AbstractGuesser
 			$valuesWorlds = explode(" ",$values);
             usort($valuesWorlds,function($a, $b) { return strlen($b) - strlen($a);});
             foreach ($valuesWorlds as $value) {
-                $value = trim($value);
-                if (empty($value)) {
+                $regexp = trim($value);
+                if (empty($regexp)) {
                     continue;
                 }
-                if (preg_match("/\.$/",$value)) {
-                    $regexp = "/[\s\.]+" . preg_quote($value,'/') . "/i";
-				} elseif (preg_match("/[0-9]$/",$value)) {
-					$regexp = "/[\s\.]+" . preg_quote($value,'/') . "[\s]+/i";
-                } else {
-                    $regexp = "/[\s\.]+" . preg_quote($value,'/') . "[0-9\s]+/i";
-                }
-                $match = preg_match($regexp, " ".iconv("UTF-8", "ASCII//TRANSLIT", $newText)." ");
+				$regexp = preg_quote($regexp,'/');
+				if (preg_match("/[0-9]$/",$regexp)) {
+					$regexp = $regexp . '[^0-9]';
+				} elseif (preg_match("/\.$/",$regexp)) {
+					// match end as is
+				} else {
+					$regexp = $regexp . '[0-9\s\.]';
+				}
+				if (preg_match("/^[0-9]/",$regexp)) {
+					$regexp = '[^0-9]' . $regexp;
+				} else {
+					$regexp = '[0-9\s\.]' . $regexp;
+				}
+                $match = preg_match('/' . $regexp . '/i', " ".iconv("UTF-8", "ASCII//TRANSLIT", $newText)." ");
                 if (!$match) {
                     break;
                 }
