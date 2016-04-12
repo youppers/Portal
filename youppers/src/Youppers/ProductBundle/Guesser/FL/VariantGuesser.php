@@ -1,6 +1,7 @@
 <?php
 namespace Youppers\ProductBundle\Guesser\FL;
 
+use Youppers\ProductBundle\Guesser\BaseDimensionPropertyGuesser;
 use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
@@ -8,16 +9,23 @@ use Youppers\ProductBundle\Guesser\BasePropertyGuesser;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Doctrine\Common\Collections\Criteria;
 use Youppers\ProductBundle\Guesser\IgnorePropertyGuesser;
+use Youppers\ProductBundle\Guesser\TileItemPropertyGuesser;
 
 class VariantGuesser extends BaseVariantGuesser
 {
 	protected function getCollectionTypeGuesser(ProductCollection $collection, AttributeType $type)
 	{
+		if ($type->getCode() == 'DIM') {
+			return new BaseDimensionPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
+		}
 		if ($type->getCode() == 'FIN') {
 			return new FinPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
 		if ($type->getCode() == 'MIX' && $collection->getCode() != 'VETRO') {
 			return new IgnorePropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
+		}
+		if ($type->getCode() == 'ITEM') {
+			return new TileItemPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
 		return parent::getCollectionTypeGuesser($collection, $type);
 	}
@@ -44,4 +52,5 @@ class FinPropertyGuesser extends BasePropertyGuesser
 		return $this->defaultOption; 
 	}
 }
+
 
