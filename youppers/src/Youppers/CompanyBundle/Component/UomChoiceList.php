@@ -11,9 +11,8 @@ class UomChoiceList extends ChoiceList
 	{
 		// MQ, PZ, ML, KG, CP, LT
 		return new UomChoiceList(
-			array('MQ','PZ','ML','KG','CP','LT'),
-			array('Metri Quadri','Pezzi','Metri Lineari','Kilogrammi','Coppie','Litri'),
-			array('MQ','PZ','ML','KG','CP','LT')
+			array('','PZ','MQ','ML','KG','CP','LT'),
+			array('---','Pezzi','Metri Quadri','Metri Lineari','Kilogrammi','Coppie','Litri')
 		);
 	}
 
