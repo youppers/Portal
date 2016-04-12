@@ -44,11 +44,11 @@ class AttributeStandardAdmin extends YouppersAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('attributeType', null, array('route' => array('name' => 'show')))
             ->addIdentifier('name')
             ->add('symbol')
             ->add('attributeOptions', null, array('associated_property' => 'value'))
             ->add('enabled', null, array('editable' => true))
-            ->add('attributeType', null, array('route' => array('name' => 'show')))
         ;
     }
 
