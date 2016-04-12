@@ -33,6 +33,7 @@ class UomChoiceList extends ChoiceList
 			case 'NAR':
 			case 'PZ*':
 			case 'AL PEZZO':
+			case 'NR':
 				return 'PZ';
 			case 'MQ':
 			case 'M2':
@@ -45,6 +46,7 @@ class UomChoiceList extends ChoiceList
 			case 'KG':
 				return 'KG';
 			case 'CP':
+			case 'COMP.':
 				return 'CP';
 			case 'LT':
 			case 'L':
