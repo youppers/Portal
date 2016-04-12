@@ -194,7 +194,7 @@ class BasePropertyGuesser extends AbstractGuesser
 		$option->setEnabled(true);
 		$option->setPosition(count($this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()]) + 1);
 		$this->collectionOptions[$variant->getProductCollection()->getId()][$type->getId()][$value] = $option;
-		$this->getLogger()->debug(sprintf("Auto add option '%s' for '%s'", $option, $variant));
+		$this->getLogger()->info(sprintf("Add new property '%s' for '%s'", $option, $variant));
 		if ($this->getForce()) {
 			$this->attributeOptionManager->save($option,false);
 		}
