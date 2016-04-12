@@ -10,13 +10,15 @@ use Youppers\ProductBundle\Entity\ProductVariant;
 use Doctrine\Common\Collections\Criteria;
 use Youppers\ProductBundle\Guesser\IgnorePropertyGuesser;
 use Youppers\ProductBundle\Guesser\TileItemPropertyGuesser;
+use Youppers\ProductBundle\Manager\AttributeOptionManager;
+use Youppers\ProductBundle\Manager\VariantPropertyManager;
 
 class VariantGuesser extends BaseVariantGuesser
 {
 	protected function getCollectionTypeGuesser(ProductCollection $collection, AttributeType $type)
 	{
 		if ($type->getCode() == 'DIM') {
-			return new BaseDimensionPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
+			return new DimPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
 		if ($type->getCode() == 'FIN') {
 			return new FinPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
@@ -52,5 +54,37 @@ class FinPropertyGuesser extends BasePropertyGuesser
 		return $this->defaultOption; 
 	}
 }
+
+class DimPropertyGuesser extends BaseDimensionPropertyGuesser
+{
+
+	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager, AttributeOptionManager $attributeOptionManager)
+	{
+		parent::__construct($type, $variantPropertyManager, $attributeOptionManager);
+		$this->autoAddOptions = true;
+	}
+
+	public function getTypeColumn()
+	{
+		return 'Formato Nominale/Size';
+	}
+
+	public function getDefaultStandardName()
+	{
+		return 'Lato x Lato in cm';
+	}
+
+	public function guessProperty(ProductVariant $variant, &$text, AttributeType $type, $textIsValue = false)
+	{
+		if ($textIsValue && preg_match("/^([0-9,]+)X([0-9,]+)/",$text,$matches)) {
+			$value = $matches[1] . 'X' . $matches[2];
+			return parent::guessProperty($variant,$value,$type,true);
+		} else {
+			return parent::guessProperty($variant,$text,$type,false);
+		}
+	}
+
+}
+
 
 
