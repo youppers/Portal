@@ -1,11 +1,8 @@
 <?php
 namespace Youppers\ProductBundle\Guesser;
 
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Youppers\ProductBundle\Entity\AttributeStandard;
-use Youppers\ProductBundle\Guesser\AbstractGuesser;
 use Youppers\ProductBundle\Entity\ProductVariant;
-use Youppers\ProductBundle\Entity\VariantProperty;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
 use Youppers\ProductBundle\Manager\AttributeOptionManager;
@@ -66,7 +63,7 @@ class BasePropertyGuesser extends AbstractGuesser
 
 	/**
 	 * @param ProductVariant $variant
-	 * @param $text Search values of the attributes here
+	 * @param string $text Search values of the attributes here
 	 * @param bool $textIsValue text is a value, so must be searched as is
 	 */
 	public function guessVariant(ProductVariant $variant, &$text, $textIsValue = false) {
@@ -148,7 +145,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					}
 				}
 			} else {
-				$this->getLogger()->info(sprintf("Cached %d options of type '%s' for collection '%s'",count($options),$type,$collection));
+				$this->getLogger()->debug(sprintf("Cached %d options of type '%s' for collection '%s'",count($options),$type,$collection));
 			}
 		}
 		return $this->collectionOptions[$collection->getId()][$type->getId()];
@@ -204,7 +201,7 @@ class BasePropertyGuesser extends AbstractGuesser
     /**
      * If the value of the option has multiple words, all words must be in the text
      * @param ProductVariant $variant
-     * @param $text Search options in this string
+     * @param string $text Search options in this string
      * @param $type AttributeType of attribute to search
 	 * @param $textIsValue text is a value, so must be searched as is
      */
@@ -343,6 +340,7 @@ class BasePropertyGuesser extends AbstractGuesser
 		} else {
 			$this->getLogger()->debug(sprintf("Variant '%s' actual %s is '%s'",$variant,$type,$actualOption));
 		}
+		return false;
 	}
 
 	protected function addVariantProperty(ProductVariant $variant,AttributeOption $option)
