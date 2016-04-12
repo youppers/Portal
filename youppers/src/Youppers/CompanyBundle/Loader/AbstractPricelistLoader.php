@@ -68,6 +68,16 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		return null;
 	}
 
+	protected function getProductType(Product $product) {
+		return $this->getNewCollectionProductType($product->getBrand(),'');
+	}
+
+	/**
+	 * @param Brand $brand
+	 * @param $code
+	 * @return mixed
+	 * @deprecated Use getProductType(Product)
+	 */
 	protected abstract function getNewCollectionProductType(Brand $brand, $code);
 
 	public function setPricelist($pricelist)
@@ -342,7 +352,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		} else {
 			$collection = $this->getProductCollectionManager()->findByCode($brand, $collectionCode);
 			if (empty($collection)) {
-				$collection = $this->getProductCollectionManager()->createCollection($brand, $collectionName, $collectionCode, $this->getNewCollectionProductType($brand,$collectionCode));
+				$collection = $this->getProductCollectionManager()->createCollection($brand, $collectionName, $collectionCode, $this->getProductType($product,$collectionCode));
 			}
 		}
 

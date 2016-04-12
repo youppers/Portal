@@ -1,6 +1,7 @@
 <?php
 namespace Youppers\CompanyBundle\Loader\FL;
 
+use Youppers\CompanyBundle\Entity\Product;
 use Youppers\CompanyBundle\Loader\AbstractPricelistLoader;
 use Youppers\CompanyBundle\Loader\LoaderMapper;
 use Youppers\CompanyBundle\Entity\Brand;
@@ -26,15 +27,20 @@ class PricelistLoader extends AbstractPricelistLoader
 		return $mapper;
 	}
 	
-	private $newCollectionProductType;
-	
-	protected function getNewCollectionProductType(Brand $brand, $code)
+	protected function getProductType(Product $product)
 	{
-		if (!isset($this->newCollectionProductType)) {	
-			$this->newCollectionProductType= $this->getProductTypeManager()
-				->findOneBy(array('code' => 'TILE'));
+		$info = json_decode($product->getInfo(), true);
+		$tipologia = $info['Tipologia'];
+		if ($tipologia == 'Materiale non ceram.') {
+			$typecode = 'ALTRI';
+		} else {
+			$typecode = 'TILE';
 		}
-		return $this->newCollectionProductType;	
+		return $this->getProductTypeManager()->findOneBy(array('code' => $typecode));
+	}
+
+	protected function getNewCollectionProductType(Brand $brand, $code) {
+		throw new \RuntimeException("Deprecated method");
 	}
 	
 }
