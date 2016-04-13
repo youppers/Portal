@@ -15,6 +15,7 @@ use Youppers\CompanyBundle\Entity\ProductPrice;
 use Youppers\DealerBundle\Entity\Dealer;
 use Youppers\DealerBundle\Entity\DealerBrand;
 use Youppers\ProductBundle\Entity\AttributeOption;
+use Youppers\ProductBundle\Entity\ProductVariant;
 
 class PricelistService extends ContainerAware
 {
@@ -210,13 +211,12 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 		$serie = $data['SERIE'];
 		$data['TONI'] = 'N';
 
-		$descrizione = trim($descrizione,' '.chr(0xC2).chr(0xA0)); // trim also non breaking spaces
-
 		$current = $this->iterator->current();
 
-		/** @var ProductPrice $current */
+		/** @var ProductPrice $price */
 		$price = $current[0];
 
+		/** @var ProductVariant $variant */
 		$variant = $price->getProduct()->getVariant();
 
 		if ($variant) {
@@ -252,12 +252,16 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 					$data['FORMATO'] = $newFormato;
 					// leva il formato dalla descrizione
 
-					$descrizione = trim(str_replace($dimValue,'',$descrizione));
+					$descrizione = trim(preg_replace('/' . preg_quote($dimValue,'/') . '/i','',$descrizione));
 				}
 			}
 
 			// leva la serie dalla descrizione
-			$descrizione = trim(str_replace($serie,'',$descrizione));
+			$descrizione = trim(preg_replace('/' . preg_quote($serie,'/') . '/i','',$descrizione));
+
+			foreach (explode(';',$variant->getProductCollection()->getAlias()) as $aliasSerie) {
+				$descrizione = trim(preg_replace('/' . trim(preg_quote($aliasSerie,'/')) . '/i','',$descrizione));
+			}
 
 			if ($variant->getProductCollection()->getProductType()->getCode() == 'TILE') {
 				// a) per i listini delle ceramiche le descrizioni vengono date nell’ordine: FORMATO + SERIE + DESCRIZIONE ARTICOLO
@@ -283,6 +287,10 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 		}
 
 		$data['SERIE'] = substr($serie,0,10);
+
+		$descrizione = preg_replace('/' . chr(0xC2).chr(0xA0) . '/',' ',$descrizione);  // replace non breaking spaces
+		$descrizione = preg_replace('/([\s]+)/',' ',$descrizione);  // replace multiple spaces with one space
+		$descrizione = trim($descrizione); // trim
 
 		$data['DESCRIZIONE'] = substr($descrizione,0,70);
 
