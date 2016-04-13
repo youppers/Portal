@@ -256,14 +256,30 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 				}
 			}
 
+			$deletes = array();
+
+			$deletes[] = $serie;
 			// leva la serie dalla descrizione
-			$descrizione = trim(preg_replace('/' . preg_quote($serie,'/') . '/i','',$descrizione));
+			foreach (explode(' ',$serie) as $serieW) {
+				if (!empty($serieW) && !in_array($serieW,$deletes)) {
+					$deletes[] = $serieW;
+				}
+			}
 
 			foreach (explode(';',$variant->getProductCollection()->getAlias()) as $aliasSerie) {
-				$descrizione = trim(preg_replace('/' . trim(preg_quote($aliasSerie,'/')) . '/i','',$descrizione));
-				foreach (explode(' ',$aliasSerie) as $aliasSerieW) {
-					$descrizione = trim(preg_replace('/' . trim(preg_quote($aliasSerieW,'/')) . '/i','',$descrizione));
+				if (!empty($aliasSerie) && !in_array($aliasSerie,$deletes)) {
+					$deletes[] = $aliasSerie;
 				}
+				foreach (explode(' ',$aliasSerie) as $aliasSerieW) {
+					if (!empty($aliasSerieW) && !in_array($aliasSerieW,$deletes)) {
+						$deletes[] = $aliasSerieW;
+					}
+				}
+			}
+			usort($deletes,function($a, $b) { return strlen($b) - strlen($a);});
+
+			foreach ($deletes as $delete) {
+				$descrizione = trim(preg_replace('/' . preg_quote($delete,'/') . '/i','',$descrizione));
 			}
 
 			if ($variant->getProductCollection()->getProductType()->getCode() == 'TILE') {
