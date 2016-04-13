@@ -261,6 +261,9 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 
 			foreach (explode(';',$variant->getProductCollection()->getAlias()) as $aliasSerie) {
 				$descrizione = trim(preg_replace('/' . trim(preg_quote($aliasSerie,'/')) . '/i','',$descrizione));
+				foreach (explode(' ',$aliasSerie) as $aliasSerieW) {
+					$descrizione = trim(preg_replace('/' . trim(preg_quote($aliasSerieW,'/')) . '/i','',$descrizione));
+				}
 			}
 
 			if ($variant->getProductCollection()->getProductType()->getCode() == 'TILE') {
