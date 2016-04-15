@@ -11,8 +11,8 @@ class UomChoiceList extends ChoiceList
 	{
 		// MQ, PZ, ML, KG, CP, LT
 		return new UomChoiceList(
-			array('','PZ','MQ','ML','KG','CP','LT'),
-			array('---','Pezzi','Metri Quadri','Metri Lineari','Kilogrammi','Coppie','Litri')
+			array('','PZ','MQ','ML','KG','CP','LT','SET'),
+			array('---','Pezzi','Metri Quadri','Metri Lineari','Kilogrammi','Coppie','Litri','Set')
 		);
 	}
 
@@ -45,11 +45,15 @@ class UomChoiceList extends ChoiceList
 			case 'KG':
 				return 'KG';
 			case 'CP':
-			case 'COMP.':
 				return 'CP';
 			case 'LT':
 			case 'L':
 				return 'LT';
+			case 'SET':
+			case 'KT':  // kit
+			case 'CO':  // confezionel
+			case 'COMP.':
+				return 'SET';
 			default:
 				throw new \UnexpectedValueException(sprintf("invalid Uom '%s'",$value));
 		}

@@ -305,16 +305,20 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 			$data['IMBALLO'] = '';
 		}
 
-		$data['SERIE'] = substr($serie,0,10);
+		$data['SERIE'] = strtoupper(substr($serie,0,10));
 
 		$descrizione = preg_replace('/' . chr(0xC2).chr(0xA0) . '/',' ',$descrizione);  // replace non breaking spaces
 		$descrizione = preg_replace('/([\s]+)/',' ',$descrizione);  // replace multiple spaces with one space
 		$descrizione = trim($descrizione); // trim
 
-		$data['DESCRIZIONE'] = substr($descrizione,0,70);
+		$data['DESCRIZIONE'] = strtoupper(substr($descrizione,0,70));
 
 		$data['SIGLA'] = substr($this->dealerBrandCode,0,3);
 		$data['CODICE'] = substr(trim($data['CODICE']),0,20);
+
+		if ($data['UM'] == 'SET') {
+			$data['UM'] = 'CP';
+		}
 
         return $data;
     }
