@@ -50,7 +50,7 @@ class ProductCollectionManager extends BaseEntityManager
 			$collections = $this->findBy(array('brand' => $brand));
 			$brandCollections = array();
 			foreach ($collections as $collection) {
-				$collectionAlias = explode(',',$collection->getAlias());
+				$collectionAlias = explode(';',$collection->getAlias());
 				$collectionCode = trim($collection->getCode());
 				foreach ($collectionAlias as $alias) {
 					$alias = trim($alias);
