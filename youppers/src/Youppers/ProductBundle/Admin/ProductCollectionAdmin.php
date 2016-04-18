@@ -103,7 +103,7 @@ class ProductCollectionAdmin extends YouppersAdmin
     {
         $listMapper
             ->addIdentifier('name')
-            ->add('code')
+            ->add('codeAndAliases')
         	->add('countProductVariants', 'url', array('label'=> 'Variants', 'route' => array('identifier_parameter_name' => 'id','name' => 'admin_youppers_product_productcollection_productvariant_list')))
             ->add('image', null, array('template' => 'YouppersCommonBundle:CRUD:list_image.html.twig'))        	 
         	->add('enabled', null, array('editable' => true))

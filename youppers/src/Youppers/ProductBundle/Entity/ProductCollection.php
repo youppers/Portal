@@ -23,8 +23,12 @@ class ProductCollection
 {
 	public function getNameCode() {
 		return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']' : 'null';
-	}	
-	
+	}
+
+    public function getCodeAndAliases() {
+        return empty($this->getAlias()) ? $this->getCode() : $this->getCode() . ' [' . $this->getAlias() . ']';
+    }
+    
 	public function __toString()
 	{
 		return $this->getName() ? $this->getBrand() . ' - ' . $this->getNameCode() : 'New';
