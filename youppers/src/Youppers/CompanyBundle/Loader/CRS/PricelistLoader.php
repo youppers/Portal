@@ -21,6 +21,7 @@ class PricelistLoader extends AbstractPricelistLoader
 				}
 
 			},
+			self::FIELD_GTIN => 'BARCODE',
 			self::FIELD_PRICE => 'L 2015/16',
 		);
 		$mapper = new LoaderMapper($mapping);
