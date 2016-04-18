@@ -279,7 +279,7 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 			usort($deletes,function($a, $b) { return strlen($b) - strlen($a);});
 
 			foreach ($deletes as $delete) {
-				$descrizione = trim(preg_replace('/' . preg_quote($delete,'/') . '/i','',$descrizione));
+				$descrizione = trim(preg_replace('/\b' . preg_quote($delete,'/') . '\b/i','',$descrizione));
 			}
 
 			if ($variant->getProductCollection()->getProductType()->getCode() == 'TILE') {
