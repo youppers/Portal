@@ -247,12 +247,12 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 					$factor = 1;
 				}
 				if (preg_match('/([0-9,\.]+)X([0-9,\.]+)/i', $dimValue, $matches)) {
-					$newFormato = ($matches[1] * $factor) . 'X' . intval($matches[2] * $factor);
+					$newFormato = ($matches[1] * $factor) . 'X' . ($matches[2] * $factor);
 					$newFormato = str_replace(".", ",", $newFormato);
 					$data['FORMATO'] = $newFormato;
 					// leva il formato dalla descrizione
-
 					$descrizione = trim(preg_replace('/' . preg_quote($dimValue,'/') . '/i','',$descrizione));
+					$descrizione = trim(preg_replace('/' . preg_quote($newFormato,'/') . '/i','',$descrizione));
 				}
 			}
 
