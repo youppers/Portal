@@ -10,6 +10,7 @@ use Youppers\CompanyBundle\Entity\ProductPrice;
 use Youppers\CompanyBundle\Manager\PricelistManager;
 use Youppers\CompanyBundle\Manager\ProductPriceManager;
 use Youppers\ProductBundle\Entity\ProductCollection;
+use Youppers\ProductBundle\Entity\ProductType;
 use Youppers\ProductBundle\Manager\ProductCollectionManager;
 use Youppers\ProductBundle\Entity\ProductVariant;
 use Youppers\ProductBundle\Manager\ProductVariantManager;
@@ -68,8 +69,22 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		return null;
 	}
 
-	protected function getProductType(Product $product) {
+	/**
+	 * @param Product $product
+	 * @param string $collectionCode
+	 * @return ProductType
+	 */
+	protected function getProductType(Product $product, $collectionCode) {
 		return $this->getNewCollectionProductType($product->getBrand(),'');
+	}
+
+	/**
+	 * @param string $typeCode
+	 * @return ProductType with the given code
+	 */
+	protected function findProductType($typeCode)
+	{
+		$this->getProductTypeManager()->findOneBy(array('code' => $typeCode));
 	}
 
 	/**
@@ -78,7 +93,10 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	 * @return mixed
 	 * @deprecated Use getProductType(Product)
 	 */
-	protected abstract function getNewCollectionProductType(Brand $brand, $code);
+	protected function getNewCollectionProductType(Brand $brand, $code)
+	{
+		throw new \RuntimeException("getNewCollectionProductType is deprecated");
+	}
 
 	public function setPricelist($pricelist)
 	{
