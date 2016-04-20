@@ -22,9 +22,17 @@
                 <source>Attribute Standards</source>
                 <target>Codifica Attributo</target>
             </trans-unit>
+            <trans-unit id="Code And Aliases">
+                <source>Code And Aliases</source>
+                <target>Codice e alternative</target>
+            </trans-unit>
             <trans-unit id="Attribute Standards List">
                 <source>Attribute Standards List</source>
                 <target>Elenco Codifiche Attributo</target>
+            </trans-unit>
+            <trans-unit id="Brand Company">
+                <source>Brand Company</source>
+                <target>Società Marchio</target>
             </trans-unit>
             <trans-unit id="Product Collection">
                 <source>Product Collection</source>
