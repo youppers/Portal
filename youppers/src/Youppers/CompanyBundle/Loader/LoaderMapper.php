@@ -78,7 +78,7 @@ class LoaderMapper
 	{
 		if (array_key_exists($what,$this->mapping)) {
 			$key = $this->mapping[$what];
-		} elseif (array_key_exists($what,$this->data)) {
+		} elseif (is_array($this->data) && array_key_exists($what,$this->data)) {
 			$key = $what;
 		} else {
 			return null;
@@ -102,6 +102,9 @@ class LoaderMapper
 		}
 		if ($key === false) {
 			return null; 
+		}
+		if (!is_array($this->data)) {
+			return null;
 		}
 		if (is_array($key)) {
 			$res = array();
