@@ -6,7 +6,13 @@ use JMS\Serializer\Annotation as JMS;
 use Application\Sonata\ProductBundle\Entity\Package;
 
 /**
- * 
+ * The class use a mapping array
+ * The mapping right side can be:
+ * - a string: search for a column with that name
+ * - an integer: return the column (0 based)
+ * - an array: return these columns glued with a space
+ * - a closure function: execute these passing two paraemetrers: originally loaded data row and actual data array
+ *
  * @author sergio
  * @JMS\ExclusionPolicy("all")
  */
@@ -63,12 +69,6 @@ class LoaderMapper
 	}
 
 	/**
-	 * The mapping right side can be:
-	 * - a string: search for a column with that name
-	 * - an integer: return tthis column (0 based)
-	 * - an array: return these columns glued with a space
-	 * - a closure function: execute these passing two paraemetrers: originally loaded data row and actual data array
-	 *
 	 * @param string $what The name of the field that want mapped
 	 * @param bool $returnKey Return the key that map "what" instead of the value
 	 * @param bool $remove Remove the returned value from data (see getData() )
