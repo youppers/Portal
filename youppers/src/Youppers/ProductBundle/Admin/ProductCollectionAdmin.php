@@ -88,10 +88,13 @@ class ProductCollectionAdmin extends YouppersAdmin
             ->add('name')
             ->add('code')
             ->add('productType')
+			->add('brand.company', null, array(
+				'route' => array(
+					'name' => 'show'
+				)
+			))
             ->add('brand.name')
             ->add('brand.code')
-            ->add('brand.company.name')
-        	->add('brand.company.code')
             ->add('enabled')
         ;
     }
