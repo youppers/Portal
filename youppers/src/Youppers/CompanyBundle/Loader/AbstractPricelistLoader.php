@@ -84,7 +84,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	 */
 	protected function findProductType($typeCode)
 	{
-		$this->getProductTypeManager()->findOneBy(array('code' => $typeCode));
+		return $this->getProductTypeManager()->findOneBy(array('code' => $typeCode));
 	}
 
 	/**
