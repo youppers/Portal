@@ -375,6 +375,11 @@ abstract class AbstractLoader extends ContainerAware
 				continue;
 			}
 
+			if ($row === null) {
+				$this->logger->warning(sprintf("Invalid row %d",$this->numRows));
+				continue;
+			}
+
 			try {
 				$this->handleRow($row);
 			} catch (\Exception $e) {
