@@ -38,7 +38,7 @@ class ProductCollectionManager extends BaseEntityManager
 	}
 
 	/**
-	 *
+	 * Search collection using code and aliases
 	 * @param Brand $brand Collection Brand
 	 * @param string $code Collection code
 	 */	
