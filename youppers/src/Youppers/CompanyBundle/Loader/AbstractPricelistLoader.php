@@ -358,11 +358,11 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	{
 		//$brand = $product->getBrand();
 		$collectionName= $this->mapper->get(self::FIELD_COLLECTION);
-		if (empty($collectionName) && $this->guess) {
+		$collectionCode= $this->mapper->get(self::FIELD_COLLECTION_CODE);
+		if (empty($collectionName) && empty($collectionName) && $this->guess) {
 			$collectionName = $this->guessProductCollection($product,$brand);
 		}
-		$collectionCode= $this->mapper->get(self::FIELD_COLLECTION_CODE);
-		if (empty($collectionCode)) {
+		if (empty($collectionCode) && !empty($collectionName)) {
 			$collectionCode = $this->container->get('youppers.common.service.codify')->codify($collectionName);
 		}
 		if ($collectionCode == null) {
@@ -370,6 +370,9 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		} else {
 			$collection = $this->getProductCollectionManager()->findByCode($brand, $collectionCode);
 			if (empty($collection)) {
+				if (empty($collectionName)) {
+					$collectionName = $collectionCode;
+				}
 				$collection = $this->getProductCollectionManager()->createCollection($brand, $collectionName, $collectionCode, $this->getProductType($product,$collectionCode));
 			}
 		}
@@ -379,13 +382,13 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 			if ($this->force) {
 				$this->logger->info(sprintf("Created new collection '%s'",$collection));
 			} else {
-				$this->logger->info(sprintf("New collection with code '%s' of Brand '%s'",$collectionCode,$brand));
+				$this->logger->info(sprintf("Will create new collection '%s'",$collection));
 			}
 		} else {
 			if ($this->force) {
 				$this->logger->debug(sprintf("Updated collection '%s'",$collection));
 			} else {
-				$this->logger->debug(sprintf("Collection '%s'",$collection));
+				$this->logger->debug(sprintf("Use collection '%s'",$collection));
 			}
 		}
 
