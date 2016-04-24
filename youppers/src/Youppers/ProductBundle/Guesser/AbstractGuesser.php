@@ -73,12 +73,36 @@ abstract class AbstractGuesser extends ContainerAware
 		}
 	}
 
+	/** @var bool Write guesses */
+	private $write = false;
+
+	/**
+	 * @param bool $write Write guesses
+	 */
+	public function setWrite($write) {
+		$this->write = $write;
+	}
+
+	/**
+	 * @return bool Execute data update
+	 */
+	public function getWrite() {
+		if ($this->parent) {
+			return $this->parent->getWrite();
+		} else {
+			return $this->write || $this->force;
+		}
+	}
+
 	private $force = false;
 	
 	public function setForce($force) {
 		$this->force = $force;
 	}
-	
+
+	/**
+	 * @return bool Execute data update and change also exinting values
+	 */
 	public function getForce() {
 		if ($this->parent) {
 			return $this->parent->getForce();

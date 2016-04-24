@@ -176,12 +176,12 @@ class BasePropertyGuesser extends AbstractGuesser
 		$standard = array_pop($standards);
 		$value = $this->normalizeValue($value,$standard);
 		if (empty($value)) {
-			$this->getLogger()->error("Cannot autoadd not normalized value");
+			$this->getLogger()->error(sprintf("Cannot autoadd not normalized value to '%s'",$standard));
 			return null;
 		}
 		foreach ($this->getCollectionOptions($variant->getProductCollection(), $type) as $option) {
 			if ($option->getValue() == $value) {
-				$this->getLogger()->error(sprintf("Already exists option '%s' with value '%s'", $option, $value));
+				$this->getLogger()->error(sprintf("Already exists option '%s' with value '%s' in '%s'", $option, $value,$standard));
 				return null;
 			}
 		}
@@ -276,7 +276,14 @@ class BasePropertyGuesser extends AbstractGuesser
                         }
 					}
 				} else {
-					if ($this->getForce()) {
+					if (empty($option->getId())) {
+						if ($this->getForce()) {
+							$this->addVariantProperty($variant,$option);
+						} else {
+							$todo = sprintf("<question>Add new property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
+							$this->addTodo($todo);
+						}
+					} elseif ($this->getWrite()) {
 						$this->addVariantProperty($variant,$option);
 					} else {
 						$todo = sprintf("<question>Add property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
@@ -285,7 +292,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					$this->getLogger()->info(sprintf("Variant '%s' new guessed property '%s'",$variant,$option));
 				}
                 if ($option->getAttributeStandard()->getIsVariantImage() && $variant->getImage() == null) {
-                    if ($this->getForce()) {
+                    if ($this->getWrite()) {
                         $this->setVariantImageOption($variant,$option);
                     } else {
                         $todo = sprintf("<question>Add image</question> <info>%s</info> to <info>%s</info>",$option->getImage(),$variant->getProduct()->getNameCode());
@@ -303,7 +310,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					$this->getLogger()->debug(sprintf("Default option false for '%s' type '%s'",$variant,$type));
 				} else {
                     $this->getLogger()->debug(sprintf("Default option '%s' for '%s'",$option,$variant));
-					if ($this->getForce()) {
+					if ($this->getWrite()) {
 						$this->addVariantProperty($variant,$option);
 					} else {
 						$todo = sprintf("<question>Add default property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());

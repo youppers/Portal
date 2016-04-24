@@ -113,7 +113,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 					$this->getLogger()->info(sprintf("Using standard '%s' for collection '%s'",$collectionStandard,$collection));
 					// assign standard to collection
 					$collection->addStandard($collectionStandard);
-					if (!$this->getForce()) {
+					if (!$this->getWrite()) {
 						$todo = sprintf("<question>Assign standard</question> <info>%s</info> to collection <info>%s</info>",$collectionStandard,$collection);
 						$this->addTodo($todo);
 					}
@@ -135,7 +135,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 		foreach ($variants as $variant) {
 			$this->guessVariant($variant,$guessers);
 		}
-		if ($this->getForce()) {
+		if ($this->getWrite()) {
 			$this->collectionManager->getObjectManager()->flush();
 		} else {
 			$this->collectionManager->getObjectManager()->detach($collection);
