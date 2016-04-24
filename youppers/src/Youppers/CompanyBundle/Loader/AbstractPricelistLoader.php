@@ -63,7 +63,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	 * @param Brand $brand
 	 * @return null
 	 */
-	protected function guessProductCollection(Product $product,Brand $brand)
+	protected function guessProductCollection(Product $product)
 	{
 		$this->logger->warning(sprintf("Loader %s not implements product collection guesser",get_class($this)));
 		return null;
@@ -354,13 +354,12 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	 * @return null|object
 	 * @throws \Exception
 	 */
-	protected function handleCollection(Product $product, Brand $brand)
+	protected function handleCollection(Product $product)
 	{
-		//$brand = $product->getBrand();
 		$collectionName= $this->mapper->get(self::FIELD_COLLECTION);
 		$collectionCode= $this->mapper->get(self::FIELD_COLLECTION_CODE);
 		if (empty($collectionName) && empty($collectionName) && $this->guess) {
-			$collectionName = $this->guessProductCollection($product,$brand);
+			$collectionName = $this->guessProductCollection($product);
 		}
 		if (empty($collectionCode) && !empty($collectionName)) {
 			$collectionCode = $this->container->get('youppers.common.service.codify')->codify($collectionName);
@@ -368,12 +367,12 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if ($collectionCode == null) {
 			return null;
 		} else {
-			$collection = $this->getProductCollectionManager()->findByCode($brand, $collectionCode);
+			$collection = $this->getProductCollectionManager()->findByCode($product->getBrand(), $collectionCode);
 			if (empty($collection)) {
 				if (empty($collectionName)) {
 					$collectionName = $collectionCode;
 				}
-				$collection = $this->getProductCollectionManager()->createCollection($brand, $collectionName, $collectionCode, $this->getProductType($product,$collectionCode));
+				$collection = $this->getProductCollectionManager()->createCollection($product->getBrand(), $collectionName, $collectionCode, $this->getProductType($product,$collectionCode));
 			}
 		}
 
@@ -473,7 +472,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		$product = $this->handleProduct($brand);
 		$price = $this->handlePrice($product);
 		if ($this->loadProduct) {
-			$collection = $this->handleCollection($product, $brand);
+			$collection = $this->handleCollection($product);
 			if (empty($collection)) {
 				$this->logger->critical("Collection not found, cannot handle variant of product " . $product);
 				return false;
