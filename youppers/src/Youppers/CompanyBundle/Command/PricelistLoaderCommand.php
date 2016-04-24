@@ -23,7 +23,7 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 	protected function configure()
 	{
 		$this
-		->setName('youppers:pricelist:load')
+		->setName('youppers:company:pricelist:load')
 		->setDescription('Load Company Pricelist')
 		->addArgument('pricelist', InputArgument::REQUIRED, 'Code of the pricelist to update')
 		->addArgument('filename', InputArgument::REQUIRED, 'File name to load from' )
