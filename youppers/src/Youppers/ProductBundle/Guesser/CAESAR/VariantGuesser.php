@@ -106,7 +106,7 @@ class ColorPropertyGuesser extends TileItemPropertyGuesser
 
 }
 
-class FinPropertyGuesser extends TileFPropertyGuesser
+class FinPropertyGuesser extends BasePropertyGuesser
 {
 
 	public function getDefaultStandardName()
