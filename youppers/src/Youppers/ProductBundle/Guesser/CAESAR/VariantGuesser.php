@@ -30,6 +30,9 @@ class VariantGuesser extends BaseVariantGuesser
 		if ($type->getCode() == 'ITEM') {
 			return new ItemPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
+		if ($type->getCode() == 'FIN') {
+			return new FinPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
+		}
 		return parent::getCollectionTypeGuesser($collection, $type);
 	}
 	
@@ -99,6 +102,16 @@ class ColorPropertyGuesser extends TileItemPropertyGuesser
 	public function getTypeColumn()
 	{
 		return 'COLORE_SERIE';
+	}
+
+}
+
+class FinPropertyGuesser extends TileFPropertyGuesser
+{
+
+	public function getDefaultStandardName()
+	{
+		return 'Superficie Piastrella';
 	}
 
 }
