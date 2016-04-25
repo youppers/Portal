@@ -27,6 +27,7 @@ use Youppers\CompanyBundle\Entity\ProductPrice;
 abstract class AbstractLoader extends ContainerAware
 {
     const FIELD_BRAND = 'brand';
+	const FIELD_BRAND_CODE = 'brand_code';
     const FIELD_COLLECTION = 'collection';
 	const FIELD_COLLECTION_CODE = 'collection_code';
     const FIELD_NAME = 'name';
@@ -218,16 +219,36 @@ abstract class AbstractLoader extends ContainerAware
 		if (empty($this->company)) {
 			throw new \Exception('Must Set Company before Brand');
 		}
-		$criteria = Criteria::create()
-			->where(Criteria::expr()->eq("code", $code));
-		
-		$this->brand = $this->company->getBrands()->matching($criteria)->first();
+
+		$this->brand = $this->getBrandByCode($code);
 		
 		if (empty($this->brand)) {
 			throw new \Exception(sprintf("Brand '%s' not found",$code));
 		}
 		
 		$this->logger->debug(sprintf("Code: '%s' Brand: '%s'", $code, $this->brand));
+	}
+
+	/**
+	 * @param $code
+	 * @return Brand
+	 */
+	protected function getBrandByCode($code)
+	{
+		$criteria = Criteria::create()
+			->where(Criteria::expr()->eq("code", $code));
+		return $this->company->getBrands()->matching($criteria)->first();
+	}
+
+	/**
+	 * @param $name
+	 * @return Brand
+	 */
+	protected function getBrandByName($name)
+	{
+		$criteria = Criteria::create()
+			->where(Criteria::expr()->eq("name", $name));
+		return  $this->company->getBrands()->matching($criteria)->first();
 	}
 
 	/**
@@ -415,14 +436,20 @@ abstract class AbstractLoader extends ContainerAware
 	 */
 	protected function handleBrand()
 	{
-		$brandCode = $this->mapper->remove(self::FIELD_BRAND);
+		$brandCode = $this->mapper->remove(self::FIELD_BRAND_CODE);
 		if (null !== $brandCode) {
-			$this->setBrandByCode($brandCode);
+			$brand = $this->getBrandByCode($brandCode);
 		}
-
+		$brandName = $this->mapper->remove(self::FIELD_BRAND);
+		if (empty($brand) && (null !== $brandName)) {
+			$brand = $this->getBrandByName($brandName);
+		}
+		if (!empty($brand)) {
+			return $brand;
+		}
 		if (empty($this->brand)) {
-			if (empty($brandCode)) {
-				throw new \Exception(sprintf("Brand column MUST be in the column '%s' OR must be set manually", $this->mapper->key(self::FIELD_BRAND)));
+			if (empty($brandCode) && empty($brandName)) {
+				throw new \Exception(sprintf("Brand column MUST be in the column '%s' or '%s' OR must be set manually", $this->mapper->key(self::FIELD_BRAND),$this->mapper->key(self::FIELD_BRAND_CODE)));
 			}
 			$brand = $this->getBrandManager()->findOneBy(array('company' => $this->company, 'code' => $brandCode));
 			if (empty($brand)) {
