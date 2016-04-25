@@ -58,7 +58,7 @@ class Product
 	protected $gtin;
 
 	/**
-	 * @ORM\Column(type="string", length=35)
+	 * @ORM\Column(type="string", length=35, options = {"collation" = "utf8_bin"})
 	 * @Serializer\Expose()
 	 * @Serializer\Groups({"list", "details", "json"})
 	 */
