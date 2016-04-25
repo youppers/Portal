@@ -35,6 +35,10 @@ class ProductManager extends BaseEntityManager
         $this->productCache = array();
     }
 
+    /**
+     * @param string $gtin
+     * @return Product
+     */
     public function findOneByGtin($gtin) {
         if (array_key_exists($gtin,$this->gtinCache)) {
             return $this->gtinCache[$gtin];
@@ -47,6 +51,11 @@ class ProductManager extends BaseEntityManager
         }
     }
 
+    /**
+     * @param Brand $brand
+     * @param string $productCode
+     * @return Product
+     */
     public function findOneByBrandAndCode(Brand $brand, $productCode)
     {
         $key = $brand->getCode() . '-' . $productCode;
