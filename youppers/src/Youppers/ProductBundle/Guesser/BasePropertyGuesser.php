@@ -335,9 +335,15 @@ class BasePropertyGuesser extends AbstractGuesser
 			} elseif (count($options)) {
 				if ($this->isVariant) {
 					$todo = sprintf("<error>Not guessed</error> property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
+					if ($textIsValue) {
+						$todo .= " value=" . $text;
+					}
                     $this->getLogger()->warning(sprintf("No guess of type '%s' for '%s'",$type,$variant));
 				} else {
 					$todo = sprintf("Not guessed property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
+					if ($textIsValue) {
+						$todo .= " :" . $text;
+					}
                     $this->getLogger()->info(sprintf("No guess of type '%s' for '%s'",$type,$variant));
 				}
 				$this->addTodo($todo);
