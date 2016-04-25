@@ -81,6 +81,9 @@ class LoaderMapper
 		} elseif (is_array($this->data) && array_key_exists($what,$this->data)) {
 			$key = $what;
 		} else {
+			if ($returnKey) {
+				return $what;
+			}
 			return null;
 		}
 		if (is_object($key) && ($key instanceof \Closure)) {
