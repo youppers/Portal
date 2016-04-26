@@ -51,18 +51,25 @@ class ProductType
 	protected $description;
 	
 	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 */
-	protected $className;
-	
-	/**
 	 * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="productType", cascade={"all"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"position" = "ASC"})
 	 * @JMS\Expose()
 	 * @JMS\Groups({"details", "json.collection.read"})
 	 **/
 	private $productAttributes;
-	
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AttributeStandard")
+     * @ORM\JoinTable(name="youppers_product__type_standard")
+     */
+    protected $standards;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AttributeOption")
+     * @ORM\JoinTable(name="youppers_product__type_default")
+     */
+    protected $defaults;
+
 	/**
 	 * @ORM\Column(type="datetime", name="updated_at")
 	 */
@@ -210,30 +217,7 @@ class ProductType
     {
         return $this->description;
     }
-
-    /**
-     * Set className
-     *
-     * @param string $className
-     * @return ProductType
-     */
-    public function setClassName($className)
-    {
-        $this->className = $className;
-
-        return $this;
-    }
-
-    /**
-     * Get className
-     *
-     * @return string 
-     */
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
+    
     /**
      * Set updatedAt
      *
@@ -298,5 +282,73 @@ class ProductType
     public function removeProductAttribute(\Youppers\ProductBundle\Entity\ProductAttribute $productAttributes)
     {
         $this->productAttributes->removeElement($productAttributes);
+    }
+
+    /**
+     * Add standard
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeStandard $standard
+     *
+     * @return ProductType
+     */
+    public function addStandard(\Youppers\ProductBundle\Entity\AttributeStandard $standard)
+    {
+        $this->standards[] = $standard;
+
+        return $this;
+    }
+
+    /**
+     * Remove standard
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeStandard $standard
+     */
+    public function removeStandard(\Youppers\ProductBundle\Entity\AttributeStandard $standard)
+    {
+        $this->standards->removeElement($standard);
+    }
+
+    /**
+     * Get standards
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStandards()
+    {
+        return $this->standards;
+    }
+
+    /**
+     * Add default
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $default
+     *
+     * @return ProductType
+     */
+    public function addDefault(\Youppers\ProductBundle\Entity\AttributeOption $default)
+    {
+        $this->defaults[] = $default;
+
+        return $this;
+    }
+
+    /**
+     * Remove default
+     *
+     * @param \Youppers\ProductBundle\Entity\AttributeOption $default
+     */
+    public function removeDefault(\Youppers\ProductBundle\Entity\AttributeOption $default)
+    {
+        $this->defaults->removeElement($default);
+    }
+
+    /**
+     * Get defaults
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDefaults()
+    {
+        return $this->defaults;
     }
 }
