@@ -310,7 +310,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					$this->getLogger()->debug(sprintf("Default option false for '%s' type '%s'",$variant,$type));
 				} else {
                     $this->getLogger()->debug(sprintf("Default option '%s' for '%s'",$option,$variant));
-					if ($this->getWrite()) {
+					if ($this->getForce()) {
 						$this->addVariantProperty($variant,$option);
 					} else {
 						$todo = sprintf("<question>Add default property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
