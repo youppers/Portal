@@ -115,7 +115,7 @@ class AttributeOptionAdmin extends YouppersAdmin
             $formMapper
                 ->add('image', 'sonata_type_model_list',
                     array(
-                        'btn_add'       => false,
+                        'btn_add'       => $this->getParentFieldDescription() == null ? 'link_add' : false,
                         'required' => false
                     ), array(
                         'link_parameters' => array(
