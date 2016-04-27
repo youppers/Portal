@@ -12,17 +12,7 @@ class PricelistLoader extends AbstractPricelistLoader
 		$mapping = array(
             // 'brand' => 'MARCHIO',  // Brand unico, specificare il brand usando "loader CP CP"
 			self::FIELD_CODE => 'ARTICOLO',
-			self::FIELD_NAME => function($row,&$data) {
-				$formato = $row['FORMATO'];
-				$m = array();
-				if (preg_match("/^([0-9,]+)\s*x\s*([0-9,]+)/i",$formato,$m)) {
-					$data['DIM'] = $m[1] . 'x' . $m[2];
-				}
-				if (preg_match("/^([0-9,]+)\s*x\s*([0-9,]+)\s+([0-9,]+)/i",$formato,$m)) {
-					$data['THICKNESS'] = $m[3];
-				}
-                return $row['SERIE'] . ' ' . $row['DESCRIZIONE'] . ' ' . $row['FORMATO'];
-			},
+			self::FIELD_NAME => 'DESCRIZIONE',
 			self::FIELD_COLLECTION => 'SERIE',
 			self::FIELD_UOM => 'UM',
 			self::FIELD_PRICE => '1A SC.',
