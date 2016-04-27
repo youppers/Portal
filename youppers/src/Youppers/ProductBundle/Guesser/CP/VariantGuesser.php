@@ -1,15 +1,11 @@
 <?php
 namespace Youppers\ProductBundle\Guesser\CP;
 
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Youppers\ProductBundle\Guesser\BaseDimensionPropertyGuesser;
 use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
-use Youppers\ProductBundle\Guesser\BasePropertyGuesser;
 use Youppers\ProductBundle\Entity\ProductVariant;
-use Doctrine\Common\Collections\Criteria;
-use Youppers\ProductBundle\Guesser\IgnorePropertyGuesser;
 use Youppers\ProductBundle\Manager\VariantPropertyManager;
 use Youppers\ProductBundle\Manager\AttributeOptionManager;
 
@@ -43,4 +39,15 @@ class DimPropertyGuesser extends BaseDimensionPropertyGuesser
 	{
 		return 'Lato x Lato in cm';
 	}
+
+	public function guessProperty(ProductVariant $variant, &$text, AttributeType $type, $textIsValue = false)
+	{
+		if (preg_match('/([0-9,]*\s{0,1}x\s{0,1}[0-9,]*)([^0-9,X]*)/i',$text,$matches)) {
+			$value = $matches[1];
+			return parent::guessProperty($variant,$value,$type,true);
+		} else {
+			return parent::guessProperty($variant,$text,$type,$textIsValue);
+		}
+	}
+
 }
