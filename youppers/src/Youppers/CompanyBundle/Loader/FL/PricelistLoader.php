@@ -20,14 +20,14 @@ class PricelistLoader extends AbstractPricelistLoader
 			self::FIELD_GTIN => 'cod EAN',
 			self::FIELD_PRICE => 'Price List',
 			self::FIELD_UOM => 'UM',
-			self::FIELD_QUANTITY => 'pz/sc',
-			self::FIELD_SURFACE => array('m2/sc m2/box',' m2/lastra '),
+			self::FIELD_QUANTITY => array('pz/sc','lastre/cassa'),
+			self::FIELD_SURFACE => array('m2/sc m2/box','m2/cassa'),
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
 	}
 	
-	protected function getProductType(Product $product)
+	protected function getProductType(Product $product, $collectionCode)
 	{
 		$info = json_decode($product->getInfo(), true);
 		$tipologia = $info['Tipologia'];
