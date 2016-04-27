@@ -103,6 +103,7 @@ class Store
 		
 	/**
 	 * @ORM\OneToMany(targetEntity="Box", mappedBy="store", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OrderBy({"code" = "ASC"})
 	 **/
 	private $boxes;
 	
