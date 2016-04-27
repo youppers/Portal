@@ -199,6 +199,8 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
             'FORMATO' => 'product.variant.variantProperties',
             'TONI' => 'product.variant.variantProperties',
             'IMBALLO' => 'surface',
+			//'SERIE_OVERFLOW' => 'product.variant.productCollection.name',
+			//'DESCRIZIONE_OVERFLOW' => 'product.name',
         );
 
         parent::__construct($query,$fields);
@@ -247,12 +249,19 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 					$factor = 1;
 				}
 				if (preg_match('/([0-9,\.]+)X([0-9,\.]+)/i', $dimValue, $matches)) {
-					$newFormato = ($matches[1] * $factor) . 'X' . ($matches[2] * $factor);
+					$dim1 = (str_replace(",", ".",$matches[1]) * $factor);
+					$dim2 = (str_replace(",", ".",$matches[2]) * $factor);
+					$newFormato =  $dim1 . 'X' . $dim2;
 					$newFormato = str_replace(".", ",", $newFormato);
+					$newFormatoRegexp = '/'
+						. preg_quote($dim1)
+						. '[\s]*X[\s]*'
+						. preg_quote($dim2)
+						. '/i';
 					$data['FORMATO'] = $newFormato;
 					// leva il formato dalla descrizione
 					$descrizione = trim(preg_replace('/' . preg_quote($dimValue,'/') . '/i','',$descrizione));
-					$descrizione = trim(preg_replace('/' . preg_quote($newFormato,'/') . '/i','',$descrizione));
+					$descrizione = trim(preg_replace($newFormatoRegexp,'',$descrizione));
 				}
 			}
 
@@ -306,12 +315,14 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 		}
 
 		$data['SERIE'] = strtoupper(substr($serie,0,10));
+		//$data['SERIE_OVERFLOW'] = strtoupper(substr($serie,10));
 
 		$descrizione = preg_replace('/' . chr(0xC2).chr(0xA0) . '/',' ',$descrizione);  // replace non breaking spaces
 		$descrizione = preg_replace('/([\s]+)/',' ',$descrizione);  // replace multiple spaces with one space
 		$descrizione = trim($descrizione); // trim
 
 		$data['DESCRIZIONE'] = strtoupper(substr($descrizione,0,70));
+		//$data['DESCRIZIONE_OVERFLOW'] = strtoupper(substr($descrizione,70));
 
 		$data['SIGLA'] = substr($this->dealerBrandCode,0,3);
 		$data['CODICE'] = substr(trim($data['CODICE']),0,20);
