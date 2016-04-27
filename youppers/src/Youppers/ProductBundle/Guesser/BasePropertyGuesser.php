@@ -224,14 +224,14 @@ class BasePropertyGuesser extends AbstractGuesser
                 }
 				$regexp = preg_quote($regexp,'/');
 				if (preg_match("/[0-9]$/",$regexp)) {
-					$regexp = $regexp . '[^0-9]';
+					$regexp = $regexp . '[^0-9,]';
 				} elseif (preg_match("/\.$/",$regexp)) {
 					// match end as is
 				} else {
 					$regexp = $regexp . '[0-9\s\.]';
 				}
 				if (preg_match("/^[0-9]/",$regexp)) {
-					$regexp = '[^0-9]' . $regexp;
+					$regexp = '[^0-9,]' . $regexp;
 				} else {
 					$regexp = '[0-9\s\.]' . $regexp;
 				}
