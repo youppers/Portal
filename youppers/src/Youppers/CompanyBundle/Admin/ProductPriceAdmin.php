@@ -50,6 +50,8 @@ class ProductPriceAdmin extends YouppersAdmin
 		->add('product', null, array('route' => array('name' => 'show')))
 		->addIdentifier('price', null, array('route' => array('name' => 'show')))
 		->add('uom')
+			->add('quantity')
+			->add('surface')
 		;
 	}
 	
