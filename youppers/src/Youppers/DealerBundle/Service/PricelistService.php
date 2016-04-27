@@ -314,10 +314,13 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 			$data['IMBALLO'] = '';
 		}
 
+		$serie = strtr($serie,array('“' => ' ', '”' => ' ','#' => ' '));
+		$serie = preg_replace('/([\s]+)/',' ',$serie);  // replace multiple spaces with one space
 		$data['SERIE'] = strtoupper(substr($serie,0,10));
 		//$data['SERIE_OVERFLOW'] = strtoupper(substr($serie,10));
 
 		$descrizione = preg_replace('/' . chr(0xC2).chr(0xA0) . '/',' ',$descrizione);  // replace non breaking spaces
+		$descrizione = strtr($descrizione,array('“' => ' ', '”' => ' ','#' => ' '));
 		$descrizione = preg_replace('/([\s]+)/',' ',$descrizione);  // replace multiple spaces with one space
 		$descrizione = trim($descrizione); // trim
 
