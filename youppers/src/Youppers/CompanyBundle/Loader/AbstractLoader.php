@@ -444,6 +444,10 @@ abstract class AbstractLoader extends ContainerAware
 		if (empty($brand) && (null !== $brandName)) {
 			$brand = $this->getBrandByName($brandName);
 		}
+		if (empty($brand) && (null === $brandCode)) {
+			$brandCode = $brandName;
+			$brand = $this->getBrandByCode($brandCode);
+		}
 		if (!empty($brand)) {
 			return $brand;
 		}
