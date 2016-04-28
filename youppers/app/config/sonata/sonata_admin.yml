@@ -24,6 +24,7 @@ sonata_admin:
                 content: >
                   <h2>Youppers Admin</h2>
                   <ul>
+                    <li>1.0.825 Product Collection Guess: Preview, Write (execute update but don't add options to standard and don't change variant property) or Force (do all)</li>
                     <li>1.0.641 Attribute standard images can be used to guess the variant image</li>
                     <li>1.0.638 Guess uses all standards of the collection, also if not property of product type</li>
                     <li>1.0.526 Print QRCode from store &gt; show</li>
