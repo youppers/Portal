@@ -11,15 +11,14 @@ class PricelistLoader extends AbstractPricelistLoader
 	{
 		$mapping = array(
 			self::FIELD_BRAND => "Marchio - Brand",
-			self::FIELD_CODE => 'Codice Numerico Articolo - Number Code',
+			self::FIELD_OLD_CODE => 'Codice Numerico Articolo - Number Code',
+			self::FIELD_CODE => 'Articolo - Item',
             self::FIELD_GTIN => 'Codice EAN13 - EAN13 Code',
 			self::FIELD_NAME => function($row,&$data) {
                 return trim(
-					$row['Descrizione Progetto - Collection'] . ' ' .
                     $row['Descrizione Articolo'] . ' ' .
                     $row['Colore'] . ' ' .
                     $row['Articolo - Item'] . ' ' .
-                    $row['Formato - Size'] . ' ' .
                     $row['Finitura'] . ' ' .
                     $row['Struttura'] . ' ' .
                     $row['Aspetto Superficiale'] . ' ' .

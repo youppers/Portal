@@ -23,6 +23,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	const FIELD_QUANTITY = 'quantity';
 	const FIELD_SURFACE = 'surface';
 	const FIELD_STATUS = 'status';
+	const FIELD_OLD_CODE = 'old_code';
 
 	/**
 	 * @var Pricelist
@@ -210,8 +211,18 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if (empty($productCode)) {
 			throw new \Exception(sprintf("Product code not found in the column '%s'",$this->mapper->key('code')));
 		}
-		
-		$product = $this->getProductManager()->findOneByBrandAndCode($brand, $productCode);
+
+		$oldProductCode = $this->mapper->get(self::FIELD_OLD_CODE);
+		if (!empty($oldProductCode)) {
+			$product = $this->getProductManager()->findOneByBrandAndCode($brand, $oldProductCode);
+			if (!empty($product)) {
+				$this->logger->info(sprintf("Changing code '%s' of product: %s",$productCode,$product));
+				$product->setCode($productCode);
+			}
+		}
+		if (empty($product)) {
+			$product = $this->getProductManager()->findOneByBrandAndCode($brand, $productCode);
+		}
 		if (empty($product)) {
 			$product = $this->getProductManager()->create();
 			$product->setBrand($brand);
