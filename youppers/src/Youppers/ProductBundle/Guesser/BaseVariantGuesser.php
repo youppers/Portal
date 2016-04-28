@@ -1,6 +1,7 @@
 <?php
 namespace Youppers\ProductBundle\Guesser;
 
+use Psr\Log\InvalidArgumentException;
 use Youppers\ProductBundle\Entity\AttributeStandard;
 use Youppers\ProductBundle\Guesser\AbstractGuesser;
 use Youppers\ProductBundle\Entity\ProductVariant;
@@ -66,6 +67,61 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 	
 	}
 
+	private $typeCodes = array();
+
+	/**
+	 * @param string $typeCode
+	 */
+	public function addTypeCode($typeCode)
+	{
+		if (is_string($typeCode)) {
+			if (!in_array($typeCode,$this->typeCodes)) {
+				// FIXME check if the code is valid
+				$this->typeCodes[] = $typeCode;
+			}
+		} else {
+			throw new InvalidArgumentException(sprintf("setTypeCode acceps string, %s given",get_class($typeCode)));
+		}
+	}
+
+	/**
+	 * @param array $typeCodes array of code of attribute type
+	 */
+	public function setTypeCodes($typeCodes)
+	{
+		if (is_array($typeCodes)) {
+			foreach ($typeCodes as $typeCode) {
+				$this->addTypeCode($typeCode);
+			}
+		} else {
+			throw new InvalidArgumentException(sprintf("setTypeCodes acceps array of string, %s given",get_class($typeCodes)));
+		}
+	}
+
+	/**
+	 * @return array of code of attribute type
+	 */
+	protected function getTypeCodes()
+	{
+		return $this->typeCodes;
+	}
+
+	/**
+	 * The Attribute Type must be guessed if no type has specified or is one of the specified
+	 * @see setTypeCodes
+	 * @see addTypeCode
+	 * @param AttributeType $type
+	 * @return bool guess this?
+	 */
+	protected function guessThisType(AttributeType $type)
+	{
+		if (empty($this->typeCodes)) {
+			return true;
+		} else {
+			return in_array($type->getCode(),$this->typeCodes);
+		}
+	}
+
 	public function guess()
 	{
 		if ($this->collection) {
@@ -87,6 +143,9 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 		foreach ($collection->getProductType()->getProductAttributes() as $attribute) {
 			$collectionStandard = null;
 			$type = $attribute->getAttributeType();
+			if (! $this->guessThisType($type)) {
+				continue;
+			}
 			foreach ($collection->getStandards() as $attributeStandard) {
 				$attributeType = $attributeStandard->getAttributeType();
 				if ($attributeType->getCode() == $type->getCode()) {
@@ -131,6 +190,10 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 		$variants = $this->variantManager->findByCollection($collection);
 		$this->getLogger()->info(sprintf("Guessing %d variants for collection '%s'",count($variants),$collection));
 		$guessers = $this->getCollectionGuessers($collection);
+		if (empty($guessers)) {
+			$this->getLogger()->warning(sprintf("No guessers for collection '%s'",$collection));
+			return;
+		}
 		$this->checkCollectionStandards($collection,$guessers);
 		foreach ($variants as $variant) {
 			$this->guessVariant($variant,$guessers);
@@ -158,16 +221,18 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 
 	protected function getCollectionGuessers(ProductCollection $collection)
 	{
-		if ($this->guessers) {
-			if (array_key_exists($collection->getId(),$this->guessers)) {
-				return $this->guessers[$collection->getId()];
-			} else {
-				$this->guessers[$collection->getId()] = array();
-			}
+		if (array_key_exists($collection->getId(),$this->guessers)) {
+			return $this->guessers[$collection->getId()];
+		} else {
+			$this->guessers[$collection->getId()] = array();
 		}
-		
+
 		foreach ($collection->getProductType()->getProductAttributes() as $attribute) {
 			$type = $attribute->getAttributeType();
+			if (! $this->guessThisType($type)) {
+				$this->getLogger()->debug(sprintf("Skip guesser of type '%s' not in: %s",$type,implode(";",$this->getTypeCodes())));
+				continue;
+			}
 			$guesser = $this->getCollectionTypeGuesser($collection, $type);
 			if (empty($guesser)) {
 				$this->getLogger()->critical(sprintf("No guesser for collection '%s' type '%s'",$collection,$type));
@@ -180,6 +245,10 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 
         foreach ($collection->getStandards() as $attributeStandard) {
             $attributeType = $attributeStandard->getAttributeType();
+			if (! $this->guessThisType($type)) {
+				$this->getLogger()->debug(sprintf("Skip standard '%s' not in: %s",$attributeStandard,implode(";",$this->getTypeCodes())));
+				continue;
+			}
             foreach ($this->guessers[$collection->getId()] as $guesser) {
                 if ($guesser->getType() == $attributeType) {
                     continue 2;

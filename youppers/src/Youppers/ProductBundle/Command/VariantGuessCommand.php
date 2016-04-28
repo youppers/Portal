@@ -30,6 +30,7 @@ class VariantGuessCommand extends ContainerAwareCommand
 		->addOption('skip', 'k', InputOption::VALUE_OPTIONAL, 'Skip first <n> rows', 0)
 			->addOption('write', 'w', InputOption::VALUE_NONE, 'Execute data update')
 		->addOption('force', 'f', InputOption::VALUE_NONE, 'Execute data update and change also exinting values')
+			->addOption('type', 't', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Guess only specified attribute type')
 		;
 	}
 
@@ -53,7 +54,9 @@ class VariantGuessCommand extends ContainerAwareCommand
 		if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
 			$guesser->setDebug(true);
 		}
-		
+
+		$guesser->setTypeCodes($input->getOption('type'));
+
 		$guesser->guess(); 
 		
 		$output->writeln("Result of Guessing for for:");
