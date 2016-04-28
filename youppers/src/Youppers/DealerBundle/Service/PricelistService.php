@@ -328,7 +328,10 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 		//$data['DESCRIZIONE_OVERFLOW'] = strtoupper(substr($descrizione,70));
 
 		$data['SIGLA'] = substr($this->dealerBrandCode,0,3);
-		$data['CODICE'] = substr(trim($data['CODICE']),0,20);
+
+		$codice = $data['CODICE'];
+		$codice = preg_replace('/([\s]+)/','',$codice);  // remove all space
+		$data['CODICE'] = substr(trim($codice),0,20);
 
 		if ($data['UM'] == 'SET') {
 			$data['UM'] = 'CP';
