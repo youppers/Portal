@@ -309,6 +309,12 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 
 		// la colonna FORMATO viene compilata solo nel caso dei MQ o dei ML
 		if ($data['UM'] == 'MQ' || $data['UM'] == 'ML') {
+			if (empty($data['FORMATO'])) {
+				$data['FORMATO'] = 1;
+			}
+			if (empty($data['IMBALLO']) || $data['IMBALLO'] == 0) {
+				$data['IMBALLO'] = 1;
+			}
 		} else {
 			$data['FORMATO'] = '';
 			$data['IMBALLO'] = '';
