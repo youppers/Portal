@@ -245,7 +245,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 
         foreach ($collection->getStandards() as $attributeStandard) {
             $attributeType = $attributeStandard->getAttributeType();
-			if (! $this->guessThisType($type)) {
+			if (! $this->guessThisType($attributeType)) {
 				$this->getLogger()->debug(sprintf("Skip standard '%s' not in: %s",$attributeStandard,implode(";",$this->getTypeCodes())));
 				continue;
 			}
