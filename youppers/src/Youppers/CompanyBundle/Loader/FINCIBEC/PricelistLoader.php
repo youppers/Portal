@@ -17,7 +17,12 @@ class PricelistLoader extends AbstractPricelistLoader
 			self::FIELD_BRAND => 'MARCHIO',
 			self::FIELD_COLLECTION => 'SERIE',
 			self::FIELD_CODE => 'CODICE',
-			self::FIELD_NAME => 'COLORE', // la prima parola, segue descrizione
+			self::FIELD_NAME => function($row) {
+				$name = $row['COLORE'];
+				$formato = $row['FORMATO'];
+				$name = preg_replace('/' . preg_quote($formato,'/') . '/',' ',$name);
+				return $name;
+			},
 			self::FIELD_UOM => 'U.M.',
 			self::FIELD_PRICE => '1° € PALLET.',
 			self::FIELD_QUANTITY => 'Pc. BOXES',
