@@ -343,7 +343,11 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 			$data['UM'] = 'CP';
 		}
 
-        return $data;
+		if (empty($data['TONI'])) {
+			$data['TONI'] = 'N';
+		}
+
+		return $data;
     }
 
     function valid()
