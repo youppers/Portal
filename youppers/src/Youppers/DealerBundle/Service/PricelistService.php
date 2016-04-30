@@ -322,6 +322,7 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 
 		$serie = strtr($serie,array('“' => ' ', '”' => ' ','#' => ' '));
 		$serie = preg_replace('/([\s]+)/',' ',$serie);  // replace multiple spaces with one space
+		$serie = trim($serie); // trim
 		$data['SERIE'] = strtoupper(substr($serie,0,10));
 		//$data['SERIE_OVERFLOW'] = strtoupper(substr($serie,10));
 
