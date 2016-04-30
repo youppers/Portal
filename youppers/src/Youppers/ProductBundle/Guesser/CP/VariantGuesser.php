@@ -1,13 +1,11 @@
 <?php
 namespace Youppers\ProductBundle\Guesser\CP;
 
-use Youppers\ProductBundle\Guesser\BaseDimensionPropertyGuesser;
+use Youppers\ProductBundle\Guesser\TileDimPropertyGuesser;
 use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
 use Youppers\ProductBundle\Entity\ProductVariant;
-use Youppers\ProductBundle\Manager\VariantPropertyManager;
-use Youppers\ProductBundle\Manager\AttributeOptionManager;
 
 class VariantGuesser extends BaseVariantGuesser
 {
@@ -21,23 +19,12 @@ class VariantGuesser extends BaseVariantGuesser
 	
 }
 
-class DimPropertyGuesser extends BaseDimensionPropertyGuesser
+class DimPropertyGuesser extends TileDimPropertyGuesser
 {
-
-	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager, AttributeOptionManager $attributeOptionManager)
-	{
-		parent::__construct($type, $variantPropertyManager, $attributeOptionManager);
-		$this->autoAddOptions = true;
-	}
 
 	public function getTypeColumn()
 	{
 		return 'FORMATO';
-	}
-
-	public function getDefaultStandardName()
-	{
-		return 'Lato x Lato in cm';
 	}
 
 	public function guessProperty(ProductVariant $variant, &$text, AttributeType $type, $textIsValue = false)

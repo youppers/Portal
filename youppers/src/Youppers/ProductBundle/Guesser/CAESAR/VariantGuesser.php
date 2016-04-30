@@ -2,7 +2,7 @@
 namespace Youppers\ProductBundle\Guesser\CAESAR;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Youppers\ProductBundle\Guesser\BaseDimensionPropertyGuesser;
+use Youppers\ProductBundle\Guesser\TileDimPropertyGuesser;
 use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
@@ -40,7 +40,7 @@ class VariantGuesser extends BaseVariantGuesser
 
 // SERIE;ASSORTIMENTO;TECNOLOGIA;PEZZO;FORMATO;COLORE_SERIE;COD_9;COD_ART;ARTICOLO;UDM;EUR01>PL (2016);EUR01<PL (2016);MQ_PALLET;KG_PALLET;SCATOLE_EURO;PEZZI_SCATOLA;MQ_SCATOLA;KG_SCATOLA_LORDO
 
-class DimPropertyGuesser extends BaseDimensionPropertyGuesser
+class DimPropertyGuesser extends TileDimPropertyGuesser
 {
 
 	public function getTypeColumn()

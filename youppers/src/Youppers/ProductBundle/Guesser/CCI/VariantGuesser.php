@@ -2,7 +2,7 @@
 namespace Youppers\ProductBundle\Guesser\CCI;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Youppers\ProductBundle\Guesser\BaseDimensionPropertyGuesser;
+use Youppers\ProductBundle\Guesser\TileDimPropertyGuesser;
 use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
@@ -54,7 +54,7 @@ class ColorPropertyGuesser extends BasePropertyGuesser
 
 }
 
-class DimPropertyGuesser extends BaseDimensionPropertyGuesser
+class DimPropertyGuesser extends TileDimPropertyGuesser
 {
 
 	public function getTypeColumn()

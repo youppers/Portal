@@ -6,7 +6,7 @@ use Youppers\ProductBundle\Entity\AttributeType;
 use Youppers\ProductBundle\Manager\AttributeOptionManager;
 use Youppers\ProductBundle\Manager\VariantPropertyManager;
 
-class BaseDimensionPropertyGuesser extends BasePropertyGuesser
+class TileDimPropertyGuesser extends BasePropertyGuesser
 {	
 	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager, AttributeOptionManager $attributeOptionManager)
 	{

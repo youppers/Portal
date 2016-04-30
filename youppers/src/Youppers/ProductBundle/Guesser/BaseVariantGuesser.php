@@ -210,7 +210,7 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 	 * 
 	 * @param ProductCollection $collection
 	 * @param AttributeType $type
-	 * @return \Youppers\ProductBundle\Guesser\BaseDimensionPropertyGuesser|\Youppers\ProductBundle\Guesser\BaseColorPropertyGuesser|\Youppers\ProductBundle\Guesser\BaseRettificaPropertyGuesser
+	 * @return \Youppers\ProductBundle\Guesser\TileDimPropertyGuesser|\Youppers\ProductBundle\Guesser\BaseColorPropertyGuesser|\Youppers\ProductBundle\Guesser\BaseRettificaPropertyGuesser
 	 */
 	protected function getCollectionTypeGuesser(ProductCollection $collection, AttributeType $type)
 	{

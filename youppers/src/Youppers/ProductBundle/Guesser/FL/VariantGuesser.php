@@ -1,7 +1,7 @@
 <?php
 namespace Youppers\ProductBundle\Guesser\FL;
 
-use Youppers\ProductBundle\Guesser\BaseDimensionPropertyGuesser;
+use Youppers\ProductBundle\Guesser\TileDimPropertyGuesser;
 use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
@@ -10,8 +10,6 @@ use Youppers\ProductBundle\Entity\ProductVariant;
 use Doctrine\Common\Collections\Criteria;
 use Youppers\ProductBundle\Guesser\IgnorePropertyGuesser;
 use Youppers\ProductBundle\Guesser\TileItemPropertyGuesser;
-use Youppers\ProductBundle\Manager\AttributeOptionManager;
-use Youppers\ProductBundle\Manager\VariantPropertyManager;
 
 class VariantGuesser extends BaseVariantGuesser
 {
@@ -55,23 +53,12 @@ class FinPropertyGuesser extends BasePropertyGuesser
 	}
 }
 
-class DimPropertyGuesser extends BaseDimensionPropertyGuesser
+class DimPropertyGuesser extends TileDimPropertyGuesser
 {
-
-	public function __construct(AttributeType $type, VariantPropertyManager $variantPropertyManager, AttributeOptionManager $attributeOptionManager)
-	{
-		parent::__construct($type, $variantPropertyManager, $attributeOptionManager);
-		$this->autoAddOptions = true;
-	}
 
 	public function getTypeColumn()
 	{
 		return 'Formato Nominale/Size';
-	}
-
-	public function getDefaultStandardName()
-	{
-		return 'Lato x Lato in cm';
 	}
 
 	public function guessProperty(ProductVariant $variant, &$text, AttributeType $type, $textIsValue = false)
