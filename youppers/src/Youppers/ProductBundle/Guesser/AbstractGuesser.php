@@ -30,10 +30,11 @@ abstract class AbstractGuesser extends ContainerAware
 	protected function addTodo($todo)
 	{
 		if ($this->parent) {
-			$this->parent->addTodo($todo);
+			return $this->parent->addTodo($todo);
 		} else if (!in_array($todo,$this->todos)) {
 			$this->todos[] = $todo;
 		}
+		$this->getLogger()->info($todo);
 	}
 			
 	private $managerRegistry;
