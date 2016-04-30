@@ -98,10 +98,16 @@ class ProductPrice
 	}
 	
 	public function getDescription() {
-		return ($this->getProduct()?:'?') . ' : ' . ($this->getPricelist()?:'?') . ' = ' . $this->getPrice() . ' / ' . $this->getUom();
-	}	
-		
-	// php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle:ProductPrice
+		return ($this->getProduct()?:'?') . ' : ' . $this->getPriceDescription();
+	}
+
+    public function getPriceDescription() {
+        return ($this->getPricelist()? $this->getPricelist()->getCode() :'?') . ' = ' . $this->getPrice() . ' / ' . $this->getUom()
+            . ($this->getQuantity()>0 ? ' Q=' . $this->getQuantity(): '')
+            . ($this->getSurface()>0 ? ' S=' . $this->getSurface(): '');
+    }
+
+    // php app/console doctrine:generate:entities --no-backup YouppersCompanyBundle:ProductPrice
 
     /**
      * Get id

@@ -90,7 +90,7 @@ class ProductAdmin extends YouppersAdmin
 		->add('info', 'text')
 		->add('description')
 		->add('url')
-		->add('productPrices')
+		->add('productPrices', null, array('route' => array('name' => 'show'), 'associated_property' => 'priceDescription'))
 		->add('createdAt')
 		->add('updatedAt')
 		->add('qr', null, array('label' => 'QRCode', 'route' => array('name' => 'youppers_common_qr_prod'), 'template' => 'YouppersCommonBundle:CRUD:show_qr.html.twig'))		
