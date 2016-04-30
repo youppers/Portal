@@ -348,12 +348,15 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		if (empty($surface)) {
 			return $surface;
 		}
+		$surface = trim($surface);
 		if (preg_match('/([0-9]+)[\.,]([0-9]+)/',$surface,$matches)) {
 			$surface2 = $matches[1] . '.' . $matches[2];
 			return $surface2;
 		} else if (preg_match('/([0-9]+)/',$surface,$matches)) {
 			$surface1 = $matches[1];
 			return $surface1;
+		} else if (preg_match('/^-$/',$surface,$matches)) {
+			return 0;
 		} else {
 			throw new \InvalidArgumentException("Invalid surface: " . $surface);
 		}
