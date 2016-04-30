@@ -169,11 +169,17 @@ class BasePropertyGuesser extends AbstractGuesser
 			$this->getLogger()->error(sprintf("Cannot autoadd if the collection '%s' dont have standard of type '%s'", $variant->getProductCollection(), $type));
 			return null;
 		}
-		if (count($standards) > 1) {
-			$this->getLogger()->error(sprintf("Cannot autoadd if the collection '%s' has more than one standard of type '%s'", $variant->getProductCollection(), $type));
+		$standard = null;
+		foreach ($standards as $standard1) {
+			if ($standard1->getName() == $this->getDefaultStandardName()) {
+				$standard = $standard1;
+				continue;
+			}
+		}
+		if (empty($standard)) {
+			$this->getLogger()->error(sprintf("Cannot autoadd if the collection '%s' don't have standard '%s'", $variant->getProductCollection(), $this->getDefaultStandardName()));
 			return null;
 		}
-		$standard = array_pop($standards);
 		$value = $this->normalizeValue($value,$standard);
 		if (empty($value)) {
 			$this->getLogger()->error(sprintf("Cannot autoadd not normalized value to '%s'",$standard));
@@ -270,8 +276,8 @@ class BasePropertyGuesser extends AbstractGuesser
                         if ($this->getForce()) {
                             $this->changeVariantProperty($variant,$actualOption,$option);
                         } else {
-                            $todo = sprintf("<question>Change property</question> <info>%s</info> from <info>%s</info> to <info>%s</info> for <info>%s</info>",
-                                $option->getAttributeType(), $actualOption->getAttributeStandard() . ': ' . $actualOption->getValueWithSymbol(), $option->getAttributeStandard() . ': ' . $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
+                            $todo = sprintf("<question>Change property</question> <info>%s</info> from <info>%s</info> to <question>%s</question> <info>%s</info> for <info>%s</info>",
+                                $option->getAttributeType(), $actualOption->getAttributeStandard() . ': ' . $actualOption->getValueWithSymbol(), empty($option->getId()) ? 'new':'', $option->getAttributeStandard() . ': ' . $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
                             $this->addTodo($todo);
                         }
 					}
@@ -303,36 +309,51 @@ class BasePropertyGuesser extends AbstractGuesser
 				return true;
 			}
 		}
-        if (empty($actualOption)) {
-			if ($this->hasDefaultOption($variant,$type)) {
-				$option = $this->getDefaultOption($variant,$type);
-				if ($option === false) {
-					$this->getLogger()->debug(sprintf("Default option false for '%s' type '%s'",$variant,$type));
-				} else {
-                    $this->getLogger()->debug(sprintf("Default option '%s' for '%s'",$option,$variant));
+        if (empty($actualOption)
+			&& !($this->autoAddOptions && $textIsValue)
+			 && $this->hasDefaultOption($variant, $type)) {
+            $option = $this->getDefaultOption($variant, $type);
+            if ($option === false) {
+                $this->getLogger()->debug(sprintf("Default option false for '%s' type '%s'", $variant, $type));
+            } else {
+                $this->getLogger()->debug(sprintf("Default option '%s' for '%s'", $option, $variant));
+                if ($this->getForce()) {
+                    $this->addVariantProperty($variant, $option);
+                } else {
+                    $todo = sprintf("<question>Add default property</question> <info>%s</info> to <info>%s</info>", $option, $variant->getProduct()->getNameCode());
+                    $this->addTodo($todo);
+                }
+				return true;
+            }
+		}
+		if ($this->autoAddOptions && $textIsValue) {
+			$option = $this->createOption($variant, $type, $text);
+			if ($option === null) {
+				$todo = sprintf("<error>Cannot add option</error> <info>%s</info> of type <info>%s</info>", $text, $type);
+				$this->addTodo($todo);
+			} else {
+				if (empty($actualOption)) {
 					if ($this->getForce()) {
-						$this->addVariantProperty($variant,$option);
+						$this->addVariantProperty($variant, $option);
 					} else {
-						$todo = sprintf("<question>Add default property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
-						$this->addTodo($todo);				
-					}
-				}
-                return true;
-			} elseif ($this->autoAddOptions && $textIsValue) {
-				$option = $this->createOption($variant,$type, $text);
-				if ($option === null) {
-					$todo = sprintf("<error>Cannot add option</error> <info>%s</info> of type <info>%s</info>",$text,$type);
-					$this->addTodo($todo);
-				} else {
-					if ($this->getForce()) {
-						$this->addVariantProperty($variant,$option);
-					} else {
-						$todo = sprintf("<question>Add new property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
+						$todo = sprintf("<question>Add new property</question> <info>%s</info> to <info>%s</info>", $option, $variant->getProduct()->getNameCode());
 						$this->addTodo($todo);
 					}
-					return true;
+				} else {
+					$this->getLogger()->warning(sprintf("Variant '%s' new guessed property '%s' don't match actual '%s'", $variant, $option, $actualOption));
+					if ($this->getForce()) {
+						$this->changeVariantProperty($variant, $actualOption, $option);
+					} else {
+						$todo = sprintf("<question>Change property</question> <info>%s</info> from <info>%s</info> to <question>new</question> <info>%s</info> for <info>%s</info>",
+							$option->getAttributeType(), $actualOption->getAttributeStandard() . ': ' . $actualOption->getValueWithSymbol(), $option->getAttributeStandard() . ': ' . $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
+						$this->addTodo($todo);
+					}
 				}
-			} elseif (count($options)) {
+				return true;
+			}
+		}
+		if (empty($actualOption)) {
+			if (count($options)) {
 				if ($this->isVariant) {
 					$todo = sprintf("<error>Not guessed</error> property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
 					if ($textIsValue) {
