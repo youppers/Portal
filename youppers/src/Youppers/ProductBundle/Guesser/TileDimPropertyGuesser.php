@@ -37,10 +37,10 @@ class TileDimPropertyGuesser extends BasePropertyGuesser
 			return $normalized;
 		} else {
 			if (empty($standard)) {
-				$this->getLogger()->warning(sprintf("Value '%s' should match '%s'",$value,self::PATTERN));
+				$this->getLogger()->debug(sprintf("Value '%s' should match '%s'",$value,self::PATTERN));
 				return parent::normalizeValue($value,$standard);
 			} else {
-				$this->getLogger()->error(sprintf("Value '%s' must match '%s'",$value,self::PATTERN));
+				$this->getLogger()->warning(sprintf("Value '%s' must match '%s'",$value,self::PATTERN));
 				return null;
 			}
 		}
