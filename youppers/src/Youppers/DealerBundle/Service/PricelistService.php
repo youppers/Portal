@@ -255,12 +255,18 @@ class ProductPriceIterator extends DoctrineORMQuerySourceIterator {
 					$newFormato = str_replace(".", ",", $newFormato);
 					$newFormatoRegexp = '/'
 						. preg_quote($dim1)
-						. '[\s]*X[\s]*'
+						. '[\s]*X?[\s]*'
 						. preg_quote($dim2)
 						. '/i';
 					$data['FORMATO'] = $newFormato;
 					// leva il formato dalla descrizione
 					$descrizione = trim(preg_replace('/' . preg_quote($dimValue,'/') . '/i','',$descrizione));
+					$descrizione = trim(preg_replace($newFormatoRegexp,'',$descrizione));
+					$newFormatoRegexp = '/'
+						. preg_quote($dim2) // inverteed dim1 and dim2
+						. '[\s]*X?[\s]*'
+						. preg_quote($dim1)
+						. '/i';
 					$descrizione = trim(preg_replace($newFormatoRegexp,'',$descrizione));
 				}
 			}
