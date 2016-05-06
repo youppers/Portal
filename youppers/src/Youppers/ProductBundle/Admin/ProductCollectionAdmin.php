@@ -207,6 +207,12 @@ class ProductCollectionAdmin extends YouppersAdmin
     		$object->setBrand($brand);
     	}
 
+		if (isset($filterParameters['productType'])) {
+			$productType = $this->getModelManager()->find('Youppers\ProductBundle\Entity\ProductType',$filterParameters['productType']['value']);
+			//var_dump($productType->_toString());
+			$object->setProductType($productType);
+		}
+
     	/*
     	$session = $this->get('session');
     	if ($session->has('newProductCollectionInstance')) {
