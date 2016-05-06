@@ -14,11 +14,11 @@ use JMS\Serializer\Annotation as JMS;
  */
 class ProductType
 {
-	public function __toString()
-	{
-		return $this->getName() ?: 'New';
-	}
-	
+    public function __toString()
+    {
+        return $this->getName() ? $this->getName() . ' [' . $this->getCode() . ']': 'New';
+    }
+
 	/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
