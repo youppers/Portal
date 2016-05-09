@@ -59,6 +59,7 @@ class CompanyAdmin extends YouppersAdmin
                  ),
 				'associated_property' => 'nameCodeStatus'
              ))
+			->add('pricelists', null, array('route' => array('name' => 'show'),'associated_property' => 'code'))
 		;
 	}
 
