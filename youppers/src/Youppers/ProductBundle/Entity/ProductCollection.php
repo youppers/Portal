@@ -182,13 +182,15 @@ class ProductCollection
      */
     public function __construct()
     {
+        $this->standards = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->defaults = new \Doctrine\Common\Collections\ArrayCollection();
         $this->productVariants = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return guid 
+     * @return guid
      */
     public function getId()
     {
@@ -199,6 +201,7 @@ class ProductCollection
      * Set name
      *
      * @param string $name
+     *
      * @return ProductCollection
      */
     public function setName($name)
@@ -211,7 +214,7 @@ class ProductCollection
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -222,6 +225,7 @@ class ProductCollection
      * Set code
      *
      * @param string $code
+     *
      * @return ProductCollection
      */
     public function setCode($code)
@@ -234,7 +238,7 @@ class ProductCollection
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -245,6 +249,7 @@ class ProductCollection
      * Set description
      *
      * @param string $description
+     *
      * @return ProductCollection
      */
     public function setDescription($description)
@@ -257,7 +262,7 @@ class ProductCollection
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -268,6 +273,7 @@ class ProductCollection
      * Set enabled
      *
      * @param boolean $enabled
+     *
      * @return ProductCollection
      */
     public function setEnabled($enabled)
@@ -280,7 +286,7 @@ class ProductCollection
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -291,6 +297,7 @@ class ProductCollection
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
+     *
      * @return ProductCollection
      */
     public function setUpdatedAt($updatedAt)
@@ -303,7 +310,7 @@ class ProductCollection
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -314,6 +321,7 @@ class ProductCollection
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return ProductCollection
      */
     public function setCreatedAt($createdAt)
@@ -326,7 +334,7 @@ class ProductCollection
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -337,6 +345,7 @@ class ProductCollection
      * Set brand
      *
      * @param \Youppers\CompanyBundle\Entity\Brand $brand
+     *
      * @return ProductCollection
      */
     public function setBrand(\Youppers\CompanyBundle\Entity\Brand $brand = null)
@@ -349,7 +358,7 @@ class ProductCollection
     /**
      * Get brand
      *
-     * @return \Youppers\CompanyBundle\Entity\Brand 
+     * @return \Youppers\CompanyBundle\Entity\Brand
      */
     public function getBrand()
     {
@@ -360,6 +369,7 @@ class ProductCollection
      * Set productType
      *
      * @param \Youppers\ProductBundle\Entity\ProductType $productType
+     *
      * @return ProductCollection
      */
     public function setProductType(\Youppers\ProductBundle\Entity\ProductType $productType = null)
@@ -372,17 +382,19 @@ class ProductCollection
     /**
      * Get productType
      *
-     * @return \Youppers\ProductBundle\Entity\ProductType 
+     * @return \Youppers\ProductBundle\Entity\ProductType
      */
     public function getProductType()
     {
         return $this->productType;
     }
 
+
     /**
      * Set image
      *
      * @param \Application\Sonata\MediaBundle\Entity\Media $image
+     *
      * @return ProductCollection
      */
     public function setImage(\Application\Sonata\MediaBundle\Entity\Media $image = null)
@@ -395,7 +407,7 @@ class ProductCollection
     /**
      * Get image
      *
-     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     * @return \Application\Sonata\MediaBundle\Entity\Media
      */
     public function getImage()
     {
@@ -406,6 +418,7 @@ class ProductCollection
      * Set pdfGallery
      *
      * @param \Application\Sonata\MediaBundle\Entity\Gallery $pdfGallery
+     *
      * @return ProductCollection
      */
     public function setPdfGallery(\Application\Sonata\MediaBundle\Entity\Gallery $pdfGallery = null)
@@ -418,7 +431,7 @@ class ProductCollection
     /**
      * Get pdfGallery
      *
-     * @return \Application\Sonata\MediaBundle\Entity\Gallery 
+     * @return \Application\Sonata\MediaBundle\Entity\Gallery
      */
     public function getPdfGallery()
     {
@@ -428,7 +441,7 @@ class ProductCollection
     /**
      * Get productVariants
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductVariants()
     {
