@@ -59,6 +59,7 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 		}
 	}
 
+	private $collections=array();
 	/**
 	 * @param Product $product
 	 * @param Brand $brand
@@ -66,7 +67,21 @@ abstract class AbstractPricelistLoader extends AbstractLoader
 	 */
 	protected function guessProductCollection(Product $product)
 	{
-		$this->logger->warning(sprintf("Loader %s not implements product collection guesser",get_class($this)));
+		if (empty($this->collections)) {
+			foreach ($this->getProductCollectionManager()->findByBrand($product->getBrand()) as $collection) {
+				$this->collections[$collection->getCode()] = $collection->getName();
+			}
+			// longers at the beginning
+			usort($this->collections,function($a, $b) { return strlen($b) - strlen($a);});
+		}
+		$pname = $product->getName();
+		foreach ($this->collections as $ccode => $cname) {
+			if (preg_match("/$cname/i",$pname)) {
+				$this->logger->debug(sprintf("Guessed collection %s for product %s",$cname,$product));
+				return $cname;
+			}
+		}
+		$this->logger->warning(sprintf("Collection not guessed for product %s",$product));
 		return null;
 	}
 
