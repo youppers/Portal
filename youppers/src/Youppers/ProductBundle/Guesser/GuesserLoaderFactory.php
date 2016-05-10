@@ -52,7 +52,7 @@ class GuesserLoaderFactory extends ContainerAware
             $this->logger->info(sprintf("Guesser: '%s'", $classname));
             $guesser = new $classname;
         } else {
-            $this->logger->info("Using default Guesser");
+            $this->logger->info(sprintf("Custom guesser '%s' not found", $classname));
             $guesser = new VariantGuesser();
         }
 		$guesser->setManagerRegistry($this->managerRegistry);

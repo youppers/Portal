@@ -133,12 +133,10 @@ class BasePropertyGuesser extends AbstractGuesser
 			$this->collectionOptions[$collection->getId()][$type->getId()] = $options;
 			$this->collectionStandards[$collection->getId()][$type->getId()] = $standards;
 			if (count($standards) == 0) {
-				$this->getLogger()->warning(sprintf("Collection '%s' don't have assigned standards for type '%s'", $collection, $type));
 				$todo = sprintf("<error>Add standard</error> of type <info>%s</info> for collection <info>%s</info> then redo guessing.", $type, $collection);
 				$this->addTodo($todo);
 			} else if (count($options) == 0) {
 				if (!$this->autoAddOptions) {
-					$this->getLogger()->warning(sprintf("Collection '%s' don't have options for type '%s'",$collection,$type));
 					foreach ($standards as $standard) {
 						$todo = sprintf("<error>Add options</error> to standard <info>%s</info> then redo guessing.",$standard);
 						$this->addTodo($todo);
@@ -272,9 +270,9 @@ class BasePropertyGuesser extends AbstractGuesser
 					if ($option === $actualOption) {
 						$this->getLogger()->debug(sprintf("Variant '%s' guessed property '%s' match actual",$variant,$option));
 					} else {
-						$this->getLogger()->warning(sprintf("Variant '%s' guessed property '%s' don't match actual '%s'",$variant,$option,$actualOption));
                         if ($this->getForce()) {
                             $this->changeVariantProperty($variant,$actualOption,$option);
+							$this->getLogger()->warning(sprintf("Changed property from '%s' to '%s' for '%s'",$option,$actualOption,$variant));
                         } else {
                             $todo = sprintf("<question>Change property</question> <info>%s</info> from <info>%s</info> to <question>%s</question> <info>%s</info> for <info>%s</info>",
                                 $option->getAttributeType(), $actualOption->getAttributeStandard() . ': ' . $actualOption->getValueWithSymbol(), empty($option->getId()) ? 'new':'', $option->getAttributeStandard() . ': ' . $option->getValueWithSymbol(), $variant->getProduct()->getNameCode());
@@ -285,6 +283,7 @@ class BasePropertyGuesser extends AbstractGuesser
 					if (empty($option->getId())) {
 						if ($this->getForce()) {
 							$this->addVariantProperty($variant,$option);
+							$this->getLogger()->info(sprintf("Added new property '%s' to '%s'",$option,$variant));
 						} else {
 							$todo = sprintf("<question>Add new property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
 							$this->addTodo($todo);
@@ -295,16 +294,15 @@ class BasePropertyGuesser extends AbstractGuesser
 						$todo = sprintf("<question>Add property</question> <info>%s</info> to <info>%s</info>",$option,$variant->getProduct()->getNameCode());
 						$this->addTodo($todo);
 					}
-					$this->getLogger()->info(sprintf("Variant '%s' new guessed property '%s'",$variant,$option));
 				}
                 if ($option->getAttributeStandard()->getIsVariantImage() && $variant->getImage() == null) {
                     if ($this->getWrite()) {
                         $this->setVariantImageOption($variant,$option);
+						$this->getLogger()->info(sprintf("Added option image '%s' to '%s'",$option->getImage(),$variant));
                     } else {
                         $todo = sprintf("<question>Add image</question> <info>%s</info> to <info>%s</info>",$option->getImage(),$variant->getProduct()->getNameCode());
                         $this->addTodo($todo);
                     }
-                    $this->getLogger()->info(sprintf("Added option image '%s' to '%s'",$option->getImage(),$variant));
                 }
 				return true;
 			}
@@ -316,9 +314,9 @@ class BasePropertyGuesser extends AbstractGuesser
             if ($option === false) {
                 $this->getLogger()->debug(sprintf("Default option false for '%s' type '%s'", $variant, $type));
             } else {
-                $this->getLogger()->debug(sprintf("Default option '%s' for '%s'", $option, $variant));
                 if ($this->getForce()) {
                     $this->addVariantProperty($variant, $option);
+					$this->getLogger()->debug(sprintf("Added default option '%s' to '%s'", $option, $variant));
                 } else {
                     $todo = sprintf("<question>Add default property</question> <info>%s</info> to <info>%s</info>", $option, $variant->getProduct()->getNameCode());
                     $this->addTodo($todo);
@@ -359,13 +357,11 @@ class BasePropertyGuesser extends AbstractGuesser
 					if ($textIsValue) {
 						$todo .= " value=" . $text;
 					}
-                    $this->getLogger()->warning(sprintf("No guess of type '%s' for '%s'",$type,$variant));
 				} else {
 					$todo = sprintf("Not guessed property of type <info>%s</info> for <info>%s</info>",$type,$variant->getProduct()->getNameCode());
 					if ($textIsValue) {
 						$todo .= " :" . $text;
 					}
-                    $this->getLogger()->info(sprintf("No guess of type '%s' for '%s'",$type,$variant));
 				}
 				$this->addTodo($todo);
 			} else {

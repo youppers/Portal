@@ -162,19 +162,19 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 			}
 			if ($collectionStandard == null && $defaultStandardName != null) {
 				// find standard
-				$this->getLogger()->info(sprintf("Finding standard named '%s' of type '%s' for collection '%s'",$defaultStandardName,$type,$collection));
+				$this->getLogger()->debug(sprintf("Finding standard named '%s' of type '%s' for collection '%s'",$defaultStandardName,$type,$collection));
 				$collectionStandard = $this->attributeStandardManager->findOneBy(array('name' => $defaultStandardName, 'attributeType' => $type));
 				if ($collectionStandard == null) {
 					$todo = sprintf("<error>Cannot find standard</error> named <info>%s</info> of type <info>%s</info>",$defaultStandardName,$type);
 					$this->addTodo($todo);
-					$this->getLogger()->warning(sprintf("Cannot find standard named '%s' of type '%s' for collection '%s'",$defaultStandardName,$type,$collection));
 				} else {
-					$this->getLogger()->info(sprintf("Using standard '%s' for collection '%s'",$collectionStandard,$collection));
 					// assign standard to collection
 					$collection->addStandard($collectionStandard);
 					if (!$this->getWrite()) {
 						$todo = sprintf("<question>Assign standard</question> <info>%s</info> to collection <info>%s</info>",$collectionStandard,$collection);
 						$this->addTodo($todo);
+					} else {
+						$this->getLogger()->info(sprintf("Assign standard '%s' to collection '%s'",$collectionStandard,$collection));
 					}
 					//$this->collectionManager->getEntityManager()->flush();
 				}
@@ -214,6 +214,9 @@ abstract class BaseVariantGuesser extends AbstractGuesser
 	 */
 	protected function getCollectionTypeGuesser(ProductCollection $collection, AttributeType $type)
 	{
+		if ($collection->getProductType()->getCode() == 'TILE' && $type->getCode() == 'DIM') {
+			return new TileDimPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
+		}
 		return new BasePropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 	}
 
