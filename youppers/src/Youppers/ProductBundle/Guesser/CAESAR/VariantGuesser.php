@@ -48,6 +48,20 @@ class DimPropertyGuesser extends TileDimPropertyGuesser
 		return 'FORMATO';
 	}
 
+    public function guessProperty(ProductVariant $variant, &$text, AttributeType $type, $textIsValue = false)
+    {
+        // es: 30X30 RT
+        if (preg_match('/([0-9,X]*)(.*)/i',$text,$matches)) {
+            $value = trim($matches[1]);
+            if (empty($value)) {
+                return null;
+            }
+            return parent::guessProperty($variant,$value,$type,true);
+        } else {
+            return false;
+        }
+    }
+
 }
 
 class EdgePropertyGuesser extends BasePropertyGuesser
@@ -66,7 +80,7 @@ class EdgePropertyGuesser extends BasePropertyGuesser
 	public function guessProperty(ProductVariant $variant, &$text, AttributeType $type, $textIsValue = false)
 	{
 		// es: 30X30 RT
-		if (preg_match('/([0-9,X]*)(.+)/i',$text,$matches)) {
+		if (preg_match('/([0-9,X]*)(.*)/i',$text,$matches)) {
 			$value = trim($matches[2]);
 			return parent::guessProperty($variant,$value,$type,true);
 		} else {
