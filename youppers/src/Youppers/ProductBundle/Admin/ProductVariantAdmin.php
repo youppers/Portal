@@ -138,11 +138,9 @@ class ProductVariantAdmin extends YouppersAdmin
     {
     	if (!($this->isChild() && $this->getParentAssociationMapping() === 'productCollection')) {    	 
         	$datagridMapper
-            ->add('productCollection.brand.company.name')
-            ->add('productCollection.brand.company.code')
-        	->add('productCollection.brand.name')
-            ->add('productCollection.brand.code')
-            ->add('productCollection.name');
+            ->add('productCollection.brand')
+            ->add('productCollection.name')
+			->add('productCollection.code');
     	} else {
     		$collection = $this->getParent()->getSubject();
     		$productTypeAttributes = $collection->getProductType()->getProductAttributes();

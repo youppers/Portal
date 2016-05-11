@@ -87,16 +87,10 @@ class ProductCollectionAdmin extends YouppersAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+			->add('brand')
             ->add('name')
             ->add('code')
             ->add('productType')
-			->add('brand.company', null, array(
-				'route' => array(
-					'name' => 'show'
-				)
-			))
-            ->add('brand.name')
-            ->add('brand.code')
             ->add('enabled')
         ;
     }

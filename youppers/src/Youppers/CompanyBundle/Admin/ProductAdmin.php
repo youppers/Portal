@@ -124,12 +124,11 @@ class ProductAdmin extends YouppersAdmin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
+			->add('brand')
 		->add('name')
 		->add('code')
 		->add('gtin')
 		->add('enabled')
-		->add('brand.company')
-		->add('brand')
 		;
 	}
 	
