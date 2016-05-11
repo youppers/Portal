@@ -53,6 +53,7 @@ class UomChoiceList extends ChoiceList
 			case 'KT':  // kit
 			case 'CO':  // confezionel
 			case 'COMP.':
+			case 'MOD':
 				return 'SET';
 			default:
 				throw new \UnexpectedValueException(sprintf("invalid Uom '%s'",$value));
