@@ -32,10 +32,14 @@ class PricelistLoader extends AbstractPricelistLoader
 				}
 			},
 			self::FIELD_UOM => function($row) {
-				$uom = substr(trim($row[self::FIELD_UOM]),0,2);
+				$uom = mb_substr(mb_convert_encoding(trim($row[self::FIELD_UOM]),'ASCII','UTF-8'),0,2);
 				if ($uom == 'MI') {
 					return 'SET';
 				}
+				if ($uom == 'M?') {
+					return 'MQ';
+				}
+				return $uom;
 			},
 			self::FIELD_PRICE => self::FIELD_PRICE,
 			self::FIELD_SURFACE => self::FIELD_SURFACE,
