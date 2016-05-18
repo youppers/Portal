@@ -11,18 +11,12 @@ class PricelistLoader extends AbstractPricelistLoader
 	{
 		// ID;Nr. articolo;SERIE;DEC ITA; L 2015/16 ;Data inizio E15; Peso netto kg
 		$mapping = array(
-			self::FIELD_CODE => 'Nr. articolo',
-			self::FIELD_NAME => 'DEC ITA',
-			self::FIELD_COLLECTION => function ($row) {
-				if (preg_match('/^[A-Z]{5}[0-9]{5}([A-Z]{2})$/',$row['Nr. articolo'],$matches)) {
-					return $matches[1];
-				} else {
-					return $row['SERIE'];
-				}
-
-			},
-			self::FIELD_GTIN => 'BARCODE',
-			self::FIELD_PRICE => 'L 2015/16',
+			self::FIELD_CODE => 'Articolo',
+			self::FIELD_NAME => 'Descrizione',
+			self::FIELD_COLLECTION => 'Serie',
+			self::FIELD_GTIN => 'Barcode',
+			self::FIELD_PRICE => 'Prezzo',
+			self::FIELD_UOM => 'Unità misura prezzo',
 		);
 		$mapper = new LoaderMapper($mapping);
 		return $mapper;
