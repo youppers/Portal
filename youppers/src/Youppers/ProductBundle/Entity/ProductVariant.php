@@ -26,6 +26,12 @@ class ProductVariant
 			' - ' . $this->getProduct()->getNameCode() : 'New';
 	}
 
+    public function getCollectionProduct()
+    {
+        return $this->getProduct() ?  ($this->getProductCollection() ? $this->getProductCollection()->getNameCode():'?') .
+            ' - ' . $this->getProduct()->getNameCode() : 'New';
+    }
+
 	/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
