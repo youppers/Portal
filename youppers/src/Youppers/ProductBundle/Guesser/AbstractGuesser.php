@@ -2,12 +2,9 @@
 
 namespace Youppers\ProductBundle\Guesser;
 
-use Doctrine\Common\Collections\Criteria;
-use Ddeboer\DataImport\Reader\CsvReader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Monolog\Logger;
 
 abstract class AbstractGuesser extends ContainerAware
 {
@@ -33,8 +30,10 @@ abstract class AbstractGuesser extends ContainerAware
 			return $this->parent->addTodo($todo);
 		} else if (!in_array($todo,$this->todos)) {
 			$this->todos[] = $todo;
+			$this->getLogger()->info($todo);
+		} else {
+			$this->getLogger()->debug($todo);
 		}
-		$this->getLogger()->info($todo);
 	}
 			
 	private $managerRegistry;
