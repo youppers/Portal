@@ -97,6 +97,11 @@ class Product
 	 * @ORM\Column(type="json", nullable=true)
 	 */
 	protected $info;
+
+	public function getInfoArray()
+	{
+		return json_decode($this->getInfo(), true);
+	}
 	
 	/**
 	 * @ORM\Column(type="text", nullable=true )
