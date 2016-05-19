@@ -56,8 +56,11 @@ class ProductService extends ContainerAware
 		$qb = $repo
 			->createQueryBuilder('p');
 		$query = $qb
+			->leftJoin('p.variant', 'v')
+			->leftJoin('v.productCollection', 'c')
 			->where($qb->expr()->like('p.code', ':query'))
 			->orWhere($qb->expr()->like('p.name', ':query'))
+			->orWhere($qb->expr()->like('c.name', ':query'))
 			->setParameter('query', '%' . $query . '%')
 			->orderBy('p.name', 'ASC')
 			->setMaxResults($limit)		
