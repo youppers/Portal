@@ -126,7 +126,7 @@ class AttributeOptionAdmin extends YouppersAdmin
                 );
         }
         $formMapper
-		->add('alias', 'textarea', array('required'  => false, 'help'=>'Use ; to separate aliases','attr' => array('cols' => '40', 'rows' => '4')))
+		->add('alias', 'textarea', array('required'  => false, 'help'=>'Use ; to separate aliases','attr' => array('cols' => '40', 'rows' => '1')))
 		->add('enabled', null, array('required'  => false))
 		;
 
