@@ -59,9 +59,11 @@ class ProductService extends ContainerAware
 			->leftJoin('p.variant', 'v')
 			->leftJoin('v.productCollection', 'c')
 			->where($qb->expr()->like('p.code', ':query'))
+			->orWhere($qb->expr()->like('p.code', ':uquery'))
 			->orWhere($qb->expr()->like('p.name', ':query'))
 			->orWhere($qb->expr()->like('c.name', ':query'))
 			->setParameter('query', '%' . $query . '%')
+			->setParameter('uquery', '%' . strtoupper($query) . '%')
 			->orderBy('p.name', 'ASC')
 			->setMaxResults($limit)		
 			->getQuery();
