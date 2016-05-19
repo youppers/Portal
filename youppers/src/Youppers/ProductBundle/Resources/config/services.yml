@@ -27,6 +27,10 @@ services:
         class:     Youppers\ProductBundle\Manager\AttributeOptionManager
         arguments: ['@doctrine']
 
+    youppers.product.manager.variant_property:
+        class:     Youppers\ProductBundle\Manager\VariantPropertyManager
+        arguments: ['@doctrine']
+
     youppers.product.security.product_collection_voter:
         class:     Youppers\ProductBundle\Security\ProductCollectionVoter
         arguments: ['@doctrine', '@logger']
