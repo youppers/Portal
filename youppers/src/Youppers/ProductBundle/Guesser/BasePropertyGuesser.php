@@ -91,6 +91,31 @@ class BasePropertyGuesser extends AbstractGuesser
 
 	private $collectionStandards = array();
 
+	protected function getCollectionStandards(ProductCollection $collection, AttributeType $type) {
+		if (array_key_exists($collection->getId(),$this->collectionStandards) && array_key_exists($type->getId(),$this->collectionStandards[$collection->getId()])) {
+			return $this->collectionStandards[$collection->getId()][$type->getId()];
+		}
+		$standards = array();
+		foreach ($collection->getStandards()->getValues() as $standard) {
+			if ($standard->getAttributeType() == $type) {
+				$standards[] = $standard;
+			}
+		}
+		$this->collectionStandards[$collection->getId()][$type->getId()] = $standards;
+		return $standards;
+	}
+
+	protected function getDefaultStandard(ProductVariant $variant, AttributeType $type)
+	{
+		$standards = $this->getCollectionStandards($variant->getProductCollection(), $type);
+		foreach ($standards as $standard) {
+			if ($standard->getName() == $this->getDefaultStandardName()) {
+				return $standard;
+			}
+		}
+		return null;
+	}
+
 	protected function getCollectionOptions(ProductCollection $collection, AttributeType $type)
 	{
 		if (!array_key_exists($collection->getId(),$this->collectionOptions)) {
@@ -167,13 +192,7 @@ class BasePropertyGuesser extends AbstractGuesser
 			$this->getLogger()->error(sprintf("Cannot autoadd if the collection '%s' dont have standard of type '%s'", $variant->getProductCollection(), $type));
 			return null;
 		}
-		$standard = null;
-		foreach ($standards as $standard1) {
-			if ($standard1->getName() == $this->getDefaultStandardName()) {
-				$standard = $standard1;
-				continue;
-			}
-		}
+		$standard = $this->getDefaultStandard($variant, $type);
 		if (empty($standard)) {
 			$this->getLogger()->error(sprintf("Cannot autoadd if the collection '%s' don't have standard '%s'", $variant->getProductCollection(), $this->getDefaultStandardName()));
 			return null;
