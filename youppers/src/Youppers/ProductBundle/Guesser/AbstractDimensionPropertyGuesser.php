@@ -25,6 +25,10 @@ abstract class AbstractDimensionPropertyGuesser extends BasePropertyGuesser
 				$dim = trim($matches[$i]);
 				$dim = str_replace(",",".",$dim);
 				$dim = 0 + $dim;  // implicit conversion to number
+				if ($dim == 0) {
+					$this->getLogger()->debug(sprintf("In dimension '%s' the coordinate %d cannot be 0",$value,$i));
+					return null;
+				}
 				$dim = str_replace(".",",",$dim); // implicit conversion to string
 				$dims[] = $dim;
 			}
