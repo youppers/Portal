@@ -7,23 +7,17 @@ use Youppers\ProductBundle\Guesser\BaseVariantGuesser;
 use Youppers\ProductBundle\Entity\ProductCollection;
 use Youppers\ProductBundle\Entity\AttributeType;
 use Youppers\ProductBundle\Entity\ProductVariant;
+use Youppers\ProductBundle\Guesser\TapVariantGuesser;
 use Youppers\ProductBundle\Manager\AttributeOptionManager;
 use Youppers\ProductBundle\Manager\VariantPropertyManager;
 
-class VariantGuesser extends BaseVariantGuesser
+class VariantGuesser extends TapVariantGuesser
 {
 	protected function getCollectionTypeGuesser(ProductCollection $collection, AttributeType $type)
 	{
 		if ($type->getCode() == 'DIM') {
 			return new DimPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
 		}
-		if ($type->getCode() == 'ITEM') {
-			return new ItemPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
-		}
-		if ($type->getCode() == 'INST') {
-			return new InstPropertyGuesser($type,$this->variantPropertyManager,$this->attributeOptionManager);
-		}
-
 		return parent::getCollectionTypeGuesser($collection, $type);
 	}
 	
@@ -66,26 +60,6 @@ class DimPropertyGuesser extends AbstractDimensionPropertyGuesser
 	protected function getDimensions()
 	{
 		return 3;
-	}
-
-}
-
-class ItemPropertyGuesser extends BasePropertyGuesser
-{
-
-	public function getDefaultStandardName()
-	{
-		return 'Rubinetti';
-	}
-
-}
-
-class InstPropertyGuesser extends BasePropertyGuesser
-{
-
-	public function getDefaultStandardName()
-	{
-		return 'Rubinetti';
 	}
 
 }
