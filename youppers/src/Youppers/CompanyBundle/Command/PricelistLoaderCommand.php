@@ -36,7 +36,7 @@ class PricelistLoaderCommand extends ContainerAwareCommand
 		->addOption('change-collection', null, InputOption::VALUE_NONE, 'Change product collection')
 		->addOption('enable', 'y', InputOption::VALUE_NONE, 'Enable created entity')
 		->addOption('load-product', 'p', InputOption::VALUE_NONE, 'Load Collection and Variant of the Product')
-		->addOption('guess', null, InputOption::VALUE_NONE, 'Guess properties of variant')
+		->addOption('guess', 'g', InputOption::VALUE_NONE, 'Guess properties of variant')
 		->addOption('fieldseparator', 'fs', InputOption::VALUE_OPTIONAL, 'Field separator',";")
 		;
 	}
