@@ -191,13 +191,8 @@ class ProductCollectionAdmin extends YouppersAdmin
     
     	$filterParameters = $this->getFilterParameters();
 
-    	if (isset($filterParameters['brand__code'])) {
-    		$brand = $this->getModelManager()->findOneBy('Youppers\CompanyBundle\Entity\Brand',array('code' => $filterParameters['brand__code']['value']));
-    		$object->setBrand($brand);
-    	}
-
-    	if (!isset($brand) && isset($filterParameters['brand__name'])) {
-    		$brand = $this->getModelManager()->findOneBy('Youppers\CompanyBundle\Entity\Brand',array('name' => $filterParameters['brand__name']['value']));
+    	if (isset($filterParameters['brand'])) {
+    		$brand = $this->getModelManager()->find('Youppers\CompanyBundle\Entity\Brand',$filterParameters['brand']['value']);
     		$object->setBrand($brand);
     	}
 
